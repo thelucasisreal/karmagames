@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0e12">
+<title>Cobrinha · Karma Games</title>
+<style>
+@font-face{font-family:"Unbounded";font-style:normal;font-weight:800;font-display:swap;src:url("../../assets/fonts/unbounded-latin-800-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist";font-style:normal;font-weight:500;font-display:swap;src:url("../../assets/fonts/geist-sans-latin-500-normal.woff2") format("woff2")}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#0d0e12;overscroll-behavior:none}
+body{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100vh;height:100dvh;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;outline:none;cursor:default}
+</style>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="Cobrinha"></canvas>
+<script>
+const SLUG = 'cobrinha';
+(() => {
+'use strict';
+/* ---------- Núcleo compartilhado (Karma Games) ---------- */
+const COL = {bg:'#0d0e12', surf:'#171920', line:'#262a33', text:'#f2f3f5', muted:'#9aa0ab', acc:'#c8f13a', coral:'#ff6b5a', sky:'#5ac8ff', shadow:'rgba(0,0,0,0.42)'};
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+let W = 1, H = 1, DPR = 1;
+const mq = q => { try { return window.matchMedia(q).matches; } catch (e) { return false; } };
+const reduceMotion = mq('(prefers-reduced-motion: reduce)');
+const coarse = mq('(pointer: coarse)') || ('ontouchstart' in window);
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const rand = (a, b) => a + Math.random() * (b - a);
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const FT = s => '800 ' + Math.round(s) + 'px Unbounded, system-ui, sans-serif';
+const FS = s => '500 ' + Math.round(s) + 'px Geist, system-ui, sans-serif';
+
+/* Recorde */
+const KEY = 'karma:' + SLUG + ':recorde';
+function loadBest() { try { const v = parseInt(window.localStorage.getItem(KEY), 10); return isFinite(v) && v > 0 ? v : 0; } catch (e) { return 0; } }
+function saveBest(v) { try { window.localStorage.setItem(KEY, String(v)); } catch (e) {} }
+let best = loadBest();
+
+/* Fontes: espera antes do primeiro texto no canvas */
+let fontsReady = false;
+(function () {
+  let done = false;
+  const finish = () => { if (!done) { done = true; fontsReady = true; } };
+  setTimeout(finish, 1500);
+  try {
+    if (document.fonts && document.fonts.load) {
+      Promise.all([document.fonts.load('800 32px Unbounded'), document.fonts.load('500 16px Geist')])
+        .then(() => document.fonts.ready).then(finish, finish);
+    } else finish();
+  } catch (e) { finish(); }
+})();
+
+/* Estado */
+let state = 'menu';         // menu | play | paused | over (+ estados próprios do jogo)
+let stateT = 0;             // tempo no estado atual
+let newRecord = false;
+let lastScore = 0;
+function setState(s) { state = s; stateT = 0; }
+function finishGame(score) {
+  lastScore = score;
+  newRecord = score > best && score > 0;
+  if (newRecord) { best = score; saveBest(best); }
+  setState('over');
+}
+
+/* Tremor de tela */
+let shakeT = 0, shakeDur = 1, shakeMag = 0;
+function shake(mag, dur) {
+  if (reduceMotion) return;
+  if (mag >= shakeMag * (shakeT / shakeDur)) { shakeMag = mag; shakeDur = dur; shakeT = dur; }
+}
+
+/* Partículas (coordenadas do jogo) */
+const parts = [];
+function burst(x, y, n, color, speed, life, size, grav) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, s = speed * (0.35 + Math.random() * 0.65);
+    parts.push({x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: life * (0.6 + Math.random() * 0.4), max: life, size: size * (0.6 + Math.random() * 0.6), color, g: grav || 0});
+  }
+  if (parts.length > 400) parts.splice(0, parts.length - 400);
+}
+function updateParts(dt) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.life -= dt;
+    if (p.life <= 0) { parts.splice(i, 1); continue; }
+    p.vx *= Math.pow(0.04, dt); p.vy *= Math.pow(0.04, dt);
+    p.vy += p.g * dt;
+    p.x += p.vx * dt; p.y += p.vy * dt;
+  }
+}
+function drawParts(scale) {
+  for (const p of parts) {
+    const k = clamp(p.life / p.max, 0, 1);
+    const s = p.size * (0.4 + 0.6 * k) * (scale || 1);
+    ctx.globalAlpha = k;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* Desenho utilitário */
+function rrect(x, y, w, h, r) {
+  r = Math.max(0, Math.min(r, w / 2, h / 2));
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function txt(s, x, y, font, color, align, base) {
+  ctx.font = font; ctx.fillStyle = color;
+  ctx.textAlign = align || 'center'; ctx.textBaseline = base || 'middle';
+  ctx.fillText(s, x, y);
+}
+function fitFont(s, maxW, size, maker) {
+  ctx.font = maker(size);
+  const w = ctx.measureText(s).width;
+  return w > maxW ? Math.max(10, size * maxW / w) : size;
+}
+
+/* Botão de pausa (toque) */
+const pauseBtn = {x: 0, y: 0, s: 40};
+function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawPauseBtn() {
+  const b = pauseBtn;
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, b.s, b.s, 10); ctx.fill();
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(b.x + 0.5, b.y + 0.5, b.s - 1, b.s - 1, 10); ctx.stroke();
+  ctx.fillStyle = COL.muted;
+  ctx.fillRect(b.x + b.s * 0.36, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+  ctx.fillRect(b.x + b.s * 0.54, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+}
+
+/* Cartão de tela (início / pausa / fim) */
+function drawCard(o) {
+  ctx.fillStyle = 'rgba(13,14,18,' + (o.dim == null ? 0.72 : o.dim) + ')';
+  ctx.fillRect(0, 0, W, H);
+  const cw = Math.min(W - 32, 440);
+  const pad = cw < 340 ? 22 : 30;
+  const inner = cw - pad * 2;
+  let ts = fitFont(o.title, inner, cw < 340 ? 30 : 38, FT);
+  const rows = o.rows || [];
+  const lines = o.lines || [];
+  let h = pad + ts * 1.15;
+  if (o.kicker) h += 22;
+  if (o.big != null) h += 78;
+  h += rows.length * 34 + (rows.length ? 12 : 0);
+  h += lines.length * 24 + (lines.length ? 14 : 0);
+  if (o.cta) h += 62;
+  if (o.hint) h += 30;
+  h += pad - 6;
+  const cx = (W - cw) / 2;
+  const cy = Math.max(12, (H - h) / 2);
+  // sombra deslocada + superfície
+  ctx.fillStyle = COL.shadow; rrect(cx + 6, cy + 8, cw, h, 18); ctx.fill();
+  ctx.fillStyle = COL.surf; rrect(cx, cy, cw, h, 18); ctx.fill();
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(cx + 0.5, cy + 0.5, cw - 1, h - 1, 18); ctx.stroke();
+  let y = cy + pad;
+  if (o.kicker) { txt(o.kicker.toUpperCase(), W / 2, y + 6, FS(12), o.kickerColor || COL.acc); y += 22; }
+  txt(o.title, W / 2, y + ts * 0.55, FT(ts), COL.text); y += ts * 1.15;
+  if (o.big != null) {
+    txt(String(o.big), W / 2, y + 40, FT(fitFont(String(o.big), inner, 56, FT)), COL.acc); y += 78;
+  }
+  if (rows.length) {
+    y += 6;
+    for (const r of rows) {
+      ctx.strokeStyle = COL.line; ctx.beginPath(); ctx.moveTo(cx + pad, y + 0.5); ctx.lineTo(cx + cw - pad, y + 0.5); ctx.stroke();
+      txt(r[0], cx + pad, y + 18, FS(15), COL.muted, 'left');
+      txt(r[1], cx + cw - pad, y + 18, FT(16), r[2] || COL.text, 'right');
+      y += 34;
+    }
+    y += 6;
+  }
+  if (lines.length) {
+    y += 6;
+    for (const l of lines) { txt(l, W / 2, y + 10, FS(fitFont(l, inner, 15, FS)), COL.muted); y += 24; }
+    y += 8;
+  }
+  if (o.cta) {
+    const bw = Math.min(inner, 280), bh = 48, bx = (W - bw) / 2, by = y + 6;
+    const pulse = reduceMotion ? 0 : (Math.sin(perfNow * 4) * 0.5 + 0.5);
+    ctx.fillStyle = COL.shadow; rrect(bx + 3, by + 4, bw, bh, 12); ctx.fill();
+    ctx.fillStyle = COL.acc; rrect(bx, by - pulse * 1.5, bw, bh, 12); ctx.fill();
+    txt(o.cta, W / 2, by + bh / 2 - pulse * 1.5 + 1, FT(fitFont(o.cta, bw - 24, 15, FT)), COL.bg);
+    y += 62;
+  }
+  if (o.hint) { txt(o.hint, W / 2, y + 14, FS(fitFont(o.hint, inner, 13, FS)), COL.muted); y += 30; }
+}
+
+/* HUD: rótulo pequeno + valor */
+function hudStat(label, value, x, y, align, color) {
+  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
+}
+
+let perfNow = 0;
+
+/* ---------- Cobrinha ---------- */
+const HUD = 62;
+let cols = 20, rows = 20, cell = 20, ox = 0, oy = 0;
+let body = [], prev = [], dir = {x: 1, y: 0}, queue = [];
+let food = {x: 0, y: 0}, foodT = 0;
+let stepAcc = 0, interval = 0.13, score = 0, eatFlash = 0, deadT = 0;
+let pops = [];
+
+function chooseGrid() {
+  const aw = W - 24, ah = H - HUD - 14;
+  const short = Math.min(aw, ah);
+  const target = short < 520 ? 16 : 20;
+  const sz = short / target;
+  cols = clamp(Math.round(aw / sz), 12, 32);
+  rows = clamp(Math.round(ah / sz), 12, 36);
+}
+function fitGrid() {
+  cell = Math.max(6, Math.floor(Math.min((W - 24) / cols, (H - HUD - 14) / rows)));
+  ox = Math.round((W - cols * cell) / 2);
+  oy = Math.round(HUD + (H - HUD - 14 - rows * cell) / 2);
+}
+function placeFood() {
+  const free = [];
+  const occ = new Set(body.map(p => p.x + ',' + p.y));
+  for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) if (!occ.has(x + ',' + y)) free.push({x, y});
+  food = free.length ? free[(Math.random() * free.length) | 0] : {x: -5, y: -5};
+  foodT = 0;
+}
+function reset() {
+  chooseGrid(); fitGrid();
+  const sx = Math.floor(cols / 2) - 2, sy = Math.floor(rows / 2);
+  body = [{x: sx + 2, y: sy}, {x: sx + 1, y: sy}, {x: sx, y: sy}];
+  prev = body.map(p => ({x: p.x, y: p.y}));
+  dir = {x: 1, y: 0}; queue = [];
+  score = 0; stepAcc = 0; interval = 0.135; pops = []; parts.length = 0;
+  placeFood();
+}
+function speedFor(s) { return Math.max(0.062, 0.135 - s * 0.0026); }
+function turn(dx, dy) {
+  const lastD = queue.length ? queue[queue.length - 1] : dir;
+  if ((dx === lastD.x && dy === lastD.y) || (dx === -lastD.x && dy === -lastD.y)) return;
+  if (queue.length < 3) queue.push({x: dx, y: dy});
+}
+function die() {
+  setState('dying'); deadT = 0;
+  shake(12, 0.45);
+  const h = body[0];
+  burst(ox + (h.x + 0.5) * cell, oy + (h.y + 0.5) * cell, 26, COL.coral, cell * 9, 0.7, cell * 0.35, 0);
+}
+function step() {
+  if (queue.length) dir = queue.shift();
+  const h = body[0];
+  const nx = h.x + dir.x, ny = h.y + dir.y;
+  prev = body.map(p => ({x: p.x, y: p.y}));
+  if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) { prev = body.map(p => ({x: p.x, y: p.y})); return die(); }
+  const eating = nx === food.x && ny === food.y;
+  const n = eating ? body.length : body.length - 1;
+  for (let i = 0; i < n; i++) if (body[i].x === nx && body[i].y === ny) return die();
+  body.unshift({x: nx, y: ny});
+  if (!eating) body.pop();
+  else {
+    score++;
+    interval = speedFor(score);
+    eatFlash = 1;
+    const fx = ox + (nx + 0.5) * cell, fy = oy + (ny + 0.5) * cell;
+    burst(fx, fy, 14, COL.acc, cell * 7, 0.5, cell * 0.28, 0);
+    burst(fx, fy, 6, COL.coral, cell * 5, 0.45, cell * 0.22, 0);
+    pops.push({x: fx, y: fy, t: 0});
+    shake(2.5, 0.12);
+    placeFood();
+  }
+}
+
+const GAME = {
+  resize() {
+    if (state === 'menu' || state === 'over') { if (state === 'menu') reset(); else fitGrid(); }
+    else {
+      // mantém a grade, só reescala; partículas em pixels ficam como estão
+      fitGrid();
+    }
+  },
+  start() { reset(); setState('play'); },
+  key(e, down) {
+    if (!down || state !== 'play') return;
+    const k = e.key;
+    if (k === 'ArrowUp' || k === 'w' || k === 'W') turn(0, -1);
+    else if (k === 'ArrowDown' || k === 's' || k === 'S') turn(0, 1);
+    else if (k === 'ArrowLeft' || k === 'a' || k === 'A') turn(-1, 0);
+    else if (k === 'ArrowRight' || k === 'd' || k === 'D') turn(1, 0);
+  },
+  pointer(type, x, y) {
+    if (state !== 'play') { this.sw = null; return; }
+    if (type === 'down') { this.sw = {x, y, moved: false}; return; }
+    const s = this.sw;
+    if (!s) return;
+    if (type === 'move') {
+      const dx = x - s.x, dy = y - s.y, th = Math.max(16, cell * 0.7);
+      if (Math.abs(dx) > th || Math.abs(dy) > th) {
+        if (Math.abs(dx) > Math.abs(dy)) turn(Math.sign(dx), 0); else turn(0, Math.sign(dy));
+        s.x = x; s.y = y; s.moved = true;
+      }
+    } else if (type === 'up') {
+      if (!s.moved) {
+        // toque: vira em direção ao ponto tocado, relativo à cabeça
+        const h = body[0];
+        const hx = ox + (h.x + 0.5) * cell, hy = oy + (h.y + 0.5) * cell;
+        const cur = queue.length ? queue[queue.length - 1] : dir;
+        if (cur.x !== 0) { if (Math.abs(y - hy) > cell * 0.3) turn(0, Math.sign(y - hy)); }
+        else { if (Math.abs(x - hx) > cell * 0.3) turn(Math.sign(x - hx), 0); }
+      }
+      this.sw = null;
+    } else this.sw = null;
+  },
+  update(dt) {
+    foodT += dt;
+    eatFlash = Math.max(0, eatFlash - dt * 4);
+    for (const p of pops) p.t += dt;
+    pops = pops.filter(p => p.t < 0.7);
+    if (state === 'play') {
+      stepAcc += dt;
+      while (stepAcc >= interval && state === 'play') { stepAcc -= interval; step(); }
+    } else if (state === 'dying') {
+      deadT += dt;
+      if (deadT > 0.85) finishGame(score);
+    } else if (state === 'menu') {
+      // cobrinha de demonstração andando sozinha
+      stepAcc += dt;
+      if (stepAcc >= 0.16) {
+        stepAcc = 0;
+        const h = body[0];
+        let nd = dir;
+        const tx = food.x - h.x, ty = food.y - h.y;
+        const opts = [];
+        if (tx) opts.push({x: Math.sign(tx), y: 0});
+        if (ty) opts.push({x: 0, y: Math.sign(ty)});
+        opts.push(dir, {x: dir.y, y: dir.x}, {x: -dir.y, y: -dir.x});
+        for (const o of opts) {
+          if (o.x === -dir.x && o.y === -dir.y) continue;
+          const nx = h.x + o.x, ny = h.y + o.y;
+          if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
+          if (body.slice(0, -1).some(p => p.x === nx && p.y === ny)) continue;
+          nd = o; break;
+        }
+        dir = nd;
+        const nx = h.x + dir.x, ny = h.y + dir.y;
+        prev = body.map(p => ({x: p.x, y: p.y}));
+        if (nx < 0 || ny < 0 || nx >= cols || ny >= rows || body.some(p => p.x === nx && p.y === ny)) { reset(); return; }
+        body.unshift({x: nx, y: ny});
+        if (nx === food.x && ny === food.y) { if (body.length > 12) body.pop(); placeFood(); } else body.pop();
+      }
+    }
+  },
+  draw() {
+    // tabuleiro
+    const bw = cols * cell, bh = rows * cell;
+    ctx.fillStyle = COL.shadow; rrect(ox + 5, oy + 7, bw, bh, 12); ctx.fill();
+    ctx.fillStyle = COL.surf; rrect(ox, oy, bw, bh, 12); ctx.fill();
+    ctx.fillStyle = COL.line;
+    const d = Math.max(1.5, cell * 0.08);
+    for (let y = 1; y < rows; y++) for (let x = 1; x < cols; x++) ctx.fillRect(ox + x * cell - d / 2, oy + y * cell - d / 2, d, d);
+    ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(ox + 0.5, oy + 0.5, bw - 1, bh - 1, 12); ctx.stroke();
+
+    // comida
+    if (food.x >= 0) {
+      const fx = ox + (food.x + 0.5) * cell, fy = oy + (food.y + 0.5) * cell;
+      const appear = easeOut(clamp(foodT / 0.25, 0, 1));
+      const pulse = reduceMotion ? 1 : 1 + Math.sin(foodT * 5) * 0.06;
+      const r = cell * 0.34 * appear * pulse;
+      ctx.fillStyle = COL.shadow; ctx.beginPath(); ctx.arc(fx + 2, fy + 3, r, 0, 7); ctx.fill();
+      ctx.fillStyle = COL.coral; ctx.beginPath(); ctx.arc(fx, fy, r, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.beginPath(); ctx.arc(fx - r * 0.3, fy - r * 0.3, r * 0.28, 0, 7); ctx.fill();
+    }
+
+    // cobra (interpolada entre passos)
+    const moving = state === 'play' || state === 'menu';
+    const t = moving ? clamp(stepAcc / (state === 'menu' ? 0.16 : interval), 0, 1) : 1;
+    const pts = [];
+    for (let i = 0; i < body.length; i++) {
+      const a = prev[Math.min(i, prev.length - 1)] || body[i], b = body[i];
+      pts.push([ox + (lerp(a.x, b.x, t) + 0.5) * cell, oy + (lerp(a.y, b.y, t) + 0.5) * cell]);
+    }
+    const dead = state === 'dying' || state === 'over';
+    const lw = cell * 0.74;
+    const path = (dx, dy) => {
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0] + dx, pts[0][1] + dy);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0] + dx, pts[i][1] + dy);
+      if (pts.length === 1) ctx.lineTo(pts[0][0] + dx + 0.01, pts[0][1] + dy);
+    };
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.lineWidth = lw; ctx.strokeStyle = COL.shadow; path(3, 4); ctx.stroke();
+    const blink = state === 'dying' && !reduceMotion && Math.floor(deadT * 10) % 2 === 0;
+    ctx.strokeStyle = dead ? (blink ? COL.coral : '#8d9a5a') : COL.acc;
+    path(0, 0); ctx.stroke();
+    // faixa clara no dorso
+    ctx.lineWidth = lw * 0.28; ctx.strokeStyle = dead ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.28)';
+    path(-lw * 0.12, -lw * 0.12); ctx.stroke();
+    ctx.lineWidth = 1;
+    // cabeça
+    const [hx, hy] = pts[0];
+    const hr = cell * 0.46 * (1 + eatFlash * 0.15);
+    ctx.fillStyle = dead ? (blink ? COL.coral : '#8d9a5a') : COL.acc;
+    ctx.beginPath(); ctx.arc(hx, hy, hr, 0, 7); ctx.fill();
+    const ex = dir.x, ey = dir.y, px = -ey, py = ex;
+    for (const s of [-1, 1]) {
+      const cx = hx + ex * cell * 0.12 + px * s * cell * 0.2, cy = hy + ey * cell * 0.12 + py * s * cell * 0.2;
+      ctx.fillStyle = COL.bg; ctx.beginPath(); ctx.arc(cx, cy, cell * 0.11, 0, 7); ctx.fill();
+      if (!dead) { ctx.fillStyle = COL.text; ctx.beginPath(); ctx.arc(cx + ex * cell * 0.03, cy + ey * cell * 0.03, cell * 0.04, 0, 7); ctx.fill(); }
+    }
+    drawParts();
+    // +1 flutuante
+    if (fontsReady) for (const p of pops) {
+      const k = p.t / 0.7;
+      ctx.globalAlpha = 1 - k;
+      txt('+1', p.x, p.y - cell * 0.6 - easeOut(k) * cell * 1.2, FT(Math.max(12, cell * 0.6)), COL.text);
+    }
+    ctx.globalAlpha = 1;
+  },
+  drawUI() {
+    if (state === 'menu') {
+      drawCard({dim: 0.55, kicker: 'Karma Games', title: 'Cobrinha', lines: ['Coma, cresça e não bata nas paredes', 'nem no próprio rabo.'], cta: coarse ? 'Toque para começar' : 'Aperte Espaço para começar', hint: coarse ? 'Deslize ou toque ao lado da cabeça para virar' : 'Setas ou WASD para virar · P pausa'});
+      return;
+    }
+    const pad = Math.max(12, ox);
+    hudStat('Pontos', score, pad, 12, 'left', COL.acc);
+    hudStat('Recorde', Math.max(best, score), W - 64, 12, 'right');
+    if (state === 'over') {
+      drawCard({kicker: newRecord ? 'Novo recorde!' : 'Cobrinha', title: 'Fim de jogo', big: lastScore, rows: [['Recorde', String(best)], ['Tamanho', String(body.length)]], cta: 'Jogar de novo', hint: coarse ? 'Toque para jogar de novo' : 'Enter ou Espaço para jogar de novo'});
+    }
+  }
+};
+
+/* ---------- Laço, redimensionamento e entrada ---------- */
+function resize() {
+  const r = cv.getBoundingClientRect();
+  W = Math.max(1, Math.round(r.width || window.innerWidth));
+  H = Math.max(1, Math.round(r.height || window.innerHeight));
+  DPR = Math.min(window.devicePixelRatio || 1, 3);
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  layoutPauseBtn();
+  GAME.resize();
+}
+window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+
+function canPause() { return state === 'play'; }
+function pause() { if (canPause()) { setState('paused'); if (GAME.onPause) GAME.onPause(); } }
+function resume() { if (state === 'paused') { state = 'play'; if (GAME.onResume) GAME.onResume(); } }
+
+document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+window.addEventListener('blur', () => pause());
+
+const GAME_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Spacebar'];
+window.addEventListener('keydown', e => {
+  const k = e.key;
+  if (GAME_KEYS.indexOf(k) >= 0 || e.code === 'Space') e.preventDefault();
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const isStart = k === ' ' || k === 'Enter' || e.code === 'Space';
+  if (k === 'p' || k === 'P' || k === 'Escape') {
+    if (state === 'paused') resume(); else pause();
+    return;
+  }
+  if (state === 'paused') { if (!e.repeat) resume(); return; }
+  if (state === 'menu') { if (isStart && fontsReady) GAME.start(); return; }
+  if (state === 'over') { if (isStart && stateT > 0.5 && !e.repeat) GAME.start(); return; }
+  if (GAME.key) GAME.key(e, true);
+}, {passive: false});
+window.addEventListener('keyup', e => { if (GAME.key) GAME.key(e, false); });
+
+function ptr(e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+cv.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  try { cv.focus({preventScroll: true}); } catch (err) {}
+  try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+  const [x, y] = ptr(e);
+  if (state === 'paused') { resume(); return; }
+  if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
+  if (state === 'over') { if (stateT > 0.5) GAME.start(x, y); return; }
+  if (state === 'play' && hitPause(x, y)) { pause(); return; }
+  if (GAME.pointer) GAME.pointer('down', x, y, e);
+}, {passive: false});
+cv.addEventListener('pointermove', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('move', x, y, e); });
+cv.addEventListener('pointerup', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('up', x, y, e); });
+cv.addEventListener('pointercancel', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('cancel', x, y, e); });
+cv.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('touchmove', e => e.preventDefault(), {passive: false});
+
+let last = 0;
+function frame(t) {
+  requestAnimationFrame(frame);
+  const now = t / 1000;
+  let dt = last ? now - last : 0;
+  last = now;
+  if (dt > 0.05) dt = 0.05;
+  if (dt < 0) dt = 0;
+  perfNow = now;
+  stateT += dt;
+  if (state !== 'paused') { GAME.update(dt); updateParts(dt); }
+  if (shakeT > 0 && state !== 'paused') shakeT = Math.max(0, shakeT - dt);
+
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  if (shakeT > 0) {
+    const k = shakeT / shakeDur, m = shakeMag * k * k;
+    ctx.translate(rand(-m, m), rand(-m, m));
+  }
+  GAME.draw();
+  ctx.restore();
+  if (fontsReady) {
+    GAME.drawUI();
+    if (state === 'play' || state === 'paused') drawPauseBtn();
+    if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma'});
+  }
+}
+resize();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

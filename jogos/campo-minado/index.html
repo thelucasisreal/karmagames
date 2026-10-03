@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Campo Minado · Karma Games</title>
+<meta name="theme-color" content="#0d0e12">
+<link rel="icon" href="data:,">
+<style>
+@font-face{font-family:"Unbounded";font-weight:800;font-style:normal;font-display:swap;src:url(../../assets/fonts/unbounded-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Geist";font-weight:400;font-style:normal;font-display:swap;src:url(../../assets/fonts/geist-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Geist";font-weight:600;font-style:normal;font-display:swap;src:url(../../assets/fonts/geist-sans-latin-600-normal.woff2) format("woff2")}
+:root{--bg:#0d0e12;--surface:#171920;--raised:#1f222b;--line:#262a33;--text:#f2f3f5;--muted:#9aa0ab;--accent:#c8f13a;--coral:#ff6b5a;--sky:#5ac8ff;--amber:#ffc23a;--r:12px;--ease:cubic-bezier(.16,1,.3,1);--display:"Unbounded",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--text);font:400 15px/1.4 "Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;height:100dvh;display:flex;justify-content:center;padding:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+::selection{background:var(--accent);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
+.btn:hover{background:#292d38}
+.btn:active{transform:translateY(1px)}
+.btn.primary,.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.btn.primary:hover,.btn[aria-pressed="true"]:hover{background:#d4f75a}
+.btn svg{width:16px;height:16px}
+.app{width:min(100%,1000px);height:100%;display:flex;flex-direction:column;gap:12px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
+.stats{display:flex;gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 12px;min-width:76px;text-align:center}
+.stat .lbl{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.stat .val{display:block;font:800 16px/1.35 var(--display);font-variant-numeric:tabular-nums}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.seg,.acts{display:flex;gap:6px;flex-wrap:wrap}
+.hint{color:var(--muted);font-size:14px;text-align:center}
+.wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.board{display:grid;gap:var(--gap);padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.c{width:var(--cell);height:var(--cell);border-radius:min(12px,calc(var(--cell)*.22));background:#2b2f3a;box-shadow:inset 0 -2px 0 rgba(0,0,0,.28);display:grid;place-items:center;font:800 calc(var(--cell)*.48)/1 var(--display);font-variant-numeric:tabular-nums;transition:background-color .18s var(--ease);touch-action:manipulation;-webkit-touch-callout:none}
+.c:hover{background:#353a47}
+.c:focus-visible{outline-offset:1px;position:relative;z-index:1}
+.c.o{background:var(--bg);box-shadow:none;cursor:default;animation:reveal .3s var(--ease) backwards}
+@keyframes reveal{from{transform:scale(.6);opacity:.2}}
+.c svg{width:62%;height:62%;pointer-events:none}
+.c.f svg{animation:plant .25s var(--ease)}
+@keyframes plant{from{transform:translateY(-30%) scale(.5);opacity:0}}
+.n1{color:var(--sky)}.n2{color:var(--accent)}.n3{color:var(--coral)}.n4{color:var(--amber)}.n5{color:#ff9a52}.n6{color:#8fdcff}.n7{color:var(--text)}.n8{color:var(--muted)}
+.c.boom{background:var(--coral);color:var(--bg)}
+.c.m{color:var(--text)}
+.c.wrong{color:var(--coral)}
+body.flagmode .c:not(.o){cursor:crosshair}
+.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:rgba(13,14,18,.78);animation:fade .25s var(--ease)}
+.overlay[hidden]{display:none}
+.dlg{width:min(100%,340px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px 24px 24px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.5);animation:rise .35s var(--ease)}
+.dlg h2{font:800 24px/1.15 var(--display);margin-bottom:8px}
+.dlg p{color:var(--muted);font-variant-numeric:tabular-nums}
+.dlg .rec{color:var(--accent);font-weight:600;margin-top:4px}
+.dlg .row{display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+@keyframes fade{from{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(12px) scale(.97)}}
+@media (max-width:420px){.stat{min-width:62px;padding:6px 8px}.stat .val{font-size:14px}.btn{padding:0 12px;font-size:13px}.board{padding:5px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <h1>Campo Minado</h1>
+    <div class="stats">
+      <div class="stat"><span class="lbl">Minas</span><span class="val" id="mines">0</span></div>
+      <div class="stat"><span class="lbl">Tempo</span><span class="val" id="time">0</span></div>
+      <div class="stat"><span class="lbl">Recorde</span><span class="val" id="best">—</span></div>
+    </div>
+  </header>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Dificuldade">
+      <button class="btn" type="button" data-lv="facil">Fácil</button>
+      <button class="btn" type="button" data-lv="medio">Médio</button>
+      <button class="btn" type="button" data-lv="dificil">Difícil</button>
+    </div>
+    <div class="acts">
+      <button class="btn" type="button" id="mode" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M7 3.5l12 5-12 5z" fill="currentColor"/></svg>Bandeira</button>
+      <button class="btn" type="button" id="new">Reiniciar</button>
+    </div>
+  </div>
+  <div class="wrap" id="wrap"><div class="board" id="board" role="grid" aria-label="Campo minado"></div></div>
+  <p class="hint" id="hint">Revele tudo sem pisar nas minas. Bandeira: botão direito, toque longo ou o botão Bandeira.</p>
+</main>
+<div class="overlay" id="ov" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="ovt">
+    <h2 id="ovt"></h2>
+    <p id="ovp"></p>
+    <p class="rec" id="ovrec"></p>
+    <div class="row"><button class="btn" type="button" id="see">Ver tabuleiro</button><button class="btn primary" type="button" id="again">Jogar de novo</button></div>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var SLUG="karma:campo-minado:";
+var store={get:function(k,d){try{var v=localStorage.getItem(SLUG+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set:function(k,v){try{localStorage.setItem(SLUG+k,JSON.stringify(v))}catch(e){}}};
+var LEVELS={facil:{r:9,c:9,m:10},medio:{r:16,c:16,m:40},dificil:{r:16,c:30,m:99}};
+var FLAG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 21V3" stroke="#f2f3f5" stroke-width="2.4" stroke-linecap="round"/><path d="M7.5 3.5l12 5-12 5z" fill="#ffc23a"/></svg>';
+var MINE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="12" cy="12" r="6.5"/><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></g></svg>';
+var WRONG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+var $=function(id){return document.getElementById(id)};
+var boardEl=$("board"),wrap=$("wrap"),minesEl=$("mines"),timeEl=$("time"),bestEl=$("best"),ov=$("ov"),modeBtn=$("mode");
+var level=store.get("nivel","facil");if(!LEVELS[level])level="facil";
+var R,C,M,cells,els,started,ended,flags,opened,t0,timer,flagMode=false,focusI=0,portrait=null;
+
+function bestFor(lv){var b=store.get("recorde:"+lv,null);return typeof b==="number"?b:null}
+function showBest(){var b=bestFor(level);bestEl.textContent=b==null?"—":b+"s"}
+function isPortrait(){return wrap.clientHeight>wrap.clientWidth*1.05}
+function nbrs(i){var r=Math.floor(i/C),c=i%C,o=[];for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;var rr=r+dr,cc=c+dc;if(rr>=0&&rr<R&&cc>=0&&cc<C)o.push(rr*C+cc)}return o}
+
+function build(){
+  clearInterval(timer);timer=null;ov.hidden=true;
+  var L=LEVELS[level];portrait=isPortrait();
+  R=L.r;C=L.c;M=L.m;if(portrait&&C>R){R=L.c;C=L.r}
+  started=false;ended=false;flags=0;opened=0;focusI=0;
+  cells=[];els=[];boardEl.innerHTML="";
+  var frag=document.createDocumentFragment();
+  for(var i=0;i<R*C;i++){
+    cells.push({mine:false,n:0,open:false,flag:false});
+    var b=document.createElement("button");b.type="button";b.className="c";b.dataset.i=i;b.tabIndex=i===0?0:-1;
+    b.setAttribute("aria-label","Linha "+(Math.floor(i/C)+1)+", coluna "+(i%C+1)+", fechada");
+    els.push(b);frag.appendChild(b);
+  }
+  boardEl.appendChild(frag);
+  minesEl.textContent=M;timeEl.textContent="0";showBest();
+  document.querySelectorAll("[data-lv]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.lv===level?"true":"false")});
+  fit();
+}
+function fit(){
+  var gap=2,pad=parseFloat(getComputedStyle(boardEl).paddingLeft)*2+2;
+  var w=wrap.clientWidth-pad,h=wrap.clientHeight-pad;
+  var cell=Math.floor(Math.min((w-gap*(C-1))/C,(h-gap*(R-1))/R,46));
+  if(cell>=26)gap=3;
+  cell=Math.max(16,Math.floor(Math.min((w-gap*(C-1))/C,(h-gap*(R-1))/R,46)));
+  boardEl.style.setProperty("--cell",cell+"px");boardEl.style.setProperty("--gap",gap+"px");
+  boardEl.style.gridTemplateColumns="repeat("+C+",var(--cell))";
+}
+function placeMines(safe){
+  var ban={};ban[safe]=1;if(R*C-9>=M)nbrs(safe).forEach(function(j){ban[j]=1});
+  var pool=[];for(var i=0;i<R*C;i++)if(!ban[i])pool.push(i);
+  for(var k=0;k<M;k++){var j=k+Math.floor(Math.random()*(pool.length-k));var t=pool[k];pool[k]=pool[j];pool[j]=t;cells[pool[k]].mine=true}
+  for(i=0;i<R*C;i++){var n=0;nbrs(i).forEach(function(j){if(cells[j].mine)n++});cells[i].n=n}
+}
+function startTimer(){t0=performance.now();timer=setInterval(function(){timeEl.textContent=Math.floor((performance.now()-t0)/1000)},250)}
+function label(i){
+  var c=cells[i],pos="Linha "+(Math.floor(i/C)+1)+", coluna "+(i%C+1)+", ";
+  els[i].setAttribute("aria-label",pos+(c.open?(c.mine?"mina":c.n?c.n+" minas ao redor":"vazia"):c.flag?"bandeira":"fechada"));
+}
+function draw(i,delay){
+  var c=cells[i],b=els[i];
+  if(c.open){
+    b.className="c o"+(c.n&&!c.mine?" n"+c.n:"");b.textContent=c.n&&!c.mine?c.n:"";
+    if(delay)b.style.animationDelay=delay+"ms";
+  }else{b.className="c"+(c.flag?" f":"");b.innerHTML=c.flag?FLAG:""}
+  label(i);
+}
+function toggleFlag(i){
+  if(ended)return;var c=cells[i];if(c.open)return;
+  c.flag=!c.flag;flags+=c.flag?1:-1;minesEl.textContent=M-flags;draw(i);
+  if(navigator.vibrate)try{navigator.vibrate(12)}catch(e){}
+}
+function reveal(i){
+  if(ended)return;var c=cells[i];
+  if(c.flag)return;
+  if(c.open){chord(i);return}
+  if(!started){started=true;placeMines(i);startTimer()}
+  if(c.mine){lose(i);return}
+  var q=[[i,0]],seen={};seen[i]=1;
+  while(q.length){
+    var it=q.shift(),j=it[0],cc=cells[j];
+    if(cc.open||cc.flag)continue;
+    cc.open=true;opened++;draw(j,Math.min(it[1]*18,360));
+    if(cc.n===0)nbrs(j).forEach(function(k){if(!seen[k]&&!cells[k].open&&!cells[k].mine){seen[k]=1;q.push([k,it[1]+1])}});
+  }
+  if(opened===R*C-M)win();
+}
+function chord(i){
+  var c=cells[i];if(!c.n)return;
+  var ns=nbrs(i),f=0;ns.forEach(function(j){if(cells[j].flag)f++});
+  if(f!==c.n)return;
+  for(var k=0;k<ns.length;k++){var j=ns[k];if(!cells[j].open&&!cells[j].flag){reveal(j);if(ended)return}}
+}
+function stop(){ended=true;clearInterval(timer);timer=null}
+function lose(i){
+  stop();
+  cells.forEach(function(c,j){
+    if(c.mine&&!c.flag){c.open=true;els[j].className="c o m";els[j].innerHTML=MINE;els[j].style.animationDelay=Math.min(Math.random()*400,400)+"ms";label(j)}
+    else if(!c.mine&&c.flag){els[j].className="c o wrong";els[j].innerHTML=WRONG}
+  });
+  els[i].className="c o boom";els[i].style.animationDelay="0ms";
+  setTimeout(function(){openOv("Boom!","Você pisou numa mina. Tente outra vez.","")},850);
+}
+function win(){
+  stop();
+  var t=Math.max(1,Math.round((performance.now()-t0)/1000));timeEl.textContent=t;
+  cells.forEach(function(c,j){if(c.mine&&!c.flag){c.flag=true;draw(j)}});flags=M;minesEl.textContent=0;
+  var b=bestFor(level),rec="";
+  if(b==null||t<b){store.set("recorde:"+level,t);rec=b==null?"Primeiro recorde registrado.":"Novo recorde! Antes: "+b+"s.";}
+  showBest();
+  setTimeout(function(){openOv("Campo limpo!","Você terminou em "+t+" segundos.",rec)},600);
+}
+function openOv(t,p,rec){$("ovt").textContent=t;$("ovp").textContent=p;$("ovrec").textContent=rec;ov.hidden=false;$("again").focus()}
+
+/* entrada */
+var lp=null,lpFired=false,lx=0,ly=0;
+boardEl.addEventListener("pointerdown",function(e){
+  var b=e.target.closest(".c");if(!b||e.pointerType==="mouse")return;
+  lpFired=false;lx=e.clientX;ly=e.clientY;clearTimeout(lp);
+  lp=setTimeout(function(){lpFired=true;var i=+b.dataset.i;if(!cells[i].open)toggleFlag(i)},380);
+});
+function cancelLp(){clearTimeout(lp)}
+boardEl.addEventListener("pointermove",function(e){if(Math.abs(e.clientX-lx)>10||Math.abs(e.clientY-ly)>10)cancelLp()});
+boardEl.addEventListener("pointerup",cancelLp);
+boardEl.addEventListener("pointercancel",cancelLp);
+boardEl.addEventListener("click",function(e){
+  var b=e.target.closest(".c");if(!b)return;
+  if(lpFired){lpFired=false;return}
+  var i=+b.dataset.i;setFocus(i,false);
+  if(flagMode&&!cells[i].open)toggleFlag(i);else reveal(i);
+});
+boardEl.addEventListener("contextmenu",function(e){
+  e.preventDefault();var b=e.target.closest(".c");if(!b)return;
+  if(lpFired)return;toggleFlag(+b.dataset.i);
+});
+function setFocus(i,move){els[focusI].tabIndex=-1;focusI=i;els[i].tabIndex=0;if(move)els[i].focus()}
+boardEl.addEventListener("keydown",function(e){
+  var b=e.target.closest(".c");if(!b)return;var i=+b.dataset.i,r=Math.floor(i/C),c=i%C;
+  if(e.key==="ArrowRight"&&c<C-1)setFocus(i+1,true);
+  else if(e.key==="ArrowLeft"&&c>0)setFocus(i-1,true);
+  else if(e.key==="ArrowDown"&&r<R-1)setFocus(i+C,true);
+  else if(e.key==="ArrowUp"&&r>0)setFocus(i-C,true);
+  else if(e.key==="f"||e.key==="F"||e.key==="b"||e.key==="B"){toggleFlag(i)}
+  else return;
+  e.preventDefault();
+});
+modeBtn.addEventListener("click",function(){flagMode=!flagMode;modeBtn.setAttribute("aria-pressed",flagMode);document.body.classList.toggle("flagmode",flagMode)});
+document.querySelectorAll("[data-lv]").forEach(function(b){b.addEventListener("click",function(){level=b.dataset.lv;store.set("nivel",level);build()})});
+$("new").addEventListener("click",build);
+$("again").addEventListener("click",function(){build();els[0].focus()});
+$("see").addEventListener("click",function(){ov.hidden=true;$("new").focus()});
+document.addEventListener("keydown",function(e){if(!ov.hidden&&e.key==="Escape"){ov.hidden=true}});
+window.addEventListener("resize",function(){if(!started&&isPortrait()!==portrait)build();else fit()});
+build();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0e12">
+<title>Voo Livre · Karma Games</title>
+<style>
+@font-face{font-family:"Unbounded";font-style:normal;font-weight:800;font-display:swap;src:url("../../assets/fonts/unbounded-latin-800-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist";font-style:normal;font-weight:500;font-display:swap;src:url("../../assets/fonts/geist-sans-latin-500-normal.woff2") format("woff2")}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#0d0e12;overscroll-behavior:none}
+body{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100vh;height:100dvh;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;outline:none;cursor:default}
+</style>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="Voo Livre"></canvas>
+<script>
+const SLUG = 'voo-livre';
+(() => {
+'use strict';
+/* ---------- Núcleo compartilhado (Karma Games) ---------- */
+const COL = {bg:'#0d0e12', surf:'#171920', line:'#262a33', text:'#f2f3f5', muted:'#9aa0ab', acc:'#c8f13a', coral:'#ff6b5a', sky:'#5ac8ff', shadow:'rgba(0,0,0,0.42)'};
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+let W = 1, H = 1, DPR = 1;
+const mq = q => { try { return window.matchMedia(q).matches; } catch (e) { return false; } };
+const reduceMotion = mq('(prefers-reduced-motion: reduce)');
+const coarse = mq('(pointer: coarse)') || ('ontouchstart' in window);
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const rand = (a, b) => a + Math.random() * (b - a);
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const FT = s => '800 ' + Math.round(s) + 'px Unbounded, system-ui, sans-serif';
+const FS = s => '500 ' + Math.round(s) + 'px Geist, system-ui, sans-serif';
+
+/* Recorde */
+const KEY = 'karma:' + SLUG + ':recorde';
+function loadBest() { try { const v = parseInt(window.localStorage.getItem(KEY), 10); return isFinite(v) && v > 0 ? v : 0; } catch (e) { return 0; } }
+function saveBest(v) { try { window.localStorage.setItem(KEY, String(v)); } catch (e) {} }
+let best = loadBest();
+
+/* Fontes: espera antes do primeiro texto no canvas */
+let fontsReady = false;
+(function () {
+  let done = false;
+  const finish = () => { if (!done) { done = true; fontsReady = true; } };
+  setTimeout(finish, 1500);
+  try {
+    if (document.fonts && document.fonts.load) {
+      Promise.all([document.fonts.load('800 32px Unbounded'), document.fonts.load('500 16px Geist')])
+        .then(() => document.fonts.ready).then(finish, finish);
+    } else finish();
+  } catch (e) { finish(); }
+})();
+
+/* Estado */
+let state = 'menu';         // menu | play | paused | over (+ estados próprios do jogo)
+let stateT = 0;             // tempo no estado atual
+let newRecord = false;
+let lastScore = 0;
+function setState(s) { state = s; stateT = 0; }
+function finishGame(score) {
+  lastScore = score;
+  newRecord = score > best && score > 0;
+  if (newRecord) { best = score; saveBest(best); }
+  setState('over');
+}
+
+/* Tremor de tela */
+let shakeT = 0, shakeDur = 1, shakeMag = 0;
+function shake(mag, dur) {
+  if (reduceMotion) return;
+  if (mag >= shakeMag * (shakeT / shakeDur)) { shakeMag = mag; shakeDur = dur; shakeT = dur; }
+}
+
+/* Partículas (coordenadas do jogo) */
+const parts = [];
+function burst(x, y, n, color, speed, life, size, grav) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, s = speed * (0.35 + Math.random() * 0.65);
+    parts.push({x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: life * (0.6 + Math.random() * 0.4), max: life, size: size * (0.6 + Math.random() * 0.6), color, g: grav || 0});
+  }
+  if (parts.length > 400) parts.splice(0, parts.length - 400);
+}
+function updateParts(dt) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.life -= dt;
+    if (p.life <= 0) { parts.splice(i, 1); continue; }
+    p.vx *= Math.pow(0.04, dt); p.vy *= Math.pow(0.04, dt);
+    p.vy += p.g * dt;
+    p.x += p.vx * dt; p.y += p.vy * dt;
+  }
+}
+function drawParts(scale) {
+  for (const p of parts) {
+    const k = clamp(p.life / p.max, 0, 1);
+    const s = p.size * (0.4 + 0.6 * k) * (scale || 1);
+    ctx.globalAlpha = k;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* Desenho utilitário */
+function rrect(x, y, w, h, r) {
+  r = Math.max(0, Math.min(r, w / 2, h / 2));
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function txt(s, x, y, font, color, align, base) {
+  ctx.font = font; ctx.fillStyle = color;
+  ctx.textAlign = align || 'center'; ctx.textBaseline = base || 'middle';
+  ctx.fillText(s, x, y);
+}
+function fitFont(s, maxW, size, maker) {
+  ctx.font = maker(size);
+  const w = ctx.measureText(s).width;
+  return w > maxW ? Math.max(10, size * maxW / w) : size;
+}
+
+/* Botão de pausa (toque) */
+const pauseBtn = {x: 0, y: 0, s: 40};
+function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawPauseBtn() {
+  const b = pauseBtn;
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, b.s, b.s, 10); ctx.fill();
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(b.x + 0.5, b.y + 0.5, b.s - 1, b.s - 1, 10); ctx.stroke();
+  ctx.fillStyle = COL.muted;
+  ctx.fillRect(b.x + b.s * 0.36, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+  ctx.fillRect(b.x + b.s * 0.54, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+}
+
+/* Cartão de tela (início / pausa / fim) */
+function drawCard(o) {
+  ctx.fillStyle = 'rgba(13,14,18,' + (o.dim == null ? 0.72 : o.dim) + ')';
+  ctx.fillRect(0, 0, W, H);
+  const cw = Math.min(W - 32, 440);
+  const pad = cw < 340 ? 22 : 30;
+  const inner = cw - pad * 2;
+  let ts = fitFont(o.title, inner, cw < 340 ? 30 : 38, FT);
+  const rows = o.rows || [];
+  const lines = o.lines || [];
+  let h = pad + ts * 1.15;
+  if (o.kicker) h += 22;
+  if (o.big != null) h += 78;
+  h += rows.length * 34 + (rows.length ? 12 : 0);
+  h += lines.length * 24 + (lines.length ? 14 : 0);
+  if (o.cta) h += 62;
+  if (o.hint) h += 30;
+  h += pad - 6;
+  const cx = (W - cw) / 2;
+  const cy = Math.max(12, (H - h) / 2);
+  // sombra deslocada + superfície
+  ctx.fillStyle = COL.shadow; rrect(cx + 6, cy + 8, cw, h, 18); ctx.fill();
+  ctx.fillStyle = COL.surf; rrect(cx, cy, cw, h, 18); ctx.fill();
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(cx + 0.5, cy + 0.5, cw - 1, h - 1, 18); ctx.stroke();
+  let y = cy + pad;
+  if (o.kicker) { txt(o.kicker.toUpperCase(), W / 2, y + 6, FS(12), o.kickerColor || COL.acc); y += 22; }
+  txt(o.title, W / 2, y + ts * 0.55, FT(ts), COL.text); y += ts * 1.15;
+  if (o.big != null) {
+    txt(String(o.big), W / 2, y + 40, FT(fitFont(String(o.big), inner, 56, FT)), COL.acc); y += 78;
+  }
+  if (rows.length) {
+    y += 6;
+    for (const r of rows) {
+      ctx.strokeStyle = COL.line; ctx.beginPath(); ctx.moveTo(cx + pad, y + 0.5); ctx.lineTo(cx + cw - pad, y + 0.5); ctx.stroke();
+      txt(r[0], cx + pad, y + 18, FS(15), COL.muted, 'left');
+      txt(r[1], cx + cw - pad, y + 18, FT(16), r[2] || COL.text, 'right');
+      y += 34;
+    }
+    y += 6;
+  }
+  if (lines.length) {
+    y += 6;
+    for (const l of lines) { txt(l, W / 2, y + 10, FS(fitFont(l, inner, 15, FS)), COL.muted); y += 24; }
+    y += 8;
+  }
+  if (o.cta) {
+    const bw = Math.min(inner, 280), bh = 48, bx = (W - bw) / 2, by = y + 6;
+    const pulse = reduceMotion ? 0 : (Math.sin(perfNow * 4) * 0.5 + 0.5);
+    ctx.fillStyle = COL.shadow; rrect(bx + 3, by + 4, bw, bh, 12); ctx.fill();
+    ctx.fillStyle = COL.acc; rrect(bx, by - pulse * 1.5, bw, bh, 12); ctx.fill();
+    txt(o.cta, W / 2, by + bh / 2 - pulse * 1.5 + 1, FT(fitFont(o.cta, bw - 24, 15, FT)), COL.bg);
+    y += 62;
+  }
+  if (o.hint) { txt(o.hint, W / 2, y + 14, FS(fitFont(o.hint, inner, 13, FS)), COL.muted); y += 30; }
+}
+
+/* HUD: rótulo pequeno + valor */
+function hudStat(label, value, x, y, align, color) {
+  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
+}
+
+let perfNow = 0;
+
+/* ---------- Voo Livre ---------- */
+const LH = 640, GROUND = LH - 64, PR = 15, PW = 74;
+let LW = 400, sc = 1, ox = 0, oy = 0;
+let pl = {x: 120, y: 300, vy: 0, rot: 0, flap: 0};
+let pillars = [], speed = 170, score = 0, dist = 0, scroll = 0, deadT = 0, flashT = 0;
+let scarf = [];
+
+function computeLW() { LW = clamp(Math.round(LH * W / H), 360, 1400); }
+function fit() { sc = Math.min(W / LW, H / LH); ox = (W - LW * sc) / 2; oy = (H - LH * sc) / 2; }
+function gapFor(s) { return Math.max(138, 182 - s * 1.6); }
+function spacingFor(s) { return Math.max(230, 285 - s * 2); }
+function speedFor(s) { return Math.min(250, 172 + s * 3); }
+function playerX() { return Math.min(LW * 0.3, 240); }
+function addPillar(x) {
+  const gap = gapFor(score);
+  const minY = 70 + gap / 2, maxY = GROUND - 70 - gap / 2;
+  const prevY = pillars.length ? pillars[pillars.length - 1].gy : (GROUND / 2);
+  const gy = clamp(prevY + rand(-190, 190), minY, maxY);
+  pillars.push({x, gy, gap, passed: false});
+}
+function reset() {
+  computeLW(); fit();
+  pl.x = playerX(); pl.y = GROUND * 0.45; pl.vy = 0; pl.rot = 0; pl.flap = 0;
+  pillars = []; score = 0; speed = speedFor(0); parts.length = 0;
+  scarf = [];
+  let x = Math.max(LW * 0.95, pl.x + 380);
+  addPillar(x);
+  while (x < LW + 400) { x += spacingFor(0); addPillar(x); }
+}
+function flap() {
+  pl.vy = -470; pl.flap = 1;
+  burst(pl.x - 10, pl.y + 8, 3, COL.text, 90, 0.3, 4, 200);
+}
+function crash() {
+  setState('dying'); deadT = 0; flashT = 1;
+  shake(12, 0.4);
+  burst(pl.x, pl.y, 22, COL.acc, 360, 0.7, 7, 700);
+  pl.vy = Math.min(pl.vy, -200);
+}
+function circleRect(cx, cy, r, x, y, w, h) {
+  const nx = clamp(cx, x, x + w), ny = clamp(cy, y, y + h);
+  const dx = cx - nx, dy = cy - ny; return dx * dx + dy * dy < r * r;
+}
+
+const GAME = {
+  resize() { if (state === 'menu' || state === 'over') { computeLW(); if (state === 'menu') reset(); } fit(); },
+  start(x, y) { reset(); setState('play'); flap(); },
+  key(e, down) {
+    if (!down || e.repeat) return;
+    const k = e.key;
+    if (state === 'play' && (k === ' ' || e.code === 'Space' || k === 'ArrowUp' || k === 'w' || k === 'W' || k === 'Enter')) flap();
+  },
+  pointer(type) { if (type === 'down' && state === 'play') flap(); },
+  update(dt) {
+    pl.flap = Math.max(0, pl.flap - dt * 4);
+    flashT = Math.max(0, flashT - dt * 3);
+    if (state === 'menu') {
+      scroll += 60 * dt;
+      pl.y = GROUND * 0.45 + Math.sin(stateT * 2.4) * 12; pl.rot = Math.sin(stateT * 2.4 + 1) * 0.08;
+      pl.flap = (Math.sin(stateT * 9) * 0.5 + 0.5);
+      return;
+    }
+    if (state === 'play') {
+      speed = lerp(speed, speedFor(score), 1 - Math.exp(-1.5 * dt));
+      scroll += speed * dt;
+      pl.vy = Math.min(pl.vy + 1500 * dt, 720);
+      pl.y += pl.vy * dt;
+      if (pl.y < PR) { pl.y = PR; pl.vy = Math.max(pl.vy, 0); }
+      pl.rot = lerp(pl.rot, clamp(pl.vy / 650, -0.45, 1.1), 1 - Math.exp(-10 * dt));
+      for (const p of pillars) {
+        p.x -= speed * dt;
+        if (!p.passed && p.x + PW < pl.x - PR) {
+          p.passed = true; score++;
+          burst(p.x + PW + 6, p.gy, 10, COL.acc, 200, 0.45, 5, 0);
+        }
+        const top = p.gy - p.gap / 2, bot = p.gy + p.gap / 2;
+        if (circleRect(pl.x, pl.y, PR - 2, p.x, -100, PW, top + 100) || circleRect(pl.x, pl.y, PR - 2, p.x, bot, PW, GROUND - bot)) { crash(); break; }
+      }
+      if (pillars.length && pillars[0].x < -PW - 20) pillars.shift();
+      const lastP = pillars[pillars.length - 1];
+      if (lastP && lastP.x < LW + 300) addPillar(lastP.x + spacingFor(score));
+      if (pl.y + PR >= GROUND) { pl.y = GROUND - PR; crash(); }
+    } else if (state === 'dying') {
+      deadT += dt;
+      pl.vy = Math.min(pl.vy + 1700 * dt, 900);
+      pl.y = Math.min(pl.y + pl.vy * dt, GROUND - PR);
+      pl.rot = lerp(pl.rot, 1.5, 1 - Math.exp(-6 * dt));
+      if (deadT > 0.9) finishGame(score);
+    }
+    // cachecol
+    scarf.unshift([pl.x - Math.cos(pl.rot) * PR * 0.9, pl.y - Math.sin(pl.rot) * PR * 0.9 + 4]);
+    if (scarf.length > 7) scarf.pop();
+    for (const s of scarf) s[0] -= (state === 'play' || state === 'menu' ? speed : 40) * dt;
+  },
+  draw() {
+    ctx.save();
+    ctx.translate(ox, oy); ctx.scale(sc, sc);
+    const ext = oy / sc + 2;
+    ctx.beginPath(); ctx.rect(0, -ext, LW, LH + ext * 2); ctx.clip();
+    // céu e paralaxe
+    ctx.fillStyle = COL.bg; ctx.fillRect(0, -ext, LW, LH + ext * 2);
+    ctx.fillStyle = COL.line;
+    for (let i = 0; i < 40; i++) {
+      const x = ((i * 137.5 - scroll * 0.05) % (LW + 20) + LW + 20) % (LW + 20) - 10;
+      const y = (i * 71.3) % (GROUND * 0.6) + 20;
+      ctx.fillRect(x, y, 2, 2);
+    }
+    const hills = (fac, base, amp, color, wl) => {
+      ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(0, GROUND);
+      for (let x = 0; x <= LW + 20; x += 20) {
+        const w = (x + scroll * fac) / wl;
+        ctx.lineTo(x, base - (Math.sin(w) * 0.6 + Math.sin(w * 2.3 + 1) * 0.4) * amp - amp);
+      }
+      ctx.lineTo(LW, GROUND); ctx.closePath(); ctx.fill();
+    };
+    hills(0.15, GROUND - 40, 46, '#13151b', 140);
+    hills(0.35, GROUND - 6, 26, COL.surf, 90);
+    // pilares
+    for (const p of pillars) {
+      const top = p.gy - p.gap / 2, bot = p.gy + p.gap / 2;
+      const seg = (y, h, capAtBottom) => {
+        ctx.fillStyle = COL.shadow; ctx.fillRect(p.x + 7, y + 6, PW, h);
+        ctx.fillStyle = '#20242d'; ctx.fillRect(p.x, y, PW, h);
+        ctx.fillStyle = 'rgba(255,255,255,0.05)'; ctx.fillRect(p.x + 8, y, 10, h);
+        ctx.fillStyle = COL.line; ctx.fillRect(p.x + PW - 10, y, 10, h);
+        const cy = capAtBottom ? y + h - 22 : y;
+        ctx.fillStyle = COL.shadow; rrect(p.x - 6 + 6, cy + 6, PW + 12, 22, 6); ctx.fill();
+        ctx.fillStyle = '#2d323d'; rrect(p.x - 6, cy, PW + 12, 22, 6); ctx.fill();
+        ctx.fillStyle = COL.muted; ctx.fillRect(p.x - 6 + 8, cy + (capAtBottom ? 16 : 3), PW - 4, 3);
+      };
+      seg(-ext - 10, top + ext + 10, true);
+      seg(bot, GROUND - bot, false);
+    }
+    // chão
+    ctx.fillStyle = COL.surf; ctx.fillRect(0, GROUND, LW, LH - GROUND + ext);
+    ctx.fillStyle = COL.line; ctx.fillRect(0, GROUND, LW, 3);
+    ctx.fillStyle = COL.line;
+    for (let x = -((scroll) % 40); x < LW; x += 40) ctx.fillRect(x, GROUND + 18, 20, 4);
+    // cachecol (coral)
+    if (scarf.length > 2) {
+      ctx.strokeStyle = COL.coral; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(scarf[0][0], scarf[0][1]);
+      for (let i = 1; i < scarf.length; i++) ctx.lineTo(scarf[i][0], scarf[i][1] + Math.sin(perfNow * 14 + i) * i * 0.6);
+      ctx.stroke(); ctx.lineWidth = 1;
+    }
+    // personagem: bolinha lima com asa e óculos
+    ctx.save();
+    ctx.translate(pl.x, pl.y); ctx.rotate(pl.rot);
+    ctx.fillStyle = COL.shadow; ctx.beginPath(); ctx.arc(3, 5, PR, 0, 7); ctx.fill();
+    ctx.fillStyle = flashT > 0.5 ? COL.text : COL.acc; ctx.beginPath(); ctx.arc(0, 0, PR, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.arc(-5, -6, 4, 0, 7); ctx.fill();
+    // óculos de aviador
+    ctx.fillStyle = COL.bg; rrect(1, -8, 15, 9, 4); ctx.fill();
+    ctx.fillStyle = COL.sky; rrect(4, -6, 9, 5, 2); ctx.fill();
+    ctx.fillStyle = COL.bg; ctx.fillRect(-PR + 1, -5, 4, 3);
+    // asa
+    const wa = -0.6 + pl.flap * 1.4;
+    ctx.save(); ctx.translate(-4, 3); ctx.rotate(wa);
+    ctx.fillStyle = '#9fc12c'; ctx.beginPath(); ctx.ellipse(-6, 0, 10, 5, 0, 0, 7); ctx.fill();
+    ctx.restore();
+    ctx.restore();
+    drawParts();
+    if (fontsReady && state !== 'menu') {
+      const sz = 56;
+      txt(String(score), LW / 2 + 3, 64 + 4, FT(sz), COL.shadow);
+      txt(String(score), LW / 2, 64, FT(sz), COL.text);
+      if (state === 'play' && stateT < 1.6) {
+        ctx.globalAlpha = clamp(1.6 - stateT, 0, 1);
+        txt(coarse ? 'Toque para voar' : 'Espaço para voar', LW / 2, GROUND + 38, FS(16), COL.muted);
+        ctx.globalAlpha = 1;
+      }
+    }
+    ctx.restore();
+    // laterais fora do campo lógico
+    if (ox > 0) { ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, ox, H); ctx.fillRect(W - ox, 0, ox, H); }
+  },
+  drawUI() {
+    if (state === 'play' || state === 'dying') {
+      txt('RECORDE ' + Math.max(best, score), 14, 14, FS(12), COL.muted, 'left', 'top');
+    }
+    if (state === 'menu') {
+      drawCard({dim: 0.45, kicker: 'Karma Games', title: 'Voo Livre', lines: ['Voe entre as colunas sem encostar.', 'Cada passagem vale um ponto.'], cta: coarse ? 'Toque para começar' : 'Aperte Espaço para começar', hint: coarse ? 'Toque na tela para bater as asas' : 'Espaço, seta para cima ou clique · P pausa'});
+    } else if (state === 'over') {
+      drawCard({kicker: newRecord ? 'Novo recorde!' : 'Voo Livre', title: 'Fim de jogo', big: lastScore, rows: [['Recorde', String(best)]], cta: 'Jogar de novo', hint: coarse ? 'Toque para jogar de novo' : 'Enter ou Espaço para jogar de novo'});
+    }
+  }
+};
+
+/* ---------- Laço, redimensionamento e entrada ---------- */
+function resize() {
+  const r = cv.getBoundingClientRect();
+  W = Math.max(1, Math.round(r.width || window.innerWidth));
+  H = Math.max(1, Math.round(r.height || window.innerHeight));
+  DPR = Math.min(window.devicePixelRatio || 1, 3);
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  layoutPauseBtn();
+  GAME.resize();
+}
+window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+
+function canPause() { return state === 'play'; }
+function pause() { if (canPause()) { setState('paused'); if (GAME.onPause) GAME.onPause(); } }
+function resume() { if (state === 'paused') { state = 'play'; if (GAME.onResume) GAME.onResume(); } }
+
+document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+window.addEventListener('blur', () => pause());
+
+const GAME_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Spacebar'];
+window.addEventListener('keydown', e => {
+  const k = e.key;
+  if (GAME_KEYS.indexOf(k) >= 0 || e.code === 'Space') e.preventDefault();
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const isStart = k === ' ' || k === 'Enter' || e.code === 'Space';
+  if (k === 'p' || k === 'P' || k === 'Escape') {
+    if (state === 'paused') resume(); else pause();
+    return;
+  }
+  if (state === 'paused') { if (!e.repeat) resume(); return; }
+  if (state === 'menu') { if (isStart && fontsReady) GAME.start(); return; }
+  if (state === 'over') { if (isStart && stateT > 0.5 && !e.repeat) GAME.start(); return; }
+  if (GAME.key) GAME.key(e, true);
+}, {passive: false});
+window.addEventListener('keyup', e => { if (GAME.key) GAME.key(e, false); });
+
+function ptr(e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+cv.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  try { cv.focus({preventScroll: true}); } catch (err) {}
+  try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+  const [x, y] = ptr(e);
+  if (state === 'paused') { resume(); return; }
+  if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
+  if (state === 'over') { if (stateT > 0.5) GAME.start(x, y); return; }
+  if (state === 'play' && hitPause(x, y)) { pause(); return; }
+  if (GAME.pointer) GAME.pointer('down', x, y, e);
+}, {passive: false});
+cv.addEventListener('pointermove', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('move', x, y, e); });
+cv.addEventListener('pointerup', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('up', x, y, e); });
+cv.addEventListener('pointercancel', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('cancel', x, y, e); });
+cv.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('touchmove', e => e.preventDefault(), {passive: false});
+
+let last = 0;
+function frame(t) {
+  requestAnimationFrame(frame);
+  const now = t / 1000;
+  let dt = last ? now - last : 0;
+  last = now;
+  if (dt > 0.05) dt = 0.05;
+  if (dt < 0) dt = 0;
+  perfNow = now;
+  stateT += dt;
+  if (state !== 'paused') { GAME.update(dt); updateParts(dt); }
+  if (shakeT > 0 && state !== 'paused') shakeT = Math.max(0, shakeT - dt);
+
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  if (shakeT > 0) {
+    const k = shakeT / shakeDur, m = shakeMag * k * k;
+    ctx.translate(rand(-m, m), rand(-m, m));
+  }
+  GAME.draw();
+  ctx.restore();
+  if (fontsReady) {
+    GAME.drawUI();
+    if (state === 'play' || state === 'paused') drawPauseBtn();
+    if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma'});
+  }
+}
+resize();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
