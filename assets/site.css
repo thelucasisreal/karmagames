@@ -210,6 +210,21 @@ button, input { font: inherit; color: inherit; }
 .feitos h2 { margin-bottom: 6px; }
 .feitos p { margin: 0; color: var(--muted); max-width: 56ch; }
 
+/* Em breve */
+.secao-topo-espaco { margin-top: clamp(32px, 5vw, 56px); }
+.breve-lista { display: grid; gap: 20px; }
+.breve {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center;
+  gap: clamp(20px, 4vw, 48px); padding: clamp(12px, 1.6vw, 18px);
+  background: var(--surface); border: 1px solid var(--line); border-radius: calc(var(--r) + 6px);
+}
+.breve-capa { position: relative; aspect-ratio: 16 / 10; border-radius: var(--r); overflow: hidden; background: var(--raised); }
+.breve-capa img { width: 100%; height: 100%; object-fit: cover; }
+.breve-texto { padding-right: clamp(4px, 2vw, 24px); }
+.breve h3 { margin: 0; font: 800 clamp(28px, 3.4vw, 44px)/1.05 var(--display); letter-spacing: -0.04em; }
+.breve .card-meta { margin-top: 8px; }
+.breve p { margin: 16px 0 0; color: var(--muted); max-width: 42ch; font-size: 17px; }
+
 /* ---------- Rodapé ---------- */
 .rodape { border-top: 1px solid var(--line); margin-top: clamp(32px, 6vw, 72px); }
 .rodape .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px; color: var(--muted); font-size: 14px; }
@@ -272,6 +287,8 @@ button, input { font: inherit; color: inherit; }
   .card h3 { font-size: 15px; }
   .card-meta { font-size: 13px; }
   .feitos { grid-template-columns: 1fr; }
+  .breve { grid-template-columns: 1fr; }
+  .breve-texto { padding: 0 6px 8px; }
   .jogo-acoes .btn-fantasma:not(.btn-icone) { display: none; }
   .palco-wrap { padding-block: 12px 0; }
   .palco { height: calc(100dvh - 68px - 24px); min-height: 0; }

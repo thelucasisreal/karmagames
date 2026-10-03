@@ -1,7 +1,9 @@
 (function () {
   "use strict";
 
-  const JOGOS = (window.KARMA_JOGOS || []).filter((j) => j && j.slug && j.titulo);
+  const TODOS = (window.KARMA_JOGOS || []).filter((j) => j && j.slug && j.titulo);
+  const JOGOS = TODOS.filter((j) => !j.emBreve);
+  const EM_BREVE = TODOS.filter((j) => j.emBreve);
   const ICONES = "assets/icones.svg";
   const CHAVE_RECENTES = "karma:recentes";
   const DIAS_NOVO = 30;
@@ -142,17 +144,38 @@
     }
     desenharGrade();
 
-    // Feitos aqui
+    // Feitos aqui (jogos próprios) e Em breve
     const autorais = JOGOS.filter((j) => j.autoral);
-    $("#feitos").innerHTML = autorais.length
-      ? `<div class="secao-topo"><h2 id="titulo-feitos">Feitos aqui</h2></div><div class="grade">${autorais.map(card).join("")}</div>`
-      : `<div class="feitos">
+    let html = "";
+    if (autorais.length) {
+      html += `<div class="secao-topo"><h2 id="titulo-feitos">Feitos aqui</h2></div><div class="grade">${autorais.map(card).join("")}</div>`;
+    }
+    if (EM_BREVE.length) {
+      html += `<div class="secao-topo${autorais.length ? " secao-topo-espaco" : ""}"><h2 ${autorais.length ? "" : 'id="titulo-feitos"'}>Em breve</h2></div>
+        <div class="breve-lista">${EM_BREVE.map(cardEmBreve).join("")}</div>`;
+    }
+    if (!html) {
+      html = `<div class="feitos">
            <span class="feitos-simbolo">${icone("game-controller")}</span>
            <div>
              <h2 id="titulo-feitos">Jogos feitos aqui, em breve</h2>
              <p>Estamos criando jogos próprios da Karma. Quando ficarem prontos, eles aparecem primeiro nesta seção.</p>
            </div>
          </div>`;
+    }
+    $("#feitos").innerHTML = html;
+  }
+
+  function cardEmBreve(j) {
+    return `
+      <article class="breve">
+        <div class="breve-capa">${imgCapa(j)}</div>
+        <div class="breve-texto">
+          <h3>${esc(j.titulo)}</h3>
+          <div class="card-meta">${esc(j.categoria || "Jogo")}${j.autoral ? " · Feito aqui na Karma" : ""}</div>
+          <p>${esc(j.descricao || "")}</p>
+        </div>
+      </article>`;
   }
 
   // ---------- página do jogo ----------

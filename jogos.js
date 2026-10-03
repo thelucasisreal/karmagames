@@ -16,9 +16,19 @@
     autoral    opcional: true para jogos feitos por você. Eles aparecem na seção "Feitos aqui"
     url        opcional: link de jogo hospedado fora (abre no iframe). Sem url, usa jogos/<slug>/
     destaque   opcional: true coloca o jogo no topo da página inicial
+    emBreve    opcional: true mostra o jogo na seção "Em breve", sem botão de jogar
     adicionado data no formato AAAA-MM-DD (jogos dos últimos 30 dias ganham selo "Novo")
 */
 window.KARMA_JOGOS = [
+  {
+    slug: "pitch",
+    titulo: "Pitch",
+    descricao: "Futebol 3D no navegador. Você é o camisa 10 no modo carreira, do campo de várzea até a glória.",
+    categoria: "Esporte",
+    autor: "Karma Games",
+    autoral: true,
+    emBreve: true,
+  },
   {
     slug: "voo-livre",
     titulo: "Voo Livre",
