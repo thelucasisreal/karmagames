@@ -109,8 +109,10 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
       <button class="btn" type="button" data-mode="2p">2 jogadores</button>
     </div>
     <div class="seg" id="diffs" role="group" aria-label="Dificuldade">
-      <button class="btn" type="button" data-diff="facil">Fácil</button>
-      <button class="btn" type="button" data-diff="dificil">Difícil</button>
+      <button class="btn" type="button" data-diff="easy">Easy</button>
+      <button class="btn" type="button" data-diff="medium">Medium</button>
+      <button class="btn" type="button" data-diff="hard">Hard</button>
+      <button class="btn" type="button" data-diff="impossible">Impossible</button>
     </div>
   </div>
   <div class="score">
@@ -394,7 +396,7 @@ function Engine(){
     pairs.sort(function(a,b){return b.s-a.s});
     var bestMove=pairs[0].m;
     try{
-      for(var depth=1;depth<=64;depth++){
+      for(var depth=1;depth<=(o.depth||64);depth++){
         var alpha=-INF,cur=0,curS=-INF;
         for(i=0;i<pairs.length;i++){m=pairs[i].m;make(m);s=-search(depth-1,-INF,-alpha,1);unmake(m);
           pairs[i].s=s;if(s>curS){curS=s;cur=m;if(s>alpha)alpha=s;if(i>0)bestMove=m}}
@@ -418,7 +420,8 @@ var WH=8,BL=16;
 var $=function(id){return document.getElementById(id)};
 var boardEl=$("board"),grid=$("grid"),pcsEl=$("pcs"),wrap=$("wrap"),statusEl=$("status"),ov=$("ov"),promoEl=$("promo"),promoRow=$("promoRow");
 var mode=store.get("modo","cpu");if(mode!=="cpu"&&mode!=="2p")mode="cpu";
-var diff=store.get("dificuldade","facil");if(diff!=="facil"&&diff!=="dificil")diff="facil";
+var DIFFS=["easy","medium","hard","impossible"];
+var diff=store.get("dificuldade","easy");if(diff==="facil")diff="easy";if(diff==="dificil")diff="hard";if(DIFFS.indexOf(diff)<0)diff="easy";
 var G=Engine(),history=[],legalList=[],sel=-1,lastMove=0,over=false,busy=false,token=0,score,drag=null,focusIdx=52,pieceEls={},promoPending=null,captured={8:[],16:[]};
 
 /* pecas em SVG (viewBox 45x45) */
@@ -463,8 +466,9 @@ try{
 }catch(e){worker=null}
 function runLocal(job){setTimeout(function(){localAI=localAI||Engine();localAI.load(START);job.moves.forEach(function(m){localAI.make(m)});job.cb(localAI.think(job))},30)}
 function requestThink(cb){
-  var job={id:++jobId,moves:history.slice(),easy:diff==="facil",time:1000,cb:cb};
-  if(worker){pending=job;try{worker.postMessage({id:job.id,moves:job.moves,easy:job.easy,time:job.time})}catch(e){pending=null;worker=null;runLocal(job)}}
+  var AJ={easy:{easy:true,time:1000},medium:{time:500,depth:2},hard:{time:1000},impossible:{time:4000}}[diff];
+  var job={id:++jobId,moves:history.slice(),easy:!!AJ.easy,time:AJ.time,depth:AJ.depth||0,cb:cb};
+  if(worker){pending=job;try{worker.postMessage({id:job.id,moves:job.moves,easy:job.easy,time:job.time,depth:job.depth})}catch(e){pending=null;worker=null;runLocal(job)}}
   else runLocal(job);
 }
 
@@ -569,7 +573,7 @@ function aiTurn(){
     requestThink(function(m){
       if(my!==token||over)return;
       if(legalList.indexOf(m)<0)m=legalList[Math.floor(Math.random()*legalList.length)];
-      var wait=Math.max(0,(diff==="facil"?650:450)-(Date.now()-t0));
+      var wait=Math.max(0,(diff==="easy"?650:450)-(Date.now()-t0));
       setTimeout(function(){if(my!==token||over)return;busy=false;commit(m,true)},wait);
     });
   },20)});
@@ -590,7 +594,7 @@ function checkEnd(){
   else{
     if(res.w==="x")score.x++;else score.o++;
     if(mode==="2p"){text=res.w==="x"?"As brancas venceram. Boa partida!":"As pretas venceram. Boa partida!";statusEl.textContent="Xeque-mate — "+(res.w==="x"?"brancas":"pretas")+" vencem."}
-    else if(res.w==="x"){text=diff==="dificil"?"Você venceu o computador no Difícil. Impressionante!":"Você venceu! Que tal tentar o Difícil?";statusEl.textContent="Xeque-mate — você venceu!"}
+    else if(res.w==="x"){text=diff==="impossible"?"Você venceu no Impossible! Isso é coisa de mestre.":diff==="hard"?"Você venceu no Hard. Impressionante! Agora tenta o Impossible.":"Você venceu! Que tal tentar um modo mais difícil?";statusEl.textContent="Xeque-mate — você venceu!"}
     else{text="O computador venceu. Bora a revanche?";statusEl.textContent="Xeque-mate — o computador venceu."}
   }
   statusEl.classList.remove("chk");

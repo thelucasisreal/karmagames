@@ -89,8 +89,10 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
       <button class="btn" type="button" data-mode="2p">2 jogadores</button>
     </div>
     <div class="seg" id="diffs" role="group" aria-label="Dificuldade">
-      <button class="btn" type="button" data-diff="facil">Fácil</button>
-      <button class="btn" type="button" data-diff="dificil">Difícil</button>
+      <button class="btn" type="button" data-diff="easy">Easy</button>
+      <button class="btn" type="button" data-diff="medium">Medium</button>
+      <button class="btn" type="button" data-diff="hard">Hard</button>
+      <button class="btn" type="button" data-diff="impossible">Impossible</button>
     </div>
   </div>
   <div class="score">
@@ -223,7 +225,8 @@ function bestMove(bd,color,ms,budget,maxDepth){
 var $=function(id){return document.getElementById(id)};
 var boardEl=$("board"),pcsEl=$("pcs"),wrap=$("wrap"),statusEl=$("status"),ov=$("ov");
 var mode=store.get("modo","cpu");if(mode!=="cpu"&&mode!=="2p")mode="cpu";
-var diff=store.get("dificuldade","facil");if(diff!=="facil"&&diff!=="dificil")diff="facil";
+var DIFFS=["easy","medium","hard","impossible"];
+var diff=store.get("dificuldade","easy");if(diff==="facil")diff="easy";if(diff==="dificil")diff="hard";if(DIFFS.indexOf(diff)<0)diff="easy";
 var bd,turn,legal=[],sel=-1,prefix=[],over=false,busy=false,last=null,quiet=0,score,aiTimer=null,animTimer=null,focusSq=57;
 var cells=[],pcs=[],REDUCE=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches,STEP=REDUCE?40:220;
 var CROWN='<svg viewBox="0 0 24 24" aria-hidden="true"><path stroke-width="1.6" stroke-linejoin="round" d="M3 18 2 7l5.5 4.5L12 4l4.5 7.5L22 7l-1 11z"/></svg>';
@@ -357,13 +360,15 @@ function aiTurn(){
   aiTimer=setTimeout(function(){
     if(over)return;
     var m;
-    if(diff==="facil"){
+    if(diff==="easy"){
       // aleatório, com leve preferência por lances que capturam (ou deixam capturar) mais
       var r=Math.random();
       if(r<.3)m=bestMove(bd,-1,legal,120,2);
       else if(r<.5)m=pickGreedy();
       else m=legal[Math.floor(Math.random()*legal.length)];
-    }else m=bestMove(bd,-1,legal,750,12);
+    }else if(diff==="medium")m=bestMove(bd,-1,legal,300,3);
+    else if(diff==="hard")m=bestMove(bd,-1,legal,750,12);
+    else m=bestMove(bd,-1,legal,2200,40);
     commit(m,0);
   },400);
 }
@@ -379,7 +384,7 @@ function finish(w){
   else{
     if(w===1)score.w++;else score.b++;
     if(mode==="2p"){title=w===1?"As brancas venceram!":"As pretas venceram!";text="As "+(w===1?"pretas ":"brancas ")+reason+"."}
-    else if(w===1){title="Você venceu!";text=diff==="dificil"?"Impressionante — no Difícil isso é raro.":"Mandou bem. Tente o modo Difícil."}
+    else if(w===1){title="Você venceu!";text=diff==="impossible"?"Você venceu no Impossible! Isso é coisa de mestre.":diff==="hard"?"Impressionante — no Hard isso é raro. Agora tenta o Impossible.":"Mandou bem. Tente um modo mais difícil."}
     else{title="O computador venceu";text="Suas peças "+reason+". Bora a revanche?"}
     statusEl.textContent=mode==="2p"?(w===1?"Brancas":"Pretas")+" venceram.":(w===1?"Você venceu!":"Computador venceu.");
   }
