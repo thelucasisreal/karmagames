@@ -423,6 +423,8 @@ body.has-dock .app{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
 .tone .tl{font-size:11.5px;font-weight:700;color:var(--muted)}
 .tone.t0{border-left:4px solid #ff5ac8}.tone.t1{border-left:4px solid #5ac8ff}.tone.t2{border-left:4px solid #ffc23a}
 .zhead{display:flex;align-items:center;gap:10px}
+.xp{position:relative}.crushstar{position:absolute;top:8px;right:10px;font-size:18px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+[data-cid]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .zhead .av{width:40px;height:40px;font-size:20px}
 /* Explorar */
 .xg{display:flex;flex-direction:column;gap:12px}
@@ -1612,7 +1614,12 @@ var CFG=store.get("cfg",null)||{};if(CFG.real==null)CFG.real=true;if(CFG.filtro=
 function saveCfg(){store.set("cfg",CFG)}
 function monDefaults(o){return Object.assign({fStart:0,$start:0,posts:0,polem:false,trendUsed:false,toxicUsed:false,gain:0,viral:0,detox:false,contractPosts:0,best:null,saveMoney:0,ings:0,lines:[],
   used:0,lives:0,likes:0,mercado:false,energ:false,ate:{},fotos:{},anyLate:false,paid:[]},o||{})}
+function syncDynCrush(R){
+  for(var i=ZC.length-1;i>=0;i--)if(ZC[i].dyn)ZC.splice(i,1);
+  (R.dynCrush||[]).forEach(function(id){var n=null;NPCS.forEach(function(x){if(x.id===id)n=x});if(n&&!zcDef(id))ZC.push({id:n.id,n:"@"+n.h,e:n.e,c:n.c,type:"crush",deb:1,g:"x",pe:n.e,dyn:1})});
+}
 function migrate(R,fresh){
+  syncDynCrush(R);
   if(R.fome==null)R.fome=fresh?80:75;if(R.sede==null)R.sede=fresh?80:75;
   if(R.st.lea==null)R.st.lea=30+(R.p&&R.p.pron==="elu"?10:0);
   R.bills=R.bills||{};BILLS.forEach(function(b){if(!R.bills[b.k])R.bills[b.k]={amt:0,late:0,rel:0,cur:0}});
@@ -1782,8 +1789,8 @@ function zcDef(id){for(var i=0;i<ZC.length;i++)if(ZC[i].id===id)return ZC[i];ret
 function zapBrand(){var o=S.zap.marca!=null?offerById(S.zap.marca):null;return o&&o.kind==="publi"?o:null}
 function zapName(id){if(id==="marca"){var o=zapBrand();return o?o.b.n:"Marca"}return zcDef(id).n}
 function crushInt(){var p=S&&S.p||PROF||{};return p.int||({ela:"homens",ele:"mulheres"}[p.pron]||"todos")}
-function crushOn(d){var i=crushInt();return i==="todos"||(i==="homens"&&d.g==="m")||(i==="mulheres"&&d.g==="f")}
-function zapVisible(id){var zd=zcDef(id);if(zd&&zd.type==="crush"&&!crushOn(zd))return false;if(id==="jorge")return rentValue()>0||S.bills.aluguel.amt>0;if(id==="marca")return !!zapBrand();return true}
+function crushOn(d){if(d.dyn)return false;var i=crushInt();return i==="todos"||(i==="homens"&&d.g==="m")||(i==="mulheres"&&d.g==="f")}
+function zapVisible(id){var zd=zcDef(id);if(zd&&zd.type==="crush"&&!crushOn(zd)&&S.crushFav!==id&&S.date!==id&&(S.crushKnown||[]).indexOf(id)<0&&!(S.zap.c[id]&&S.zap.c[id].st>=1))return false;if(id==="jorge")return rentValue()>0||S.bills.aluguel.amt>0;if(id==="marca")return !!zapBrand();return true}
 function zapPush(id,m){var C=S.zap.c[id];if(!C)return;C.th.push(m);if(C.th.length>40)C.th.splice(0,C.th.length-40);if(!m.me&&!m.sys)C.un++;C.ts=++S.zap.ts}
 function zapUnread(){var n=0;ZC.forEach(function(c){if(zapVisible(c.id))n+=S.zap.c[c.id].un});return n}
 var NUDGE=["??","oi?","tá viv{a|o|e}? 👀","🎤 Áudio 0:09","visualizou né","{nome}??","oi sumid{a|o|e}"];
@@ -1826,6 +1833,9 @@ var ZT={
   ["Oi {nome}! Aqui é a Carol, da {marca}. Viu nossa proposta no MailGrid? 📎",["Vi sim, Carol!! Fiquei super feliz 💖","Vi, sim. Podemos conversar sobre entregáveis e prazo?","Vi, mas li só até o valor"]],
   ["Bom dia! Nossa diretora AMOU seu último post. Bora fazer algo juntos? ✨",["Que fofa! Amei saber disso 🥹","Obrigad{a|o|e}! Envio uma proposta de pauta hoje.","Ela amou o post ou o alcance?"]],
   ["Oi! Só confirmando: o briefing é {posts} post(s) com #publi, combinado?",["Combinadíssimo!! 🥰","Confirmo. Envio as prévias para aprovação 48 h antes.","Combinado, mas o #publi vai em fonte 2"]]],
+ crush0gen:[["oi 👀 vi que você me segue há um tempo… tudo bem?",["Tudo ótimo, melhor agora que você mandou msg 😳","Tudo bem, obrigad{a|o|e}.","Tô bem, e você que demorou pra perceber? 😏"]],
+    ["seu último post ficou muito bom, sério",["Vindo de você, vale o dobro 🥹","Agradeço o feedback.","Eu sei 😎 brincadeira, valeu!"]],
+    ["a gente devia fazer uma collab… ou um café ☕",["Café primeiro, collab depois 😊","Podemos alinhar uma agenda.","Café só se você pagar 😏"]]],
  crush0:{theo:[["vi seu story. aquele café era aesthetic ou só bagunça mesmo? 👀",["Era bagunça, mas fico feliz que você reparou 😊","Obrigad{a|o|e} pela visualização.","Era bagunça premium, você não entenderia 😏"]],
     ["você tem cara de quem cancela rolê em cima da hora",["Só cancelo rolê ruim. Com você eu não cancelaria 😳","Depende da agenda.","E você tem cara de quem pula o treino de braço"]],
     ["saudades 👀 (de te ver no meu feed, calma)",["Também senti, juro 🙈","Agradeço o acompanhamento.","Calma você, que eu nem postei hoje"]]],
@@ -1879,7 +1889,7 @@ function zapPrompt(id){
   else if(id==="pai")L=ZT.pai;
   else if(id==="marca")L=ZT.marca;
   else if(id==="jorge")L=billLate("aluguel")>=1?ZT.jorge_late:ZT.jorge;
-  else if(d.type==="crush")L=S.date&&S.date!==id?ZT.crushTaken:C.st>=2?ZT.crush2:C.st===1?ZT.crush1:ZT.crush0[id];
+  else if(d.type==="crush")L=S.date&&S.date!==id?ZT.crushTaken:C.st>=2?ZT.crush2:C.st===1?ZT.crush1:(ZT.crush0[id]||ZT.crush0gen);
   var used=C.used||[],pool=L.filter(function(x){return used.indexOf(x[0])<0});if(!pool.length){pool=L;C.used=[]}
   var P=pick(pool);(C.used=C.used||[]).push(P[0]);if(C.used.length>8)C.used.shift();
   var o=id==="marca"?zapBrand():null;
@@ -2888,9 +2898,9 @@ VIEWS.zap=function(){
   var list=ZC.filter(function(c){return zapVisible(c.id)}).sort(function(a,b){return (b.id===S.crushFav)-(a.id===S.crushFav)||S.zap.c[b.id].ts-S.zap.c[a.id].ts});
   return back()+'<div class="zap-h"><span class="emo" style="font-size:22px">💬</span><b>ZapChat</b><span class="small" style="margin-left:auto;opacity:.85">'+zapUnread()+' não lidas</span></div>'+
    '<div class="zl">'+list.map(function(c){var C=S.zap.c[c.id],last=C.th[C.th.length-1];
-     return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+(c.id===S.crushFav?" ⭐":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
+     return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'" data-cid="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+(c.id===S.crushFav?" ⭐":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
        '<div class="zr">'+(C.un?'<span class="ur" aria-label="'+C.un+' não lidas">'+C.un+'</span>':(C.pend?'<span>responder</span>':'<span>'+esc(relLabel(c.id))+'</span>'))+'<span class="afe" title="Afeto '+relOf(c.id)+'"><i style="width:'+relOf(c.id)+'%"></i></span></div></button>'}).join("")+'</div>'+
-   '<p class="rm-note">⭐ Escolha seu crush principal dentro da conversa. 💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
+   '<p class="rm-note">⭐ Clique com o <b>botão direito</b> (ou segure o dedo) em qualquer pessoa para marcar como seu crush. 💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
 };
 function zapConv(id){
   var d=zcDef(id),C=S.zap.c[id];
@@ -2907,9 +2917,9 @@ function zapConv(id){
 
 // ---- Explorar ----
 VIEWS.explore=function(){
-  var list=NPCS.filter(function(n){var zd=zcDef(n.id);return !S.npc[n.id].gone&&!(n.role==="crush"&&zd&&!crushOn(zd))}),gone=NPCS.length-list.length;
+  var list=NPCS.filter(function(n){return !S.npc[n.id].gone}),gone=NPCS.length-list.length;
   return back()+'<div class="row"><h2 class="grow">Explorar</h2><span class="chip">❤️ '+(10-S.mon.likes)+'/10 curtidas</span></div>'+
-   '<p class="small muted">Creators com posts novos todo mês. Collab e denúncia gastam ⚡1. Comentar e curtir são de graça.</p>'+
+   '<p class="small muted">⭐ Botão direito (ou segurar o dedo) num perfil marca como seu crush. Creators com posts novos todo mês. Collab e denúncia gastam ⚡1. Comentar e curtir são de graça.</p>'+
    '<div class="xg">'+list.map(npcCard).join("")+'</div>'+(gone?'<p class="rm-note">🚩 '+gone+' conta'+(gone>1?"s":"")+' suspensa'+(gone>1?"s":"")+' por golpe graças a você.</p>':"");
 };
 function npcCard(n){
@@ -2921,7 +2931,7 @@ function npcCard(n){
     '<button class="btn sm" type="button" data-act="npc" data-id="'+id+'" data-a="collab"'+(N.co||S.en<1?" disabled":"")+'>📩 Collab ⚡1</button>'+
     '<button class="btn sm" type="button" data-act="npcHate" data-id="'+id+'"'+(N.ht?" disabled":"")+'>😈 Hate (fake)</button>'+
     '<button class="btn sm" type="button" data-act="npc" data-id="'+id+'" data-a="report"'+(N.rp||S.en<1?" disabled":"")+'>🚩 Denunciar ⚡1</button>';
-  return '<article class="xp" id="np-'+id+'"><div class="ph">'+avHTML({e:n.e,c:n.c})+'<div style="min-width:0"><b>'+esc(n.h)+'</b><small>'+fmtN(N.f)+' seguidores</small></div><span class="role '+rc+'">'+esc(n.lbl)+'</span></div>'+
+  return '<article class="xp" id="np-'+id+'" data-cid="'+id+'">'+(S.crushFav===id?'<span class="crushstar" title="Seu crush">⭐</span>':'')+'<div class="ph">'+avHTML({e:n.e,c:n.c})+'<div style="min-width:0"><b>'+esc(n.h)+'</b><small>'+fmtN(N.f)+' seguidores</small></div><span class="role '+rc+'">'+esc(n.lbl)+'</span></div>'+
    scene(p[0],p[1],"feed")+'<div class="pc" style="-webkit-line-clamp:3"><b>'+esc(n.h)+'</b>'+hl(esc(p[2]))+'</div>'+
    '<div class="xmeta"><span>💗 Afeto '+relOf(id)+'</span>'+(N.inv?'<b style="color:#9d174d">· 📩 te chamou pra collab!</b>':"")+'</div>'+
    (N.res?'<div class="xres">'+esc(N.res.txt)+dchips(N.res.d,true)+'</div>':"")+'<div class="xa">'+acts+'</div></article>';
@@ -3528,7 +3538,7 @@ document.addEventListener("click",function(e){
     case "zapBack":go("zap",{});break;
     case "pull":if(zapPull(UI.d.c)){sfx("notif");UI.d={c:UI.d.c};rerender();scroller.scrollTop=scroller.scrollHeight;save()}break;
     case "tone":zapReplyUI(+t.dataset.i);break;
-    case "crushFav":var cf=UI.d.c;S.crushFav=S.crushFav===cf?null:cf;sfx("tap");if(S.crushFav)toast({app:"P",t:"⭐ Crush escolhido",x:zcDef(cf).n+" agora é seu crush principal: manda mais mensagem e o afeto sobe mais rápido."});rerender();save();break;
+    case "crushFav":markCrush(UI.d.c);break;
     case "terminar":dialog("💔 Terminar?","<p>"+T(S.zap.c[UI.d.c].st===3?"O namoro é oficial: o término vai ser público (🔥 +15, 🧠 −20).":"Vai doer, mas vai ser em silêncio (🧠 −8).")+"</p>",'<button class="btn ghost" type="button" data-act="close">Cancelar</button><button class="btn primary" type="button" data-act="terminarOk">Terminar</button>');break;
     case "terminarOk":closeDlg();var bm=breakup(UI.d.c);S.zap.c[UI.d.c].th.push({sys:1,t:bm});sfx("bad");rerender();save();break;
     case "npc":var nr=npcAct(t.dataset.id,t.dataset.a,t.dataset.t!=null?+t.dataset.t:null);UI.d.com=null;if(nr)sfx(nr.ok?"good":"bad");else toast({app:"P",t:"Photogram",x:S.mon.likes>=10?"Limite de 10 curtidas no mês.":"Sem energia pra isso agora."});rerender();save();break;
@@ -3566,6 +3576,27 @@ function finishPost(type,ed){
   var pt=NICHOS[S.niche].posts[res.type];res.cap=tpl(pick(pt.cap))+(res.trend?" "+res.trend:"")+(casal?" 💑 com "+zcDef(S.date).n:"");res.bcap=tpl(pick(pt.b.cap));res.loc=pick(LOCS);res.trendObj=UI.d.tk?trendById(S.trends[UI.d.tk].id):null;
   sfx(res.viral?"viral":res.flop?"bad":"good");UI.v="post";UI.d={res:res};rerender();scroller.scrollTop=0;save();
 }
+function markCrush(id){
+  if(!S||!id)return;
+  var no={mae:"Crush na própria mãe? Melhor não 😳",pai:"Crush no seu pai?? Não, né 😂",jorge:"Crush no Seu Jorge? Ele só quer o aluguel 🏠",marca:"Crush numa marca? Isso se chama publi 💼",bia:"A Bia é sua melhor amiga… crush na amiga fica pra próxima atualização 👀"}[id];
+  if(no){toast({app:"P",t:"⭐ Não rolou",x:no});sfx("bad");return}
+  var d=zcDef(id),n=null;NPCS.forEach(function(x){if(x.id===id)n=x});
+  if(!d&&n){S.dynCrush=S.dynCrush||[];if(S.dynCrush.indexOf(id)<0)S.dynCrush.push(id);syncDynCrush(S);d=zcDef(id);
+    if(!S.zap.c[id])S.zap.c[id]={th:[],pend:null,un:0,seenM:0,st:0,stM:0,ts:0}}
+  if(!d||d.type!=="crush"){toast({app:"P",t:"⭐",x:"Não dá pra marcar essa pessoa."});return}
+  if(S.crushFav===id){S.crushFav=null;toast({app:"P",t:"☆ Crush desmarcado",x:d.n+" não é mais seu crush principal."});sfx("tap")}
+  else{S.crushFav=id;S.crushKnown=S.crushKnown||[];if(S.crushKnown.indexOf(id)<0)S.crushKnown.push(id);var C=S.zap.c[id];if(!C.pend&&!C.th.length){var P=zapPrompt(id);C.pend=P;zapPush(id,{t:P.t,au:P.au})}
+    toast({app:"P",t:"⭐ Crush marcado!",x:d.n+" agora é seu crush. Conversa no 💬 ZapChat."});sfx("good")}
+  rerender();save();
+}
+document.addEventListener("contextmenu",function(e){var el=e.target.closest&&e.target.closest("[data-cid]");if(!el||!S)return;e.preventDefault();markCrush(el.dataset.cid)});
+(function(){var tm=null,stop=0,sx=0,sy=0;
+  document.addEventListener("touchstart",function(e){var el=e.target.closest&&e.target.closest("[data-cid]");if(!el||!S)return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;
+    tm=setTimeout(function(){tm=null;stop=Date.now();if(navigator.vibrate)try{navigator.vibrate(30)}catch(x){}markCrush(el.dataset.cid)},550)},{passive:true});
+  document.addEventListener("touchmove",function(e){if(!tm)return;var t=e.touches[0];if(Math.abs(t.clientX-sx)>10||Math.abs(t.clientY-sy)>10){clearTimeout(tm);tm=null}},{passive:true});
+  document.addEventListener("touchend",function(){if(tm){clearTimeout(tm);tm=null}});
+  document.addEventListener("click",function(e){if(Date.now()-stop<600){e.preventDefault();e.stopPropagation()}},true);
+})();
 function zapSendUI(){var inp=$("zapTxt"),id=UI.d.c;if(!inp||!id)return;var r=zapFree(id,inp.value);if(!r){inp.focus();return}
   sfx(r.cls==="bad"?"bad":r.cls==="good"?"good":"notif");UI.d={c:id,zres:r};rerender();scroller.scrollTop=scroller.scrollHeight;save();
   var ni=$("zapTxt");if(ni&&!matchMedia("(pointer:coarse)").matches)ni.focus()}
