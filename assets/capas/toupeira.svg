@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3fb8ff"/><stop offset="1" stop-color="#b9f0ff"/>
+    </linearGradient>
+    <linearGradient id="grama" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fe35c"/><stop offset="1" stop-color="#3fa632"/>
+    </linearGradient>
+    <radialGradient id="brilho" cx="0.5" cy="0.45" r="0.5">
+      <stop offset="0" stop-color="#fff7b0" stop-opacity="0.9"/><stop offset="1" stop-color="#fff7b0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#ceu)"/>
+  <g fill="#ffffff" opacity="0.9">
+    <circle cx="110" cy="80" r="26"/><circle cx="140" cy="68" r="32"/><circle cx="172" cy="84" r="24"/>
+    <circle cx="640" cy="60" r="22"/><circle cx="668" cy="50" r="28"/><circle cx="698" cy="64" r="20"/>
+  </g>
+  <path d="M0 200 Q200 170 400 195 T800 190 V500 H0Z" fill="url(#grama)"/>
+  <circle cx="400" cy="270" r="230" fill="url(#brilho)"/>
+  <g transform="translate(0 38)">
+  <!-- buraco -->
+  <ellipse cx="400" cy="405" rx="190" ry="58" fill="#8a5a32"/>
+  <ellipse cx="400" cy="395" rx="175" ry="50" fill="#a8743f"/>
+  <ellipse cx="400" cy="390" rx="145" ry="38" fill="#2a170d"/>
+  <!-- toupeira -->
+  <g stroke="#2b1747" stroke-width="7" stroke-linejoin="round">
+    <path d="M285 392 V250 A115 115 0 0 1 515 250 V392 Z" fill="#a0683f"/>
+    <circle cx="300" cy="175" r="26" fill="#7a4a2a"/>
+    <circle cx="500" cy="175" r="26" fill="#7a4a2a"/>
+  </g>
+  <path d="M291 386 V252 A109 109 0 0 1 509 252 V386 Z" fill="#a0683f"/>
+  <ellipse cx="400" cy="330" rx="72" ry="60" fill="#e8c39a"/>
+  <!-- olhos -->
+  <circle cx="355" cy="240" r="30" fill="#fff" stroke="#2b1747" stroke-width="5"/>
+  <circle cx="445" cy="240" r="30" fill="#fff" stroke="#2b1747" stroke-width="5"/>
+  <circle cx="362" cy="246" r="18" fill="#2b1747"/><circle cx="452" cy="246" r="18" fill="#2b1747"/>
+  <circle cx="355" cy="238" r="7" fill="#fff"/><circle cx="445" cy="238" r="7" fill="#fff"/>
+  <ellipse cx="318" cy="290" rx="20" ry="12" fill="#ff7fa8" opacity="0.7"/>
+  <ellipse cx="482" cy="290" rx="20" ry="12" fill="#ff7fa8" opacity="0.7"/>
+  <ellipse cx="400" cy="292" rx="40" ry="26" fill="#e8c39a"/>
+  <ellipse cx="400" cy="280" rx="17" ry="12" fill="#ff5a8a" stroke="#2b1747" stroke-width="3"/>
+  <path d="M378 300 Q400 318 422 300" fill="none" stroke="#2b1747" stroke-width="5" stroke-linecap="round"/>
+  <rect x="388" y="306" width="11" height="16" rx="2" fill="#fff" stroke="#2b1747" stroke-width="2.5"/>
+  <rect x="401" y="306" width="11" height="16" rx="2" fill="#fff" stroke="#2b1747" stroke-width="2.5"/>
+  <!-- borda da frente do buraco -->
+  <path d="M255 390 A145 38 0 0 0 545 390" fill="none" stroke="#a8743f" stroke-width="14"/>
+  </g>
+  <!-- martelo -->
+  <g transform="translate(548 300) rotate(18) scale(0.85)">
+    <rect x="-11" y="-150" width="22" height="170" rx="8" fill="#e09a55" stroke="#2b1747" stroke-width="6"/>
+    <rect x="-62" y="-205" width="124" height="68" rx="18" fill="#ff4f7b" stroke="#2b1747" stroke-width="7"/>
+    <rect x="-62" y="-205" width="24" height="68" rx="9" fill="#ffd23a" stroke="#2b1747" stroke-width="6"/>
+    <rect x="38" y="-205" width="24" height="68" rx="9" fill="#ffd23a" stroke="#2b1747" stroke-width="6"/>
+    <rect x="-28" y="-196" width="60" height="10" rx="5" fill="#fff" opacity="0.5"/>
+  </g>
+  <!-- estrelinhas -->
+  <g fill="#ffe14a" stroke="#2b1747" stroke-width="4" stroke-linejoin="round">
+    <path d="M215 210 l9 18 20 3 -15 14 4 20 -18 -10 -18 10 4 -20 -15 -14 20 -3z"/>
+    <path d="M590 330 l7 14 15 2 -11 11 3 15 -14 -7 -14 7 3 -15 -11 -11 15 -2z"/>
+  </g>
+  <!-- título -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle" stroke="#2b1747" stroke-linejoin="round" paint-order="stroke">
+    <text x="400" y="78" font-size="50" fill="#ffffff" stroke-width="14">ACERTA A</text>
+    <text x="400" y="150" font-size="78" fill="#ffd23a" stroke-width="16">TOUPEIRA</text>
+  </g>
+</svg>

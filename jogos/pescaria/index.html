@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3ad7e8">
+<title>Pescaria · Karma Games</title>
+<style>
+@font-face{font-family:"Unbounded";font-style:normal;font-weight:800;font-display:swap;src:url("../../assets/fonts/unbounded-latin-800-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist";font-style:normal;font-weight:500;font-display:swap;src:url("../../assets/fonts/geist-sans-latin-500-normal.woff2") format("woff2")}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#3ad7e8;overscroll-behavior:none}
+body{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100vh;height:100dvh;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;outline:none;cursor:default}
+</style>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="Pescaria"></canvas>
+<script>
+const SLUG = 'pescaria';
+(() => {
+'use strict';
+/* ---------- Núcleo compartilhado (Karma Games) ---------- */
+const COL = {bg:'#2d1b4e', surf:'#ffffff', line:'#e3eef5', text:'#2d1b4e', muted:'#6c7f93', acc:'#ff7a2f', coral:'#ff6b5a', sky:'#5ac8ff', shadow:'rgba(20,40,90,0.25)', dimRGB:'25,40,90', ctaText:'#ffffff'};
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+let W = 1, H = 1, DPR = 1;
+const mq = q => { try { return window.matchMedia(q).matches; } catch (e) { return false; } };
+const reduceMotion = mq('(prefers-reduced-motion: reduce)');
+const coarse = mq('(pointer: coarse)') || ('ontouchstart' in window);
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const rand = (a, b) => a + Math.random() * (b - a);
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const FT = s => '800 ' + Math.round(s) + 'px Unbounded, system-ui, sans-serif';
+const FS = s => '500 ' + Math.round(s) + 'px Geist, system-ui, sans-serif';
+
+/* Recorde */
+const KEY = 'karma:' + SLUG + ':recorde';
+function loadBest() { try { const v = parseInt(window.localStorage.getItem(KEY), 10); return isFinite(v) && v > 0 ? v : 0; } catch (e) { return 0; } }
+function saveBest(v) { try { window.localStorage.setItem(KEY, String(v)); } catch (e) {} }
+let best = loadBest();
+
+/* Fontes: espera antes do primeiro texto no canvas */
+let fontsReady = false;
+(function () {
+  let done = false;
+  const finish = () => { if (!done) { done = true; fontsReady = true; } };
+  setTimeout(finish, 1500);
+  try {
+    if (document.fonts && document.fonts.load) {
+      Promise.all([document.fonts.load('800 32px Unbounded'), document.fonts.load('500 16px Geist')])
+        .then(() => document.fonts.ready).then(finish, finish);
+    } else finish();
+  } catch (e) { finish(); }
+})();
+
+/* Estado */
+let state = 'menu';         // menu | play | paused | over (+ estados próprios do jogo)
+let stateT = 0;             // tempo no estado atual
+let newRecord = false;
+let lastScore = 0;
+function setState(s) { state = s; stateT = 0; }
+function finishGame(score) {
+  lastScore = score;
+  newRecord = score > best && score > 0;
+  if (newRecord) { best = score; saveBest(best); }
+  setState('over');
+}
+
+/* Tremor de tela */
+let shakeT = 0, shakeDur = 1, shakeMag = 0;
+function shake(mag, dur) {
+  if (reduceMotion) return;
+  if (mag >= shakeMag * (shakeT / shakeDur)) { shakeMag = mag; shakeDur = dur; shakeT = dur; }
+}
+
+/* Partículas (coordenadas do jogo) */
+const parts = [];
+function burst(x, y, n, color, speed, life, size, grav) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, s = speed * (0.35 + Math.random() * 0.65);
+    parts.push({x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: life * (0.6 + Math.random() * 0.4), max: life, size: size * (0.6 + Math.random() * 0.6), color, g: grav || 0});
+  }
+  if (parts.length > 400) parts.splice(0, parts.length - 400);
+}
+function updateParts(dt) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    p.life -= dt;
+    if (p.life <= 0) { parts.splice(i, 1); continue; }
+    p.vx *= Math.pow(0.04, dt); p.vy *= Math.pow(0.04, dt);
+    p.vy += p.g * dt;
+    p.x += p.vx * dt; p.y += p.vy * dt;
+  }
+}
+function drawParts(scale) {
+  for (const p of parts) {
+    const k = clamp(p.life / p.max, 0, 1);
+    const s = p.size * (0.4 + 0.6 * k) * (scale || 1);
+    ctx.globalAlpha = k;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* Desenho utilitário */
+function rrect(x, y, w, h, r) {
+  r = Math.max(0, Math.min(r, w / 2, h / 2));
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function txt(s, x, y, font, color, align, base) {
+  ctx.font = font; ctx.fillStyle = color;
+  ctx.textAlign = align || 'center'; ctx.textBaseline = base || 'middle';
+  ctx.fillText(s, x, y);
+}
+function fitFont(s, maxW, size, maker) {
+  ctx.font = maker(size);
+  const w = ctx.measureText(s).width;
+  return w > maxW ? Math.max(10, size * maxW / w) : size;
+}
+
+/* Botão de pausa (toque) */
+const pauseBtn = {x: 0, y: 0, s: 40};
+function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawPauseBtn() {
+  const b = pauseBtn;
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, b.s, b.s, 10); ctx.fill();
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(b.x + 0.5, b.y + 0.5, b.s - 1, b.s - 1, 10); ctx.stroke();
+  ctx.fillStyle = COL.muted;
+  ctx.fillRect(b.x + b.s * 0.36, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+  ctx.fillRect(b.x + b.s * 0.54, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+}
+
+/* Cartão de tela (início / pausa / fim) */
+function drawCard(o) {
+  ctx.fillStyle = 'rgba(' + (COL.dimRGB || '13,14,18') + ',' + (o.dim == null ? 0.6 : o.dim) + ')';
+  ctx.fillRect(0, 0, W, H);
+  const cw = Math.min(W - 32, 440);
+  const pad = cw < 340 ? 22 : 30;
+  const inner = cw - pad * 2;
+  let ts = fitFont(o.title, inner, cw < 340 ? 30 : 38, FT);
+  const rows = o.rows || [];
+  const lines = o.lines || [];
+  let h = pad + ts * 1.15;
+  if (o.kicker) h += 22;
+  if (o.big != null) h += 78;
+  h += rows.length * 34 + (rows.length ? 12 : 0);
+  h += lines.length * 24 + (lines.length ? 14 : 0);
+  if (o.cta) h += 62;
+  let hints = [];
+  if (o.hint) {
+    ctx.font = FS(12);
+    if (ctx.measureText(o.hint).width > inner && o.hint.indexOf(' · ') > 0) {
+      const ps = o.hint.split(' · '); let cur = '';
+      for (const p of ps) { const t = cur ? cur + ' · ' + p : p; if (cur && ctx.measureText(t).width > inner) { hints.push(cur); cur = p; } else cur = t; }
+      if (cur) hints.push(cur);
+    } else hints = [o.hint];
+    h += 12 + hints.length * 18;
+  }
+  h += pad - 6;
+  const cx = (W - cw) / 2;
+  const cy = Math.max(12, (H - h) / 2);
+  // sombra deslocada + superfície
+  ctx.fillStyle = COL.shadow; rrect(cx + 6, cy + 8, cw, h, 18); ctx.fill();
+  ctx.fillStyle = COL.surf; rrect(cx, cy, cw, h, 18); ctx.fill();
+  ctx.strokeStyle = COL.line; ctx.lineWidth = 1; rrect(cx + 0.5, cy + 0.5, cw - 1, h - 1, 18); ctx.stroke();
+  let y = cy + pad;
+  if (o.kicker) { txt(o.kicker.toUpperCase(), W / 2, y + 6, FS(12), o.kickerColor || COL.acc); y += 22; }
+  txt(o.title, W / 2, y + ts * 0.55, FT(ts), COL.text); y += ts * 1.15;
+  if (o.big != null) {
+    txt(String(o.big), W / 2, y + 40, FT(fitFont(String(o.big), inner, 56, FT)), COL.acc); y += 78;
+  }
+  if (rows.length) {
+    y += 6;
+    for (const r of rows) {
+      ctx.strokeStyle = COL.line; ctx.beginPath(); ctx.moveTo(cx + pad, y + 0.5); ctx.lineTo(cx + cw - pad, y + 0.5); ctx.stroke();
+      txt(r[0], cx + pad, y + 18, FS(15), COL.muted, 'left');
+      txt(r[1], cx + cw - pad, y + 18, FT(16), r[2] || COL.text, 'right');
+      y += 34;
+    }
+    y += 6;
+  }
+  if (lines.length) {
+    y += 6;
+    for (const l of lines) { txt(l, W / 2, y + 10, FS(fitFont(l, inner, 15, FS)), COL.muted); y += 24; }
+    y += 8;
+  }
+  if (o.cta) {
+    const bw = Math.min(inner, 280), bh = 48, bx = (W - bw) / 2, by = y + 6;
+    const pulse = reduceMotion ? 0 : (Math.sin(perfNow * 4) * 0.5 + 0.5);
+    ctx.fillStyle = COL.shadow; rrect(bx + 3, by + 4, bw, bh, 12); ctx.fill();
+    ctx.fillStyle = COL.acc; rrect(bx, by - pulse * 1.5, bw, bh, 12); ctx.fill();
+    txt(o.cta, W / 2, by + bh / 2 - pulse * 1.5 + 1, FT(fitFont(o.cta, bw - 24, 15, FT)), COL.ctaText || COL.bg);
+    y += 62;
+  }
+  for (let i = 0; i < hints.length; i++) txt(hints[i], W / 2, y + 14 + i * 18, FS(fitFont(hints[i], inner, 13, FS)), COL.muted);
+}
+
+/* HUD: rótulo pequeno + valor, numa pílula para ler sobre fundo colorido */
+function hudStat(label, value, x, y, align, color) {
+  ctx.font = FT(22); const vw = ctx.measureText(String(value)).width;
+  ctx.font = FS(11); const lw = ctx.measureText(label.toUpperCase()).width;
+  const w = Math.max(vw, lw) + 24, h = 50;
+  const bx = align === 'right' ? x - w + 12 : align === 'center' ? x - w / 2 : x - 12;
+  ctx.fillStyle = 'rgba(0,0,0,0.18)'; rrect(bx + 2, y - 6 + 3, w, h, 14); ctx.fill();
+  ctx.fillStyle = COL.surf; rrect(bx, y - 6, w, h, 14); ctx.fill();
+  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
+}
+
+/* Som (WebAudio): só liga depois da primeira interação; M deixa mudo */
+let actx = null, muted = false;
+try { muted = window.localStorage.getItem('karma:som') === '0'; } catch (e) {}
+function unlockAudio() {
+  if (actx) { if (actx.state === 'suspended') try { actx.resume(); } catch (e) {} return; }
+  try { const AC = window.AudioContext || window.webkitAudioContext; if (AC) actx = new AC(); } catch (e) { actx = null; }
+}
+function toggleMute() { muted = !muted; try { window.localStorage.setItem('karma:som', muted ? '0' : '1'); } catch (e) {} muteToast = 1.2; }
+let muteToast = 0;
+function beep(freq, dur, type, vol, slide) {
+  if (muted || !actx) return;
+  try {
+    const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+    o.type = type || 'square'; o.frequency.setValueAtTime(freq, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, slide), t + dur);
+    g.gain.setValueAtTime((vol || 0.08), t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + dur + 0.02);
+  } catch (e) {}
+}
+function drawMuteToast() {
+  if (muteToast <= 0) return;
+  ctx.globalAlpha = clamp(muteToast, 0, 1);
+  const s = muted ? 'Som desligado (M)' : 'Som ligado (M)';
+  ctx.font = FS(14); const w = ctx.measureText(s).width + 28;
+  ctx.fillStyle = COL.surf; rrect((W - w) / 2, H - 52, w, 34, 17); ctx.fill();
+  txt(s, W / 2, H - 35, FS(14), COL.text);
+  ctx.globalAlpha = 1;
+}
+
+let perfNow = 0;
+
+/* ---------- Pescaria ---------- */
+const DURACAO = 60;
+const TIPOS = {
+  peq:   {pts: 10, cor: '#ff9f43', cor2: '#ffd08a', tam: 22, vel: [90, 140], faixa: [0.08, 0.4]},
+  med:   {pts: 20, cor: '#4ea8ff', cor2: '#a8d8ff', tam: 30, vel: [70, 110], faixa: [0.3, 0.7]},
+  gde:   {pts: 35, cor: '#b06cff', cor2: '#dcbaff', tam: 40, vel: [45, 75], faixa: [0.6, 0.92]},
+  ouro:  {pts: 60, cor: '#ffd23f', cor2: '#fff3b0', tam: 24, vel: [160, 210], faixa: [0.5, 0.9]},
+  bota:  {pts: -5, tam: 26, vel: [20, 35], faixa: [0.85, 0.97]},
+  agua:  {pts: -10, tam: 26, vel: [25, 40], faixa: [0.2, 0.85]}
+};
+let u = 1, y0 = 0, yb = 0;
+let boatX = 0, boatVX = 0, targetX = null, keyL = false, keyR = false, holdKey = false, holdPtr = false;
+let depth = 0, hooked = null, stun = 0, splashT = 0;
+let things = [], pops = [], bubbles = [];
+let score = 0, timeLeft = DURACAO, caught = 0, spawnT = 0, catSquash = 0, catHappy = 0, catSad = 0, tick = 0, overT = 0;
+let menuHold = 0;
+
+function layout() {
+  u = clamp(Math.min(W / 820, H / 620), 0.5, 1.5);
+  y0 = Math.round(H * (H < 560 ? 0.3 : 0.32));
+  yb = H - 26 * u;
+  if (!boatX) boatX = W / 2;
+  boatX = clamp(boatX, 70 * u, W - 110 * u);
+}
+function rodTip() { return {x: boatX + 70 * u, y: y0 + bob() - 86 * u}; }
+function bob() { return reduceMotion ? 0 : Math.sin(perfNow * 1.8) * 4 * u; }
+function hookPos() { const t = rodTip(); return {x: t.x, y: y0 + depth}; }
+function maxDepth() { return yb - y0 - 18 * u; }
+
+function spawn(tipo, anywhere) {
+  const T = TIPOS[tipo];
+  const dir = Math.random() < 0.5 ? 1 : -1;
+  const f = rand(T.faixa[0], T.faixa[1]);
+  const span = yb - y0;
+  things.push({
+    tipo, dir, x: anywhere ? rand(40, W - 40) : (dir > 0 ? -60 * u : W + 60 * u),
+    by: y0 + 30 * u + f * (span - 50 * u), y: 0, v: rand(T.vel[0], T.vel[1]) * (0.7 + u * 0.3),
+    ph: rand(0, 6), s: T.tam * u, caught: false, flop: 0
+  });
+}
+function pickTipo() {
+  const r = Math.random();
+  if (r < 0.32) return 'peq';
+  if (r < 0.58) return 'med';
+  if (r < 0.74) return 'gde';
+  if (r < 0.79) return 'ouro';
+  if (r < 0.89) return 'agua';
+  return 'bota';
+}
+function populate() {
+  things = [];
+  const n = Math.round(clamp(W * H / 60000, 6, 13));
+  for (let i = 0; i < n; i++) spawn(pickTipo(), true);
+  spawn('agua', true); spawn('bota', true);
+}
+function reset() {
+  layout();
+  boatX = W / 2 - 40 * u; boatVX = 0; targetX = null; depth = 0; hooked = null; stun = 0;
+  score = 0; timeLeft = DURACAO; caught = 0; spawnT = 0; pops = []; parts.length = 0;
+  catSquash = 0; catHappy = 0; catSad = 0; tick = 0;
+  populate();
+}
+function holding() { return (holdKey || holdPtr) && state === 'play'; }
+
+function landCatch() {
+  const t = hooked; hooked = null;
+  const T = TIPOS[t.tipo];
+  const hp = hookPos();
+  if (T.pts > 0) {
+    score += T.pts; caught++;
+    catHappy = 1; catSquash = 1;
+    pops.push({x: hp.x, y: y0 - 40 * u, t: 0, s: '+' + T.pts, c: t.tipo === 'ouro' ? '#fff36b' : '#ffffff'});
+    burst(hp.x, y0 - 10 * u, 18, T.cor, 300 * u, 0.6, 8 * u, 600 * u);
+    burst(hp.x, y0 - 10 * u, 8, '#ffffff', 220 * u, 0.5, 6 * u, 600 * u);
+    beep(660, 0.09, 'triangle', 0.09); setTimeout(() => beep(990, 0.14, 'triangle', 0.08), 80);
+    if (t.tipo === 'ouro') setTimeout(() => beep(1320, 0.18, 'triangle', 0.07), 160);
+  } else {
+    score = Math.max(0, score + T.pts);
+    catSad = 1.2;
+    pops.push({x: hp.x, y: y0 - 40 * u, t: 0, s: 'Bota velha! ' + T.pts, c: '#ffb3a8'});
+    burst(hp.x, y0 - 10 * u, 10, '#8a6a4a', 200 * u, 0.6, 7 * u, 600 * u);
+    beep(200, 0.25, 'square', 0.06, 110);
+  }
+  things.splice(things.indexOf(t), 1);
+}
+function zap(t) {
+  stun = 1.1; catSad = 1.4;
+  score = Math.max(0, score + TIPOS.agua.pts);
+  const hp = hookPos();
+  pops.push({x: hp.x, y: hp.y - 30 * u, t: 0, s: 'Choque! ' + TIPOS.agua.pts, c: '#ffe14d'});
+  burst(hp.x, hp.y, 16, '#ffe14d', 260 * u, 0.5, 6 * u, 0);
+  shake(7, 0.3);
+  beep(120, 0.3, 'sawtooth', 0.07, 400);
+  t.cool = 1.5;
+}
+
+const GAME = {
+  resize() { const ob = boatX; layout(); if (state === 'menu' && !things.length) reset(); boatX = clamp(ob || W / 2, 70 * u, W - 110 * u); },
+  start() { reset(); setState('play'); holdPtr = false; holdKey = false; },
+  key(e, down) {
+    const k = e.key;
+    if (k === 'ArrowLeft' || k === 'a' || k === 'A') keyL = down;
+    else if (k === 'ArrowRight' || k === 'd' || k === 'D') keyR = down;
+    else if (k === ' ' || e.code === 'Space' || k === 'ArrowDown' || k === 's' || k === 'S' || k === 'Enter') holdKey = down;
+  },
+  pointer(type, x) {
+    if (type === 'down') { holdPtr = true; targetX = x; }
+    else if (type === 'move') { if (holdPtr) targetX = x; }
+    else { holdPtr = false; targetX = null; }
+  },
+  onPause() { holdKey = holdPtr = keyL = keyR = false; targetX = null; },
+  update(dt) {
+    tick += dt;
+    catSquash = Math.max(0, catSquash - dt * 3);
+    catHappy = Math.max(0, catHappy - dt * 0.8);
+    catSad = Math.max(0, catSad - dt);
+    for (const p of pops) p.t += dt;
+    pops = pops.filter(p => p.t < 1.1);
+    // bolhinhas
+    if (Math.random() < dt * 6) bubbles.push({x: rand(0, W), y: yb, r: rand(2, 6) * u, v: rand(30, 70) * u});
+    for (let i = bubbles.length - 1; i >= 0; i--) { const b = bubbles[i]; b.y -= b.v * dt; b.x += Math.sin(b.y * 0.05) * 0.3; if (b.y < y0 + 4) bubbles.splice(i, 1); }
+    if (bubbles.length > 80) bubbles.splice(0, bubbles.length - 80);
+
+    // bichos nadando
+    for (const t of things) {
+      if (t.caught) continue;
+      t.cool = Math.max(0, (t.cool || 0) - dt);
+      const sp = t.tipo === 'agua' ? t.v * (0.5 + 0.5 * Math.max(0, Math.sin(tick * 2 + t.ph))) : t.v;
+      t.x += t.dir * sp * dt;
+      t.y = t.by + (t.tipo === 'agua' ? Math.sin(tick * 1.4 + t.ph) * 22 * u : t.tipo === 'bota' ? Math.sin(tick + t.ph) * 3 * u : Math.sin(tick * 3 + t.ph) * 6 * u);
+    }
+    for (let i = things.length - 1; i >= 0; i--) {
+      const t = things[i];
+      if (!t.caught && (t.x < -120 * u || t.x > W + 120 * u)) things.splice(i, 1);
+    }
+    const want = Math.round(clamp(W * H / 60000, 6, 13)) + 2;
+    spawnT -= dt;
+    if (things.length < want && spawnT <= 0) { spawn(pickTipo(), false); spawnT = rand(0.3, 0.9); }
+
+    if (state === 'play') {
+      timeLeft -= dt;
+      if (timeLeft <= 0) { timeLeft = 0; holdKey = holdPtr = false; finishGame(score); beep(523, 0.15, 'triangle', 0.08); setTimeout(() => beep(392, 0.3, 'triangle', 0.08), 140); return; }
+      if (timeLeft < 10 && Math.floor(timeLeft + dt) !== Math.floor(timeLeft)) beep(880, 0.05, 'square', 0.04);
+    }
+    if (state !== 'play' && state !== 'menu') return;
+
+    // barco
+    let ax = 0;
+    if (state === 'play') {
+      if (keyL) ax -= 1; if (keyR) ax += 1;
+      if (targetX != null && holdPtr) {
+        const d = (targetX - 70 * u) - boatX;
+        ax = clamp(d / (90 * u), -1, 1);
+      }
+    }
+    const maxV = 260 * u * (hooked ? 0.6 : 1);
+    boatVX = lerp(boatVX, ax * maxV, 1 - Math.pow(0.004, dt));
+    boatX = clamp(boatX + boatVX * dt, 60 * u, W - 100 * u);
+
+    // anzol
+    stun = Math.max(0, stun - dt);
+    let down = holding() && !hooked && stun <= 0;
+    if (state === 'menu') { menuHold += dt; down = !hooked && (menuHold % 5) < 2.2; }
+    const md = maxDepth();
+    if (hooked) {
+      const heavy = hooked.tipo === 'gde' ? 0.7 : hooked.tipo === 'bota' ? 0.55 : 1;
+      depth -= 330 * u * heavy * dt;
+    } else if (stun > 0) {
+      depth -= 120 * u * dt;
+    } else if (down) depth += 300 * u * dt;
+    else depth -= 420 * u * dt;
+    const wasIn = depth > 0;
+    depth = clamp(depth, -10 * u, md);
+    if (depth >= md && down) { depth = md; }
+    if (depth <= 0) {
+      depth = Math.max(depth, -10 * u);
+      if (hooked) { if (state === 'play') landCatch(); else { things.splice(things.indexOf(hooked), 1); hooked = null; } }
+    }
+    if (wasIn !== (depth > 0) && splashT <= 0) {
+      const hp = hookPos();
+      burst(hp.x, y0, 8, '#e6f8ff', 160 * u, 0.4, 5 * u, 500 * u);
+      splashT = 0.25;
+      if (state === 'play') beep(depth > 0 ? 340 : 520, 0.06, 'sine', 0.05);
+    }
+    splashT -= dt;
+
+    // fisgar
+    if (!hooked && depth > 6 * u && stun <= 0) {
+      const hp = hookPos();
+      for (const t of things) {
+        if (t.caught || t.cool > 0) continue;
+        const r = t.s * (t.tipo === 'agua' ? 0.8 : 0.9) + 10 * u;
+        const dx = t.x - hp.x, dy = t.y - hp.y;
+        if (dx * dx + dy * dy < r * r) {
+          if (t.tipo === 'agua') { if (state === 'play') zap(t); else t.cool = 1; break; }
+          t.caught = true; hooked = t; t.flop = 1;
+          burst(hp.x, hp.y, 10, '#ffffff', 160 * u, 0.4, 5 * u, 0);
+          if (state === 'play') beep(t.tipo === 'bota' ? 160 : 440, 0.08, 'square', 0.06);
+          break;
+        }
+      }
+    }
+    if (hooked) { const hp = hookPos(); hooked.x = hp.x; hooked.y = hp.y + hooked.s * 0.7; hooked.flop += dt; }
+  },
+  draw() {
+    // céu
+    let g = ctx.createLinearGradient(0, 0, 0, y0);
+    g.addColorStop(0, '#ff9ccf'); g.addColorStop(0.55, '#ffc7a3'); g.addColorStop(1, '#fff0b8');
+    ctx.fillStyle = g; ctx.fillRect(-20, -20, W + 40, y0 + 22);
+    // sol e nuvens
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.beginPath(); ctx.arc(W * 0.16, y0 * 0.42, 46 * u, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff3a0'; ctx.beginPath(); ctx.arc(W * 0.16, y0 * 0.42, 32 * u, 0, 7); ctx.fill();
+    for (let i = 0; i < 3; i++) {
+      const cx = ((i * 0.37 + tick * 0.012 * (i + 1)) % 1.3 - 0.15) * W, cy = y0 * (0.25 + i * 0.18);
+      ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.beginPath();
+      circ(cx, cy, 22 * u); circ(cx + 24 * u, cy + 4 * u, 17 * u); circ(cx - 24 * u, cy + 6 * u, 15 * u);
+      ctx.fill();
+    }
+    // mar
+    g = ctx.createLinearGradient(0, y0, 0, H);
+    g.addColorStop(0, '#3ad7e8'); g.addColorStop(0.5, '#1f9fe0'); g.addColorStop(1, '#2b5fc9');
+    ctx.fillStyle = g; ctx.fillRect(-20, y0, W + 40, H - y0 + 20);
+    // raios de luz
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    for (let i = 0; i < 5; i++) {
+      const x = ((i * 0.23 + 0.05) * W + Math.sin(tick * 0.4 + i) * 20);
+      ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x + 50 * u, y0); ctx.lineTo(x + 140 * u, H); ctx.lineTo(x + 40 * u, H); ctx.fill();
+    }
+    // fundo de areia + algas + conchas
+    ctx.fillStyle = '#ffd98a';
+    ctx.beginPath(); ctx.moveTo(-20, H + 20); ctx.lineTo(-20, yb);
+    for (let x = 0; x <= W + 40; x += 40) ctx.quadraticCurveTo(x - 20, yb - 8 * u, x, yb + Math.sin(x * 0.05) * 3 * u);
+    ctx.lineTo(W + 20, H + 20); ctx.fill();
+    for (let i = 0; i < 7; i++) {
+      const x = ((i * 157 + 40) % 1000) / 1000 * W;
+      const hh = (40 + (i % 3) * 22) * u;
+      ctx.strokeStyle = i % 2 ? '#2ecc71' : '#27ae60'; ctx.lineWidth = 7 * u; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x, yb + 4 * u);
+      for (let k = 1; k <= 4; k++) ctx.lineTo(x + Math.sin(tick * 1.5 + i + k) * 7 * u * k / 4, yb - hh * k / 4);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#ff8fb1';
+    for (let i = 0; i < 4; i++) { const x = ((i * 263 + 120) % 1000) / 1000 * W; ctx.beginPath(); ctx.arc(x, yb + 8 * u, 7 * u, Math.PI, 0); ctx.fill(); }
+    // bolhas
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1.5;
+    for (const b of bubbles) { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 7); ctx.stroke(); }
+
+    // bichos
+    for (const t of things) drawThing(t);
+
+    // linha e anzol
+    const tip = rodTip(), hp = hookPos();
+    ctx.strokeStyle = 'rgba(255,255,255,0.9)'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(tip.x, tip.y); ctx.lineTo(hp.x, hp.y - 8 * u); ctx.stroke();
+    drawHook(hp.x, hp.y);
+
+    // barco e gatinho
+    drawBoat(boatX, y0 + bob());
+    // ondinhas na superfície (por cima do barco)
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    for (let x = -30; x < W + 30; x += 46 * u) {
+      const yy = y0 + Math.sin(x * 0.03 + tick * 2) * 2.5 * u;
+      ctx.beginPath(); ctx.ellipse(x + (tick * 20) % (46 * u), yy, 16 * u, 3 * u, 0, 0, 7); ctx.fill();
+    }
+    drawParts();
+    if (fontsReady) for (const p of pops) {
+      const k = p.t / 1.1;
+      ctx.globalAlpha = 1 - k * k;
+      const s = FT(clamp(22 * u, 15, 28));
+      ctx.font = s; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const x = clamp(p.x, 110, W - 110), y = p.y - easeOut(k) * 40 * u;
+      ctx.lineWidth = 5; ctx.lineJoin = 'round'; ctx.strokeStyle = '#2d1b4e'; ctx.strokeText(p.s, x, y);
+      ctx.fillStyle = p.c; ctx.fillText(p.s, x, y);
+    }
+    ctx.globalAlpha = 1;
+  },
+  drawUI() {
+    if (state === 'menu') {
+      drawCard({dim: 0.15, kicker: 'Karma Games', title: 'Pescaria', lines: ['Pesque o máximo em 60 segundos.', 'Fuja das botas e das águas-vivas!'], cta: coarse ? 'Toque para começar' : 'Aperte Espaço para começar', hint: coarse ? 'Segure o dedo para descer o anzol e solte para puxar' : 'Segure Espaço ou o mouse para descer · Setas movem o barco'});
+      return;
+    }
+    hudStat('Pontos', score, 24, 16, 'left', COL.acc);
+    const tl = Math.ceil(timeLeft);
+    hudStat('Tempo', tl + 's', W / 2, 16, 'center', tl <= 10 ? '#ff4f6a' : COL.text);
+    if (W > 380) hudStat('Recorde', Math.max(best, score), W - 76, 16, 'right');
+    if (state === 'over') {
+      drawCard({kicker: newRecord ? 'Novo recorde!' : 'Acabou o tempo', title: 'Fim da pescaria', big: lastScore, rows: [['Recorde', String(best)], ['Peixes', String(caught)]], cta: 'Jogar de novo', hint: coarse ? 'Toque para jogar de novo' : 'Enter ou Espaço para jogar de novo'});
+    }
+  }
+};
+
+function circ(x, y, r) { ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, Math.PI * 2); }
+function eye(x, y, r, look) {
+  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  ctx.fillStyle = '#2d1b4e'; ctx.beginPath(); ctx.arc(x + (look || 0) * r * 0.25, y, r * 0.6, 0, 7); ctx.fill();
+  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x + (look || 0) * r * 0.25 + r * 0.22, y - r * 0.25, r * 0.22, 0, 7); ctx.fill();
+}
+function drawThing(t) {
+  const T = TIPOS[t.tipo], s = t.s;
+  ctx.save();
+  ctx.translate(t.x, t.y);
+  if (t.tipo === 'agua') {
+    const pul = reduceMotion ? 0 : Math.sin(tick * 4 + t.ph) * 0.08;
+    ctx.globalAlpha = t.cool > 0 ? 0.6 : 0.92;
+    // tentáculos
+    ctx.strokeStyle = '#ff9be0'; ctx.lineWidth = 3 * u; ctx.lineCap = 'round';
+    for (let i = -2; i <= 2; i++) {
+      ctx.beginPath(); ctx.moveTo(i * s * 0.28, s * 0.1);
+      for (let k = 1; k <= 4; k++) ctx.lineTo(i * s * 0.28 + Math.sin(tick * 3 + k + i + t.ph) * 4 * u, s * 0.1 + k * s * 0.3);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#ff7ad1';
+    ctx.beginPath(); ctx.ellipse(0, 0, s * (1 + pul), s * (0.75 - pul), 0, Math.PI, 0); ctx.quadraticCurveTo(0, s * 0.35, -s * (1 + pul), 0); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.ellipse(-s * 0.35, -s * 0.4, s * 0.25, s * 0.12, -0.5, 0, 7); ctx.fill();
+    ctx.fillStyle = '#2d1b4e';
+    ctx.beginPath(); circ(-s * 0.3, -s * 0.15, s * 0.1); circ(s * 0.3, -s * 0.15, s * 0.1); ctx.fill();
+    ctx.strokeStyle = '#2d1b4e'; ctx.lineWidth = 2 * u; ctx.beginPath(); ctx.arc(0, -s * 0.02, s * 0.12, 0.2, Math.PI - 0.2); ctx.stroke();
+    if (t.cool > 0) { ctx.strokeStyle = '#ffe14d'; ctx.lineWidth = 3 * u; ctx.beginPath(); ctx.moveTo(-s, -s * 0.9); ctx.lineTo(-s * 0.6, -s * 0.6); ctx.lineTo(-s * 0.85, -s * 0.5); ctx.lineTo(-s * 0.4, -s * 0.15); ctx.stroke(); }
+    ctx.restore(); ctx.globalAlpha = 1;
+    return;
+  }
+  if (t.tipo === 'bota') {
+    if (t.caught) ctx.rotate(Math.sin(t.flop * 10) * 0.2);
+    ctx.scale(t.dir, 1);
+    ctx.fillStyle = '#8a5a3c';
+    ctx.beginPath(); ctx.moveTo(-s * 0.5, -s); ctx.lineTo(s * 0.1, -s); ctx.lineTo(s * 0.15, -s * 0.15); ctx.quadraticCurveTo(s * 0.95, -s * 0.1, s * 0.95, s * 0.35); ctx.lineTo(-s * 0.55, s * 0.35); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#5e3a24'; ctx.fillRect(-s * 0.6, s * 0.3, s * 1.6, s * 0.18);
+    ctx.fillStyle = '#a8744f'; ctx.fillRect(-s * 0.55, -s * 1.02, s * 0.7, s * 0.18);
+    ctx.strokeStyle = '#3f8f4f'; ctx.lineWidth = 3 * u; ctx.beginPath(); ctx.moveTo(-s * 0.2, -s); ctx.quadraticCurveTo(-s * 0.1, -s * 1.4, s * 0.2, -s * 1.5); ctx.stroke();
+    ctx.restore();
+    return;
+  }
+  // peixe
+  const wig = reduceMotion ? 0 : Math.sin(tick * 10 + t.ph) * 0.25;
+  if (t.caught) { ctx.rotate(-Math.PI / 2 + Math.sin(t.flop * 14) * 0.35); }
+  ctx.scale(t.dir, 1);
+  const sq = t.caught ? 1 + Math.sin(t.flop * 14) * 0.08 : 1;
+  ctx.scale(sq, 2 - sq);
+  // rabo
+  ctx.fillStyle = T.cor;
+  ctx.save(); ctx.translate(-s * 0.85, 0); ctx.rotate(wig);
+  ctx.beginPath(); ctx.moveTo(s * 0.1, 0); ctx.lineTo(-s * 0.55, -s * 0.5); ctx.quadraticCurveTo(-s * 0.35, 0, -s * 0.55, s * 0.5); ctx.closePath(); ctx.fill();
+  ctx.restore();
+  // corpo
+  ctx.beginPath(); ctx.ellipse(0, 0, s, s * 0.68, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = T.cor2; ctx.beginPath(); ctx.ellipse(s * 0.05, s * 0.25, s * 0.7, s * 0.35, 0, 0, 7); ctx.fill();
+  // barbatana
+  ctx.fillStyle = T.cor; ctx.globalAlpha = 0.85;
+  ctx.beginPath(); ctx.moveTo(-s * 0.3, -s * 0.55); ctx.quadraticCurveTo(0, -s * 1.1, s * 0.35, -s * 0.6); ctx.fill();
+  ctx.globalAlpha = 1;
+  // listras no grande
+  if (t.tipo === 'gde') { ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(-s * 0.35, -s * 0.6, s * 0.14, s * 1.2); ctx.fillRect(-s * 0.05, -s * 0.66, s * 0.14, s * 1.3); }
+  if (t.tipo === 'ouro' && !reduceMotion) { ctx.fillStyle = 'rgba(255,255,255,' + (0.4 + 0.4 * Math.sin(tick * 8 + t.ph)) + ')'; ctx.beginPath(); ctx.arc(-s * 0.2, -s * 0.25, s * 0.12, 0, 7); ctx.fill(); }
+  // olho, bochecha, boquinha
+  eye(s * 0.5, -s * 0.12, s * 0.24, 1);
+  ctx.fillStyle = 'rgba(255,80,130,0.5)'; ctx.beginPath(); ctx.ellipse(s * 0.45, s * 0.22, s * 0.13, s * 0.08, 0, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#2d1b4e'; ctx.lineWidth = Math.max(1.5, s * 0.07); ctx.lineCap = 'round';
+  ctx.beginPath();
+  if (t.caught) ctx.ellipse(s * 0.88, s * 0.1, s * 0.07, s * 0.1, 0, 0, 7); else ctx.arc(s * 0.78, s * 0.08, s * 0.1, 0.3, Math.PI - 0.6);
+  ctx.stroke();
+  ctx.restore();
+}
+function drawHook(x, y) {
+  const s = 9 * u;
+  ctx.strokeStyle = stun > 0 ? '#ffe14d' : '#e7ecf3'; ctx.lineWidth = 3 * u; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x, y + s * 0.4); ctx.arc(x - s * 0.6, y + s * 0.4, s * 0.6, 0, Math.PI * 0.95); ctx.stroke();
+  ctx.fillStyle = '#ff4f6a'; ctx.beginPath(); ctx.arc(x, y - s * 1.6, s * 0.55, 0, 7); ctx.fill();
+  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(x, y - s * 1.6, s * 0.55, Math.PI, 0); ctx.fill();
+}
+function drawBoat(x, y) {
+  const tilt = clamp(boatVX / (260 * u), -1, 1) * 0.06 + (reduceMotion ? 0 : Math.sin(perfNow * 1.6) * 0.03);
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(tilt);
+  const sq = reduceMotion ? 0 : catSquash;
+  // gatinho (atrás da borda do barco)
+  ctx.save();
+  ctx.translate(-6 * u, -30 * u);
+  ctx.scale(1 + sq * 0.12, 1 - sq * 0.14);
+  const hop = catHappy > 0.5 && !reduceMotion ? -Math.abs(Math.sin(catHappy * 12)) * 6 * u : 0;
+  ctx.translate(0, hop);
+  // corpo
+  ctx.fillStyle = '#ffa94d';
+  ctx.beginPath(); ctx.ellipse(0, 6 * u, 24 * u, 20 * u, 0, 0, 7); ctx.fill();
+  // vara
+  ctx.strokeStyle = '#7a4a2a'; ctx.lineWidth = 4 * u; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(14 * u, 10 * u); ctx.lineTo(76 * u, -56 * u - hop); ctx.stroke();
+  ctx.fillStyle = '#ffd2a1'; ctx.beginPath(); ctx.arc(16 * u, 8 * u, 7 * u, 0, 7); ctx.fill();
+  // cabeça
+  const hy = -24 * u;
+  ctx.fillStyle = '#ffa94d';
+  ctx.beginPath(); ctx.moveTo(-22 * u, hy - 6 * u); ctx.lineTo(-18 * u, hy - 30 * u); ctx.lineTo(-4 * u, hy - 16 * u); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(22 * u, hy - 6 * u); ctx.lineTo(18 * u, hy - 30 * u); ctx.lineTo(4 * u, hy - 16 * u); ctx.fill();
+  ctx.fillStyle = '#ff7aa8';
+  ctx.beginPath(); ctx.moveTo(-18 * u, hy - 10 * u); ctx.lineTo(-17 * u, hy - 23 * u); ctx.lineTo(-9 * u, hy - 15 * u); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(18 * u, hy - 10 * u); ctx.lineTo(17 * u, hy - 23 * u); ctx.lineTo(9 * u, hy - 15 * u); ctx.fill();
+  ctx.fillStyle = '#ffa94d'; ctx.beginPath(); ctx.ellipse(0, hy, 25 * u, 21 * u, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#e8873a'; ctx.fillRect(-4 * u, hy - 20 * u, 3 * u, 8 * u); ctx.fillRect(2 * u, hy - 20 * u, 3 * u, 7 * u);
+  ctx.fillStyle = '#fff1df'; ctx.beginPath(); ctx.ellipse(0, hy + 9 * u, 12 * u, 8 * u, 0, 0, 7); ctx.fill();
+  // olhos
+  if (catSad > 0) {
+    ctx.strokeStyle = '#2d1b4e'; ctx.lineWidth = 2.5 * u; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-14 * u, hy - 5 * u); ctx.lineTo(-6 * u, hy - 1 * u); ctx.lineTo(-14 * u, hy + 3 * u);
+    ctx.moveTo(14 * u, hy - 5 * u); ctx.lineTo(6 * u, hy - 1 * u); ctx.lineTo(14 * u, hy + 3 * u); ctx.stroke();
+  } else if (catHappy > 0) {
+    ctx.strokeStyle = '#2d1b4e'; ctx.lineWidth = 2.5 * u; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(-10 * u, hy, 5 * u, Math.PI + 0.3, -0.3); ctx.stroke();
+    ctx.beginPath(); ctx.arc(10 * u, hy, 5 * u, Math.PI + 0.3, -0.3); ctx.stroke();
+  } else {
+    const blink = !reduceMotion && (perfNow % 3.7) < 0.12;
+    if (blink) { ctx.fillStyle = '#2d1b4e'; ctx.fillRect(-14 * u, hy - 1 * u, 8 * u, 2.5 * u); ctx.fillRect(6 * u, hy - 1 * u, 8 * u, 2.5 * u); }
+    else {
+      const lk = clamp((hookPos().y - y0) / 200, 0, 1) * 2 * u;
+      ctx.fillStyle = '#2d1b4e';
+      ctx.beginPath(); ctx.ellipse(-10 * u, hy + lk, 4.5 * u, 6 * u, 0, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(10 * u, hy + lk, 4.5 * u, 6 * u, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); circ(-8.5 * u, hy - 2.5 * u + lk, 1.8 * u); circ(11.5 * u, hy - 2.5 * u + lk, 1.8 * u); ctx.fill();
+    }
+  }
+  ctx.fillStyle = 'rgba(255,90,140,0.55)';
+  ctx.beginPath(); ctx.ellipse(-17 * u, hy + 7 * u, 5 * u, 3 * u, 0, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(17 * u, hy + 7 * u, 5 * u, 3 * u, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#ff6f91'; ctx.beginPath(); ctx.moveTo(-2.5 * u, hy + 5 * u); ctx.lineTo(2.5 * u, hy + 5 * u); ctx.lineTo(0, hy + 8 * u); ctx.fill();
+  ctx.strokeStyle = '#2d1b4e'; ctx.lineWidth = 1.6 * u;
+  ctx.beginPath(); ctx.arc(-3 * u, hy + 9 * u, 3 * u, 0.2, Math.PI - 0.2); ctx.arc(3 * u, hy + 9 * u, 3 * u, 0.2, Math.PI - 0.2); ctx.stroke();
+  ctx.strokeStyle = 'rgba(45,27,78,0.5)'; ctx.lineWidth = 1.2 * u;
+  ctx.beginPath(); ctx.moveTo(-14 * u, hy + 8 * u); ctx.lineTo(-30 * u, hy + 5 * u); ctx.moveTo(-14 * u, hy + 11 * u); ctx.lineTo(-30 * u, hy + 12 * u);
+  ctx.moveTo(14 * u, hy + 8 * u); ctx.lineTo(30 * u, hy + 5 * u); ctx.moveTo(14 * u, hy + 11 * u); ctx.lineTo(30 * u, hy + 12 * u); ctx.stroke();
+  // chapeuzinho de pescador
+  ctx.fillStyle = '#ffe14d';
+  ctx.beginPath(); ctx.ellipse(0, hy - 16 * u, 22 * u, 5 * u, 0, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, hy - 20 * u, 13 * u, 9 * u, 0, Math.PI, 0); ctx.fill();
+  ctx.restore();
+  // casco
+  ctx.fillStyle = '#ff5a5f';
+  ctx.beginPath(); ctx.moveTo(-58 * u, -16 * u); ctx.lineTo(58 * u, -16 * u); ctx.quadraticCurveTo(52 * u, 14 * u, 30 * u, 16 * u); ctx.lineTo(-30 * u, 16 * u); ctx.quadraticCurveTo(-52 * u, 14 * u, -58 * u, -16 * u); ctx.fill();
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(-55 * u, -10 * u, 110 * u, 6 * u);
+  ctx.fillStyle = '#c73e4a'; ctx.beginPath(); ctx.moveTo(-34 * u, 10 * u); ctx.lineTo(34 * u, 10 * u); ctx.lineTo(30 * u, 16 * u); ctx.lineTo(-30 * u, 16 * u); ctx.fill();
+  ctx.fillStyle = '#ffd23f'; ctx.beginPath(); ctx.arc(-34 * u, 2 * u, 4 * u, 0, 7); ctx.fill(); ctx.beginPath(); ctx.arc(34 * u, 2 * u, 4 * u, 0, 7); ctx.fill();
+  ctx.restore();
+}
+
+/* ---------- Laço, redimensionamento e entrada ---------- */
+function resize() {
+  const r = cv.getBoundingClientRect();
+  W = Math.max(1, Math.round(r.width || window.innerWidth));
+  H = Math.max(1, Math.round(r.height || window.innerHeight));
+  DPR = Math.min(window.devicePixelRatio || 1, 3);
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  layoutPauseBtn();
+  GAME.resize();
+}
+window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+
+function canPause() { return state === 'play'; }
+function pause() { if (canPause()) { setState('paused'); if (GAME.onPause) GAME.onPause(); } }
+function resume() { if (state === 'paused') { state = 'play'; if (GAME.onResume) GAME.onResume(); } }
+
+document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+window.addEventListener('blur', () => pause());
+
+const GAME_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Spacebar'];
+window.addEventListener('keydown', e => {
+  const k = e.key;
+  if (GAME_KEYS.indexOf(k) >= 0 || e.code === 'Space') e.preventDefault();
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  unlockAudio();
+  if ((k === 'm' || k === 'M') && !e.repeat) { toggleMute(); return; }
+  const isStart = k === ' ' || k === 'Enter' || e.code === 'Space';
+  if (k === 'p' || k === 'P' || k === 'Escape') {
+    if (state === 'paused') resume(); else pause();
+    return;
+  }
+  if (state === 'paused') { if (!e.repeat) resume(); return; }
+  if (state === 'menu') { if (isStart && fontsReady) GAME.start(); return; }
+  if (state === 'over') { if (isStart && stateT > 0.5 && !e.repeat) GAME.start(); return; }
+  if (GAME.key) GAME.key(e, true);
+}, {passive: false});
+window.addEventListener('keyup', e => { if (GAME.key) GAME.key(e, false); });
+
+function ptr(e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+cv.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  try { cv.focus({preventScroll: true}); } catch (err) {}
+  try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+  unlockAudio();
+  const [x, y] = ptr(e);
+  if (state === 'paused') { resume(); return; }
+  if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
+  if (state === 'over') { if (stateT > 0.5) GAME.start(x, y); return; }
+  if (state === 'play' && hitPause(x, y)) { pause(); return; }
+  if (GAME.pointer) GAME.pointer('down', x, y, e);
+}, {passive: false});
+cv.addEventListener('pointermove', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('move', x, y, e); });
+cv.addEventListener('pointerup', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('up', x, y, e); });
+cv.addEventListener('pointercancel', e => { const [x, y] = ptr(e); if (GAME.pointer) GAME.pointer('cancel', x, y, e); });
+cv.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('touchmove', e => e.preventDefault(), {passive: false});
+
+let last = 0;
+function frame(t) {
+  requestAnimationFrame(frame);
+  const now = t / 1000;
+  let dt = last ? now - last : 0;
+  last = now;
+  if (dt > 0.05) dt = 0.05;
+  if (dt < 0) dt = 0;
+  perfNow = now;
+  stateT += dt;
+  if (state !== 'paused') { GAME.update(dt); updateParts(dt); }
+  if (muteToast > 0) muteToast -= dt;
+  if (shakeT > 0 && state !== 'paused') shakeT = Math.max(0, shakeT - dt);
+
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
+  ctx.save();
+  if (shakeT > 0) {
+    const k = shakeT / shakeDur, m = shakeMag * k * k;
+    ctx.translate(rand(-m, m), rand(-m, m));
+  }
+  GAME.draw();
+  ctx.restore();
+  if (fontsReady) {
+    GAME.drawUI();
+    if (state === 'play' || state === 'paused') drawPauseBtn();
+    drawMuteToast();
+    if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma'});
+  }
+}
+resize();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

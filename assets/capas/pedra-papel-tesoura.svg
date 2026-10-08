@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#ffb347"/>
+      <stop offset="1" stop-color="#ff4f8b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.4" r="0.5">
+      <stop offset="0" stop-color="#fff6c9" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <g transform="translate(400 190)" fill="#ffffff" opacity="0.1">
+    <path d="M0 0 L-55 -520 L55 -520 Z"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(30)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(60)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(90)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(120)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(150)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(180)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(210)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(240)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(270)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(300)"/>
+    <path d="M0 0 L-55 -520 L55 -520 Z" transform="rotate(330)"/>
+  </g>
+  <circle cx="400" cy="190" r="250" fill="url(#glow)"/>
+  <g fill="#ffffff" opacity="0.15"><circle cx="80" cy="80" r="50"/><circle cx="730" cy="90" r="40"/><circle cx="60" cy="420" r="60"/><circle cx="740" cy="400" r="66"/></g>
+
+  <!-- mão do jogador: pedra (vinda da esquerda) -->
+  <g transform="translate(252 215) rotate(-10)" stroke="#2b1747" stroke-width="7" stroke-linejoin="round">
+    <rect x="-300" y="-46" width="190" height="92" rx="30" fill="#3ea8ff"/>
+    <rect x="-128" y="-46" width="20" height="92" fill="#9fdcff" stroke="none"/>
+    <rect x="-110" y="-34" width="70" height="68" rx="26" fill="#ffcf9f"/>
+    <rect x="-80" y="-78" width="150" height="156" rx="64" fill="#ffcf9f"/>
+    <path d="M38 -26 q18 -4 28 4 M38 6 q18 -4 28 4 M38 38 q18 -4 28 4" fill="none" stroke-width="5" stroke-linecap="round"/>
+    <rect x="-40" y="-98" width="100" height="44" rx="22" fill="#ffcf9f"/>
+  </g>
+  <g transform="translate(240 228)">
+    <ellipse cx="-20" cy="-8" rx="11" ry="13" fill="#fff" stroke="#2b1747" stroke-width="4"/>
+    <ellipse cx="20" cy="-8" rx="11" ry="13" fill="#fff" stroke="#2b1747" stroke-width="4"/>
+    <circle cx="-15" cy="-7" r="6" fill="#2b1747"/><circle cx="25" cy="-7" r="6" fill="#2b1747"/>
+    <path d="M-34 -28 l22 8 M34 -28 l-22 8" stroke="#2b1747" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="-36" cy="12" rx="8" ry="5" fill="#ff6fa6" opacity="0.55"/><ellipse cx="36" cy="12" rx="8" ry="5" fill="#ff6fa6" opacity="0.55"/>
+    <path d="M-12 18 q12 12 24 0 z" fill="#2b1747" stroke="#2b1747" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+
+  <!-- mão do computador: tesoura (vinda da direita) -->
+  <g transform="translate(572 200) scale(-1 1)" stroke="#2b1747" stroke-width="7" stroke-linejoin="round">
+    <rect x="-300" y="-46" width="190" height="92" rx="30" fill="#8b5cf6"/>
+    <rect x="-128" y="-46" width="20" height="92" fill="#c4abff" stroke="none"/>
+    <rect x="-110" y="-34" width="70" height="68" rx="26" fill="#8ef0c8"/>
+    <rect x="20" y="-18" width="150" height="36" rx="18" fill="#8ef0c8" transform="rotate(-21 20 0)"/>
+    <rect x="20" y="-18" width="144" height="36" rx="18" fill="#8ef0c8" transform="rotate(21 20 0)"/>
+    <rect x="-80" y="-74" width="140" height="148" rx="60" fill="#8ef0c8"/>
+    <path d="M30 40 q18 -4 26 4" fill="none" stroke-width="5" stroke-linecap="round"/>
+    <rect x="-40" y="-94" width="96" height="42" rx="21" fill="#8ef0c8"/>
+  </g>
+  <g transform="translate(586 212)">
+    <path d="M-30 -8 q10 -14 20 0 M10 -8 q10 -14 20 0" fill="none" stroke="#2b1747" stroke-width="5.5" stroke-linecap="round"/>
+    <ellipse cx="-36" cy="10" rx="8" ry="5" fill="#ff6fa6" opacity="0.55"/><ellipse cx="36" cy="10" rx="8" ry="5" fill="#ff6fa6" opacity="0.55"/>
+    <path d="M-16 8 q16 22 32 0 z" fill="#2b1747" stroke="#2b1747" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="0" cy="17" rx="7" ry="4" fill="#ff7a9a"/>
+  </g>
+
+  <!-- VS -->
+  <g transform="translate(408 66) rotate(-8) scale(0.85)">
+    <path d="M0 -50 l14 30 32 -8 -18 28 26 20 -32 4 2 32 -24 -22 -24 22 2 -32 -32 -4 26 -20 -18 -28 32 8 z" fill="#ffd23f" stroke="#2b1747" stroke-width="5" stroke-linejoin="round"/>
+    <text x="0" y="14" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="34" fill="#2b1747">VS</text>
+  </g>
+
+  <!-- título -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle">
+    <text x="405" y="388" font-size="54" fill="#2b1747">PEDRA, PAPEL</text>
+    <text x="405" y="458" font-size="54" fill="#2b1747">E TESOURA</text>
+    <text x="400" y="381" font-size="54" fill="#ffffff" stroke="#2b1747" stroke-width="13" stroke-linejoin="round" paint-order="stroke">PEDRA, PAPEL</text>
+    <text x="400" y="451" font-size="54" fill="#ffd23f" stroke="#2b1747" stroke-width="13" stroke-linejoin="round" paint-order="stroke">E TESOURA</text>
+  </g>
+</svg>

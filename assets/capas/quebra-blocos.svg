@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3bff"/>
+      <stop offset=".6" stop-color="#3a8cff"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <radialGradient id="bola" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".35" stop-color="#ffe9f2"/>
+      <stop offset="1" stop-color="#ff9ec4"/>
+    </radialGradient>
+    <linearGradient id="raquete" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff07a"/>
+      <stop offset="1" stop-color="#ff9a1f"/>
+    </linearGradient>
+    <linearGradient id="brilho" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="sombra" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="9" stdDeviation="7" flood-color="#0a0a5a" flood-opacity=".35"/>
+    </filter>
+    <g id="tijolo">
+      <rect x="-44" y="-20" width="88" height="40" rx="9" stroke="#10124a" stroke-width="5"/>
+      <rect x="-36" y="-14" width="72" height="12" rx="6" fill="url(#brilho)"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fundo)"/>
+  <g fill="#fff" opacity=".08">
+    <circle cx="120" cy="420" r="160"/>
+    <circle cx="700" cy="300" r="120"/>
+  </g>
+
+  <!-- tijolos -->
+  <g filter="url(#sombra)">
+    <g fill="#ff4f7a">
+      <use href="#tijolo" x="-10" y="40"/><use href="#tijolo" x="88" y="40"/><use href="#tijolo" x="186" y="40"/><use href="#tijolo" x="284" y="40"/><use href="#tijolo" x="382" y="40"/><use href="#tijolo" x="480" y="40"/><use href="#tijolo" x="578" y="40"/><use href="#tijolo" x="676" y="40"/><use href="#tijolo" x="774" y="40"/>
+    </g>
+    <g fill="#ffb43a">
+      <use href="#tijolo" x="39" y="90"/><use href="#tijolo" x="137" y="90"/><use href="#tijolo" x="235" y="90"/><use href="#tijolo" x="529" y="90"/><use href="#tijolo" x="627" y="90"/><use href="#tijolo" x="725" y="90"/>
+    </g>
+    <g fill="#c8f13a">
+      <use href="#tijolo" x="-10" y="140"/><use href="#tijolo" x="88" y="140"/><use href="#tijolo" x="676" y="140"/><use href="#tijolo" x="774" y="140"/>
+    </g>
+    <g fill="#b56bff">
+      <use href="#tijolo" x="39" y="190"/><use href="#tijolo" x="725" y="190"/>
+    </g>
+  </g>
+
+  <!-- estilhacos do tijolo quebrado -->
+  <g stroke="#10124a" stroke-width="4" stroke-linejoin="round" filter="url(#sombra)">
+    <path d="M330 92 l34 -6 6 22 -30 10z" fill="#ffb43a" transform="rotate(-20 345 100)"/>
+    <path d="M410 70 l40 4 -4 24 -30 -6z" fill="#ffb43a" transform="rotate(25 430 85)"/>
+    <path d="M462 112 l26 2 -6 20 -22 -8z" fill="#ffb43a"/>
+    <path d="M300 130 l20 -4 4 16 -18 4z" fill="#ffb43a"/>
+  </g>
+  <g stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".9">
+    <path d="M360 140 l-14 -16"/><path d="M440 140 l14 -16"/><path d="M400 128 v-20"/>
+  </g>
+
+  <!-- rastro da bola -->
+  <path d="M260 330 Q320 260 360 228" stroke="#fff" stroke-width="40" stroke-linecap="round" fill="none" opacity=".25"/>
+  <path d="M290 300 Q330 255 360 228" stroke="#fff" stroke-width="22" stroke-linecap="round" fill="none" opacity=".35"/>
+
+  <!-- bola heroi -->
+  <g transform="translate(402 196) scale(1.18)" filter="url(#sombra)">
+    <circle r="68" fill="url(#bola)" stroke="#10124a" stroke-width="8"/>
+    <g stroke="#10124a" stroke-width="6">
+      <ellipse cx="-22" cy="-10" rx="18" ry="22" fill="#fff"/>
+      <ellipse cx="24" cy="-10" rx="18" ry="22" fill="#fff"/>
+    </g>
+    <circle cx="-17" cy="-14" r="10" fill="#10124a"/>
+    <circle cx="29" cy="-14" r="10" fill="#10124a"/>
+    <circle cx="-14" cy="-18" r="3.5" fill="#fff"/>
+    <circle cx="32" cy="-18" r="3.5" fill="#fff"/>
+    <path d="M-38 -40 L-8 -32 M38 -40 L8 -32" stroke="#10124a" stroke-width="7" stroke-linecap="round"/>
+    <path d="M-16 22 Q2 44 22 22 Z" fill="#c4204a" stroke="#10124a" stroke-width="6" stroke-linejoin="round"/>
+    <ellipse cx="-42" cy="18" rx="11" ry="7" fill="#ff5f8f" opacity=".6"/>
+    <ellipse cx="46" cy="18" rx="11" ry="7" fill="#ff5f8f" opacity=".6"/>
+    <ellipse cx="-30" cy="-46" rx="14" ry="7" fill="#fff" transform="rotate(-30 -30 -46)"/>
+  </g>
+
+  <!-- raquete -->
+  <g filter="url(#sombra)">
+    <rect x="270" y="318" width="260" height="38" rx="19" fill="url(#raquete)" stroke="#10124a" stroke-width="7"/>
+    <rect x="292" y="326" width="150" height="9" rx="4.5" fill="#fff" opacity=".7"/>
+    <rect x="262" y="320" width="34" height="34" rx="12" fill="#ff4f7a" stroke="#10124a" stroke-width="6"/>
+    <rect x="504" y="320" width="34" height="34" rx="12" fill="#ff4f7a" stroke="#10124a" stroke-width="6"/>
+  </g>
+
+  <!-- titulo -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle" stroke-linejoin="round" paint-order="stroke" font-size="60">
+    <text x="400" y="465" textLength="436" lengthAdjust="spacingAndGlyphs" fill="#10124a" stroke="#10124a" stroke-width="16">Quebra-Blocos</text>
+    <text x="400" y="457" textLength="436" lengthAdjust="spacingAndGlyphs" fill="#fff" stroke="#10124a" stroke-width="14">Quebra-Blocos</text>
+  </g>
+</svg>

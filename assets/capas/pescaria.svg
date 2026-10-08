@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff8cc6"/>
+      <stop offset="0.6" stop-color="#ffc49e"/>
+      <stop offset="1" stop-color="#fff0b0"/>
+    </linearGradient>
+    <linearGradient id="mar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#36dbe9"/>
+      <stop offset="0.5" stop-color="#1f9fe0"/>
+      <stop offset="1" stop-color="#2b5fc9"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#ceu)"/>
+  <circle cx="120" cy="80" r="56" fill="#fff" opacity="0.4"/>
+  <circle cx="120" cy="80" r="38" fill="#fff3a0"/>
+  <g fill="#fff"><circle cx="680" cy="70" r="26"/><circle cx="708" cy="76" r="20"/><circle cx="654" cy="78" r="18"/></g>
+  <!-- mar -->
+  <rect x="0" y="290" width="800" height="210" fill="url(#mar)"/>
+  <g fill="#ffffff" opacity="0.07">
+    <path d="M200 290 L250 290 L340 500 L240 500 Z"/><path d="M450 290 L500 290 L590 500 L490 500 Z"/>
+  </g>
+  <!-- bolhas -->
+  <g fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="3">
+    <circle cx="230" cy="400" r="8"/><circle cx="246" cy="372" r="5"/><circle cx="560" cy="430" r="9"/><circle cx="575" cy="404" r="5"/>
+  </g>
+  <!-- linha e anzol -->
+  <path d="M520 166 L520 420" stroke="#fff" stroke-width="3"/>
+  <path d="M520 420 L520 440 A12 12 0 0 1 496 440" stroke="#e7ecf3" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="520" cy="410" r="9" fill="#ff4f6a"/><path d="M511 410 A9 9 0 0 1 529 410 Z" fill="#fff"/>
+  <!-- peixe azul curioso perto do anzol -->
+  <g transform="translate(430,445)">
+    <path d="M-40 0 L-70 -22 Q-60 0 -70 22 Z" fill="#4ea8ff"/>
+    <ellipse cx="0" cy="0" rx="44" ry="30" fill="#4ea8ff"/>
+    <ellipse cx="2" cy="11" rx="30" ry="15" fill="#a8d8ff"/>
+    <circle cx="22" cy="-6" r="11" fill="#fff"/><circle cx="25" cy="-6" r="7" fill="#2d1b4e"/><circle cx="28" cy="-9" r="2.5" fill="#fff"/>
+    <ellipse cx="20" cy="10" rx="6" ry="3.5" fill="#ff5f9e" opacity="0.6"/>
+    <path d="M34 4 Q38 9 42 4" stroke="#2d1b4e" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- água-viva -->
+  <g transform="translate(250,450)">
+    <g stroke="#ff9be0" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M-18 4 q-4 14 0 26"/><path d="M-6 6 q4 14 0 28"/><path d="M6 6 q-4 14 0 28"/><path d="M18 4 q4 14 0 26"/>
+    </g>
+    <path d="M-30 4 A30 26 0 0 1 30 4 Q0 14 -30 4 Z" fill="#ff7ad1"/>
+    <circle cx="-9" cy="-6" r="3.5" fill="#2d1b4e"/><circle cx="9" cy="-6" r="3.5" fill="#2d1b4e"/>
+  </g>
+  <!-- peixe dourado pulando -->
+  <g transform="translate(610,250) rotate(-35)">
+    <path d="M-34 0 L-60 -20 Q-52 0 -60 20 Z" fill="#ffc21a"/>
+    <ellipse cx="0" cy="0" rx="38" ry="26" fill="#ffd23f"/>
+    <ellipse cx="2" cy="9" rx="26" ry="13" fill="#fff3b0"/>
+    <circle cx="18" cy="-5" r="10" fill="#fff"/><circle cx="21" cy="-5" r="6" fill="#2d1b4e"/><circle cx="23" cy="-8" r="2" fill="#fff"/>
+    <ellipse cx="16" cy="9" rx="6" ry="3" fill="#ff5f9e" opacity="0.6"/>
+    <ellipse cx="34" cy="4" rx="4" ry="5" stroke="#2d1b4e" stroke-width="3" fill="none"/>
+  </g>
+  <g fill="#e6f8ff"><circle cx="572" cy="300" r="7"/><circle cx="590" cy="286" r="5"/><circle cx="556" cy="290" r="4"/><circle cx="640" cy="292" r="6"/></g>
+  <!-- barco e gatinho -->
+  <g transform="translate(380,286) scale(2)">
+    <!-- corpo -->
+    <ellipse cx="-6" cy="-24" rx="24" ry="20" fill="#ffa94d"/>
+    <path d="M8 -20 L70 -60" stroke="#7a4a2a" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="10" cy="-22" r="7" fill="#ffd2a1"/>
+    <!-- cabeça -->
+    <path d="M-28 -60 L-24 -84 L-10 -70 Z" fill="#ffa94d"/><path d="M16 -60 L12 -84 L-2 -70 Z" fill="#ffa94d"/>
+    <path d="M-24 -64 L-23 -77 L-15 -69 Z" fill="#ff7aa8"/><path d="M12 -64 L11 -77 L3 -69 Z" fill="#ff7aa8"/>
+    <ellipse cx="-6" cy="-54" rx="25" ry="21" fill="#ffa94d"/>
+    <ellipse cx="-6" cy="-45" rx="12" ry="8" fill="#fff1df"/>
+    <ellipse cx="-16" cy="-56" rx="4.5" ry="6" fill="#2d1b4e"/><ellipse cx="4" cy="-56" rx="4.5" ry="6" fill="#2d1b4e"/>
+    <circle cx="-14.5" cy="-58.5" r="1.8" fill="#fff"/><circle cx="5.5" cy="-58.5" r="1.8" fill="#fff"/>
+    <ellipse cx="-23" cy="-47" rx="5" ry="3" fill="#ff5a8c" opacity="0.6"/><ellipse cx="11" cy="-47" rx="5" ry="3" fill="#ff5a8c" opacity="0.6"/>
+    <path d="M-8.5 -49 L-3.5 -49 L-6 -46 Z" fill="#ff6f91"/>
+    <path d="M-12 -45 A3 3 0 0 0 -6 -45 A3 3 0 0 0 0 -45" stroke="#2d1b4e" stroke-width="1.6" fill="none"/>
+    <g stroke="#2d1b4e" stroke-opacity="0.5" stroke-width="1.2"><path d="M-20 -46 L-36 -49 M-20 -43 L-36 -42 M8 -46 L24 -49 M8 -43 L24 -42"/></g>
+    <ellipse cx="-6" cy="-70" rx="22" ry="5" fill="#ffe14d"/>
+    <path d="M-19 -74 A13 9 0 0 1 7 -74 Z" fill="#ffe14d"/>
+    <!-- casco -->
+    <path d="M-58 -16 L58 -16 Q52 14 30 16 L-30 16 Q-52 14 -58 -16 Z" fill="#ff5a5f"/>
+    <rect x="-55" y="-10" width="110" height="6" fill="#fff"/>
+    <path d="M-34 10 L34 10 L30 16 L-30 16 Z" fill="#c73e4a"/>
+    <circle cx="-34" cy="2" r="4" fill="#ffd23f"/><circle cx="34" cy="2" r="4" fill="#ffd23f"/>
+  </g>
+  <!-- ondinhas -->
+  <g fill="#fff" opacity="0.6">
+    <ellipse cx="160" cy="292" rx="34" ry="6"/><ellipse cx="270" cy="292" rx="30" ry="5"/><ellipse cx="520" cy="292" rx="30" ry="5"/><ellipse cx="700" cy="292" rx="34" ry="6"/>
+  </g>
+  <!-- título -->
+  <text x="400" y="92" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="76" text-anchor="middle" fill="#ff7a2f" stroke="#2d1b4e" stroke-width="15" stroke-linejoin="round" paint-order="stroke">PESCARIA</text>
+</svg>

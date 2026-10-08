@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9a3c"/>
+      <stop offset=".5" stop-color="#ff5a7a"/>
+      <stop offset="1" stop-color="#9a4aff"/>
+    </linearGradient>
+    <radialGradient id="luz" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="clara" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff4d8"/>
+      <stop offset="1" stop-color="#ffd98a"/>
+    </linearGradient>
+    <linearGradient id="escura" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b8542a"/>
+      <stop offset="1" stop-color="#7a2a14"/>
+    </linearGradient>
+    <radialGradient id="branca" cx=".38" cy=".32" r=".8">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".6" stop-color="#f2efe8"/>
+      <stop offset="1" stop-color="#cfc6b6"/>
+    </radialGradient>
+    <radialGradient id="preta" cx=".38" cy=".32" r=".8">
+      <stop offset="0" stop-color="#5a5f72"/>
+      <stop offset=".6" stop-color="#262a36"/>
+      <stop offset="1" stop-color="#11131a"/>
+    </radialGradient>
+    <linearGradient id="ouro" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff27a"/>
+      <stop offset="1" stop-color="#ffb21f"/>
+    </linearGradient>
+    <filter id="sombra" filterUnits="userSpaceOnUse" x="-900" y="-700" width="2600" height="1900">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#3a0a3a" flood-opacity=".38"/>
+    </filter>
+    <!-- peça vista em perspectiva: base + topo -->
+    <g id="peca-branca">
+      <ellipse cx="0" cy="14" rx="60" ry="36" fill="#a89a84" stroke="#2a0a2a" stroke-width="8"/>
+      <rect x="-60" y="-2" width="120" height="16" fill="#a89a84"/>
+      <path d="M-60 -2 V14 M60 -2 V14" stroke="#2a0a2a" stroke-width="8"/>
+      <ellipse cx="0" cy="-2" rx="60" ry="36" fill="url(#branca)" stroke="#2a0a2a" stroke-width="8"/>
+      <ellipse cx="0" cy="-2" rx="38" ry="22" fill="none" stroke="#2a0a2a" stroke-opacity=".18" stroke-width="6"/>
+      <ellipse cx="-24" cy="-18" rx="14" ry="6" fill="#fff" transform="rotate(-18 -24 -18)"/>
+    </g>
+    <g id="peca-preta">
+      <ellipse cx="0" cy="14" rx="60" ry="36" fill="#0b0c12" stroke="#2a0a2a" stroke-width="8"/>
+      <rect x="-60" y="-2" width="120" height="16" fill="#0b0c12"/>
+      <path d="M-60 -2 V14 M60 -2 V14" stroke="#2a0a2a" stroke-width="8"/>
+      <ellipse cx="0" cy="-2" rx="60" ry="36" fill="url(#preta)" stroke="#2a0a2a" stroke-width="8"/>
+      <ellipse cx="0" cy="-2" rx="38" ry="22" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="6"/>
+      <ellipse cx="-24" cy="-18" rx="14" ry="6" fill="#fff" opacity=".55" transform="rotate(-18 -24 -18)"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fundo)"/>
+  <circle cx="400" cy="210" r="260" fill="url(#luz)"/>
+
+  <!-- brilhos -->
+  <g fill="#fff">
+    <path d="M110 90 l7 17 17 7 -17 7 -7 17 -7 -17 -17 -7 17 -7z"/>
+    <path d="M690 70 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6z"/>
+    <path d="M720 410 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z"/>
+    <circle cx="80" cy="400" r="7"/>
+    <circle cx="640" cy="160" r="5"/>
+  </g>
+
+  <!-- tabuleiro inclinado (losango em perspectiva) -->
+  <g filter="url(#sombra)">
+    <!-- espessura -->
+    <path d="M140 300 L400 160 L660 300 L400 440 Z" transform="translate(0 22)" fill="#5a1a0a" stroke="#2a0a2a" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M140 300 L400 160 L660 300 L400 440 Z" fill="url(#clara)" stroke="#2a0a2a" stroke-width="10" stroke-linejoin="round"/>
+  </g>
+  <!-- casas escuras: grade 4x4 do losango; u ao longo de (65,-35), v ao longo de (65,35), origem 140,300 -->
+  <g fill="url(#escura)">
+    <path d="M205 335 l65 -35 l65 35 l-65 35z"/>
+    <path d="M335 405 l65 -35 l65 35 l-65 35z"/>
+    <path d="M205 265 l65 -35 l65 35 l-65 35z"/>
+    <path d="M335 335 l65 -35 l65 35 l-65 35z"/>
+    <path d="M335 265 l65 -35 l65 35 l-65 35z"/>
+    <path d="M465 335 l65 -35 l65 35 l-65 35z"/>
+    <path d="M335 195 l65 -35 l65 35 l-65 35z"/>
+    <path d="M465 265 l65 -35 l65 35 l-65 35z"/>
+  </g>
+  <path d="M140 300 L400 160 L660 300 L400 440 Z" fill="none" stroke="#2a0a2a" stroke-width="10" stroke-linejoin="round"/>
+
+  <!-- pecas -->
+  <g filter="url(#sombra)">
+    <use href="#peca-preta" transform="translate(400 197) scale(.5)"/>
+    <use href="#peca-preta" transform="translate(530 267) scale(.5)"/>
+    <use href="#peca-branca" transform="translate(400 337) scale(.5)"/>
+    <use href="#peca-branca" transform="translate(400 407) scale(.5)"/>
+  </g>
+
+  <!-- dama coroada (heroi) -->
+  <g transform="translate(270 270)" filter="url(#sombra)">
+    <use href="#peca-branca" transform="translate(0 6) scale(.78)"/>
+    <use href="#peca-branca" transform="translate(0 -18) scale(.78)"/>
+    <g transform="translate(0 -62)">
+      <path d="M-38 30 L-46 -18 L-20 4 L0 -32 L20 4 L46 -18 L38 30 Z" fill="url(#ouro)" stroke="#2a0a2a" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M-38 30 Q0 42 38 30" fill="none" stroke="#2a0a2a" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="-46" cy="-22" r="8" fill="#ff5a7a" stroke="#2a0a2a" stroke-width="6"/>
+      <circle cx="0" cy="-36" r="9" fill="#5ac8ff" stroke="#2a0a2a" stroke-width="6"/>
+      <circle cx="46" cy="-22" r="8" fill="#ff5a7a" stroke="#2a0a2a" stroke-width="6"/>
+      <path d="M-28 18 L-30 -2" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+    </g>
+  </g>
+
+  <!-- peca preta pulando (captura) -->
+  <g transform="translate(605 150) rotate(14)" filter="url(#sombra)">
+    <use href="#peca-preta" transform="scale(.62)"/>
+  </g>
+  <g stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none" opacity=".9">
+    <path d="M560 110 q-30 -6 -48 10"/>
+    <path d="M660 112 l18 -16"/>
+    <path d="M668 150 h24"/>
+  </g>
+</svg>

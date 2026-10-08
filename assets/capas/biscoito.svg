@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#4fc8ff"/>
+      <stop offset="1" stop-color="#ff9fd0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.5">
+      <stop offset="0" stop-color="#fffbe0" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <g id="mini">
+      <circle r="20" fill="#e0a45f" stroke="#2b1747" stroke-width="4"/>
+      <circle cx="-7" cy="-5" r="3.6" fill="#5a3418"/><circle cx="6" cy="-8" r="3" fill="#5a3418"/><circle cx="3" cy="7" r="3.6" fill="#5a3418"/>
+    </g>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <g transform="translate(400 200)" fill="#ffffff" opacity="0.16">
+    <path d="M0 0 L-50 -520 L50 -520 Z"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(36)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(72)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(108)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(144)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(180)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(216)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(252)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(288)"/>
+    <path d="M0 0 L-50 -520 L50 -520 Z" transform="rotate(324)"/>
+  </g>
+  <circle cx="400" cy="200" r="250" fill="url(#glow)"/>
+  <!-- biscoitinhos caindo -->
+  <use href="#mini" transform="translate(90 80) rotate(20)"/>
+  <use href="#mini" transform="translate(720 70) rotate(-30) scale(1.2)"/>
+  <use href="#mini" transform="translate(60 300) rotate(60) scale(0.9)"/>
+  <use href="#mini" transform="translate(745 300) rotate(10)"/>
+  <use href="#mini" transform="translate(196 52) rotate(-15) scale(0.8)"/>
+  <use href="#mini" transform="translate(612 40) rotate(45) scale(0.75)"/>
+  <!-- sombra -->
+  <ellipse cx="408" cy="352" rx="150" ry="22" fill="#2b1747" opacity="0.2"/>
+  <!-- biscoitão -->
+  <g transform="rotate(-8 400 200)">
+    <path d="M400 38 C447 36 470 52 500 66 C532 80 548 104 560 134 C574 166 570 196 566 226 C560 260 548 288 520 312 C494 336 462 352 420 356 C380 360 344 354 310 334 C278 314 256 286 244 252 C232 218 234 186 242 154 C252 120 270 94 300 72 C330 50 360 40 400 38 Z" fill="#c98a4b" stroke="#2b1747" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M398 54 C440 52 464 66 490 80 C518 96 532 118 542 144 C552 172 550 200 544 226 C536 256 524 280 498 300 C474 318 446 332 410 334 C374 336 344 328 316 310 C290 292 272 266 264 236 C256 206 258 178 266 150 C276 120 292 98 318 80 C344 62 368 56 398 54 Z" fill="#e9b16e"/>
+    <ellipse cx="340" cy="110" rx="52" ry="22" fill="#fff3cf" opacity="0.5" transform="rotate(-35 340 110)"/>
+    <g fill="#5a3418">
+      <ellipse cx="410" cy="88" rx="17" ry="13" transform="rotate(20 410 88)"/>
+      <ellipse cx="490" cy="118" rx="15" ry="12"/>
+      <ellipse cx="300" cy="170" rx="16" ry="13" transform="rotate(-20 300 170)"/>
+      <ellipse cx="520" cy="206" rx="17" ry="13" transform="rotate(30 520 206)"/>
+      <ellipse cx="290" cy="250" rx="14" ry="11"/>
+      <ellipse cx="350" cy="306" rx="16" ry="12" transform="rotate(10 350 306)"/>
+      <ellipse cx="450" cy="312" rx="15" ry="12" transform="rotate(-15 450 312)"/>
+      <ellipse cx="500" cy="270" rx="12" ry="10"/>
+    </g>
+    <g fill="#ffffff" opacity="0.3"><circle cx="405" cy="84" r="4"/><circle cx="486" cy="114" r="3.5"/><circle cx="296" cy="166" r="4"/><circle cx="516" cy="202" r="4"/></g>
+    <!-- carinha -->
+    <g transform="translate(400 206)">
+      <path d="M-62 -34 l22 14 -22 14 M62 -34 l-22 14 22 14" fill="none" stroke="#2b1747" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="-82" cy="10" rx="20" ry="12" fill="#ff6f9f" opacity="0.55"/>
+      <ellipse cx="82" cy="10" rx="20" ry="12" fill="#ff6f9f" opacity="0.55"/>
+      <path d="M-34 6 Q0 62 34 6 Z" fill="#2b1747" stroke="#2b1747" stroke-width="5" stroke-linejoin="round"/>
+      <ellipse cx="0" cy="30" rx="14" ry="8" fill="#ff7a9a"/>
+    </g>
+  </g>
+  <!-- mãozinha clicando -->
+  <g transform="translate(545 270) rotate(-25)" stroke="#2b1747" stroke-width="6" stroke-linejoin="round">
+    <rect x="-14" y="-62" width="28" height="70" rx="14" fill="#ffffff"/>
+    <rect x="-30" y="-10" width="76" height="66" rx="24" fill="#ffffff"/>
+    <path d="M16 -6 v20 M32 -2 v18" fill="none" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g stroke="#2b1747" stroke-width="5" stroke-linecap="round">
+    <path d="M500 214 l-14 -14 M520 202 l-4 -20 M482 238 l-20 -2"/>
+  </g>
+  <!-- +1 -->
+  <text x="600" y="118" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="44" fill="#ffffff" stroke="#2b1747" stroke-width="10" stroke-linejoin="round" paint-order="stroke" transform="rotate(12 600 118)">+1</text>
+  <text x="214" y="150" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="34" fill="#ffd23f" stroke="#2b1747" stroke-width="9" stroke-linejoin="round" paint-order="stroke" transform="rotate(-12 214 150)">+1</text>
+  <!-- título -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle">
+    <text x="405" y="413" font-size="62" fill="#2b1747">BISCOITO</text>
+    <text x="405" y="477" font-size="50" fill="#2b1747">GIGANTE</text>
+    <text x="400" y="406" font-size="62" fill="#ffd23f" stroke="#2b1747" stroke-width="14" stroke-linejoin="round" paint-order="stroke">BISCOITO</text>
+    <text x="400" y="470" font-size="50" fill="#ffffff" stroke="#2b1747" stroke-width="12" stroke-linejoin="round" paint-order="stroke">GIGANTE</text>
+  </g>
+</svg>

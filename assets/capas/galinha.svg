@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff8a3d"/><stop offset="0.6" stop-color="#ffc85a"/><stop offset="1" stop-color="#fff0a0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#ceu)"/>
+  <circle cx="400" cy="250" r="170" fill="#fff6c8" opacity="0.6"/>
+  <path d="M0 330 Q150 280 300 320 T600 300 T800 310 V500 H0Z" fill="#8fdc6a"/>
+  <!-- celeiro -->
+  <g transform="translate(110 250)">
+    <path d="M-10 0 L50 -50 L110 0Z" fill="#b8352f" stroke="#2b1747" stroke-width="5" stroke-linejoin="round"/>
+    <rect x="0" y="0" width="100" height="80" fill="#e8524a" stroke="#2b1747" stroke-width="5"/>
+    <rect x="32" y="30" width="36" height="50" fill="#fff" stroke="#2b1747" stroke-width="4"/>
+    <path d="M32 30 L68 80 M68 30 L32 80" stroke="#e8524a" stroke-width="5"/>
+  </g>
+  <rect x="0" y="390" width="800" height="18" fill="#5cc24a"/>
+  <rect x="0" y="408" width="800" height="92" fill="#d9a866"/>
+  <g fill="#c48f4f"><rect x="40" y="440" width="50" height="10" rx="5"/><rect x="200" y="460" width="40" height="9" rx="4"/><rect x="380" y="440" width="50" height="10" rx="5"/><rect x="560" y="462" width="40" height="9" rx="4"/><rect x="700" y="440" width="50" height="10" rx="5"/></g>
+  <!-- linhas de velocidade -->
+  <g stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.85">
+    <path d="M190 280 H250"/><path d="M175 320 H240"/><path d="M200 360 H255"/>
+  </g>
+  <!-- cerca -->
+  <g transform="translate(520 300)" stroke="#2b1747" stroke-width="5" stroke-linejoin="round">
+    <rect x="0" y="30" width="130" height="18" rx="4" fill="#c47a3a"/>
+    <rect x="0" y="66" width="130" height="18" rx="4" fill="#c47a3a"/>
+    <path d="M0 100 V12 L11 0 22 12 V100Z" fill="#e09a55"/>
+    <path d="M54 100 V12 L65 0 76 12 V100Z" fill="#e09a55"/>
+    <path d="M108 100 V12 L119 0 130 12 V100Z" fill="#e09a55"/>
+  </g>
+  <!-- balde -->
+  <g transform="translate(640 330)" stroke="#2b1747" stroke-width="5" stroke-linejoin="round">
+    <path d="M4 0 H66 L58 70 H12Z" fill="#3ec1ff"/>
+    <rect x="-2" y="-8" width="74" height="12" rx="5" fill="#d7dbe6"/>
+  </g>
+  <!-- galinha pulando -->
+  <g transform="translate(405 330) rotate(-8) scale(0.85)" stroke="#2b1747" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M-30 30 L-45 80 L-30 80 M20 30 L30 78 L48 78" fill="none" stroke="#ff9a1f" stroke-width="10"/>
+    <path d="M-95 -50 L-140 -110 L-125 -70 L-150 -80 L-100 -10Z" fill="#fff" stroke-width="7"/>
+    <ellipse cx="-10" cy="-10" rx="100" ry="78" fill="#ffffff" stroke-width="8"/>
+    <circle cx="60" cy="-95" r="58" fill="#ffffff" stroke-width="8"/>
+    <g fill="#ff3b4f" stroke-width="6"><circle cx="35" cy="-152" r="20"/><circle cx="64" cy="-162" r="24"/><circle cx="92" cy="-148" r="18"/></g>
+    <circle cx="60" cy="-95" r="54" fill="#ffffff" stroke="none"/>
+    <path d="M108 -110 L158 -92 L108 -72Z" fill="#ffb21f" stroke-width="6"/>
+    <ellipse cx="108" cy="-55" rx="14" ry="20" fill="#ff3b4f" stroke-width="5"/>
+    <circle cx="78" cy="-108" r="22" fill="#fff" stroke-width="5"/>
+    <circle cx="84" cy="-106" r="13" fill="#2b1747" stroke="none"/>
+    <circle cx="79" cy="-112" r="5" fill="#fff" stroke="none"/>
+    <ellipse cx="55" cy="-72" rx="16" ry="10" fill="#ff7fa8" opacity="0.7" stroke="none"/>
+    <ellipse cx="-30" cy="-25" rx="60" ry="34" transform="rotate(-25 -30 -25)" fill="#f1ece4" stroke-width="7"/>
+  </g>
+  <!-- poeira -->
+  <g fill="#ffffff" opacity="0.9"><circle cx="300" cy="400" r="14"/><circle cx="275" cy="392" r="10"/><circle cx="255" cy="402" r="7"/></g>
+  <!-- título -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle" stroke="#2b1747" stroke-linejoin="round" paint-order="stroke">
+    <text x="400" y="78" font-size="58" fill="#ffffff" stroke-width="14">CORRE</text>
+    <text x="400" y="148" font-size="74" fill="#ffd23a" stroke-width="16">GALINHA!</text>
+  </g>
+</svg>

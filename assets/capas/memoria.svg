@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff6fc4"/>
+      <stop offset=".55" stop-color="#ff8f8a"/>
+      <stop offset="1" stop-color="#ffcf5a"/>
+    </linearGradient>
+    <radialGradient id="luz" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="verso" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a5cff"/>
+      <stop offset="1" stop-color="#4a2fd0"/>
+    </linearGradient>
+    <pattern id="losango" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="28" height="28" fill="url(#verso)"/>
+      <rect width="14" height="14" fill="#fff" opacity=".12"/>
+      <rect x="14" y="14" width="14" height="14" fill="#fff" opacity=".12"/>
+    </pattern>
+    <linearGradient id="frente" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff1df"/>
+    </linearGradient>
+    <radialGradient id="estrela" cx=".4" cy=".3" r=".8">
+      <stop offset="0" stop-color="#fff7a0"/>
+      <stop offset=".6" stop-color="#ffcf2a"/>
+      <stop offset="1" stop-color="#ff9a1f"/>
+    </radialGradient>
+    <filter id="sombra" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="9" flood-color="#6a0a4a" flood-opacity=".35"/>
+    </filter>
+    <g id="estrelinha">
+      <path d="M0 -62 L18 -22 L62 -18 L28 10 L38 54 L0 32 L-38 54 L-28 10 L-62 -18 L-18 -22Z" fill="url(#estrela)" stroke="#3a1040" stroke-width="7" stroke-linejoin="round"/>
+      <ellipse cx="-14" cy="-6" rx="7" ry="9" fill="#3a1040"/>
+      <ellipse cx="14" cy="-6" rx="7" ry="9" fill="#3a1040"/>
+      <circle cx="-11" cy="-9" r="3" fill="#fff"/>
+      <circle cx="17" cy="-9" r="3" fill="#fff"/>
+      <path d="M-10 12 Q0 22 10 12" fill="none" stroke="#3a1040" stroke-width="5" stroke-linecap="round"/>
+      <ellipse cx="-26" cy="8" rx="7" ry="4" fill="#ff6b8a" opacity=".6"/>
+      <ellipse cx="26" cy="8" rx="7" ry="4" fill="#ff6b8a" opacity=".6"/>
+    </g>
+    <g id="carta-verso">
+      <rect x="-85" y="-115" width="170" height="230" rx="22" fill="url(#losango)" stroke="#2a1060" stroke-width="8"/>
+      <rect x="-68" y="-98" width="136" height="196" rx="14" fill="none" stroke="#fff" stroke-width="4" opacity=".5"/>
+      <circle r="30" fill="#ffcf2a" stroke="#2a1060" stroke-width="6"/>
+      <text y="16" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="44" fill="#2a1060">?</text>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fundo)"/>
+  <circle cx="400" cy="200" r="260" fill="url(#luz)"/>
+
+  <!-- cartas nas laterais -->
+  <g filter="url(#sombra)">
+    <use href="#carta-verso" transform="translate(70 120) rotate(-18) scale(.7)"/>
+    <use href="#carta-verso" transform="translate(735 360) rotate(16) scale(.7)"/>
+    <use href="#carta-verso" transform="translate(720 90) rotate(12) scale(.55)"/>
+    <use href="#carta-verso" transform="translate(85 390) rotate(-10) scale(.55)"/>
+  </g>
+
+  <!-- trio central -->
+  <g filter="url(#sombra)">
+    <!-- verso, esquerda -->
+    <use href="#carta-verso" transform="translate(250 200) rotate(-16) scale(.88)"/>
+    <!-- par encontrado, direita -->
+    <g transform="translate(552 200) rotate(16) scale(.88)">
+      <rect x="-85" y="-115" width="170" height="230" rx="22" fill="url(#frente)" stroke="#3a1040" stroke-width="8"/>
+      <use href="#estrelinha" transform="scale(.95)"/>
+    </g>
+    <!-- carta heroi -->
+    <g transform="translate(400 190) rotate(-3)">
+      <rect x="-100" y="-135" width="200" height="270" rx="26" fill="url(#frente)" stroke="#3a1040" stroke-width="9"/>
+      <rect x="-82" y="-117" width="164" height="234" rx="16" fill="none" stroke="#ffb0d0" stroke-width="5"/>
+      <use href="#estrelinha" transform="scale(1.4)"/>
+      <path d="M-70 -100 Q-70 -110 -58 -110 H10" stroke="#fff" stroke-width="10" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+
+  <!-- brilhos de acerto -->
+  <g fill="#fff" stroke="#3a1040" stroke-width="4" stroke-linejoin="round">
+    <path d="M600 60 l8 20 20 8 -20 8 -8 20 -8 -20 -20 -8 20 -8z" fill="#fff36a"/>
+    <path d="M190 60 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6z"/>
+    <path d="M622 300 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6z"/>
+  </g>
+  <g fill="#fff" opacity=".9">
+    <circle cx="175" cy="300" r="7"/><circle cx="640" cy="160" r="6"/><circle cx="330" cy="30" r="5"/>
+  </g>
+
+  <!-- titulo -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" text-anchor="middle" stroke-linejoin="round" paint-order="stroke">
+    <text x="400" y="390" font-size="50" textLength="200" lengthAdjust="spacingAndGlyphs" fill="#4a0a40" stroke="#4a0a40" stroke-width="14">Jogo da</text>
+    <text x="400" y="383" font-size="50" textLength="200" lengthAdjust="spacingAndGlyphs" fill="#fff" stroke="#4a0a40" stroke-width="12">Jogo da</text>
+    <text x="400" y="475" font-size="88" textLength="400" lengthAdjust="spacingAndGlyphs" fill="#4a0a40" stroke="#4a0a40" stroke-width="18">Memória</text>
+    <text x="400" y="466" font-size="88" textLength="400" lengthAdjust="spacingAndGlyphs" fill="#fff" stroke="#4a0a40" stroke-width="16">Memória</text>
+  </g>
+</svg>

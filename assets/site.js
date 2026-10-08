@@ -7,12 +7,25 @@
   const ICONES = "assets/icones.svg";
   const CHAVE_RECENTES = "karma:recentes";
   const DIAS_NOVO = 30;
+  const PAGINA_JOGO = document.body.dataset.pagina === "jogar";
+
+  // Ícone e cor de cada categoria. Categoria nova sem entrada usa o controle e o verde da marca.
+  const CATEGORIA = {
+    "Ação": { icone: "sword", cor: "#ff8a65" },
+    "Arcade": { icone: "joystick", cor: "#ffd54f" },
+    "Clássicos": { icone: "crown", cor: "#b39ddb" },
+    "Quebra-cabeça": { icone: "puzzle", cor: "#81d4fa" },
+    "Esporte": { icone: "ball", cor: "#a5d6a7" },
+    "Casual": { icone: "heart", cor: "#f48fb1" },
+    "Tabuleiro": { icone: "grid", cor: "#ffab91" },
+  };
 
   // ---------- utilidades ----------
   const $ = (sel) => document.querySelector(sel);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const icone = (nome) => `<svg class="icon" aria-hidden="true"><use href="${ICONES}#i-${nome}"/></svg>`;
   const normalizar = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const plural = (n) => `${n} ${n === 1 ? "jogo" : "jogos"}`;
 
   const capaDe = (j) => j.capa || `assets/capas/${j.slug}.webp`;
   const urlDoJogo = (j) => j.url || `jogos/${j.slug}/`;
@@ -25,6 +38,7 @@
   };
   const poucosNovos = JOGOS.filter(recemChegado).length <= JOGOS.length / 2;
   const ehNovo = (j) => poucosNovos && recemChegado(j);
+  const categorias = [...new Set(JOGOS.map((j) => j.categoria).filter(Boolean))];
 
   function ler(chave, padrao) {
     try { const v = localStorage.getItem(chave); return v ? JSON.parse(v) : padrao; } catch { return padrao; }
@@ -32,6 +46,7 @@
   function gravar(chave, valor) {
     try { localStorage.setItem(chave, JSON.stringify(valor)); } catch { /* sem armazenamento, tudo bem */ }
   }
+  const slugsRecentes = () => ler(CHAVE_RECENTES, []);
 
   // Imagem de capa. Se o arquivo não existir, troca por um ícone.
   function imgCapa(j, extra = "") {
@@ -46,152 +61,160 @@
     img.replaceWith(vazio);
   }, true);
 
-  function card(j) {
+  // ---------- blocos do mural ----------
+  // tam: 1 (quadradinho), 2 (2x2) ou 3 (3x3)
+  function tile(j, tam = 1) {
+    const jogado = slugsRecentes().includes(j.slug);
+    const selo = jogado ? `<span class="selo" title="Você já jogou">${icone("arrow-clockwise")}</span>`
+      : ehNovo(j) ? `<span class="selo selo-novo">NOVO</span>`
+      : j.autoral ? `<span class="selo selo-karma" title="Feito aqui na Karma">${icone("star")}</span>` : "";
     return `
-      <a class="card" href="${linkDoJogo(j)}">
-        <div class="card-capa">
-          ${ehNovo(j) ? '<span class="selo">Novo</span>' : ""}
-          ${imgCapa(j)}
-          <span class="bolha-play">${icone("play")}</span>
-        </div>
-        <div>
-          <h3>${esc(j.titulo)}</h3>
-          <div class="card-meta">${esc(j.categoria || "Jogo")}</div>
-        </div>
+      <a class="tile t${tam}" href="${linkDoJogo(j)}" aria-label="${esc(j.titulo)}" title="${esc(j.titulo)}">
+        ${selo}
+        ${imgCapa(j, tam === 3 ? 'fetchpriority="high" loading="eager"' : "")}
+        <span class="tile-nome">${esc(j.titulo)}</span>
       </a>`;
   }
 
-  // ---------- página inicial ----------
-  function paginaInicial() {
-    const destaque = JOGOS.find((j) => j.destaque) || JOGOS[0];
-
-    if (destaque) {
-      $("#destaque").innerHTML = `
-        <div class="wrap">
-          <div>
-            <h1 class="entra">Jogos grátis, <em>direto</em> no navegador.</h1>
-            <p class="entra entra-2">Sem download e sem cadastro. Escolha um jogo e comece agora, no computador ou no celular.</p>
-            <div class="destaque-acoes entra entra-3">
-              <a class="btn btn-primario" href="${linkDoJogo(destaque)}">${icone("play")} Jogar ${esc(destaque.titulo)}</a>
-              <a class="btn btn-fantasma" href="#catalogo">Ver catálogo</a>
-            </div>
-          </div>
-          <a class="destaque-capa entra entra-2" href="${linkDoJogo(destaque)}" aria-label="Jogar ${esc(destaque.titulo)}">
-            ${imgCapa(destaque, 'fetchpriority="high" loading="eager"')}
-            <span class="destaque-legenda">
-              <span><strong>${esc(destaque.titulo)}</strong><span>${esc(destaque.descricao || "")}</span></span>
-              <span class="bolha-play">${icone("play")}</span>
-            </span>
-          </a>
-        </div>`;
-    }
-
-    // Continue jogando
-    const recentes = ler(CHAVE_RECENTES, [])
-      .map((slug) => JOGOS.find((j) => j.slug === slug))
-      .filter(Boolean)
-      .slice(0, 8);
-    if (recentes.length) {
-      $("#recentes").innerHTML = recentes.map((j) => `
-        <a class="recente" href="${linkDoJogo(j)}">${imgCapa(j)}<span>${esc(j.titulo)}</span></a>`).join("");
-      $("#secao-recentes").hidden = false;
-    }
-
-    // Filtros e busca
-    const categorias = ["Todos", ...new Set(JOGOS.map((j) => j.categoria).filter(Boolean))];
-    let categoria = "Todos";
-    let termo = "";
-
-    const filtros = $("#filtros");
-    filtros.innerHTML = categorias.map((c) =>
-      `<button class="filtro" type="button" data-cat="${esc(c)}" aria-pressed="${c === categoria}">${esc(c)}</button>`).join("");
-    filtros.addEventListener("click", (e) => {
-      const b = e.target.closest(".filtro");
-      if (!b) return;
-      categoria = b.dataset.cat;
-      filtros.querySelectorAll(".filtro").forEach((f) => f.setAttribute("aria-pressed", f === b));
-      desenharGrade();
-    });
-
-    const busca = $("#busca");
-    busca.addEventListener("input", () => {
-      termo = normalizar(busca.value.trim());
-      desenharGrade();
-    });
-    busca.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
-    });
-
-    function desenharGrade() {
-      const lista = JOGOS.filter((j) =>
-        (categoria === "Todos" || j.categoria === categoria) &&
-        (!termo || normalizar(`${j.titulo} ${j.descricao} ${j.categoria}`).includes(termo)));
-
-      $("#titulo-catalogo").textContent = termo ? "Resultados da busca" : categoria === "Todos" ? "Todos os jogos" : categoria;
-      $("#contagem").textContent = `${lista.length} ${lista.length === 1 ? "jogo" : "jogos"}`;
-      $("#grade").innerHTML = lista.length
-        ? lista.map(card).join("")
-        : `<div class="vazio"><strong>Nenhum jogo encontrado</strong>Tente outra palavra ou veja todas as categorias.
-             <br><button class="btn btn-fantasma" type="button" id="limpar">Limpar busca</button></div>`;
-
-      const limpar = $("#limpar");
-      if (limpar) limpar.addEventListener("click", () => {
-        busca.value = ""; termo = ""; categoria = "Todos";
-        filtros.querySelectorAll(".filtro").forEach((f) => f.setAttribute("aria-pressed", f.dataset.cat === "Todos"));
-        desenharGrade();
-        busca.focus();
-      });
-    }
-    desenharGrade();
-
-    // Feitos aqui (jogos próprios) e Em breve
-    const autorais = JOGOS.filter((j) => j.autoral);
-    let html = "";
-    if (autorais.length) {
-      html += `<div class="secao-topo"><h2 id="titulo-feitos">Feitos aqui</h2></div><div class="grade">${autorais.map(card).join("")}</div>`;
-    }
-    if (EM_BREVE.length) {
-      html += `<div class="secao-topo${autorais.length ? " secao-topo-espaco" : ""}"><h2 ${autorais.length ? "" : 'id="titulo-feitos"'}>Em breve</h2></div>
-        <div class="breve-lista">${EM_BREVE.map(cardEmBreve).join("")}</div>`;
-    }
-    if (!html) {
-      html = `<div class="feitos">
-           <span class="feitos-simbolo">${icone("game-controller")}</span>
-           <div>
-             <h2 id="titulo-feitos">Jogos feitos aqui, em breve</h2>
-             <p>Estamos criando jogos próprios da Karma. Quando ficarem prontos, eles aparecem primeiro nesta seção.</p>
-           </div>
-         </div>`;
-    }
-    $("#feitos").innerHTML = html;
+  function tileEmBreve(j) {
+    return `
+      <div class="tile t2 breve" title="${esc(j.titulo)}: em breve">
+        ${imgCapa(j)}
+        <span class="tile-nome">${esc(j.titulo)}</span>
+      </div>`;
   }
 
-  function cardEmBreve(j) {
-    return `
-      <article class="breve">
-        <div class="breve-capa">${imgCapa(j)}</div>
-        <div class="breve-texto">
-          <h3>${esc(j.titulo)}</h3>
-          <div class="card-meta">${esc(j.categoria || "Jogo")}${j.autoral ? " · Feito aqui na Karma" : ""}</div>
-          <p>${esc(j.descricao || "")}</p>
-        </div>
-      </article>`;
+  function tileTitulo(titulo, sub) {
+    return `<div class="tile tile-titulo"><h1>${esc(titulo)}</h1>${sub ? `<span>${esc(sub)}</span>` : ""}</div>`;
+  }
+
+  // Todos os jogos do mural têm o mesmo tamanho (2x2), numa grade certinha.
+  const TAM = 2;
+
+  // Jogos que você já abriu vêm primeiro, depois o resto na ordem do catálogo.
+  function ordenados(lista) {
+    const vistos = slugsRecentes();
+    const pos = (j) => { const p = vistos.indexOf(j.slug); return p < 0 ? Infinity : p; };
+    return [...lista].sort((a, b) => pos(a) - pos(b));
+  }
+
+  // ---------- lateral: marca, busca e "Todos os jogos" com filtros ----------
+  function lateral(atual) {
+    const base = PAGINA_JOGO ? "./" : "";
+    const filtro = (rota, nome, ic, cor, num, ativo) => `
+      <a class="filtro" href="${base}${rota || "./"}" style="--cor:${cor}"${ativo ? ' aria-current="page"' : ""}>
+        <span class="filtro-icone">${icone(ic)}</span><span>${esc(nome)}</span><span class="num">${num}</span>
+      </a>`;
+    $("#lateral").innerHTML = `
+      <a class="marca" href="./" aria-label="Karma Games, página inicial">
+        <img class="marca-simbolo" src="assets/marca.svg" alt=""><span>karma<b>games</b></span>
+      </a>
+      <button class="lateral-busca" type="button" id="btn-buscar">
+        ${icone("magnifying-glass")}<span>Buscar jogo</span><kbd>/</kbd>
+      </button>
+      <h2>Todos os jogos</h2>
+      <nav class="filtros" aria-label="Categorias">
+        ${filtro("", "Todos", "grid", "#c8f13a", JOGOS.length, !atual && !PAGINA_JOGO)}
+        ${categorias.map((c) => {
+          const info = CATEGORIA[c] || { icone: "game-controller", cor: "#c8f13a" };
+          return filtro(`#c=${encodeURIComponent(c)}`, c, info.icone, info.cor, JOGOS.filter((j) => j.categoria === c).length, c === atual);
+        }).join("")}
+      </nav>
+      <button class="lateral-sorte" type="button" id="btn-aleatorio">${icone("dice")} Jogo aleatório</button>
+      <p class="lateral-rodape">Todos grátis, direto no navegador. Sem download, sem cadastro.</p>`;
+    ligarLogo();
+  }
+
+  // ---------- botões do logo e busca ----------
+  function ligarLogo() {
+    $("#btn-aleatorio").addEventListener("click", () => {
+      const atual = new URLSearchParams(location.search).get("j");
+      const opcoes = JOGOS.filter((j) => j.slug !== atual);
+      if (opcoes.length) location.href = linkDoJogo(opcoes[Math.floor(Math.random() * opcoes.length)]);
+    });
+    $("#btn-buscar").addEventListener("click", abrirBusca);
+  }
+
+  const painel = $("#busca-painel");
+  const busca = $("#busca");
+  function desenharBusca() {
+    const termo = normalizar(busca.value.trim());
+    const lista = termo
+      ? JOGOS.filter((j) => normalizar(`${j.titulo} ${j.descricao} ${j.categoria}`).includes(termo))
+      : JOGOS;
+    $("#busca-resultados").innerHTML = lista.length
+      ? lista.map((j) => tile(j, TAM)).join("")
+      : `<div class="vazio"><strong>Nenhum jogo encontrado</strong>Tente outra palavra.</div>`;
+  }
+  function abrirBusca() {
+    painel.hidden = false;
+    document.body.style.overflow = "hidden";
+    desenharBusca();
+    busca.focus();
+  }
+  function fecharBusca() {
+    painel.hidden = true;
+    document.body.style.overflow = "";
+  }
+  busca.addEventListener("input", desenharBusca);
+  $("#busca-fechar").addEventListener("click", fecharBusca);
+  painel.addEventListener("click", (e) => { if (e.target === painel || e.target.id === "busca-resultados") fecharBusca(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !painel.hidden) fecharBusca();
+    // "/" abre a busca, como em muitos sites
+    if (e.key === "/" && painel.hidden && document.activeElement === document.body) { e.preventDefault(); abrirBusca(); }
+  });
+
+  // ---------- página inicial ----------
+  function paginaInicial() {
+    const mural = $("#mural");
+
+    function desenhar() {
+      const rota = decodeURIComponent(location.hash);
+      let html = "";
+
+      if (rota.startsWith("#c=")) {
+        const c = rota.slice(3);
+        const daqui = JOGOS.filter((j) => j.categoria === c);
+        const outros = JOGOS.filter((j) => j.categoria !== c);
+        document.title = `Jogos de ${c} · Karma Games`;
+        html += tileTitulo(c, plural(daqui.length));
+        html += ordenados(daqui).map((j) => tile(j, TAM)).join("");
+        html += ordenados(outros).map((j) => tile(j, TAM)).join("");
+        lateral(c);
+      } else {
+        document.title = "Karma Games · Jogos grátis no navegador";
+        html += ordenados(JOGOS).map((j, i) => tile(j, TAM)).join("");
+        html += EM_BREVE.map(tileEmBreve).join("");
+        lateral(null);
+      }
+
+      mural.innerHTML = html;
+    }
+
+    window.addEventListener("hashchange", () => { desenhar(); window.scrollTo({ top: 0 }); });
+    desenhar();
+
+    // Busca vinda de outro lugar (./?q=...)
+    const q = new URLSearchParams(location.search).get("q");
+    if (q) { busca.value = q; abrirBusca(); }
   }
 
   // ---------- página do jogo ----------
   function paginaJogo() {
     const slug = new URLSearchParams(location.search).get("j");
     const jogo = JOGOS.find((j) => j.slug === slug);
+    const mural = $("#mural");
 
     if (!jogo) {
       document.title = "Jogo não encontrado · Karma Games";
-      $("#jogo-nome").textContent = "Jogo não encontrado";
-      $("#conteudo").innerHTML = `
-        <div class="wrap erro">
+      mural.innerHTML = `
+        <div class="erro">
           <h1>Esse jogo não está aqui.</h1>
           <p>O endereço pode estar errado ou o jogo saiu do catálogo.</p>
-          <a class="btn btn-primario" href="./">Ver todos os jogos</a>
+          <p><a class="btn-texto" href="./">Ver todos os jogos</a></p>
         </div>`;
+      lateral(null);
       return;
     }
 
@@ -201,6 +224,15 @@
     $("#jogo-nome").textContent = jogo.titulo;
     $("#jogo-categoria").textContent = jogo.categoria || "";
     $("#jogo-acoes").hidden = false;
+
+    // Os outros jogos ficam em volta do palco, como no Poki.
+    const outros = JOGOS.filter((j) => j.slug !== jogo.slug);
+    const mesmos = outros.filter((j) => j.categoria === jogo.categoria);
+    const resto = outros.filter((j) => j.categoria !== jogo.categoria);
+    mural.insertAdjacentHTML("beforeend",
+      [...mesmos, ...resto].map((j, i) => tile(j, TAM)).join("") +
+      EM_BREVE.map(tileEmBreve).join(""));
+    lateral(jogo.categoria);
 
     const palco = $("#palco");
     const frame = document.createElement("iframe");
@@ -219,24 +251,19 @@
       frame.src = urlDoJogo(jogo);
     });
     $("#btn-tela-cheia").addEventListener("click", () => {
-      const alvo = palco;
       if (document.fullscreenElement) document.exitFullscreen();
-      else if (alvo.requestFullscreen) alvo.requestFullscreen().catch(() => {});
-      else if (alvo.webkitRequestFullscreen) alvo.webkitRequestFullscreen();
+      else if (palco.requestFullscreen) palco.requestFullscreen().catch(() => {});
+      else if (palco.webkitRequestFullscreen) palco.webkitRequestFullscreen();
     });
 
     $("#jogo-info").innerHTML = `
+      <h2>${esc(jogo.titulo)}</h2>
       <p>${esc(jogo.descricao || "")}</p>
       ${jogo.controles ? `<div class="controles">${icone("game-controller")}<span>${esc(jogo.controles)}</span></div>` : ""}`;
 
-    const outros = JOGOS.filter((j) => j.slug !== jogo.slug);
-    const mesmos = outros.filter((j) => j.categoria === jogo.categoria);
-    const resto = outros.filter((j) => j.categoria !== jogo.categoria);
-    $("#mais").innerHTML = [...mesmos, ...resto].slice(0, 4).map(card).join("");
-
-    gravar(CHAVE_RECENTES, [jogo.slug, ...ler(CHAVE_RECENTES, []).filter((s) => s !== jogo.slug)].slice(0, 12));
+    gravar(CHAVE_RECENTES, [jogo.slug, ...slugsRecentes().filter((s) => s !== jogo.slug)].slice(0, 16));
   }
 
-  if (document.body.dataset.pagina === "jogar") paginaJogo();
+  if (PAGINA_JOGO) paginaJogo();
   else paginaInicial();
 })();

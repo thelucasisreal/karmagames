@@ -5,54 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Jogar · Karma Games</title>
   <meta name="description" content="Jogue grátis direto no navegador na Karma Games.">
-  <meta name="theme-color" content="#0d0e12">
+  <meta name="theme-color" content="#62d9cf">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css">
+  <link rel="stylesheet" href="assets/site.css?v=20261008">
 </head>
 <body data-pagina="jogar">
-  <header class="topo jogo-barra">
-    <div class="wrap">
-      <a class="btn btn-fantasma btn-icone" href="./" aria-label="Voltar para o catálogo">
-        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrow-left"/></svg>
-      </a>
-      <div class="jogo-titulo">
-        <h1 id="jogo-nome">Carregando</h1>
-        <span id="jogo-categoria"></span>
-      </div>
-      <div class="jogo-acoes" id="jogo-acoes" hidden>
-        <button class="btn btn-fantasma btn-icone" id="btn-reiniciar" type="button" aria-label="Recomeçar o jogo" title="Recomeçar">
-          <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrow-clockwise"/></svg>
-        </button>
-        <button class="btn btn-fantasma btn-icone" id="btn-tela-cheia" type="button" aria-label="Tela cheia" title="Tela cheia">
-          <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrows-out"/></svg>
-        </button>
-      </div>
-    </div>
-  </header>
-
+  <div class="pagina">
+    <aside class="lateral" id="lateral" aria-label="Categorias"></aside>
   <main id="conteudo">
-    <div class="wrap palco-wrap">
-      <div class="palco" id="palco">
-        <div class="palco-carregando" id="carregando"><img class="marca-simbolo" src="assets/marca.svg" alt="Carregando jogo"></div>
-      </div>
+    <div class="mural" id="mural">
+      <section class="palco-celula" id="palco-celula">
+        <div class="palco" id="palco">
+          <div class="palco-carregando" id="carregando"><img class="marca-simbolo" src="assets/marca.svg" alt="Carregando jogo"></div>
+        </div>
+        <div class="jogo-barra">
+          <div class="jogo-titulo">
+            <h1 id="jogo-nome">Carregando</h1>
+            <span id="jogo-categoria"></span>
+          </div>
+          <div class="jogo-acoes" id="jogo-acoes" hidden>
+            <button class="btn-redondo" id="btn-reiniciar" type="button" aria-label="Recomeçar o jogo" title="Recomeçar">
+              <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrow-clockwise"/></svg>
+            </button>
+            <button class="btn-redondo" id="btn-tela-cheia" type="button" aria-label="Tela cheia" title="Tela cheia">
+              <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrows-out"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="wrap jogo-info" id="jogo-info"></div>
-    <section class="secao" aria-labelledby="titulo-mais">
-      <div class="wrap">
-        <div class="secao-topo"><h2 id="titulo-mais">Mais jogos</h2></div>
-        <div class="grade" id="mais"></div>
-      </div>
-    </section>
+    <div class="jogo-info" id="jogo-info"></div>
   </main>
+  </div>
+
+  <div class="busca-painel" id="busca-painel" hidden>
+    <div class="busca-topo">
+      <label class="busca">
+        <span class="sr-only">Buscar jogo</span>
+        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-magnifying-glass"/></svg>
+        <input id="busca" type="search" placeholder="O que você quer jogar?" autocomplete="off" enterkeyhint="search">
+      </label>
+      <button class="btn-redondo" id="busca-fechar" type="button" aria-label="Fechar busca">
+        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-x"/></svg>
+      </button>
+    </div>
+    <div class="mural" id="busca-resultados"></div>
+  </div>
 
   <footer class="rodape">
-    <div class="wrap">
-      <a class="marca" href="./"><img class="marca-simbolo" src="assets/marca.svg" alt=""><span>karma<b>games</b></span></a>
-      <span>Todos os jogos são grátis. Sem download, sem cadastro.</span>
-    </div>
+    <a class="marca" href="./"><img class="marca-simbolo" src="assets/marca.svg" alt=""><span>karma<b>games</b></span></a>
+    <span>Todos os jogos são grátis. Sem download, sem cadastro.</span>
   </footer>
 
-  <script src="jogos.js"></script>
-  <script src="assets/site.js"></script>
+  <script src="jogos.js?v=20261008"></script>
+  <script src="assets/site.js?v=20261008"></script>
 </body>
 </html>
