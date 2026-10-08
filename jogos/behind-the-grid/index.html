@@ -1894,7 +1894,7 @@ function zapMonth(first){
   ZC.forEach(function(d){
     if(!zapVisible(d.id))return;var C=S.zap.c[d.id],p=P0[d.id];
     if(first)p=d.id==="mae"||d.id==="bia"?1:d.id==="marca"?1:0;
-    if(d.type==="crush"){if(C.st>=1)p=.85;else if(S.date&&S.date!==d.id)p=.15}
+    if(d.type==="crush"){if(C.st>=1)p=.85;else if(S.date&&S.date!==d.id)p=.15;else if(S.crushFav===d.id)p=.8}
     if(d.id==="jorge"&&billLate("aluguel")>=1)p=1;
     if(Math.random()>p)return;
     if(C.pend){zapPush(d.id,{t:tpl(pick(NUDGE))});return}
@@ -1941,81 +1941,234 @@ function zapReply(id,tone){
   var a=applyD(dd);checkDeath();
   return {d:a,info:info};
 }
-// ---- ZapChat: mensagem livre (o jogador escreve o que quiser) ----
-function zapNorm(t){return (" "+String(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")+" ").replace(/\s+/g," ")}
-var ZW={
- bad:["idiota","burr","otari","lixo","odeio","cala a boca","cala boca","vai se ","vai tomar","foda","fdp","porra","caralh","merda","chato","chata","feio","feia","inutil","nojent","vtnc","vsf","pqp","desgrac","praga","imbecil","ridicul","vagabund","corno","besta","cuzao","arrombad","babaca","nao te aguento","me deixa em paz","nem ligo","tanto faz","sai fora","some daqui","morre","escroto","escrota","palhac","trouxa","mentiros","falso","falsa","interesseir","pao duro","golpista","ladrao","ladra","vai a merda","enche o saco","encher o saco","nao enche","bloquear","te bloque","nunca mais","que se dane","danem"],
- badE:["🖕","😡","🤬","💩","🙄","👎","😤"],
- good:["te amo","amo voce","amo vc","amo tu","obrigad","valeu","brigad","saudade","lindo","linda","lind","querid","carinho","abraco","beijo","bjs","parabens","orgulho","feliz","adoro","gosto","gostei","fofo","fofa","desculpa","perdao","foi mal","conta comigo","to aqui","estou aqui","se cuida","cuida","bom dia","boa noite","boa tarde","que bom","maravilh","incrivel","top","demais","amei","amo ","melhor","especial","sinto falta","te admiro","admiro","agradeco","gratidao","deus te abencoe","fica bem","tudo bem?","como voce ta","como vc ta","como voce esta","ajudar","ajudo","juntos","juntas","prometo","vou ai","visitar","almocar","jantar","cafe","ta tudo bem","tmj","te quero","❤","💛","💗","💖","💕","😍","🥰","🥹","😘","🙏","🤗","☺"],
- deb:["kkk","haha","hehe","rsrs","kkkk","ata","aham","ta bom entao","claro ne","sei sei","conta outra","oxe","vish","e dai","eh dai","😏","😂","🤣","🙃","😜","🤡","💅","👀"],
- prof:["proposta","contrato","valor","prazo","reuniao","combinado","entendido","agendar","orcamento","cache","pagamento","prezad","atenciosamente","cordialmente","conforme","nota fiscal","midia kit","briefing","entrega","parceria","negociar","desconto","parcelar","boleto","aluguel","recibo"]};
-function zapClassify(t){
-  var n=zapNorm(t),raw=String(t||""),sc={bad:0,good:0,deb:0,prof:0};
-  if(n.trim().length<2)return "vazio";
-  ZW.bad.forEach(function(w){if(n.indexOf(w)>=0)sc.bad+=2});
-  ZW.badE.forEach(function(w){if(raw.indexOf(w)>=0)sc.bad+=2});
-  ZW.good.forEach(function(w){if(n.indexOf(w)>=0||raw.indexOf(w)>=0){
-    // "nao te amo", "nao gosto"... vira negativo
-    var i=n.indexOf(w);if(i>=0&&/ (nao|nunca|jamais|nem) ([a-z]+ )?$/.test(n.slice(Math.max(0,i-14),i)))sc.bad+=2;else sc.good+=1.5}});
-  ZW.deb.forEach(function(w){if(n.indexOf(w)>=0||raw.indexOf(w)>=0)sc.deb+=1.5});
-  ZW.prof.forEach(function(w){if(n.indexOf(w)>=0)sc.prof+=1});
-  var letters=raw.replace(/[^A-Za-zÀ-ÿ]/g,"");
-  if(letters.length>=6&&letters===letters.toUpperCase()&&!/K{3,}/.test(letters))sc.bad+=1; // GRITANDO
-  if(/!{3,}/.test(raw)&&sc.good===0)sc.bad+=.5;
-  if(sc.bad>0&&sc.bad>=sc.good)return "bad";
-  if(sc.good>0&&sc.good>=sc.deb)return "good";
-  if(sc.deb>0)return "deb";
-  if(sc.prof>0)return "prof";
-  return "neutro";
-}
-// respostas na hora para mensagens livres (sem pergunta pendente)
-var ZF={
- fam:{good:["Ai que coisa boa de ler 🥹❤️","Você é o orgulho dessa casa 💗","Já printei e mandei pro grupo da família!","Deus te abençoe, meu amor 🙏"],neutro:["Tá bom, filh{a|o|e}. 👍","Recebido. Você tá bem mesmo?","Hum, ok. Liga pra gente qualquer dia."],deb:["kkkkk você não presta","Puxou a mim, esse humor 😂","Rindo aqui com seu pai"],prof:["Por que você tá falando igual gerente de banco?","Tá estranh{a|o|e}… aconteceu alguma coisa?"],bad:["Nossa. Não te criei pra falar assim comigo. 😔","Vou fingir que não li isso.","Tá bom. Quando quiser conversar direito, me liga.","🎤 Áudio 3:12 · (choro e sermão)"],vazio:["??","Oi? Mandou sem querer?"]},
- amiga:{good:["💛💛💛 eu sei que eu sou incrível","tô chorando aqui","melhor pessoa do mundo","AAAA para que eu fico sem graça"],neutro:["ok kkk","beleza","tá, e aí?","hm 👀 conta mais"],deb:["KKKKKKKKKK","eu te amo e te odeio","printei, vai pro grupo (brincadeira… ou não)"],prof:["virou empresa? 😐","ok, senhor{a||e} CEO 🙄"],bad:["Nossa. Do nada?","Tá. Vou lembrar disso.","Não precisava falar assim comigo. 😶","Uau. Fama subiu pra cabeça mesmo."],vazio:["???","digitou com o cotovelo?"]},
- crush:{good:["🥰","*digitando…* *digitando…* 💘","para que eu fico sem graça 🙈","vem cá então 😳"],neutro:["haha ok","e aí, tudo bem?","🙂"],deb:["KKKKK te odeio (mentira)","você não presta e eu gosto","sabia que você ia falar isso 😏"],prof:["a gente é colega de trabalho agora? 😕","ok… 🙂"],bad:["Uau. Ok então. Tchau.","Nem te conheço direito e você me fala isso?","Pode esquecer meu número.","🚫 Você foi bloquead{a|o|e}… (brincadeira. ou não.)"],vazio:["??","oi?"]},
- marca:{good:["Que fofura! 💖 Amamos sua energia.","Obrigada pelo carinho! Seguimos alinhados 🤝"],neutro:["Recebido! Retornamos em breve.","Anotado ✅"],deb:["Kkkk adoramos o humor! Mas vamos manter o profissionalismo, tá? 😅"],prof:["Perfeito. Seguimos com o combinado. 🤝","Recebido. Nosso time comercial vai analisar."],bad:["Lamentamos o tom da mensagem. Vamos encerrar a negociação.","Prezad{a|o|e}, não toleramos esse tipo de abordagem. Proposta cancelada."],vazio:["Olá! Podemos ajudar?"]},
- dono:{good:["Bom saber. Você é dos bons. 👍","Tá certo. Qualquer coisa me chama."],neutro:["Ok.","Certo. Aguardo."],deb:["Não achei graça.","Engraçadinh{a|o|e}. O aluguel também vai ser."],prof:["Certo. Se for sobre o aluguel, pode mandar o comprovante.","Ok. Combinado é combinado."],bad:["Vou lembrar disso no reajuste do aluguel.","Respeito é bom e eu gosto. Aluguel subiu.","Com esse tom, a gente conversa no contrato."],vazio:["?"]}
+// ---- ZapChat: mensagem livre com "cérebro" brasileiro (entende gíria, ironia, cantada e malícia) ----
+function zapNorm(t){return (" "+String(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+  .replace(/[.,!?;:()"“”…]+/g," ")
+  .replace(/\bvc\b|\bvoce\b|\bvcs\b/g,"voce").replace(/\btb\b|\btbm\b/g,"tambem").replace(/\bq\b/g,"que").replace(/\bpq\b/g,"porque")
+  .replace(/\bblz\b/g,"beleza").replace(/\bmsm\b/g,"mesmo").replace(/\bnd\b/g,"nada").replace(/\bmt\b|\bmto\b/g,"muito")
+  .replace(/\bn\b|\bnao\b|\bnn\b/g,"nao").replace(/\bs\b|\bss\b|\bsim\b/g,"sim").replace(/\bobg\b/g,"obrigado").replace(/\bmigx\b|\bmiga\b|\bamg\b/g,"amiga").replace(/\bmn\b|\bmano\b|\bmana\b/g,"mano")
+  +" ").replace(/\s+/g," ")}
+function zHas(n,raw,list){for(var i=0;i<list.length;i++){var w=list[i];if(w.charAt(0)==="/"){if(new RegExp(w.slice(1,-1)).test(n))return w}else if(n.indexOf(w)>=0||raw.indexOf(w)>=0)return w}return null}
+function zNeg(n,w){var i=n.indexOf(w);return i>0&&/ (nao|nunca|jamais|nem) ([a-z]+ ){0,2}$/.test(n.slice(Math.max(0,i-20),i))}
+var ZL={
+ xing:["idiota","burr","otari","lixo","imbecil","babaca","palhac","trouxa","escrot","nojent","ridicul","vagabund","corno","cuzao","arrombad","fdp","filho da puta","desgraca","praga","inutil","imprestavel","verme","miseravel","retardad","mongol","besta quadrada","mala sem alca","feio","feia","horroros","gord","baleia","otaria","pau no cu","viado","sapatao","/\\bputa\\b/","/\\bvsf\\b/","/\\bvtnc\\b/","/\\bpqp\\b/","/\\bporra\\b/","/\\bcaralho\\b/","/\\bmerda\\b/","/\\bfoda-?se\\b/","vai se ferrar","vai tomar","vai a merda","vai pro inferno","cala a boca","cala boca","te odeio","odeio voce","nao te aguento","me deixa em paz","some daqui","sai fora","/\\bmorre\\b/","vai morrer","enche o saco","encher o saco","que se dane","se lascar","se fode","/\\bchat[oa]\\b/","interesseir","falso","falsa","mentiros","golpista","ladra","ladrao","pao duro","mao de vaca","🖕","🤬","😡","💩"],
+ ironia:["parabens hein","nossa que legal","que legal ne","/\\bata\\b/","aham","sei sei","ta bom entao","claro ne","conta outra","me engana que eu gosto","/^ ok ?$/","/^ ta ?$/","jura","nossa que surpresa","uau que novidade","grande coisa","e dai","🙄","🙃","💅"],
+ risada:["kkk","haha","hahaha","rsrs","hehe","kkkk","askjask","sksk","😂","🤣","/\\bri muito\\b/"],
+ cumpr:["/^ (oi+e?|ola|eai|e ai|salve|opa|coe|iae|hey|fala ai|fala) /","bom dia","boa tarde","boa noite"],
+ tudoBem:["tudo bem","tudo bom","como voce esta","como estas","como esta","/(^| )e voce( |$)/","beleza?","suave?","de boa?","como foi","como vai","/\\bblz\\b/","como ce ta","como c ta"],
+ elogio:["lind","maravilh","incrivel","perfeit","/\\bgat[oa]s?\\b|\\bgatinh/","gostos","bonit","fofo","fofa","talentos","inteligente","engracad","arrasou","arrasa","brabo","braba","/\\bbrab[oa]\\b/","/\\bmonstr[oa]\\b/","top demais","sensacional","diva","rainha","rei ","orgulho","admiro","te admiro","cheiros","charmos","sorriso","olhos","estilo","📸","😍","🤩","✨","🔥"],
+ carinho:["obrigad","valeu","agradeco","gratidao","brigad","te amo","amo voce","amo vc","amo tu","te adoro","adoro voce","saudade","sinto falta","carinho","abraco","beijo","bjs","bjo","cheiro","se cuida","cuida de voce","conta comigo","estou aqui","to aqui","to contigo","fica bem","deus te abencoe","❤","💛","💗","💖","💕","🥰","🥹","😘","🤗","🙏"],
+ declara:["te amo","gosto de voce","to gostando de voce","gostei de voce","gosto muito de voce","/\\bgosto de voce\\b/","estou gostando de voce","apaixonad","/\\bcrush\\b/","quero namorar","namora comigo","quer namorar","quer ficar comigo","ficar com voce","penso em voce","nao paro de pensar","meu coracao","💘","💞"],
+ cantada:["gostos","/\\bgat[oa]s?\\b|\\bgatinh/","delicia","vem ca","/\\bgata\\b/","/\\bgato\\b/","/\\bmozao\\b/","/\\bmozinho\\b/","que boca","que corpo","que olhar","sorriso lindo","to afim","estou afim","afim de voce","a fim de voce","me liga","quero te ver","te pegar","beijar voce","te beijar","um beijo seu","seu beijo","manda foto","manda uma foto","foto sua","dormir junto","de conchinha","😏","😘","🔥","😍","🫦","😈"],
+ malicia:["nude","nudes","pelad","sem roupa","tira a roupa","manda foto pelad","/\\bsexo\\b/","transar","/\\bfoder\\b/","/\\bcama comigo\\b/","safad","putaria","sacanagem","/\\bpeit[oa]/","bunda","/\\bpau\\b/","/\\bpinto\\b/","/\\bxereca\\b/","/\\bppk\\b/","/\\bpika\\b/","gemer","gemido","motel","🍆","🍑","💦","👅"],
+ convite:["bora","/\\bvamos\\b/","vambora","partiu","quer ir","quer sair","/\\bvamo\\b/","/\\brole\\b/","rolê","/\\bdate\\b/","encontro","quer vir","colar aqui","cola aqui","passa aqui","te busco","te pego","quer jantar","quer almocar","quer tomar","topa ir","topa um","bora jogar","/\\bduo\\b/"],
+ sim:["/^ (sim|claro|bora|fechou|fechado|pode ser|com certeza|demorou|partiu|topo|to dentro|bora sim|claro que sim|uhum|aham|isso|vamos|vamo|siiim|simmm|quero|quero sim) /","/\\b(fechou|demorou|bora|topo|to dentro|com certeza|pode ser|claro que sim)\\b/"],
+ nao:["/^ (nao|nem|nunca|negativo|deixa|deixa pra la|outro dia|hoje nao|nao rola|nao da|nao posso|nao quero) /","nao rola","nao vai dar","nao posso","nao da","hoje nao"],
+ desculpa:["desculpa","desculpe","perdao","foi mal","me perdoa","nao quis dizer","exagerei","errei","mancada","vacilei","😔","🥺"],
+ dinheiro:["/\\bpix\\b/","empresta","emprestar","me ajuda com","grana","dinheiro","to sem dinheiro","to liso","to lisa","to duro","to dura","quebrad","conta pra pagar","boleto"],
+ trab:["proposta","contrato","valor","prazo","reuniao","combinado","entendido","agendar","orcamento","cache","pagamento","prezad","atenciosamente","cordialmente","nota fiscal","midia kit","briefing","entrega","parceria","negociar","desconto","parcelar","recibo","aluguel","comprovante"],
+ tchau:["tchau","flw","falou","fui","ate mais","ate logo","boa noite","vou dormir","vou nessa","bjs","beijos","xau","inte"],
+ tristeza:["triste","/\\bmal\\b/","/\\bto mal\\b/","chorando","cansad","ansios","sozinh","depre","nao aguento mais","pra baixo","desanimad","😢","😭","💔","😞"],
+ pergunta:["/^ (o que|que|como|quando|onde|qual|quais|quem|por que|porque|sera que) /"]
 };
+// lugares/assuntos que o NPC repete na resposta (deixa a conversa lógica)
+var ZTOP=[["cinema","um cineminha"],["praia","praia"],["acai","um açaí"],["sorvete","um sorvete"],["pizza","uma pizza"],["hamburguer","um hambúrguer"],["barzinho","um barzinho"],["show","o show"],["festa","a festa"],["balada","a balada"],["jantar","um jantar"],["almocar","um almoço"],["cafe","um café"],["shopping","o shopping"],["parque","o parque"],["cachoeira","a cachoeira"],["rodizio","um rodízio"],["churrasco","o churrasco"],["duo","um duo"],["jogar","uma jogatina"]];
+function zapNLU(t){
+  var raw=String(t||""),n=zapNorm(raw),r={raw:raw,n:n};
+  var letters=raw.replace(/[^A-Za-zÀ-ÿ]/g,"");
+  r.vazio=n.trim().length<2;
+  r.grito=letters.length>=6&&letters===letters.toUpperCase()&&!/K{3,}|HA(HA)+/.test(letters);
+  ["xing","ironia","risada","cumpr","tudoBem","elogio","carinho","declara","cantada","malicia","convite","sim","nao","desculpa","dinheiro","trab","tchau","tristeza","pergunta"].forEach(function(k){r[k]=zHas(n,raw,ZL[k])});
+  // negação vira o jogo: "não te amo", "não gosto de você", "você não é lindo"
+  ["carinho","elogio","declara"].forEach(function(k){if(r[k]&&zNeg(n,r[k].charAt(0)==="/"?"":r[k])){r[k]=null;r.negou=1}});
+  // "seu lindo/sua linda" + xingamento = briga; elogio irônico = ironia
+  if(r.elogio&&r.ironia)r.elogio=null;
+  if(r.xing&&r.risada&&!r.grito&&/(burr|bob|best|doid|lerd|chat|palhac|trouxa)/.test(r.xing))r.zoeira=1; // "kkk sua besta" = zoeira de amigo
+  if(/\?/.test(raw))r.pergunta=r.pergunta||"?";
+  var top=null;for(var i=0;i<ZTOP.length;i++)if(n.indexOf(ZTOP[i][0])>=0){top=ZTOP[i][1];break}r.top=top;if(!r.convite&&top&&(r.pergunta||/\b(quer|topa|bora|vamos)\b/.test(n)))r.convite="lugar";
+  // humor geral
+  var bad=(r.xing&&!r.zoeira?3:0)+(r.negou?2:0)+(r.grito?1:0)+(r.ironia?1:0),good=(r.carinho?2:0)+(r.elogio?1.5:0)+(r.declara?2:0)+(r.desculpa?1:0)+(r.cumpr?.5:0);
+  r.sent=bad>good?"bad":good>0?"good":"neutro";
+  r.cls=r.vazio?"vazio":r.malicia?"malicia":r.xing&&!r.zoeira?"bad":r.negou?"bad":r.ironia?"ironia":r.desculpa&&!r.declara?"desculpa":r.declara?"declara":r.cantada&&!r.carinho?"cantada":r.convite?"convite":r.dinheiro?"dinheiro":r.tristeza?"tristeza":r.carinho||r.elogio?"good":r.zoeira||r.risada?"deb":r.trab?"prof":r.tudoBem?"tudoBem":r.tchau&&/dormir|tchau|flw|fui|falou|vou nessa|ate mais|xau/.test(n)?"tchau":r.cumpr?"cumpr":r.tchau?"tchau":r.sim?"sim":r.nao?"nao":r.pergunta?"pergunta":"neutro";
+  return r;
+}
+function zapClassify(t){var r=zapNLU(t);return {good:"good",declara:"good",desculpa:"good",tudoBem:"good",cumpr:"neutro",tchau:"neutro",sim:"neutro",nao:"neutro",pergunta:"neutro",convite:"good",cantada:"deb",ironia:"deb",deb:"deb",prof:"prof",dinheiro:"neutro",tristeza:"neutro",malicia:"bad",bad:"bad",neutro:"neutro",vazio:"vazio"}[r.cls]}
+function zapClsTxt(c){return {good:"💗 Mensagem boa",neutro:"💬 Mensagem neutra",deb:"😏 Mensagem debochada",prof:"💼 Mensagem profissional",bad:"💢 Mensagem pesada",vazio:"🤨 Mensagem sem sentido",malicia:"😳 Mensagem maliciosa",cantada:"😏 Cantada",declara:"💘 Declaração",convite:"📅 Convite",ironia:"🙄 Ironia",desculpa:"🙏 Pedido de desculpas",tristeza:"🫂 Desabafo",dinheiro:"💸 Assunto de grana",tudoBem:"👋 Puxou assunto",cumpr:"👋 Cumprimento",tchau:"👋 Despedida",sim:"👍 Topou",nao:"🙅 Recusou",pergunta:"❓ Pergunta"}[c]||"💬 Mensagem"}
+
+// ---- respostas: [texto] por tipo de contato e intenção. {top}=assunto citado, {nome}=nome do jogador ----
+var ZB={
+ fam:{
+  good:["Ai que coisa boa de ler 🥹❤️","Você é o orgulho dessa casa 💗","Já printei e mandei no grupo da família!","Deus te abençoe, meu amor 🙏","Ownt, também te amo muito ❤️"],
+  declara:["Também te amo, filh{a|o|e}! Mais que tudo 🥹","Para que eu choro aqui na cozinha ❤️"],
+  cumpr:["Oi meu amor! Tava pensando em você agora mesmo 💗","Oiii! Sumid{a|o|e}, hein?","Bença! 🙏 Tudo bem por aí?"],
+  tudoBem:["Tudo bem sim, graças a Deus! E você, tá comendo direito? 🥺","Aqui tudo certo. Seu pai tá vendo jogo. E você?","Tudo ótimo! Fiz aquele bolo que você gosta 🍰"],
+  convite:["Oba! {Top} com você? Já tô me arrumando 😍","Vamos sim! Mas quem paga é você, que agora é famos{a|o|e} 😂"],
+  desculpa:["Tá perdoad{a|o|e}, mas não faz mais isso, viu?","Mãe sempre perdoa. Mas fiquei chateada, tá? 😔"],
+  tristeza:["Ô meu amor… vem pra casa no fim de semana? Faço sua comida preferida 🫂","Liga pra mim agora, quero ouvir sua voz. Você não tá sozinh{a|o|e} ❤️","Respira. Internet passa, família fica. Te amo 💗"],
+  dinheiro:["Quanto você precisa? Não conta pro seu pai 🤫","Dinheiro de novo?? Tá bom, mando um PIX. Mas economiza!"],
+  deb:["kkkkk você não presta","Puxou a mim, esse humor 😂","Rindo aqui com seu pai"],
+  ironia:["Olha o tom, hein. Sou sua mãe.","Ironia comigo não, viu? 😒"],
+  cantada:["???","Acho que essa mensagem não era pra mim, né? 😅"],
+  malicia:["FILH{A|O|E}??? Acho que você mandou pra pessoa errada 😳😳","Vou fingir que eu não vi isso. E vou rezar por você. 🙏😶","Apaga isso AGORA. Seu pai quase viu."],
+  prof:["Por que você tá falando igual gerente de banco?","Tá estranh{a|o|e}… aconteceu alguma coisa?"],
+  tchau:["Vai com Deus! Dorme cedo, hein 🙏","Beijo! Me liga amanhã ❤️"],
+  sim:["Combinado então! ❤️","Ótimo, fico mais tranquila."],nao:["Tá bom, não insisto… 😔","Tudo bem, outro dia então."],
+  pergunta:["Ih, isso aí tem que perguntar pro seu pai 😂","Não sei, meu amor, mas acho que sim!","Boa pergunta… me liga que a gente conversa."],
+  neutro:["Tá bom, filh{a|o|e}. 👍","Hum, ok. Liga pra gente qualquer dia.","Entendi. Tá tudo bem mesmo?"],
+  bad:["Nossa. Não te criei pra falar assim comigo. 😔","Vou fingir que não li isso.","Quando quiser conversar direito, me liga.","🎤 Áudio 3:12 · (choro e sermão)"],
+  vazio:["??","Oi? Mandou sem querer?"]},
+ amiga:{
+  good:["💛💛💛 eu sei que eu sou incrível","tô chorando aqui","melhor pessoa do mundo","AAAA para que eu fico sem graça"],
+  declara:["eu também te amo, sua trouxa 💛","amizade de 10 anos não é pra qualquer um 🥹"],
+  cumpr:["oiii sumid{a|o|e} 👀","fala, celebridade 😎","OI! tava pra te mandar msg agora"],
+  tudoBem:["tô bem! e você, como tá com tudo isso de fama?","sobrevivendo kkkk e tu?","tudo ótimo, e aí, alguma fofoca? 👀"],
+  convite:["BORA! {Top}? que horas? 🤩","só se for agora, já tô colocando o tênis","fechou, mas eu escolho a mesa"],
+  desculpa:["tá desculpad{a|o|e}, mas me deve {um açaí|um açaí|um açaí} 😤","ok… mas foi chato, viu"],
+  tristeza:["ei. tô indo aí com brigadeiro. não discute 🫂","quer conversar? eu escuto. sem julgamento 💛","você é muito mais que número de seguidor, tá?"],
+  dinheiro:["amiga(o), eu tô mais lisa que você kkkk","te empresto 50, mas devolve, hein"],
+  deb:["KKKKKKKKKK","eu te amo e te odeio","printei, vai pro grupo (brincadeira… ou não)","sua besta kkkkk"],
+  ironia:["ironia comigo? 🙄 tá bom então","ui, ficou bravinh{a|o|e}"],
+  cantada:["kkkkk tá treinando comigo é? 😂","guarda essa cantada pro seu crush"],
+  malicia:["KKKKKK SOCORRO, você mandou pra pessoa errada né?? 😭","vou printar e emoldurar","menos, menos 😳"],
+  prof:["virou empresa? 😐","ok, senhor{a||e} CEO 🙄"],
+  tchau:["vai lá! me conta tudo depois","flw, beijo 💛"],
+  sim:["isso!! sabia 😎","fechou então"],nao:["nossa, que sem graça 😒","tá, mas vou cobrar depois"],
+  pergunta:["sei lá, você é que é a celebridade kkkk","boa pergunta… vou pesquisar e te falo","não faço ideia, mas acho que sim?"],
+  neutro:["ok kkk","beleza","tá, e aí?","hm 👀 conta mais"],
+  bad:["Nossa. Do nada?","Tá. Vou lembrar disso.","Não precisava falar assim comigo. 😶","Uau. Fama subiu pra cabeça mesmo."],
+  vazio:["???","digitou com o cotovelo?"]},
+ crush:{
+  good:["🥰","para que eu fico sem graça 🙈","você é muito fofo(a)… quer dizer, legal 😳","*digitando…* *digitando…* 💘"],
+  cumpr:["oii 😊","oi! tava pensando em você (sério)","eii, que bom que você mandou msg 😳"],
+  tudoBem:["tô bem, melhor agora 😊 e você?","tudo ótimo! e aí, como foi seu dia?","de boa! tava vendo seus stories kkkk"],
+  convite_ok:["bora!! {top} parece perfeito 😍","SIM. que dia? já tô ansios{a|o|e} kkkk","fechou! mas eu escolho a música no carro 😏"],
+  convite_meh:["hmm… pode ser! deixa eu ver minha agenda 😊","quem sabe semana que vem? 🙂"],
+  convite_nao:["ah… essa semana tá corrida 😅","acho que não vai rolar, mas valeu pelo convite!"],
+  cantada_ok:["😳😳 para…","assim eu fico sem graça 🙈","você não presta 😏 (eu gosto)","quem te ensinou a falar assim? 😳"],
+  cantada_meh:["kkkkk que isso 😅","hmm, tá treinando cantada comigo? 😂"],
+  cantada_nao:["calma aí, a gente nem se conhece direito 😅","ok… isso foi meio estranho 😬"],
+  declara_ok:["eu também tô gostando de você… muito 😳💘","finalmente você falou!! 🥹","meu coração deu um pulo aqui"],
+  declara_meh:["nossa… eu não esperava 😳 me dá um tempinho pra pensar?","você é muito especial… vamos devagar? 🙂"],
+  declara_nao:["ah… eu te acho incrível, mas te vejo mais como amig{a|o|e} 😅","fico feliz, mas não sinto o mesmo… desculpa 😔"],
+  malicia_namoro:["😳 aqui não, né! depois a gente conversa 🙈","calma, tigr{esa|e|e} 😏 guarda pra mais tarde","kkkkk você não tem jeito"],
+  malicia_nao:["eita. que isso? 😬 vou fingir que não li","oxe, calma aí. não é assim não.","isso foi muito desnecessário. tchau."],
+  desculpa:["tá tudo bem, relaxa 😊","ok… mas não faz mais isso, tá?"],
+  tristeza:["ei, quer que eu te ligue? 🫂","tô aqui, viu? pode desabafar","manda localização que eu levo sorvete"],
+  dinheiro:["kkkk eu tô igual, vivendo de miojo","quer que eu pague o açaí da próxima vez? 😏"],
+  deb:["KKKKK te odeio (mentira)","você não presta e eu gosto","sabia que você ia falar isso 😏"],
+  ironia:["nossa, que tom 🙄","ok… entendi a ironia 🙂"],
+  prof:["a gente é colega de trabalho agora? 😕","ok… 🙂"],
+  tchau:["boa noite 😊 sonha comigo (brincadeira… ou não)","tchau! amanhã a gente se fala?","fui, beijo 😘"],
+  sim:["eba!! 🥰","combinado então 😊"],nao:["ah… tá bom 😕","tudo bem, sem pressão 🙂"],
+  pergunta:["hmm, depende… por quê? 👀","boa pergunta kkkk acho que sim","te conto pessoalmente 😏"],
+  neutro:["haha ok","🙂","e aí, novidades?"],
+  bad:["Uau. Ok então. Tchau.","Nem te conheço direito e você me fala isso?","Pode esquecer meu número."],
+  vazio:["??","oi?"]},
+ marca:{
+  good:["Que fofura! 💖 Amamos sua energia.","Obrigada pelo carinho! Seguimos alinhados 🤝"],
+  cumpr:["Olá! Tudo bem? Como podemos ajudar? 😊"],tudoBem:["Tudo ótimo por aqui! Seguimos animados com a parceria 🤝"],
+  convite:["Adoraríamos! Vamos marcar um café com nosso time de marketing ☕"],
+  prof:["Perfeito. Seguimos com o combinado. 🤝","Recebido. Nosso time comercial vai analisar."],
+  deb:["Kkkk adoramos o humor! Mas vamos manter o profissionalismo, tá? 😅"],ironia:["Entendemos. Algum problema com a proposta?"],
+  cantada:["Agradecemos, mas vamos manter a conversa profissional 😅"],
+  malicia:["Prezad{a|o|e}, essa mensagem é totalmente inadequada. Encerramos a negociação.","Isso foi registrado pelo nosso jurídico."],
+  dinheiro:["Sobre valores, podemos revisar o cachê na próxima rodada 😉"],
+  tchau:["Até mais! Qualquer coisa, estamos por aqui."],sim:["Ótimo! Vamos enviar o contrato 📄"],nao:["Tudo bem, respeitamos sua decisão."],
+  pergunta:["Boa pergunta! Vamos verificar com o time e já retornamos."],
+  neutro:["Recebido! Retornamos em breve.","Anotado ✅"],
+  bad:["Lamentamos o tom da mensagem. Vamos encerrar a negociação.","Prezad{a|o|e}, não toleramos esse tipo de abordagem. Proposta cancelada."],
+  vazio:["Olá! Podemos ajudar?"]},
+ dono:{
+  good:["Bom saber. Você é dos bons. 👍","Tá certo. Qualquer coisa me chama."],cumpr:["Opa. Fala."],tudoBem:["Tudo indo. E o aluguel, tudo certo?"],
+  convite:["Não, obrigado. Tô velho pra essas coisas."],
+  prof:["Certo. Se for sobre o aluguel, pode mandar o comprovante.","Ok. Combinado é combinado."],
+  deb:["Não achei graça.","Engraçadinh{a|o|e}. O aluguel também vai ser."],ironia:["Ironia comigo não, que eu tenho o contrato."],
+  cantada:["??? Respeita, eu tenho idade pra ser seu avô.","Rapaz… 😐"],malicia:["Isso aqui vai direto pro meu advogado.","Que pouca vergonha. Aluguel subiu."],
+  dinheiro:["Se tá sem dinheiro, me avisa antes do dia 10.","Parcelar? Vou pensar."],tristeza:["Força aí. Mas o aluguel vence dia 10, tá?"],
+  tchau:["Falou."],sim:["Certo."],nao:["Hum."],pergunta:["Pergunta pro síndico."],
+  neutro:["Ok.","Certo. Aguardo."],
+  bad:["Vou lembrar disso no reajuste do aluguel.","Respeito é bom e eu gosto. Aluguel subiu.","Com esse tom, a gente conversa no contrato."],
+  vazio:["?"]}
+};
+// perguntas de volta: deixam a conversa continuar
+var ZQ={fam:["E você, já almoçou? 🍲","Quando vem visitar a gente?","Tá dormindo direito?"],amiga:["e o crush, hein? 👀","bora marcar um rolê?","viu a treta de hoje?"],
+ crush:["o que você vai fazer no fim de semana? 👀","você prefere praia ou cinema?","qual sua comida favorita?","você é de dormir cedo ou de virar a noite?"],marca:[],dono:[]};
+function zapPick(pool,key,fb){var L=pool[key];if(!L||!L.length)L=pool[fb||"neutro"];return L&&L.length?pick(L):null}
 function zapFree(id,text){
   var C=S.zap.c[id],d=zcDef(id);if(!C||!d||!zapVisible(id))return null;
   text=String(text||"").trim().slice(0,240);if(!text)return null;
-  var cls=zapClassify(text),hadPend=!!C.pend;
-  // com pergunta pendente: mensagem boa/neutra/deboche segue as regras dos tons
-  if(hadPend&&cls!=="bad"&&cls!=="vazio"){
-    var tone=cls==="good"?0:cls==="deb"?2:1;
+  var U=zapNLU(text),cls=U.cls,hadPend=!!C.pend,typ=d.type==="fam"?"fam":d.type==="amiga"?"amiga":d.type==="crush"?"crush":d.type==="marca"?"marca":"dono";
+  // contexto: o NPC tinha feito uma pergunta/convite e o jogador respondeu "sim"/"bora"/"não"
+  var ctx=C.ctx&&C.ctx.m===S.m?C.ctx.k:null;
+  if(ctx==="convite"&&cls==="sim")cls="convite",U.top=C.ctx.top||U.top;
+  // com pergunta pendente (mensagem do mês): boa/neutra/deboche seguem as regras dos tons
+  if(hadPend&&["bad","malicia","vazio","cantada","declara","convite","tristeza","dinheiro"].indexOf(cls)<0){
+    var g=zapClassify(text),tone=g==="good"?0:g==="deb"?2:1;
     C.pend.r[tone]=text;var r=zapReply(id,tone);if(r){r.cls=cls;r.info.unshift(zapClsTxt(cls))}return r;
   }
-  C.th.push({me:1,t:text});if(hadPend)C.pend=null;C.ts=++S.zap.ts;C.seenM=S.m;
-  var pool=ZF[d.type==="fam"?"fam":d.type==="amiga"?"amiga":d.type==="crush"?"crush":d.type==="marca"?"marca":"dono"];
-  var dd={},info=[zapClsTxt(cls)],rl=pick(pool[cls]);
-  // efeitos de status: ruim sempre pesa; bom só conta 1x por mês por contato (pra não farmar)
-  var first=C.freeM!==S.m;C.freeM=S.m;
-  if(cls==="bad"){
-    if(d.type==="fam"){relAdd(id,-20);dd.p=-5}
-    else if(d.type==="amiga"){relAdd(id,-20);dd.p=-3;if(Math.random()<.3){dd.h=10;dd.r=-3;info.push("😬 A Bia mostrou o print pro grupo e vazou no Chirp (🔥 +10).")}}
-    else if(d.type==="crush"){relAdd(id,-25);dd.p=-3;var br=checkBreak(id);if(br)info.push(br)}
-    else if(d.type==="marca"){var o=zapBrand();dd.r=-5;if(o){decline(o.id);S.zap.marca=null;info.push("Proposta cancelada.")}if(Math.random()<.4){dd.h=15;info.push("📸 A marca postou o print da sua mensagem (🔥 +15).")}}
-    else{relAdd(id,-15);S.rentUp=(S.rentUp||0)+100;info.push("O Seu Jorge aumentou o aluguel em R$ 100.")}
-  }else if(first){
-    if(cls==="good"){
-      if(d.type==="fam"){relAdd(id,8);dd.p=3;if(Math.random()<.2){var v=ri(5,15)*10;dd.$=v;info.push("💸 PIX de "+fmtR(v)+" “só porque sim”")}}
-      else if(d.type==="amiga"){relAdd(id,8);dd.p=2}
-      else if(d.type==="crush"){relAdd(id,10);if(!(S.date&&S.date!==id)){var pr=crushProgress(id);if(pr)info.push(pr)}}
-      else if(d.type==="marca"){dd.r=1}
-      else relAdd(id,5);
-    }else if(cls==="deb"){
-      if(d.type==="crush"){if(d.deb)relAdd(id,6);else{relAdd(id,-4);rl=null;info.push("(visualizou e não respondeu 🙃)")}}
-      else if(d.type==="dono")relAdd(id,-5);
-      else relAdd(id,3);
-    }else if(cls==="prof"){if(d.type==="fam"||d.type==="amiga"||d.type==="crush")relAdd(id,-3);else relAdd(id,2)}
-    else if(cls==="neutro")relAdd(id,1);
-  }else if(cls!=="vazio")info.push("(Afeto só muda com 1 mensagem boa por mês, mas pode conversar à vontade.)");
-  if(rl)C.th.push({t:tpl(rl)});
+  C.th.push({me:1,t:text});if(hadPend)C.pend=null;C.ts=++S.zap.ts;C.seenM=S.m;C.ctx=null;
+  var P=ZB[typ],dd={},info=[zapClsTxt(cls)],rl=null,a=relOf(id),fav=S.crushFav===id;
+  // limite de ganho de afeto por mês (perda sempre conta)
+  if(C.gainM!==S.m){C.gainM=S.m;C.gain=0}
+  var cap=d.type==="crush"?(fav?30:22):15;
+  function up(v){var room=Math.max(0,cap-C.gain);var g=Math.min(v,room);if(fav&&d.type==="crush")g=Math.min(Math.round(v*1.4),room);C.gain+=g;if(g>0)relAdd(id,g);else if(v>0&&!C.capWarn){C.capWarn=S.m;info.push("(Já conversaram bastante este mês: o afeto não sobe mais até o mês que vem, mas pode continuar a conversa.)")}return g}
+  function down(v){relAdd(id,-v)}
+  var taken=d.type==="crush"&&S.date&&S.date!==id,dating=d.type==="crush"&&S.date===id&&C.st>=2;
+  switch(cls){
+   case "bad":
+    rl=zapPick(P,"bad");
+    if(typ==="fam"){down(20);dd.p=-5}
+    else if(typ==="amiga"){down(20);dd.p=-3;if(Math.random()<.3){dd.h=10;dd.r=-3;info.push("😬 A Bia mostrou o print pro grupo e vazou no Chirp (🔥 +10).")}}
+    else if(typ==="crush"){down(25);dd.p=-3;var br=checkBreak(id);if(br)info.push(br)}
+    else if(typ==="marca"){var o=zapBrand();dd.r=-5;if(o){decline(o.id);S.zap.marca=null;info.push("Proposta cancelada.")}if(Math.random()<.4){dd.h=15;info.push("📸 A marca postou o print da sua mensagem (🔥 +15).")}}
+    else{down(15);S.rentUp=(S.rentUp||0)+100;info.push("O Seu Jorge aumentou o aluguel em R$ 100.")}
+    break;
+   case "malicia":
+    if(typ==="crush"&&(dating||(C.st>=1&&a>=70))){rl=zapPick(P,"malicia_namoro");up(3)}
+    else if(typ==="crush"){rl=zapPick(P,"malicia_nao");down(20);dd.p=-4;if(Math.random()<.3){dd.h=20;dd.r=-8;info.push("📸 Print vazou: “@"+S.p.handle+" mandando mensagem pesada pra crush” (🔥 +20).")}var br2=checkBreak(id);if(br2)info.push(br2)}
+    else if(typ==="fam"){rl=zapPick(P,"malicia");down(8);dd.p=-6;info.push("😳 Mensagem errada pra pessoa errada. Clássico.")}
+    else if(typ==="amiga"){rl=zapPick(P,"malicia");up(2)}
+    else if(typ==="marca"){rl=zapPick(P,"malicia");var o2=zapBrand();if(o2){decline(o2.id);S.zap.marca=null}dd.r=-12;dd.h=25;info.push("Proposta cancelada e o print virou notícia (🔥 +25, 🌟 −12).")}
+    else{rl=zapPick(P,"malicia");down(20);S.rentUp=(S.rentUp||0)+150;info.push("O Seu Jorge aumentou o aluguel em R$ 150 “por danos morais”.")}
+    break;
+   case "cantada":
+    if(typ==="crush"){if(taken){rl="eu sei que você tá com outra pessoa, hein 😒";down(5)}else if(a>=55||dating){rl=zapPick(P,"cantada_ok");up(8);var pr=crushProgress(id);if(pr)info.push(pr)}else if(a>=30){rl=zapPick(P,"cantada_meh");up(3)}else{rl=zapPick(P,"cantada_nao");down(5)}}
+    else{rl=zapPick(P,"cantada");if(typ==="fam"||typ==="dono")down(3)}
+    break;
+   case "declara":
+    if(typ==="crush"){if(taken){rl="você namora, lembra? 😐";down(8)}else if(a>=60||dating){rl=zapPick(P,"declara_ok");up(12);var pr2=crushProgress(id);if(pr2)info.push(pr2)}else if(a>=35){rl=zapPick(P,"declara_meh");up(4)}else{rl=zapPick(P,"declara_nao");dd.p=-6;info.push("💔 Friendzone. Doeu, mas faz parte.")}}
+    else{rl=zapPick(P,"declara","good");up(8);if(typ==="fam")dd.p=4}
+    break;
+   case "convite":
+    if(typ==="crush"){var top=U.top||"a gente sair";
+     if(taken){rl="você namora, né? melhor não 😅"}
+     else if(a>=50||dating){rl=zapPick(P,"convite_ok").replace(/\{top\}/g,top);up(10);dd.p=6;dd.$=-60;info.push("📅 Encontro: "+top+". Foi ótimo! (🧠 +6, −R$ 60)");var pr3=crushProgress(id);if(pr3)info.push(pr3)}
+     else if(a>=30){rl=zapPick(P,"convite_meh");up(3)}
+     else{rl=zapPick(P,"convite_nao");dd.p=-2}}
+    else if(typ==="fam"||typ==="amiga"){rl=zapPick(P,"convite").replace(/\{Top\}/g,U.top?U.top.charAt(0).toUpperCase()+U.top.slice(1):"Sair").replace(/\{top\}/g,U.top||"sair");up(10);dd.p=8;dd.$=-40;info.push("📅 Rolê feito (🧠 +8, −R$ 40).")}
+    else rl=zapPick(P,"convite","neutro");
+    break;
+   case "desculpa":rl=zapPick(P,"desculpa","good");if(a<50)up(10);else up(3);break;
+   case "tristeza":rl=zapPick(P,"tristeza","good");if(typ==="fam"||typ==="amiga"||typ==="crush"){dd.p=8;up(5)}break;
+   case "dinheiro":rl=zapPick(P,"dinheiro","neutro");
+    if(typ==="fam"&&C.pixM!==S.m&&a>=40){C.pixM=S.m;var v=ri(10,30)*10;dd.$=v;info.push("💸 PIX de "+fmtR(v)+". Sua mãe é a melhor.")}
+    else if(typ==="amiga"&&C.pixM!==S.m&&a>=60){C.pixM=S.m;dd.$=50;info.push("💸 A Bia mandou R$ 50.")}
+    break;
+   case "good":rl=zapPick(P,"good");if(typ==="crush"){if(taken){rl="obrigad{a|o|e} 🙂";up(1)}else{up(6);var pr4=crushProgress(id);if(pr4)info.push(pr4)}}else if(typ==="fam"){up(8);dd.p=3}else if(typ==="amiga"){up(8);dd.p=2}else if(typ==="marca")dd.r=1;else up(5);break;
+   case "deb":if(typ==="crush"&&!d.deb){rl=null;down(3);info.push("(visualizou e não respondeu 🙃)")}else{rl=zapPick(P,"deb");if(typ==="dono")down(5);else up(3)}break;
+   case "ironia":rl=zapPick(P,"ironia","deb");down(typ==="marca"?0:4);break;
+   case "prof":rl=zapPick(P,"prof");if(typ==="fam"||typ==="amiga"||typ==="crush")down(3);else up(2);break;
+   case "vazio":rl=zapPick(P,"vazio");break;
+   default:rl=zapPick(P,cls,"neutro");if(cls==="tudoBem"||cls==="cumpr")up(2);
+  }
+  if(rl){rl=rl.replace(/\{top\}/g,U.top||"").replace(/\{Top\}/g,U.top||"");C.th.push({t:tpl(rl)})}
   info.forEach(function(x){C.th.push({sys:1,t:x})});
-  var a=applyD(dd);checkDeath();
-  return {d:a,info:info,cls:cls};
+  // às vezes devolve uma pergunta, pra conversa continuar
+  if(rl&&["bad","malicia","vazio","tchau","ironia"].indexOf(cls)<0&&ZQ[typ].length&&Math.random()<(typ==="crush"?.45:.25)){
+    var qs=ZQ[typ].filter(function(x){return x!==C.lastQ});var q=pick(qs.length?qs:ZQ[typ]);C.lastQ=q;C.th.push({t:tpl(q)});if(/rolê|sair|praia ou cinema|fim de semana/.test(q))C.ctx={k:"convite",m:S.m,top:/praia/.test(q)?"praia":null}}
+  var res=applyD(dd);checkDeath();
+  return {d:res,info:info,cls:cls};
 }
-function zapClsTxt(c){return {good:"💗 Mensagem boa",neutro:"💬 Mensagem neutra",deb:"😏 Mensagem debochada",prof:"💼 Mensagem profissional",bad:"💢 Mensagem pesada",vazio:"🤨 Mensagem sem sentido"}[c]}
 function biaSecret(){
   var q=S.queue.filter(function(x){var e=evById(x.id);return e&&!e.rep&&x.id!=="crise"});
   if(q.length){var e0=evById(q[0].id);return e0?tpl(e0.t):null}
@@ -2732,12 +2885,12 @@ function relLabel(id){var d=zcDef(id),C=S.zap.c[id];
   return {fam:"família",amiga:"amiga",marca:"marca",dono:"proprietário"}[d.type]}
 VIEWS.zap=function(){
   var id=UI.d.c;if(id&&zapVisible(id))return zapConv(id);
-  var list=ZC.filter(function(c){return zapVisible(c.id)}).sort(function(a,b){return S.zap.c[b.id].ts-S.zap.c[a.id].ts});
+  var list=ZC.filter(function(c){return zapVisible(c.id)}).sort(function(a,b){return (b.id===S.crushFav)-(a.id===S.crushFav)||S.zap.c[b.id].ts-S.zap.c[a.id].ts});
   return back()+'<div class="zap-h"><span class="emo" style="font-size:22px">💬</span><b>ZapChat</b><span class="small" style="margin-left:auto;opacity:.85">'+zapUnread()+' não lidas</span></div>'+
    '<div class="zl">'+list.map(function(c){var C=S.zap.c[c.id],last=C.th[C.th.length-1];
-     return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
+     return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+(c.id===S.crushFav?" ⭐":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
        '<div class="zr">'+(C.un?'<span class="ur" aria-label="'+C.un+' não lidas">'+C.un+'</span>':(C.pend?'<span>responder</span>':'<span>'+esc(relLabel(c.id))+'</span>'))+'<span class="afe" title="Afeto '+relOf(c.id)+'"><i style="width:'+relOf(c.id)+'%"></i></span></div></button>'}).join("")+'</div>'+
-   '<p class="rm-note">💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
+   '<p class="rm-note">⭐ Escolha seu crush principal dentro da conversa. 💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
 };
 function zapConv(id){
   var d=zcDef(id),C=S.zap.c[id];
@@ -2745,6 +2898,7 @@ function zapConv(id){
   var tones=C.pend?'<div class="tones" role="group" aria-label="Responder">'+C.pend.r.map(function(t,i){return '<button class="tone t'+i+'" type="button" data-act="tone" data-i="'+i+'"><span class="tl">'+["💗 Afetuoso","💼 Profissional","😏 Debochado"][i]+' <kbd style="font-weight:600">'+(i+1)+'</kbd></span>'+esc(t)+'</button>'}).join("")+'</div>':'<p class="rm-note">Nada pra responder agora. Novas mensagens chegam na virada do mês'+(canPull(id)?", ou puxe assunto você mesm"+withS(function(){return tpl("{a|o|e}")})+".":".")+'</p>';
   return '<div class="bk"><button class="btn sm" type="button" data-act="zapBack">← Conversas</button></div>'+
    '<div class="zhead">'+avHTML({e:d.e,c:d.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(id))+'</b><div class="small muted">Afeto '+relOf(id)+'/100 · '+esc(relLabel(id))+'</div></div>'+
+   (d.type==="crush"?'<button class="btn sm'+(S.crushFav===id?" on":"")+'" type="button" data-act="crushFav" aria-pressed="'+(S.crushFav===id)+'" title="Seu crush principal: manda mais mensagem e o afeto sobe mais rápido">'+(S.crushFav===id?"⭐ Meu crush":"☆ Meu crush")+'</button>':"")+
    (d.type==="crush"&&C.st>=1?'<button class="btn sm ghost" type="button" data-act="terminar">💔 Terminar</button>':"")+'</div>'+
    th+(UI.d.zres?dchips(UI.d.zres.d,true):"")+tones+
    (id!=="marca"||zapBrand()?'<form class="zform" id="zapForm" autocomplete="off"><input id="zapTxt" type="text" maxlength="240" placeholder="Escreva o que quiser…" aria-label="Escrever mensagem" enterkeyhint="send"><button class="btn primary sm" type="submit" aria-label="Enviar">➤</button></form>':"")+
@@ -3374,6 +3528,7 @@ document.addEventListener("click",function(e){
     case "zapBack":go("zap",{});break;
     case "pull":if(zapPull(UI.d.c)){sfx("notif");UI.d={c:UI.d.c};rerender();scroller.scrollTop=scroller.scrollHeight;save()}break;
     case "tone":zapReplyUI(+t.dataset.i);break;
+    case "crushFav":var cf=UI.d.c;S.crushFav=S.crushFav===cf?null:cf;sfx("tap");if(S.crushFav)toast({app:"P",t:"⭐ Crush escolhido",x:zcDef(cf).n+" agora é seu crush principal: manda mais mensagem e o afeto sobe mais rápido."});rerender();save();break;
     case "terminar":dialog("💔 Terminar?","<p>"+T(S.zap.c[UI.d.c].st===3?"O namoro é oficial: o término vai ser público (🔥 +15, 🧠 −20).":"Vai doer, mas vai ser em silêncio (🧠 −8).")+"</p>",'<button class="btn ghost" type="button" data-act="close">Cancelar</button><button class="btn primary" type="button" data-act="terminarOk">Terminar</button>');break;
     case "terminarOk":closeDlg();var bm=breakup(UI.d.c);S.zap.c[UI.d.c].th.push({sys:1,t:bm});sfx("bad");rerender();save();break;
     case "npc":var nr=npcAct(t.dataset.id,t.dataset.a,t.dataset.t!=null?+t.dataset.t:null);UI.d.com=null;if(nr)sfx(nr.ok?"good":"bad");else toast({app:"P",t:"Photogram",x:S.mon.likes>=10?"Limite de 10 curtidas no mês.":"Sem energia pra isso agora."});rerender();save();break;
