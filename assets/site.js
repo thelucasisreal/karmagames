@@ -176,11 +176,9 @@
       if (rota.startsWith("#c=")) {
         const c = rota.slice(3);
         const daqui = JOGOS.filter((j) => j.categoria === c);
-        const outros = JOGOS.filter((j) => j.categoria !== c);
         document.title = `Jogos de ${c} · Karma Games`;
         html += tileTitulo(c, plural(daqui.length));
         html += ordenados(daqui).map((j) => tile(j, TAM)).join("");
-        html += ordenados(outros).map((j) => tile(j, TAM)).join("");
         lateral(c);
       } else {
         document.title = "Karma Games · Jogos grátis no navegador";
