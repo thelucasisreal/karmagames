@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8ad8"/>
+      <stop offset=".5" stop-color="#9a7bff"/>
+      <stop offset="1" stop-color="#3fb6ff"/>
+    </linearGradient>
+    <radialGradient id="luz" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="papel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f1ede2"/>
+    </linearGradient>
+    <linearGradient id="verm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a8a"/>
+      <stop offset="1" stop-color="#e01e48"/>
+    </linearGradient>
+    <linearGradient id="preto" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a4f66"/>
+      <stop offset="1" stop-color="#16182a"/>
+    </linearGradient>
+    <linearGradient id="verso" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6a58ff"/>
+      <stop offset="1" stop-color="#2a1f8a"/>
+    </linearGradient>
+    <pattern id="grade" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="16" height="16" fill="url(#verso)"/>
+      <path d="M0 0H16M0 0V16" stroke="#c8f13a" stroke-width="3" opacity=".55"/>
+    </pattern>
+    <filter id="sombra" filterUnits="userSpaceOnUse" x="-900" y="-700" width="2600" height="1900">
+      <feDropShadow dx="0" dy="9" stdDeviation="7" flood-color="#2a0a5a" flood-opacity=".4"/>
+    </filter>
+    <path id="copas" d="M0 36C-30 12-46-4-46-23C-46-38-35-48-21-48C-11-48-4-42 0-34C4-42 11-48 21-48C35-48 46-38 46-23C46-4 30 12 0 36Z"/>
+    <path id="espadas" d="M0-46C12-28 44-12 44 10C44 24 33 32 22 32C14 32 7 28 4 23C5 33 9 40 17 46H-17C-9 40-5 33-4 23C-7 28-14 32-22 32C-33 32-44 24-44 10C-44-12-12-28 0-46Z"/>
+    <path id="ouros" d="M0-48L36 0L0 48L-36 0Z"/>
+    <path id="paus" d="M-20-22a20 20 0 1 1 40 0a20 20 0 1 1-40 0ZM-44 8a20 20 0 1 1 40 0a20 20 0 1 1-40 0ZM4 8a20 20 0 1 1 40 0a20 20 0 1 1-40 0ZM-6-14h12v24h-12zM4 12C4 30 8 38 17 46H-17C-8 38-4 30-4 12Z"/>
+    <g id="carta">
+      <rect x="-80" y="-112" width="160" height="224" rx="20" fill="url(#papel)" stroke="#1a1030" stroke-width="9"/>
+      <path d="M-66 -96 Q-66 -100 -60 -100 H40" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>
+    </g>
+    <g id="costas">
+      <rect x="-80" y="-112" width="160" height="224" rx="20" fill="#fff" stroke="#1a1030" stroke-width="9"/>
+      <rect x="-64" y="-96" width="128" height="192" rx="10" fill="url(#grade)" stroke="#1a1030" stroke-width="4"/>
+      <circle r="20" fill="#c8f13a" stroke="#1a1030" stroke-width="5"/>
+      <path d="M-52 -84 H20" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".45"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fundo)"/>
+  <circle cx="400" cy="250" r="270" fill="url(#luz)"/>
+
+  <!-- cascata de cartas (rastro) a esquerda -->
+  <g filter="url(#sombra)" opacity=".95">
+    <g transform="translate(58 300) rotate(-14) scale(.42)"><use href="#carta"/><use href="#copas" fill="url(#verm)" stroke="#1a1030" stroke-width="6" transform="scale(1.1)"/></g>
+    <g transform="translate(92 238) rotate(-8) scale(.42)"><use href="#carta"/><use href="#copas" fill="url(#verm)" stroke="#1a1030" stroke-width="6" transform="scale(1.1)"/></g>
+    <g transform="translate(130 196) rotate(-3) scale(.42)"><use href="#carta"/><use href="#copas" fill="url(#verm)" stroke="#1a1030" stroke-width="6" transform="scale(1.1)"/></g>
+  </g>
+  <!-- cascata a direita -->
+  <g filter="url(#sombra)" opacity=".95">
+    <g transform="translate(742 318) rotate(14) scale(.42)"><use href="#carta"/><use href="#paus" fill="url(#preto)" transform="scale(1.1)"/></g>
+    <g transform="translate(706 250) rotate(8) scale(.42)"><use href="#carta"/><use href="#paus" fill="url(#preto)" transform="scale(1.1)"/></g>
+    <g transform="translate(668 204) rotate(3) scale(.42)"><use href="#carta"/><use href="#paus" fill="url(#preto)" transform="scale(1.1)"/></g>
+  </g>
+
+  <!-- brilhos -->
+  <g fill="#fff">
+    <path d="M196 92 l7 17 17 7 -17 7 -7 17 -7 -17 -17 -7 17 -7z"/>
+    <path d="M612 84 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5z"/>
+    <path d="M150 428 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z"/>
+    <path d="M660 430 l6 15 15 6 -15 6 -6 15 -6 -15 -15 -6 15 -6z"/>
+  </g>
+
+  <!-- leque de cartas -->
+  <g filter="url(#sombra)">
+    <g transform="translate(262 286) rotate(-26)"><use href="#costas"/></g>
+    <g transform="translate(330 262) rotate(-13)">
+      <use href="#carta"/>
+      <use href="#ouros" fill="url(#verm)" stroke="#1a1030" stroke-width="7" transform="scale(1.2)"/>
+      <use href="#ouros" fill="url(#verm)" transform="translate(-52 -78) scale(.32)"/>
+      <use href="#ouros" fill="url(#verm)" transform="translate(52 78) rotate(180) scale(.32)"/>
+      <path d="M-14 -36 L-30 -12" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".7"/>
+    </g>
+    <g transform="translate(538 286) rotate(26)">
+      <use href="#carta"/>
+      <use href="#espadas" fill="url(#preto)" stroke="#1a1030" stroke-width="7" transform="scale(1.2)"/>
+      <use href="#espadas" fill="url(#preto)" transform="translate(-52 -78) scale(.32)"/>
+      <use href="#espadas" fill="url(#preto)" transform="translate(52 78) rotate(180) scale(.32)"/>
+      <ellipse cx="-14" cy="-28" rx="8" ry="4.5" fill="#fff" opacity=".55" transform="rotate(-35 -14 -28)"/>
+    </g>
+    <!-- carta heroi -->
+    <g transform="translate(400 238) rotate(0) scale(1.08)">
+      <use href="#carta"/>
+      <use href="#copas" fill="url(#verm)" stroke="#1a1030" stroke-width="7" transform="translate(0 6) scale(1.35)"/>
+      <use href="#copas" fill="url(#verm)" transform="translate(-52 -80) scale(.3)"/>
+      <use href="#copas" fill="url(#verm)" transform="translate(52 80) rotate(180) scale(.3)"/>
+      <ellipse cx="-30" cy="-36" rx="12" ry="7" fill="#fff" opacity=".75" transform="rotate(-35 -30 -36)"/>
+      <circle cx="-14" cy="-20" r="4" fill="#fff" opacity=".75"/>
+    </g>
+  </g>
+</svg>

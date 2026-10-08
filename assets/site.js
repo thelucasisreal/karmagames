@@ -261,7 +261,7 @@
       frame = document.createElement("iframe");
       frame.title = jogo.titulo;
       frame.src = urlDoJogo(jogo);
-      frame.allow = "fullscreen; autoplay; gamepad";
+      frame.allow = "fullscreen; autoplay; gamepad; microphone";
       frame.setAttribute("allowfullscreen", "");
       frame.addEventListener("load", () => {
         carregando.classList.add("sumir");

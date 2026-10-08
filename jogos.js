@@ -33,6 +33,16 @@ window.KARMA_JOGOS = [
     adicionado: "2026-10-08",
   },
   {
+    slug: "paciencia",
+    capa: "assets/capas/paciencia.svg",
+    titulo: "Paciência",
+    descricao: "O clássico das cartas: organize os naipes do Ás ao Rei. Vira 1 ou 3 cartas.",
+    categoria: "Clássicos",
+    controles: "Arraste as cartas · toque para selecionar · dois cliques manda pra fundação",
+    autor: "Karma Games",
+    adicionado: "2026-10-08",
+  },
+  {
     slug: "blocos",
     capa: "assets/capas/blocos.svg",
     titulo: "Blocos Caindo",
