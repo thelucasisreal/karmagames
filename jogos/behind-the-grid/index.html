@@ -353,9 +353,157 @@ select.inp{padding:0 6px;appearance:auto}
 .toast .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:18px;flex:none;font-family:var(--emoji)}
 .toast b{display:block;font-size:12.5px}
 .toast .tx{flex:1;min-width:0}
-.ic-P{background:linear-gradient(135deg,#ff3d8b,#ff9f1c)}.ic-T{background:#111;box-shadow:inset 2px 0 #25f4ee,inset -2px 0 #fe2c55}.ic-M{background:#3a5bff}.ic-C{background:#1d9bf0}.ic-mae{background:#ffcf6b}.ic-bia{background:#ffd84d}.ic-ach{background:linear-gradient(135deg,#c8f13a,#45d08a)}
+.ic-P{background:linear-gradient(135deg,#ff3d8b,#ff9f1c)}.ic-T{background:#111;box-shadow:inset 2px 0 #25f4ee,inset -2px 0 #fe2c55}.ic-M{background:#3a5bff}.ic-C{background:#1d9bf0}.ic-mae{background:#ffcf6b}.ic-bia{background:#ffd84d}.ic-ach{background:linear-gradient(135deg,#c8f13a,#45d08a)}.ic-Z{background:#25d366}.ic-E{background:#ff5a3c}.ic-L{background:#e3261b}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.seg3 .opt{align-items:center;text-align:center}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:45}
 .rm-note{font-size:12px;color:var(--muted);text-align:center}
+
+/* ---------- parte 2: dock do celular ---------- */
+body.has-dock .app{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+.dock{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,480px);z-index:20;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:6px max(6px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));background:rgba(18,20,26,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,.35)}
+.dk{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 5px;border-radius:12px;font-size:10.5px;font-weight:600;color:var(--muted);min-height:52px;min-width:0;transition:background-color .2s,color .2s}
+.dk:hover{color:var(--text)}
+.dk i{font-style:normal;font-family:var(--emoji);font-size:21px;line-height:1}
+.dk span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.dk[aria-current="page"]{color:var(--text);background:var(--raised)}
+.dk .badge{top:0;right:calc(50% - 24px);min-width:18px;height:18px;font-size:11px;padding:0 5px}
+.dk .badge.g{background:#25d366;color:#0b2414}
+.alerts{display:flex;flex-direction:column;gap:6px}
+.alert{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-size:13px;line-height:1.35;text-align:left;width:100%}
+.alert .emo{font-size:20px;flex:none}
+.alert.warn{border-color:#4d3d1a;background:#1d180c}
+.alert.bad{border-color:#5a2a24;background:#22110f}
+.alert.ok{border-color:#2e4a25;background:#131d0e}
+.alert .go{margin-left:auto;color:var(--muted);font-weight:700;flex:none}
+.tabs2{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs2 button{min-height:38px;border-radius:999px;font-weight:600;font-size:14px;color:var(--muted)}
+.tabs2 button[aria-pressed="true"]{background:var(--raised);color:var(--text)}
+.sw{display:flex;align-items:center;gap:12px;justify-content:space-between;width:100%;padding:10px 12px;border-radius:12px;background:var(--raised);text-align:left;font-size:13.5px;line-height:1.3}
+.sw small{display:block;color:var(--muted);font-size:12px}
+.sw i{width:42px;height:24px;border-radius:999px;background:#3a3f4b;position:relative;flex:none;transition:background-color .2s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s var(--ease)}
+.sw[aria-checked="true"] i{background:var(--accent)}
+.sw[aria-checked="true"] i::after{transform:translateX(18px)}
+.mail-i .sw{background:#e9ecf5;color:#15161a}.mail-i .sw small{color:#5a6070}
+.bill .amt{font:800 17px var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bst{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.bst.ok{background:#dcfce7;color:#166534}.bst.open{background:#e0e7ff;color:#3730a3}.bst.late{background:#fef3c7;color:#92400e}.bst.cut{background:#fee2e2;color:#991b1b}
+.eats-h{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:linear-gradient(90deg,#e8352b,#ff7a3c);color:#fff}
+.eats-h b{font:800 17px var(--display)}
+.eats-h small{margin-left:auto;font-size:12px;font-weight:600;opacity:.9}
+.nut{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vi .btn{flex:none}
+.foto{font-size:12px;color:#ffd27a}
+/* ZapChat */
+.zap-h{display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:16px;background:#0f3d33;color:#e8fff6}
+.zap-h b{font:800 17px var(--display)}
+.zl{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.zi{display:flex;gap:12px;align-items:center;padding:11px 12px;text-align:left;width:100%;border-bottom:1px solid var(--line);transition:background-color .2s}
+.zi:last-child{border-bottom:0}
+.zi:hover{background:#1b1e26}
+.zi .av{width:44px;height:44px;font-size:22px}
+.zi b{font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zi small{color:var(--muted);font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zi .zr{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none;font-size:11px;color:var(--muted)}
+.ur{min-width:20px;height:20px;border-radius:999px;background:#25d366;color:#0b2414;font-size:11.5px;font-weight:800;display:grid;place-items:center;padding:0 6px}
+.afe{display:block;width:58px;height:4px;border-radius:4px;background:var(--raised);overflow:hidden}
+.afe i{display:block;height:100%;background:linear-gradient(90deg,#ff5ac8,#ffc23a)}
+.zc{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:16px;background-color:#0b141a;background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1.3px);background-size:14px 14px;min-height:180px}
+.bb{max-width:84%;padding:7px 11px;border-radius:14px;border-top-left-radius:4px;font-size:14px;line-height:1.38;background:#202c33;align-self:flex-start;overflow-wrap:anywhere}
+.bb.me{background:#005c4b;align-self:flex-end;border-top-left-radius:14px;border-top-right-radius:4px}
+.bb.sys{align-self:center;background:#1c2a30;font-size:12px;color:#b5c4cb;border-radius:10px;text-align:center}
+.bb.au{font-style:italic}
+.tones{display:flex;flex-direction:column;gap:6px}
+.tone{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1.5px solid var(--line);text-align:left;font-size:14px;line-height:1.3;transition:border-color .2s,transform .15s}
+.tone:hover{border-color:#4a505e}.tone:active{transform:scale(.98)}
+.tone .tl{font-size:11.5px;font-weight:700;color:var(--muted)}
+.tone.t0{border-left:4px solid #ff5ac8}.tone.t1{border-left:4px solid #5ac8ff}.tone.t2{border-left:4px solid #ffc23a}
+.zhead{display:flex;align-items:center;gap:10px}
+.zhead .av{width:40px;height:40px;font-size:20px}
+/* Explorar */
+.xg{display:flex;flex-direction:column;gap:12px}
+.xp{background:#fff;color:#15161a;border-radius:16px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.xp .scene{aspect-ratio:16/9}
+.xp .role{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#eef1ff;color:#2a45d8;margin-left:auto;white-space:nowrap}
+.xp .role.r{background:#fee2e2;color:#991b1b}.xp .role.m{background:#dcfce7;color:#166534}.xp .role.c{background:#ffe4f1;color:#9d174d}
+.xa{display:flex;flex-wrap:wrap;gap:6px;padding:4px 10px 10px}
+.xa .btn{background:#f1f2f6;border-color:#e3e5ec;color:#15161a;min-height:38px}
+.xa .btn.on{background:#ffe4f1;border-color:#ffb3d9}
+.xa .btn[disabled]{opacity:.45}
+.xmeta{display:flex;align-items:center;gap:8px;padding:0 10px 2px;font-size:12px;color:#5a6070}
+.xres{margin:0 10px 10px;padding:8px 10px;border-radius:10px;background:#f6f7fb;font-size:12.5px;color:#2a2d36}
+.xres .chips{margin-top:5px}
+/* moderação */
+.mod{display:flex;flex-direction:column;gap:8px}
+.mc{display:flex;flex-direction:column;gap:7px;padding:10px;border-radius:12px;background:var(--raised);border-left:4px solid #3a3f4b}
+.mc.k-fa{border-left-color:#6bd968}.mc.k-crit{border-left-color:#ffc23a}.mc.k-hater{border-left-color:#ff6b5a}.mc.k-bot{border-left-color:#8a8fa0}
+.mc .mt{font-size:13px;line-height:1.35}
+.mc .mt b{margin-right:4px}
+.mc .ma{display:flex;flex-wrap:wrap;gap:6px}
+.mc.pin{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.mc.done .ma{display:none}
+.mc .mr{font-size:12px;color:var(--muted)}
+/* jogos (overlay) */
+.gm{position:fixed;inset:0;z-index:25;background:#07080b;display:flex;flex-direction:column;padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));animation:fade .25s var(--ease);overflow:hidden}
+.lvw{width:min(100%,1060px);margin:0 auto;flex:1;display:flex;flex-direction:column;gap:8px;min-height:0}
+.lv-top{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.onair{background:#e3261b;color:#fff;font:800 11px var(--display);padding:4px 8px;border-radius:6px;letter-spacing:.03em}
+.lv-top .sp{margin-left:auto}
+.lv-top{flex-wrap:nowrap;white-space:nowrap;overflow:hidden}
+.lv-top .btn{flex:none}
+@media (max-width:430px){.lv-top{gap:7px;font-size:12px}.lv-top .hide-n{display:none}}
+.lv-main{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px}
+.lv-stage{position:relative;flex:0 0 36%;min-height:150px;border-radius:14px;overflow:hidden;background:#111}
+.lv-stage .scene{position:absolute;inset:0}
+.lvw.playing .lv-stage{flex:1 1 auto}
+.lvw.playing .lv-meta{display:none}
+.lv-chat{flex:1;min-height:110px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.lvw.playing .lv-chat{flex:0 0 92px;min-height:92px}
+.lv-msgs{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;padding:6px 8px;min-height:0}
+.cm{display:block;font-size:13px;line-height:1.3;text-align:left;padding:3px 7px;border-radius:8px;width:100%;flex:none;overflow-wrap:anywhere}
+.cm b{font-weight:700;margin-right:4px;color:#9fd8ff}
+.cm.hat b{color:#ff8a7a}.cm.q b{color:#ffd27a}.cm.bot b{color:#8a8fa0}
+.cm.sel{outline:2px solid var(--accent);outline-offset:-2px}
+.cm.act:not(.sc){background:#262a33}
+.cm.sc.act{box-shadow:inset 0 0 0 2px rgba(255,255,255,.85)}
+.cm.sc{padding:6px 8px;color:#111;font-weight:600}
+.cm.sc b{color:inherit}
+.sc-b{background:#5ac8ff}.sc-g{background:#6bd968}.sc-y{background:#ffc23a}.sc-r{background:#ff4d3d;color:#fff!important}
+.cm .tm{display:block;height:3px;border-radius:3px;background:currentColor;opacity:.55;margin-top:4px;transform-origin:left;animation:tm 4s linear forwards}
+@keyframes tm{to{transform:scaleX(0)}}
+.cm.done{opacity:.55}
+.cm.dead{text-decoration:line-through;opacity:.4}
+.lv-pin{display:flex;flex-direction:column;gap:6px;padding:8px;border-bottom:1px solid var(--line);background:#2a1414}
+.lv-pin p{font-size:13px;line-height:1.3}
+.lv-pin .row .btn{min-height:34px}
+.lv-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.lvw.playing .lv-btns{display:none}
+.lb{min-height:46px;border-radius:12px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 4px;transition:border-color .2s,background-color .2s,transform .15s}
+.lb:active{transform:scale(.96)}
+.lb[disabled]{opacity:.4;cursor:not-allowed}
+.lb.hot{border-color:var(--accent);background:#22290f;animation:pulse 1.2s ease-in-out infinite}
+.lb kbd,.ed kbd{font:600 10px "Geist",sans-serif;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 4px}
+@media (hover:none){.lb kbd,.ed kbd{display:none}}
+.lv-meta{position:absolute;left:8px;right:8px;bottom:8px;z-index:3;background:rgba(0,0,0,.6);border-radius:10px;padding:6px 9px;font-size:12px;font-weight:600;color:#fff}
+.lv-meta .tr{height:6px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden;margin-top:4px}
+.lv-meta .tr i{display:block;height:100%;width:0;background:linear-gradient(90deg,#c8f13a,#ffc23a);transition:width .4s var(--ease)}
+.bubble{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:4;width:max-content;max-width:88%;background:#fff;color:#111;border-radius:14px;padding:8px 12px;font-size:13px;line-height:1.35;box-shadow:0 8px 20px rgba(0,0,0,.4);animation:pop .3s var(--ease)}
+.lv-ov{position:absolute;inset:0;z-index:6;background:rgba(7,8,11,.86);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px;text-align:center;overflow-y:auto}
+.lv-ov h3{font-size:18px}
+.lv-ov .choices{width:min(100%,380px)}
+.cb{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+.lvsum{display:flex;flex-direction:column;gap:12px;width:min(100%,460px);margin:auto;padding:6px 0;overflow-y:auto;max-height:100%}
+@media (min-width:760px){.lv-main{flex-direction:row}.lv-stage{flex:1 1 auto;min-height:0}.lv-chat{flex:0 0 330px;min-height:0}.lvw.playing .lv-chat{flex:0 0 250px;min-height:0}}
+.ed{width:min(100%,720px);margin:auto;display:flex;flex-direction:column;gap:10px;max-height:100%;overflow-y:auto;padding:6px}
+.ed-cv{position:relative}
+.ed canvas{width:100%;height:220px;border-radius:14px;background:#10121a;display:block;touch-action:none}
+.ed-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ed-btns .btn{min-height:58px;font-size:16px}
+.grade{font:800 76px/1 var(--display);text-align:center}
+.legend{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.legend div{display:flex;gap:10px;align-items:center}
+.legend i{flex:none;width:16px;height:16px;border-radius:4px}
+@media (max-height:640px){.ed canvas{height:170px}.ed-btns .btn{min-height:48px}}
 @media (min-width:700px){.flip{width:min(100%,290px)}}
 @media (max-height:620px){.hud-in{padding:8px 10px;gap:6px}.hud .av{width:32px;height:32px;font-size:18px}.hn b{font-size:16px}.flip{width:min(100%,250px)}.view{gap:12px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -365,6 +513,8 @@ select.inp{padding:0 6px;appearance:auto}
 <div class="scroll" id="scroller"><main class="app" id="app"></main></div>
 <div id="toasts" aria-live="polite"></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
+<div id="dockHost"></div>
+<div id="game"></div>
 <div id="ovl"></div>
 <script>
 (function(){
@@ -499,13 +649,15 @@ var VIDA=[{id:"dormir",e:"😴",n:"Dormir 12 h",en:1,c:0,d:"🧠 +15"},
   {id:"detox",e:"📵",n:"Detox digital (mês off)",en:"all",c:0,d:"🧠 +40, 🔥 −20, mas 👥 −8% e nada de postar"}];
 
 var MARCAS=[
-  {n:"Café Grão Nobre",p:"café especial",s:"g",e:"☕"},{n:"Lumina Skin",p:"sérum facial",s:"g",e:"🧴"},{n:"Pedala Já",p:"bike elétrica",s:"g",e:"🚲"},
-  {n:"Banco Cofrinho",p:"conta digital",s:"g",e:"🏦"},{n:"Sabor de Casa",p:"tempero pronto",s:"g",e:"🧂",ni:"food"},{n:"HyperSeat",p:"cadeira gamer",s:"g",e:"🪑",ni:"gamer"},
-  {n:"Linho & Cia",p:"coleção de verão",s:"g",e:"👗",ni:"life"},{n:"Nuvem Fone",p:"fone sem fio",s:"g",e:"🎧"},{n:"Livraria Página 9",p:"box de mangá",s:"g",e:"📚",ni:"geek"},
-  {n:"PetMimo",p:"ração gourmet",s:"y",e:"🐶"},{n:"Shake Fit Max",p:"shake emagrecedor",s:"y",e:"🥤"},{n:"Ótica Olhar",p:"óculos de grau",s:"y",e:"👓"},
-  {n:"VPN Fantasma",p:"aplicativo de VPN",s:"y",e:"👻",ni:"geek"},{n:"Air Fryer Turbo 3000",p:"air fryer",s:"y",e:"🍟",ni:"food"},{n:"Clube do Look",p:"assinatura de roupas",s:"y",e:"🧥"},
-  {n:"Detox Lux",p:"chá detox milagroso",s:"r",e:"🍵"},{n:"SortePix",p:"casa de apostas",s:"r",e:"🎰"},{n:"CriptoLua",p:"moeda digital",s:"r",e:"🌙"},
-  {n:"Lacre Celulares",p:"celular “original” por R$ 499",s:"r",e:"📱"},{n:"Seca Já",p:"cinta modeladora mágica",s:"r",e:"🩱"},{n:"Curso Milionário",p:"curso de enriquecer",s:"r",e:"💸"}];
+  {n:"Café Grão Nobre",p:"café especial",s:"g",e:"☕"},{n:"Lumina Skin",p:"sérum facial",s:"g",e:"🧴",t:"bel"},{n:"Pedala Já",p:"bike elétrica",s:"g",e:"🚲"},
+  {n:"Banco Cofrinho",p:"conta digital",s:"g",e:"🏦"},{n:"Sabor de Casa",p:"tempero pronto",s:"g",e:"🧂",ni:"food"},{n:"HyperSeat",p:"cadeira gamer",s:"g",e:"🪑",ni:"gamer",t:"tec"},
+  {n:"Linho & Cia",p:"coleção de verão",s:"g",e:"👗",ni:"life",t:"bel"},{n:"Nuvem Fone",p:"fone sem fio",s:"g",e:"🎧",t:"tec"},{n:"Livraria Página 9",p:"box de mangá",s:"g",e:"📚",ni:"geek"},
+  {n:"PetMimo",p:"ração gourmet",s:"y",e:"🐶"},{n:"Shake Fit Max",p:"shake emagrecedor",s:"y",e:"🥤",t:"sup"},{n:"Ótica Olhar",p:"óculos de grau",s:"y",e:"👓"},
+  {n:"VPN Fantasma",p:"aplicativo de VPN",s:"y",e:"👻",ni:"geek",t:"tec"},{n:"Air Fryer Turbo 3000",p:"air fryer",s:"y",e:"🍟",ni:"food"},{n:"Clube do Look",p:"assinatura de roupas",s:"y",e:"🧥",t:"bel"},
+  {n:"Detox Lux",p:"chá detox milagroso",s:"r",e:"🍵"},{n:"SortePix",p:"casa de apostas",s:"r",e:"🎰",t:"bet"},{n:"CriptoLua",p:"moeda digital",s:"r",e:"🌙",t:"bet"},
+  {n:"Lacre Celulares",p:"celular “original” por R$ 499",s:"r",e:"📱"},{n:"Seca Já",p:"cinta modeladora mágica",s:"r",e:"🩱",t:"bel"},{n:"Curso Milionário",p:"curso de enriquecer",s:"r",e:"💸"},
+  {n:"Glow Lab",p:"base com 40 tons",s:"g",e:"💄",t:"bel"},{n:"Pump Whey",p:"whey protein",s:"y",e:"💪",t:"sup"},{n:"Bet do Bairro",p:"apostas esportivas",s:"r",e:"⚽",t:"bet"},
+  {n:"Arco Cosméticos",p:"linha “sem rótulos”",s:"g",e:"🌈",t:"div"},{n:"Mercado Plural",p:"campanha de diversidade",s:"y",e:"🏳️‍🌈",t:"div"}];
 
 var COMENT={
   bom:[["luana.vibes","gente como assim {@} tá cada vez melhor?? 😭✨"],["tio_paulo58","Parabéns pelo conteúdo, {nome}. Mostrei pro meu neto."],["gabs_fan01","eu tava aqui desde os 100 seguidores e hoje olha isso 🥹"],
@@ -894,7 +1046,32 @@ var EVT=[
  bts:{bg:"mess",sc:"📦 30 60 26,📦 60 64 24,🚚 80 30 20",cap:"mudança às 6h pra ninguém ver"},
  ch:[{k:"f",l:"Dizer que é “cenário de gravação”",r:"Ninguém acreditou. Muita gente printou.",d:{p:-4,r:-3,h:8}},
   {k:"a",l:"Postar a verdade: “gastei demais, voltei pro real”",r:"Um dos seus posts mais curtidos. Gente que se identifica é muita gente.",d:{f:5,p:5,r:5}},
-  {k:"r",l:"Fazer série “de cobertura pro chão”",luck:{p:.6,ok:{r:"Sucesso! A queda virou narrativa de superação.",d:{f:15,$:500,r:3}},bad:{r:"Acharam que era encenação. “Pobreza fake”.",d:{f:6,p:-6,r:-8,h:10}}}}]}
+  {k:"r",l:"Fazer série “de cobertura pro chão”",luck:{p:.6,ok:{r:"Sucesso! A queda virou narrativa de superação.",d:{f:15,$:500,r:3}},bad:{r:"Acharam que era encenação. “Pobreza fake”.",d:{f:6,p:-6,r:-8,h:10}}}}]},
+// ----- parte 2: sobrevivência, contas e identidade -----
+{id:"fu_coracao",fu:1,rep:1,t:"Coração Acelerado",x:"Três meses à base de energético. No meio de uma gravação o coração disparou e o chão girou. A Bia te achou sentad{a|o|e} no chão da cozinha.",
+ post:{net:"T",bg:"neon",sc:"⚡ 50 46 36,💓 22 24 20,🔥 78 72 18",cap:"rotina de quem não dorme ⚡💪 #produtividade"},
+ bts:{bg:"fluor",sc:"🫀 50 44 30,🥤 24 70 18,🥤 40 76 16 14,🥤 70 72 18 -10,😵‍💫 78 26 18",cap:"14 latas na lixeira. a Bia contou."},
+ ch:[{k:"f",l:"Postar “rotina de produtividade” com a lata na mão",r:"Bombou entre gente que também não dorme. Seu cardiologista não curtiu.",d:{f:8,p:-12,r:-4,h:6}},
+  {k:"a",l:"Ir ao médico e cortar o energético",r:"Exames, sermão e água. Muita água. Em uma semana você dormiu como não dormia há meses.",d:{$:-200,p:12,r:2},fx:function(){S.energRun=0;S.sede=clamp(S.sede+20,0,100)}},
+  {k:"r",l:"“É só cansaço”, e abrir mais uma lata",luck:{p:.4,ok:{r:"Passou. Dessa vez.",d:{p:-4}},bad:{r:"UPA às 3h da manhã. O enfermeiro te reconheceu: “você é {a|o|e} do Photogram?”",d:{$:-300,p:-15,f:3}}}}]},
+{id:"fu_despejo",fu:1,rep:1,exact:1,c:function(){return S.bills.aluguel.amt>0&&S.bills.aluguel.late>=2},t:"Ordem de Despejo",x:"Um envelope pardo embaixo da porta: dois meses de aluguel atrasado e o Seu Jorge entrou com a ordem de despejo. É a última chance antes de você ter que sair.",
+ post:{net:"P",bg:"warm",sc:"🏡 50 46 36,✨ 22 22 14,🪴 78 70 18",cap:"meu cantinho, meu lugar 🏡✨"},
+ bts:{bg:"cold",sc:"📄 50 46 30,🚪 22 60 24,😰 78 30 20,📦 80 74 16",cap:"ORDEM DE DESPEJO em letra vermelha"},
+ ch:function(){var a=S.bills.aluguel.amt;return [
+  {k:"a",l:"Pagar tudo agora ("+fmtR(a)+")"+(S.st.$<a?", mesmo ficando no vermelho":""),r:"Você pagou. O Seu Jorge mandou um “👍”. Só isso. Foi o melhor emoji do ano.",d:{$:-a,p:4},fx:function(){payBillForced("aluguel")}},
+  {k:"f",l:"Negociar com o Seu Jorge pelo ZapChat",luck:{p:clamp(relOf("jorge")/100+.15,.15,.9),ok:{r:"Ele aceitou parcelar: metade agora, metade depois. “Só porque meu neto gosta de você.”",d:{$:-Math.round(a/2),p:-2},fx:function(){var B=S.bills.aluguel;B.amt=Math.max(0,B.amt-Math.round(a/2));B.late=1;serasaCheck()}},bad:{r:"“Contrato é contrato.” Visualizou e não respondeu mais.",d:{p:-6}}}},
+  {k:"r",l:"Fazer live pedindo PIX pro aluguel",r:"Caiu PIX de muita gente. Também caiu uma thread perguntando quanto você gastou em ring light.",d:{$:Math.round(clamp(S.st.f*.03,250,20000)),r:-8,h:12,f:4},fl:{vaquinha:1}}]}},
+{id:"fu_caixa",fu:1,t:"Quebrando a Caixa",x:"Você postou um look com {peca} e os comentários decidiram que roupa tem gênero. Metade está brava, metade está te defendendo, e uma tia escreveu “é fase”.",
+ post:{net:"P",bg:"rose",sc:"🪞 50 46 34,✨ 22 22 14,🌈 78 24 16,💬 80 74 16",cap:"look de hoje ✨ roupa é roupa #ootd"},
+ bts:{bg:"warm",sc:"😌 50 42 30,👕 24 70 18,👗 76 70 18,☕ 50 80 14",cap:"você leu 3 comentários, riu de 1 e foi tomar café"},
+ ch:[{k:"a",l:"Assumir com orgulho: “roupa é roupa”",r:"Seu post virou ponto de encontro de gente que se sentiu vista. Os haters cansaram antes de você.",d:{f:6,l:8,r:3,h:5},ach:"caixa"},
+  {k:"f",l:"Apagar o post",r:"Apagou. Os comentários pararam. A vontade de usar aquela peça, não.",d:{p:-5}}]},
+{id:"e_arcoiris",c:function(){return S.p.pron==="elu"&&S.m%12===6},t:"Arco-Íris de Junho",x:"A Mercado Plural quer você na campanha do mês do orgulho. O contrato é de 30 dias. No dia 1º de julho, o logo arco-íris some, e o seu rosto também.",
+ post:{net:"P",bg:"sunset",sc:"🏳️‍🌈 50 44 36,✨ 22 22 14,💛 78 72 18",cap:"orgulho de ser quem eu sou 🌈 #publi #orgulho"},
+ bts:{bg:"fluor",sc:"📄 50 46 30,📅 22 30 20,🗓️ 78 70 20",cap:"cláusula 4: “vigência até 30/06”"},
+ ch:[{k:"f",l:"Aceitar e fazer a campanha de junho",r:"Cachê bom, campanha bonita. Em julho, o perfil da marca já tinha voltado ao bege.",d:{f:8,$:1200,r:-1}},
+  {k:"a",l:"Topar só com contrato de 12 meses",luck:{p:.45,ok:{r:"Eles toparam! Agora a parceria é o ano todo, não só em junho.",d:{f:10,$:2500,r:6,l:6}},bad:{r:"“Infelizmente o orçamento é só pra junho.” Pelo menos você perguntou.",d:{r:4,l:4}}}},
+  {k:"r",l:"Recusar e postar sobre marcas que somem em julho",r:"O post rodou. Muita gente marcou marcas. Duas pediram desculpas.",d:{f:12,r:5,l:5,h:6}}]}
 ];
 
 var CRISE={id:"crise",t:"☠️ Crise de Cancelamento",x:"Um fio de 47 chirps junta tudo de errado que você fez, com prints. #{handle}isOverParty está em alta no Chirp e três marcas soltaram nota de “estamos analisando”.",
@@ -963,7 +1140,15 @@ var CONQ=[
   {id:"ong",t:"Live do Bem",e:"🐶",d:"Fez uma live beneficente de verdade."},
   {id:"premio",t:"Creator do Ano",e:"🏆",d:"Ganhou o prêmio sem comprar voto."},
   {id:"reality",t:"Campe{ã|ão|one} do Reality",e:"👑",d:"Ganhou a Casa dos Creators."},
-  {id:"recorde",t:"Speedrunner",e:"⏱️",d:"Bateu o recorde de madrugada."}
+  {id:"recorde",t:"Speedrunner",e:"⏱️",d:"Bateu o recorde de madrugada."},
+  {id:"golpe",t:"Caça-Golpes",e:"🚩",d:"Derrubou um golpista do Photogram."},
+  {id:"oficial",t:"Assumiu o Namoro",e:"💑",d:"Oficializou um relacionamento."},
+  {id:"clutch",t:"Ace na Live",e:"🎯",d:"Fez um Clutch no Counter-Block ao vivo."},
+  {id:"edicao",t:"Edição Absurda",e:"✂️",d:"Tirou nota S na ilha de edição."},
+  {id:"fiel",t:"Fã-Clube Fiel",e:"💛",d:"Chegou a 80 de Lealdade dos Fãs."},
+  {id:"desmaio",t:"Desmaiou ao Vivo",e:"🚑",d:"Esqueceu de comer e desmaiou numa live."},
+  {id:"caixa",t:"Roupa É Roupa",e:"🌈",d:"Assumiu o look que quebrou a caixa."},
+  {id:"emdia",t:"Nome Limpo",e:"🧾",d:"Pagou todos os boletos em dia por 6 meses."}
 ];
 
 var TOASTS=[
@@ -993,7 +1178,8 @@ function firstName(){return (S.p.name||"Você").trim().split(/\s+/)[0]}
 var TOK={nome:function(){return firstName()},NOME:function(){return firstName().toUpperCase()},handle:function(){return S.p.handle},dica:function(){return S.p.hint||"(vazia)"},
   nicho:function(){return NICHOS[S.niche].curto},biaRel:function(){return minor()?"sua melhor amiga (e vizinha de porta)":"sua colega de apê"},
   fofoca:function(){return negFlags().slice(0,3).join("; ")||"nada demais, mas com emoji de fogo"},marca:function(){return S.lastBrand||"marca"},
-  item:function(){return ["celular rachado","ring light","câmera nova","estúdio"][S.up.setup]}};
+  item:function(){return ["celular rachado","ring light","câmera nova","estúdio"][S.up.setup]},
+  peca:function(){var x=pecaById(S.look);return x?x.n.toLowerCase():"uma peça nova"}};
 function tpl(s){
   s=val(s);if(s==null)return "";
   return String(s).replace(/\{([^{}|]*)\|([^{}|]*)\|([^{}|]*)\}/g,function(m,a,b,c){return [a,b,c][gi()]})
@@ -1019,6 +1205,7 @@ function newRun(p,niche){
   S={v:3,p:p,niche:niche,m:1,en:3,st:{f:100,$:500,paz:100,rep:50,h:0},up:{setup:0,casa:0,estilo:0},gym:0,flags:{},seen:[],queue:[],bia:1,
     trends:null,inbox:[],publiLog:[],contract:null,mon:null,hist:[100],virals:[],neg:0,apol:0,crises:0,trendRun:0,ignoreRun:0,origUntil:0,semIdM:0,
     therapy:false,freeProd:0,log:[],ach:[],ms:[],kinds:{f:0,a:0,r:0},evq:[],oid:1,lastBrand:"",dead:null,phase:"mes",lastSum:null,totalPosts:0};
+  migrate(S,true);
   var md=profileMods(p);
   if(p.emailType==="silly")S.st.f+=30;
   if(md.numeros)S.st.f-=20;
@@ -1032,7 +1219,7 @@ function newRun(p,niche){
   return S;
 }
 function enMax(){return S.up.setup>=3?4:3}
-function quality(){return UPS.setup.lv[S.up.setup].b+UPS.casa.lv[S.up.casa].b+UPS.estilo.lv[S.up.estilo].b+S.gym/100}
+function quality(){var fb=fband();return UPS.setup.lv[S.up.setup].b+UPS.casa.lv[S.up.casa].b+UPS.estilo.lv[S.up.estilo].b+S.gym/100+(fb===0?.05:fb>=2?-.2:0)}
 function band(){var h=S.st.h;return h>=90?3:h>=60?2:h>=30?1:0}
 var BANDS=[{e:"😌",n:"Tranquilo"},{e:"💬",n:"Burburinho"},{e:"🔥",n:"Em alta"},{e:"☠️",n:"Crise"}];
 function saturated(){var c=0;S.publiLog.forEach(function(m){if(m>=S.m-1)c++});return c>=3}
@@ -1054,8 +1241,9 @@ function applyD(d){
   if(d.$p&&S.st.$>0)S.st.$+=Math.round(S.st.$*d.$p/100);
   if(d.p)S.st.paz=clamp(S.st.paz+d.p,0,100);
   if(d.r){var rr=d.r;if(rr>0&&S.niche==="geek")rr=Math.round(rr*1.2);S.st.rep=clamp(S.st.rep+rr,0,100)}
-  if(d.h){var hh=d.h;if(hh>0&&S.niche==="life")hh=Math.round(hh*1.2);S.st.h=clamp(S.st.h+hh,0,100)}
-  r.f=S.st.f-b.f;r.$=S.st.$-b.$;r.paz=S.st.paz-b.paz;r.rep=S.st.rep-b.rep;r.h=S.st.h-b.h;
+  if(d.h){var hh=d.h;if(hh>0&&S.niche==="life")hh=Math.round(hh*1.2);if(hh>0)hh=Math.round(hh*(1-S.st.lea/200));S.st.h=clamp(S.st.h+hh,0,100)}
+  var l0=S.st.lea;if(d.l)S.st.lea=clamp(S.st.lea+d.l,0,100);if(S.st.lea>=80)unlock("fiel");
+  r.f=S.st.f-b.f;r.$=S.st.$-b.$;r.paz=S.st.paz-b.paz;r.rep=S.st.rep-b.rep;r.h=S.st.h-b.h;r.lea=S.st.lea-l0;
   return r;
 }
 function checkDeath(){
@@ -1076,10 +1264,16 @@ function newTrends(){
 
 // ---- mês ----
 function startMonth(first){
-  S.en=enMax();
-  S.mon={fStart:S.st.f,$start:S.st.$,posts:0,polem:false,trendUsed:false,toxicUsed:false,gain:0,viral:0,detox:false,contractPosts:0,best:null,saveMoney:0,ings:0,lines:[]};
+  S.en=Math.max(0,enMax()+(S.bemNext?1:0)-(S.faintNext?1:0));S.bemNext=false;S.faintNext=false;
+  S.mon=monDefaults({fStart:S.st.f,$start:S.st.$});
   newTrends();
-  genOffers(first);
+  genOffers(first);renewOffers();
+  S.startPaid=[];
+  if(S.mercadoAuto&&S.st.$>=MERCADO+50&&buyMercado())S.startPaid.push(["🛒 Mercado do mês · automático",-MERCADO]);
+  if(first)BILLS.forEach(function(b){S.bills[b.k].cur=billValue(b.k)});
+  if(!first)newBills().forEach(function(x){S.startPaid.push([x[0].e+" "+x[0].n+" · débito automático",-x[1]])});
+  zapMonth(first);
+  npcMonth();
 }
 function genOffers(first){
   // expira propostas não aceitas
@@ -1094,7 +1288,9 @@ function genOffers(first){
       if(first)return b.s!=="r";
       return true});
     if(S.st.rep<35)pool=pool.concat(MARCAS.filter(function(b){return b.s==="r"}));
-    var b=pick(pool);if(S.inbox.some(function(o){return o.b.n===b.n}))continue;
+    var b=pick(pool);
+    if(S.m<=6&&!first&&!S.flags.vilao&&Math.random()<.2){var tg={ela:["bel"],ele:["tec","sup","bet"],elu:["div"]}[S.p.pron]||[];
+      var bias=pool.filter(function(x){return tg.indexOf(x.t)>=0&&(S.p.pron==="ele"||x.s!=="r")});if(bias.length)b=pick(bias)}if(S.inbox.some(function(o){return o.b.n===b.n}))continue;
     var posts=ri(1,3);
     var fee=(80+f*.025)*(S.p.emailType==="pro"?1.15:S.p.emailType==="silly"?.85:1)*(S.niche==="life"?1.2:1)*(S.up.estilo>=2?1.1:1)
       *({g:1,y:1.4,r:3})[b.s]*(.7+.3*posts)*rnd(.85,1.2);
@@ -1107,10 +1303,11 @@ function genOffers(first){
   }
 }
 function offerById(id){for(var i=0;i<S.inbox.length;i++)if(S.inbox[i].id===id)return S.inbox[i];return null}
-function research(id){var o=offerById(id);if(!o||o.known||S.en<1)return false;S.en--;o.known=true;return true}
+function research(id){var o=offerById(id);if(!o||o.known||S.en<1)return false;spendEn(1);o.known=true;return true}
 function canAccept(o){
   if(o.kind==="publi"&&minor()&&o.b.s==="r")return "Sua mãe leu o contrato em voz alta no jantar e disse NÃO.";
   if(o.kind==="publi"&&band()>=2&&o.b.s==="g")return "A marca viu sua barra de hate e desistiu.";
+  if(o.kind==="publi"&&S.serasa&&o.b.s==="g")return "Seu nome está sujo no SerasaZap. Marca 🟢 não fecha com inadimplente.";
   if(o.kind==="contrato"&&S.contract)return "Você já tem um contrato de exclusividade.";
   return "";
 }
@@ -1123,13 +1320,14 @@ function accept(id){
 function decline(id){S.inbox=S.inbox.filter(function(o){return o.id!==id})}
 function deliver(id){
   var o=offerById(id);if(!o||!o.acc||o.left<1||S.en<1||S.mon.detox)return null;
-  S.en--;o.left--;S.lastBrand=o.b.n;
+  spendEn(1);o.left--;S.lastBrand=o.b.n;
   var res=makePost("q",null,{publi:o});
-  var pay=Math.round(o.fee/o.posts);S.st.$+=pay;res.money+=pay;res.d.$=(res.d.$||0)+pay;
+  var pay=Math.round(o.fee/o.posts);
+  if(o.viralB){res.notes.push("A marca repostou: o público dela adorou seu deboche.")}S.st.$+=pay;res.money+=pay;res.d.$=(res.d.$||0)+pay;
   if(!o.hit){o.hit=true;
     if(o.b.s==="y"&&Math.random()<.2){var a=applyD({h:10,r:-3});res.d.h+=a.h;res.d.rep+=a.rep;res.extra="Deu ruim: a "+o.b.n+" virou polêmica nos comentários.";res.cat="pol"}
     if(o.b.s==="r"){var a2=applyD({h:20,r:-10});res.d.h+=a2.h;res.d.rep+=a2.rep;S.flags.publiRed=1;res.extra="Publi duvidosa: os comentários perceberam na hora.";res.cat="pol"}}
-  if(o.left===0){S.inbox=S.inbox.filter(function(x){return x!==o});S.log.push({m:S.m,t:"Publi "+o.b.n,l:o.b.p+" ("+({g:"🟢",y:"🟡",r:"🔴"})[o.b.s]+")"})}
+  if(o.left===0){if(o.loyal&&!S.flags["ren_"+o.b.n]){S.flags["ren_"+o.b.n]=1;S.renew=S.renew||[];S.renew.push(o.b.n)}S.inbox=S.inbox.filter(function(x){return x!==o});S.log.push({m:S.m,t:"Publi "+o.b.n,l:o.b.p+" ("+({g:"🟢",y:"🟡",r:"🔴"})[o.b.s]+")"})}
   checkDeath();return res;
 }
 
@@ -1142,6 +1340,7 @@ function postCost(type){
 }
 function canPost(type,free){
   if(S.mon.detox)return "Você está em detox digital este mês.";
+  if(type!=="q"){var bl=blockReason(type);if(bl)return bl}
   var t=PTYPES[type];
   if(!(free&&type==="p")&&S.en<t.en)return "Energia insuficiente.";
   return "";
@@ -1168,6 +1367,9 @@ function makePost(type,trendKey,opt){
   }
   if(type==="c"){hate+=S.niche==="life"?17:14;rep-=3;S.mon.polem=true}
   if(type==="p")rep+=1;
+  var wm=false;
+  if(type==="p"&&!opt.publi){var B=S.bills.soft;if(B.amt>0&&B.late>=1){rep-=3;wm=true;notes.push("Marca d’água “VERSÃO DE AVALIAÇÃO”: o boleto do software tá atrasado (🌟 −3).")}
+    else if(!S.subs.editor&&!(opt.edit&&opt.edit.pro)){rep-=1;wm=true;notes.push("Sem Editor Pro, o vídeo saiu com marca d’água (🌟 −1).")}}
   if(!opt.free&&!opt.publi){money-=postCost(type);if(tr&&tr.free&&S.niche==="food")money+=40}
   var tm=t.mult;if(opt.publi)tm=.5;
   var gain=(60+S.st.f*.06*(150000/(S.st.f+150000)))*tm*(1+quality())*mult*(.5+S.st.rep/100);
@@ -1178,10 +1380,15 @@ function makePost(type,trendKey,opt){
   if(S.semIdM===S.m)gain*=.9;
   if(!tr&&S.origUntil>=S.m)gain*=1.15;
   if(S.niche==="geek")gain*=.9;
+  if(opt.edit){gain*=opt.edit.mult;viralC+=opt.edit.viral||0;if(opt.edit.filtros)gain*=1.05;if(opt.edit.g==="F")paz-=3}
+  if(S.buff&&!opt.publi){gain*=1+S.buff;notes.push("O card perfeito do bowl deu um empurrão (+"+Math.round(S.buff*100)+"%).");S.buff=0}
+  if(opt.casal){gain*=1.2;notes.push("Post de casal: o público ama um shipp (+20%).")}
   var luck=rnd(t.var[0],t.var[1]);gain*=luck;
-  var viral=Math.random()<viralC,flop=!viral&&luck<.55;
+  var viral=Math.random()<viralC,flop=!viral&&(luck<.55||(opt.edit&&opt.edit.g==="F"&&Math.random()<.2));
   if(viral){gain*=rnd(5,15);S.virals.push(S.m);S.mon.viral++;unlock("viral");note({type:"conf",txt:"VIRALIZOU! 🔥"})}
   if(flop)paz-=3;
+  var catPre=viral?"viral":opt.publi?"publi":(type==="c"||(tr&&tr.tx))?"pol":flop?"flop":"bom";
+  var mod=genMod(catPre,type);paz-=mod.dmg;
   if(S.st.f>=10000)money+=Math.round(S.st.f*.004);
   S.st.$+=money;
   var before=S.st.f;setF(S.st.f+gain);
@@ -1193,19 +1400,27 @@ function makePost(type,trendKey,opt){
   if(!S.mon.best||g>S.mon.best.g)S.mon.best={g:g,type:type};
   var cat=viral?"viral":opt.publi?"publi":(type==="c"||(tr&&tr.tx))?"pol":flop?"flop":"bom";
   if(band()>=2&&cat==="bom"&&Math.random()<.5)cat="pol";
+  if(opt.edit){if(opt.edit.g==="S"){unlock("edicao");notes.push("Edição absurda: os cortes caíram certinho na batida.")}else if(opt.edit.g==="C")notes.push("Alguns cortes ficaram estranhos.");else if(opt.edit.g==="F")notes.push("A edição ficou confusa e o público percebeu.")}
+  if(mod.hidden)notes.push("🛡️ O filtro de ódio escondeu "+mod.hidden+" comentário"+(mod.hidden>1?"s":"")+".");
   checkDeath();
-  return {type:type,trend:tr?tr.n:null,gain:g,viral:viral,flop:flop,money:money,d:{f:g,$:money,paz:dP,rep:dRep,h:dH},cat:cat,notes:notes,comments:comments(cat,3),publi:opt.publi||null};
+  var cms=comments(cat,3);if(opt.edit&&(opt.edit.g==="S"||opt.edit.g==="C"))cms[0]={u:opt.edit.g==="S"?"rafa.edita":"sincerona",t:opt.edit.g==="S"?"edição absurda, quem editou isso?? 🎬🔥":"esses cortes estranhos kkkk quem editou, o gato?"};
+  return {type:type,trend:tr?tr.n:null,gain:g,viral:viral,flop:flop,money:money,d:{f:g,$:money,paz:dP,rep:dRep,h:dH},cat:cat,notes:notes,comments:cms,publi:opt.publi||null,mod:mod.list,wm:wm,edit:opt.edit||null};
 }
-function doPost(type,trendKey){
+function doPost(type,trendKey,opt){
+  opt=opt||{};
   var free=type==="p"&&S.freeProd>0;
   var why=canPost(type,free);if(why)return null;
-  if(free)S.freeProd--;else S.en-=PTYPES[type].en;
-  return makePost(type,trendKey,{free:free});
+  if(free){S.freeProd--;spendEn(0,true)}else spendEn(PTYPES[type].en,type==="p");
+  return makePost(type,trendKey,{free:free,edit:opt.edit,casal:opt.casal&&canCasal()});
 }
 function comments(cat,n){
   var pool=(COMENT[cat]||COMENT.bom).slice(),out=[];
   while(out.length<n&&pool.length){var i=Math.floor(Math.random()*pool.length);out.push(pool.splice(i,1)[0])}
-  return out.map(function(c){return {u:c[0],t:tpl(c[1])}});
+  out=out.map(function(c){return {u:c[0],t:tpl(c[1])}});
+  // a internet trata as pessoas de jeitos diferentes (14.2)
+  var ip=IDCOM[S.p&&S.p.pron],k=cat==="viral"||cat==="bom"?"bom":cat==="pol"?"pol":null;
+  if(ip&&k&&ip[k]&&out.length&&Math.random()<.45){var c=pick(ip[k]);if(!(c[3]&&CFG.filtro))out[out.length-1]={u:c[0],t:tpl(CFG.real?c[1]:(c[2]||c[1]))}}
+  return out;
 }
 
 // ---- upgrades ----
@@ -1219,11 +1434,9 @@ function sellUp(cat){if(S.up[cat]<1)return false;var c=UPS[cat].lv[S.up[cat]].c;
   if(cat==="setup"&&S.up.setup===3)S.en=Math.max(0,S.en-1);
   S.up[cat]--;if(cat==="casa"&&S.seen.indexOf("fu_cobertura")<0)S.queue.push({id:"fu_cobertura",m:S.m+1});return true}
 function fixedCosts(){
-  var L=[],ad=!minor();
-  var casa=UPS.casa.lv[S.up.casa].m;if(S.up.casa===0&&!ad)casa=0;
-  if(casa)L.push(["🏠 "+(S.up.casa===0?"Aluguel da quitinete":"Moradia"),-casa]);
-  if(ad)L.push(["📶 Internet + celular",-99]);
-  if(S.p.age>=25)L.push(["🧾 Contas de adulto",-150]);
+  var L=[];
+  // aluguel, luz e internet agora chegam como boletos no MailGrid (seção 10.3)
+  if(S.p.age>=25)L.push(["🧾 Contas de adulto",-120]);
   if(UPS.setup.lv[S.up.setup].m)L.push(["🎬 Editor + estúdio",-UPS.setup.lv[S.up.setup].m]);
   if(UPS.estilo.lv[S.up.estilo].m)L.push(["👗 Estilo",-UPS.estilo.lv[S.up.estilo].m]);
   return L;
@@ -1238,7 +1451,7 @@ function vidaCan(id){var v=VIDA.filter(function(x){return x.id===id})[0];
   return ""}
 function vida(id){
   var v=VIDA.filter(function(x){return x.id===id})[0];if(vidaCan(id))return null;
-  S.en-=v.en==="all"?S.en:v.en;S.st.$-=v.c;
+  spendEn(v.en==="all"?S.en:v.en);S.st.$-=v.c;
   var d={},txt="";
   if(id==="dormir"){d={p:15};txt=pick(["Doze horas de sono. Você acordou sem saber que dia era. Perfeito.","Dormiu tanto que sonhou com o algoritmo. Ele pedia desculpas."])}
   if(id==="role"){d={p:18};S.bia++;txt=pick(["Karaokê, pastel e risada até doer a barriga. Nenhum story postado.","Rolê com a Bia na praça. Vocês riram de tudo, inclusive de você."]);
@@ -1248,6 +1461,9 @@ function vida(id){
   if(id==="terapia"){d={p:25};S.therapy=true;unlock("terapia");txt="Uma hora falando de você sem câmera ligada. A psicóloga anotou “algoritmo” 14 vezes."}
   if(id==="academia"){d={p:10};S.gym=Math.min(10,S.gym+2);txt="Caminhada de 40 minutos. Seu corpo agradeceu e sua postura na câmera melhorou."}
   if(id==="bico"){d={$:600,p:-6};txt=minor()?"Vendeu brigadeiro na escola e no condomínio. Empreendedorismo raiz.":pick(["Fim de semana de entregas de bicicleta. As pernas doem, o boleto agradece.","Freela de social media pra pizzaria do bairro. Eles pagaram em dinheiro e pizza."]);if(minor())d.$=250}
+  if(id==="role")S.fome=clamp(S.fome+15,0,100);
+  if(id==="detox"){S.fome=clamp(S.fome+25,0,100);S.sede=clamp(S.sede+25,0,100)}
+  if(id==="viagem"){S.fome=clamp(S.fome+30,0,100);S.sede=clamp(S.sede+30,0,100)}
   if(id==="viagem"){d={p:30};S.freeProd++;txt="Viagem curta pra praia. Você voltou com a cabeça leve e material pra um post Produzido grátis."}
   if(id==="detox"){d={p:40,h:-20};S.mon.detox=true;unlock("detox");txt="Celular na gaveta. Você leu um livro inteiro. De papel. O mundo não acabou."}
   if(S.bia>=4)unlock("bia");
@@ -1291,16 +1507,17 @@ function choicesOf(ev){return val(ev.ch)}
 function negFlags(){
   var F={finalFake:"a geladeira do “final feliz” era da tia",vaquinha:"a vaquinha de R$ 2.800 pra uma geladeira de R$ 1.900",tourFake:"o apê do tour era alugado",devolveu:"devolve todos os looks depois de postar",
     marcaFake:"a “marca própria” é importado de R$ 39",detox:"fez publi de chá laxante",spoiler:"vazou trailer por views",sorteioFake:"o sorteio do celular nunca teve celular",fantasmas:"comprou 10 mil seguidores",
-    bet:"divulgou casa de apostas",namoroFake:"o namoro era contrato",serieEx:"expôs o ex em 12 partes",jogouCadeira:"jogou fora a cadeira da avó por publi",publiRed:"fez publi de marca duvidosa"};
+    bet:"divulgou casa de apostas",contaFake:"tinha conta fake pra mandar hate em outros creators",namoroFake:"o namoro era contrato",serieEx:"expôs o ex em 12 partes",jogouCadeira:"jogou fora a cadeira da avó por publi",publiRed:"fez publi de marca duvidosa"};
   return Object.keys(F).filter(function(k){return S.flags[k]}).map(function(k){return F[k]});
 }
 function choose(evId,idx){
   var ev=evById(evId),ch=choicesOf(ev)[idx],out=ch,lucky=null;
   if(ch.luck){lucky=Math.random()<ch.luck.p;out=lucky?ch.luck.ok:ch.luck.bad}
   var d=Object.assign({},val(out.d||ch.d)||{});
-  if(d.$<0&&ev!==CRISE)d.$=Math.round(d.$*clamp(.25+S.st.f/40000,.25,1)/10)*10;
+  if(d.$<0&&ev!==CRISE&&!ev.exact)d.$=Math.round(d.$*clamp(.25+S.st.f/40000,.25,1)/10)*10;
   if(ev===CRISE&&ch.crisis==="desculpas"&&S.apol>=1)d=Object.assign({},d,{r:d.r-15});
   var a=applyD(d);
+  var fx=out.fx||ch.fx;if(fx)fx();
   var fl=val(out.fl||ch.fl);if(fl)Object.keys(fl).forEach(function(k){S.flags[k]=fl[k]});
   var q=out.q||ch.q;if(q&&S.seen.indexOf(q[0])<0&&!S.queue.some(function(x){return x.id===q[0]}))S.queue.push({id:q[0],m:S.m+ri(q[1],q[2])});
   var bia=out.bia!=null?out.bia:ch.bia;if(bia){S.bia+=bia;a.bia=bia;if(S.bia>=4)unlock("bia")}
@@ -1309,7 +1526,7 @@ function choose(evId,idx){
     if(ch.crisis==="desculpas")S.apol++;
     if(ch.crisis==="assumiu")S.flags.assumiu=1;
     if(ch.crisis==="vilao"){S.flags.vilao=1;S.inbox=S.inbox.filter(function(o){return o.kind==="publi"&&o.b.s==="r"})}}
-  if(evId!=="crise")S.seen.push(evId);
+  if(evId!=="crise"&&!ev.rep)S.seen.push(evId);
   S.kinds[ch.k]++;
   S.log.push({m:S.m,t:tpl(ev.t),l:tpl(ch.l),k:ch.k});
   checkDeath();
@@ -1331,6 +1548,7 @@ function endMonth(){
   S.inbox.filter(function(o){return o.kind==="publi"&&o.acc&&o.left>0&&o.due<=S.m}).forEach(function(o){
     applyD({r:-5});sum.notes.push("A "+o.b.n+" cancelou a publi: prazo estourado (🌟 −5).");S.inbox=S.inbox.filter(function(x){return x!==o})});
   L.forEach(function(x){S.st.$+=x[1]});
+  monthP2(sum,L);
   // seguidores parados
   if(S.mon.detox){applyD({fp:-8});sum.notes.push("Detox: 👥 −8%, mas você voltou inteir{a|o|e}.")}
   else if(S.mon.posts===0){applyD({fp:-5});sum.notes.push("Nenhum post no mês: o algoritmo esqueceu de você (👥 −5%).")}
@@ -1364,7 +1582,8 @@ function endMonth(){
   var reach=Math.round(Math.max(50,S.st.f)*rnd(1.4,3.8)*(1+S.mon.posts*.3)),likes=Math.round(reach*rnd(.05,.12));
   sum.ins={reach:reach,likes:likes,shares:Math.round(likes*rnd(.05,.2)),nf:Math.round(rnd(20,70))};
   S.lastSum=sum;
-  if(!S.dead){S.m++;pickEvents(hot);startMonth(false);if(S.m===25)note({type:"toast",app:"P",t:"2 anos de carreira!",x:"Agora você pode se aposentar quando quiser (menu do mês)."})}
+  if(!S.dead){S.m++;pickEvents(hot);startMonth(false);
+    if(S.startPaid&&S.startPaid.length){S.startPaid.forEach(function(x){sum.lines.push([x[0],x[1],null,1])});sum.$end=S.st.$}if(S.m===25)note({type:"toast",app:"P",t:"2 anos de carreira!",x:"Agora você pode se aposentar quando quiser (menu do mês)."})}
   return sum;
 }
 function pickEnding(){
@@ -1383,6 +1602,537 @@ function retire(){if(S.m<25)return null;unlock("aposentou");S.dead=null;return p
 function randomToast(){
   var l=TOASTS.filter(function(t){return !t.c||t.c()});var t=pick(l);
   var a=applyD(t.d||{});return {app:t.app,t:t.t,x:tpl(t.x),d:a};
+}
+// ===== PARTE 2 · MOTOR: sobrevivência, boletos, ZapChat, Explorar, moderação, lives =====
+var CFG=store.get("cfg",null)||{};if(CFG.real==null)CFG.real=true;if(CFG.filtro==null)CFG.filtro=true;
+function saveCfg(){store.set("cfg",CFG)}
+function monDefaults(o){return Object.assign({fStart:0,$start:0,posts:0,polem:false,trendUsed:false,toxicUsed:false,gain:0,viral:0,detox:false,contractPosts:0,best:null,saveMoney:0,ings:0,lines:[],
+  used:0,lives:0,likes:0,mercado:false,energ:false,ate:{},fotos:{},anyLate:false,paid:[]},o||{})}
+function migrate(R,fresh){
+  if(R.fome==null)R.fome=fresh?80:75;if(R.sede==null)R.sede=fresh?80:75;
+  if(R.st.lea==null)R.st.lea=30+(R.p&&R.p.pron==="elu"?10:0);
+  R.bills=R.bills||{};BILLS.forEach(function(b){if(!R.bills[b.k])R.bills[b.k]={amt:0,late:0,rel:0,cur:0}});
+  R.subs=R.subs||{net:true,editor:false,musica:false,filtros:false};
+  if(R.autopay==null)R.autopay=!fresh; // saves antigos já pagavam tudo sozinhos
+  R.zap=R.zap||{c:{},ts:0,marca:null};ZC.forEach(function(c){if(!R.zap.c[c.id])R.zap.c[c.id]={th:[],pend:null,un:0,seenM:0,st:0,stM:0,ts:0}});
+  R.rel=R.rel||{};R.npc=R.npc||{};
+  NPCS.forEach(function(n){if(!R.npc[n.id])R.npc[n.id]={f:n.f,gone:0,rep:70,inv:0,post:null,lk:0,cm:0,co:0,ht:0,rp:0}});
+  if(R.mon)R.mon=monDefaults(R.mon);
+  ["miojoRun","energRun","buff","okMonths","rentUp","lastLives"].forEach(function(k){if(R[k]==null)R[k]=0});
+  if(R.look===undefined)R.look=null;if(R.date===undefined)R.date=null;R.wordFilter=!!R.wordFilter;R.renew=R.renew||[];
+  return R;
+}
+
+// ---- 🍔 fome e 💧 sede ----
+var FOOD=[
+  {id:"miojo",e:"🍜",n:"Miojo Gourmet",c:12,fo:25,se:-5,p:-1,cat:"food",foto:"Foto “vida real”: 🌟 +1",
+    txt:["Miojo com ovo e orégano. Gourmet é o nome, não o prato.","Miojo às 23h com a panela no colo. Clássico."]},
+  {id:"marmita",e:"🍱",n:"Marmita da Dona Cida",c:28,fo:45,se:0,p:3,cat:"food",foto:"Post Rápido “comida de verdade”: 👥 +2%",
+    txt:["Arroz, feijão, bife e um bilhetinho: “come direito, viu?”.","Marmita quentinha. Você comeu tudo, até a farofa."]},
+  {id:"bowl",e:"🥗",n:"Bowl Aesthetic",c:79,fo:35,se:15,p:2,cat:"food",foto:"Card de feed perfeito: próximo post +15% (Lifestyle/Food)",
+    txt:["Quinoa, abacate, flor comestível. Linda. Com fome de novo em 2 horas.","O bowl veio com uma etiqueta “bem-estar”. Custou um boleto de luz."]},
+  {id:"agua",e:"💧",n:"Água 1,5 L",c:4,fo:0,se:40,p:0,cat:"drink",
+    txt:["Água. Seu rim mandou um coração.","Garrafa de 1,5 L virada em 10 minutos. Hidratação nível atleta."]},
+  {id:"energ",e:"⚡",n:"Energético",c:11,fo:0,se:20,p:-4,cat:"drink",
+    txt:["Lata gelada e o coração batendo no ritmo de música eletrônica.","Gosto de bala de goma e arrependimento. Mas acordou."]},
+  {id:"cafe",e:"☕",n:"Café gelado",c:22,fo:5,se:25,p:2,cat:"drink",foto:"Story aesthetic: 👥 +1%",
+    txt:["Café gelado com espuma de leite de aveia. Você se sentiu em Nova York.","Café gelado no copo de vidro reutilizável (comprado pro story)."]}];
+var MERCADO=450;
+function foodById(id){for(var i=0;i<FOOD.length;i++)if(FOOD[i].id===id)return FOOD[i];return null}
+function nutr(){return Math.min(S.fome,S.sede)}
+function fband(){if(!S||S.fome==null)return 1;var n=nutr();return n>=70?0:n>=30?1:n>=10?2:3}
+var FB=[{e:"😋",n:"Bem"},{e:"😐",n:"Ok"},{e:"😵",n:"Fraco"},{e:"🚑",n:"Desmaio"}];
+// toda ação gasta 🍔 −8 e 💧 −10 (live e Produzido, o dobro)
+function spendEn(n,heavy,noFaint){
+  if(n>0){S.en=Math.max(0,S.en-n);var first=S.mon.used===0;S.mon.used+=n;if(first)billsDue()}
+  var k=heavy?2:1;S.fome=clamp(S.fome-8*k,0,100);S.sede=clamp(S.sede-10*k,0,100);
+  if(fband()===2)S.st.paz=clamp(S.st.paz-5,0,100);
+  if(!noFaint&&nutr()<10){var d=faint(false);note({type:"faint",d:d})}
+  checkDeath();
+}
+function faint(live){
+  S.faints=(S.faints||0)+1;
+  if(S.en>0)S.en--;else S.faintNext=true;
+  var d=applyD(live?{p:-10,$:-300,fp:15,h:10}:{p:-10,$:-300});
+  S.fome=Math.max(S.fome,45);S.sede=Math.max(S.sede,45);
+  if(live)unlock("desmaio");
+  S.log.push({m:S.m,t:"Desmaio",l:live?"Desmaiou ao vivo na LiveGrid":"Foi parar na UPA de fome e sede"});
+  checkDeath();return d;
+}
+function canEat(id){var it=foodById(id);if(!it)return "?";if(S.st.$<it.c)return "Dinheiro insuficiente.";return ""}
+function eat(id){
+  var it=foodById(id);if(canEat(id))return null;
+  S.st.$-=it.c;var f0=S.fome,s0=S.sede;
+  S.fome=clamp(S.fome+it.fo,0,100);S.sede=clamp(S.sede+it.se,0,100);S.mon.ate[id]=1;
+  var dd={p:it.p},txt=pick(it.txt),extra="";
+  if(id==="miojo"){S.miojoRun++;if(S.miojoRun>=3){dd.p-=5;S.miojoRun=0;extra="Terceiro miojo seguido. Seu corpo mandou um ofício reclamando (🧠 −5)."}}
+  else if(it.cat==="food")S.miojoRun=0;
+  if(id==="energ"){if(!S.mon.energ){S.mon.energ=true;S.en++;extra="⚡ +1 de energia (só vale 1 por mês)."}else extra="Esse não deu energia: o corpo já tá no limite (⚡ só 1 por mês)."}
+  var a=applyD(dd);a.$=-it.c;
+  return {txt:txt,extra:extra,d:a,df:S.fome-f0,ds:S.sede-s0,id:id};
+}
+function canFoto(id){var it=foodById(id);return !!(it&&it.foto&&S.mon.ate[id]&&!S.mon.fotos[id])}
+function foodFoto(id){
+  if(!canFoto(id))return null;S.mon.fotos[id]=1;var d={},txt="";
+  if(id==="miojo"){d={r:1};txt="Foto do miojo com a legenda “vida real”. Muita gente se identificou."}
+  if(id==="marmita"){d={fp:2};txt="“Comida de verdade, feita pela Dona Cida” 🍱 Post simples, muito salvo."}
+  if(id==="cafe"){d={fp:1};txt="Story do café gelado com luz de fim de tarde. Aesthetic no ponto."}
+  if(id==="bowl"){S.buff=(S.niche==="life"||S.niche==="food")?.15:.05;txt="Card de feed perfeito guardado pro próximo post (+"+Math.round(S.buff*100)+"% de engajamento).";
+    if(lateCount()>0){d={h:5};txt+=" Mas alguém comentou: “ostentando bowl com aluguel atrasado” 🔥"}}
+  return {txt:txt,d:applyD(d)};
+}
+function buyMercado(){if(S.mon.mercado||S.st.$<MERCADO)return false;S.st.$-=MERCADO;S.mon.mercado=true;S.fome=clamp(S.fome+15,0,100);S.sede=clamp(S.sede+15,0,100);S.mon.paid.push(["🛒 Mercado do mês",-MERCADO]);return true}
+
+// ---- 🧾 boletos do mês ----
+var BILLS=[{k:"aluguel",e:"🏠",n:"Aluguel"},{k:"luz",e:"💡",n:"Luz"},{k:"net",e:"🌐",n:"Internet Premium"},{k:"soft",e:"🎬",n:"Softwares"}];
+var SOFT=[{k:"editor",n:"Editor Pro",c:90,d:"Ímã: o corte gruda na batida. Sem ele, marca d’água."},
+  {k:"musica",n:"Banco de Músicas",c:40,d:"Batida mais marcada e previsível na edição."},
+  {k:"filtros",n:"Filtros Pro",c:25,d:"+5% de qualidade automática nos vídeos editados."}];
+function billDef(k){for(var i=0;i<BILLS.length;i++)if(BILLS[i].k===k)return BILLS[i]}
+function rentValue(){if(S.up.casa===0&&minor())return 0;return UPS.casa.lv[S.up.casa].m+(S.rentUp||0)}
+function billValue(k){
+  if(k==="aluguel")return rentValue();
+  if(k==="luz"){var v=(minor()&&S.up.casa===0)?0:[90,180,260,420][S.up.casa];if(S.up.setup>=2)v+=120;v+=40*Math.floor((S.lastLives||0)/2);return v}
+  if(k==="net")return S.subs.net?150:0;
+  if(k==="soft")return SOFT.reduce(function(a,x){return a+(S.subs[x.k]?x.c:0)},0);
+  return 0;
+}
+function newBills(){BILLS.forEach(function(b){var B=S.bills[b.k],v=billValue(b.k);B.cur=v;if(v>0)B.amt+=v});return S.autopay?autoPay():[]}
+function billLate(k){var B=S.bills[k];return B&&B.amt>0?B.late:0}
+function lateCount(){return BILLS.filter(function(b){return billLate(b.k)>=1}).length}
+function cut(k){return billLate(k)>=2}
+function openBills(){return BILLS.filter(function(b){return S.bills[b.k].amt>0})}
+function billsTotal(){return openBills().reduce(function(a,b){return a+S.bills[b.k].amt},0)}
+function dayOf(){return Math.min(30,1+S.mon.used*10)}
+function billsDue(){ // passou do dia 10
+  var out=[];
+  BILLS.forEach(function(b){var B=S.bills[b.k];if(B.amt>0&&B.late===0){B.late=1;lateEffects(b.k);out.push(b.n)}});
+  if(out.length){S.mon.anyLate=true;note({type:"toast",app:"M",t:"MailGrid · venceu dia 10",x:out.join(", ")+" em atraso. Multa na conta."});serasaCheck()}
+}
+function lateEffects(k){var B=S.bills[k];
+  if(k==="aluguel"){B.amt+=Math.round(B.amt*.1);applyD({p:-8});zapPush("jorge",{au:1,t:tpl("🎤 Áudio 1:12 · “{nome}, o aluguel venceu dia 10. Não me faça subir aí.”")})}
+  if(k==="luz"){B.amt+=Math.round(B.amt*.02);applyD({p:-3})}
+}
+function escalate(sum){
+  BILLS.forEach(function(b){var B=S.bills[b.k];if(B.amt<=0){B.late=0;return}
+    if(B.late===0){B.late=1;lateEffects(b.k);S.mon.anyLate=true}
+    if(B.late>=3&&b.k!=="aluguel")return;
+    B.late++;
+    if(b.k==="aluguel"){
+      if(B.late===2){if(relOf("jorge")>=70&&!S.flags.jorgeGrace){S.flags.jorgeGrace=1;B.late=1;sum.notes.push("🏠 O Seu Jorge gosta de você e segurou a ordem de despejo por mais um mês.")}
+        else{S.queue.push({id:"fu_despejo",m:S.m+1});sum.notes.push("🏠 Dois meses de aluguel atrasado: chegou a ordem de despejo.")}}
+      else if(B.late>=3){S.dead="despejo";sum.notes.push("🏠 Três meses sem pagar o aluguel. Despejo.")}}
+    if(b.k==="luz"){if(B.late===2)sum.notes.push("💡 Luz cortada: só dá pra postar Rápido pelo celular.");if(B.late===3&&!B.rel){B.rel=1;B.amt+=250;sum.notes.push("💡 A religação da luz agora custa R$ 250.")}}
+    if(b.k==="net"){if(B.late===2)sum.notes.push("🌐 Internet cortada: sem live e sem Produzido.");if(B.late===3&&!B.rel){B.rel=1;B.amt+=200;sum.notes.push("🌐 A religação da internet agora custa R$ 200.")}}
+    if(b.k==="soft"&&B.late===2)sum.notes.push("🎬 Licença dos softwares cancelada: a ilha de edição perdeu as ferramentas.");
+  });
+  serasaCheck();
+}
+function payBill(k){var B=S.bills[k],a=B.amt;if(a<=0||S.st.$<a)return false;S.st.$-=a;S.mon.paid.push([billDef(k).e+" "+billDef(k).n,-a]);payBillForced(k);return true}
+function payBillForced(k){var B=S.bills[k];B.amt=0;B.late=0;B.rel=0;serasaCheck()}
+function autoPay(){var paid=[];BILLS.forEach(function(b){var a=S.bills[b.k].amt;if(a>0&&S.st.$>=a&&payBill(b.k))paid.push([b,a])});return paid}
+function serasaCheck(){var dirty=lateCount()>=2;
+  if(dirty&&!S.serasa){S.serasa=true;applyD({r:-5});note({type:"toast",app:"M",t:"SerasaZap",x:"Nome sujo: 2 boletos atrasados. Marcas 🟢 recusam e 🌟 −5."})}
+  else if(!dirty&&S.serasa){S.serasa=false;note({type:"toast",app:"M",t:"SerasaZap",x:"Nome limpo de novo! ✨"})}}
+function blockReason(kind){
+  if(cut("luz"))return kind==="live"?"Luz cortada: sem energia pra fazer live.":"Luz cortada: só dá pra postar Rápido pelo celular.";
+  if(kind==="c")return "";
+  if(!S.subs.net)return "Precisa de Internet Premium (assine no MailGrid › Boletos).";
+  if(cut("net"))return "Internet cortada: sem live e sem Produzido.";
+  return "";
+}
+function editTools(){var ok=billLate("soft")<2;return {pro:!!(S.subs.editor&&ok),musica:!!(S.subs.musica&&ok),filtros:!!(S.subs.filtros&&ok)}}
+function setSub(k,on){
+  if(!!S.subs[k]===!!on)return;S.subs[k]=!!on;
+  if(on){var c=k==="net"?150:(SOFT.filter(function(x){return x.k===k})[0]||{}).c||0,B=S.bills[k==="net"?"net":"soft"];B.cur+=c;
+    if(S.st.$>=c){S.st.$-=c;S.mon.paid.push([(k==="net"?"🌐 ":"🎬 ")+(k==="net"?"Internet Premium":SOFT.filter(function(x){return x.k===k})[0].n)+" (assinatura)",-c])}else B.amt+=c}
+}
+
+// ---- 👚 guarda-roupa (14.2: tudo aberto pra todo mundo) ----
+var PECAS=[{id:"moletom",e:"👕",n:"Moletom largo"},{id:"saia",e:"👗",n:"Saia midi",g:"f"},{id:"terno",e:"🤵",n:"Terno de alfaiataria",g:"m"},
+  {id:"unha",e:"💅",n:"Unha decorada",g:"f"},{id:"bone",e:"🧢",n:"Boné de aba reta",g:"m"},{id:"salto",e:"👠",n:"Salto plataforma",g:"f"},
+  {id:"gravata",e:"👔",n:"Camisa social e gravata",g:"m"},{id:"make",e:"💄",n:"Maquiagem artística",g:"f"},{id:"jaqueta",e:"🧥",n:"Jaqueta de couro"},{id:"tenis",e:"👟",n:"Tênis colorido"}];
+function pecaById(id){for(var i=0;i<PECAS.length;i++)if(PECAS[i].id===id)return PECAS[i];return null}
+function setLook(id){var x=pecaById(id);if(!x)return false;S.look=id;
+  var pr=S.p.pron,out=(pr==="ela"&&x.g==="m")||(pr==="ele"&&x.g==="f")||(pr==="elu"&&!!x.g);
+  if(out&&S.seen.indexOf("fu_caixa")<0&&!S.queue.some(function(q){return q.id==="fu_caixa"}))S.queue.push({id:"fu_caixa",m:S.m+1});
+  return out}
+
+// ---- 💬 ZapChat ----
+var ZC=[
+  {id:"mae",n:"Mãe",e:"👩",c:"#ffcf6b",type:"fam"},
+  {id:"pai",n:"Pai",e:"👨",c:"#8fd3ff",type:"fam"},
+  {id:"bia",n:"Bia",e:"🧃",c:"#ffd84d",type:"amiga"},
+  {id:"marca",n:"Marca",e:"💼",c:"#c9cdf9",type:"marca"},
+  {id:"theo",n:"@theo.fitlife",e:"💪",c:"#ff9fbd",type:"crush",deb:1},
+  {id:"lari",n:"@lari.skate",e:"🛹",c:"#9df07a",type:"crush",deb:0},
+  {id:"nic",n:"@nic.synth",e:"🎹",c:"#a98bff",type:"crush",deb:1},
+  {id:"jorge",n:"Seu Jorge (proprietário)",e:"🏠",c:"#d8c6a2",type:"dono"}];
+var REL0={mae:62,pai:55,bia:60,jorge:45,theo:15,lari:15,nic:15,marca:50,mari:5,cida:25,darkk:0,gabi:10,byte:20,jp:20,luana:40,renda:30,iphoni:30};
+function relOf(id){return S.rel&&S.rel[id]!=null?S.rel[id]:(REL0[id]!=null?REL0[id]:20)}
+function relAdd(id,v){S.rel[id]=clamp(relOf(id)+v,0,100);return S.rel[id]}
+function zcDef(id){for(var i=0;i<ZC.length;i++)if(ZC[i].id===id)return ZC[i];return null}
+function zapBrand(){var o=S.zap.marca!=null?offerById(S.zap.marca):null;return o&&o.kind==="publi"?o:null}
+function zapName(id){if(id==="marca"){var o=zapBrand();return o?o.b.n:"Marca"}return zcDef(id).n}
+function zapVisible(id){if(id==="jorge")return rentValue()>0||S.bills.aluguel.amt>0;if(id==="marca")return !!zapBrand();return true}
+function zapPush(id,m){var C=S.zap.c[id];if(!C)return;C.th.push(m);if(C.th.length>40)C.th.splice(0,C.th.length-40);if(!m.me&&!m.sys)C.un++;C.ts=++S.zap.ts}
+function zapUnread(){var n=0;ZC.forEach(function(c){if(zapVisible(c.id))n+=S.zap.c[c.id].un});return n}
+var NUDGE=["??","oi?","tá viv{a|o|e}? 👀","🎤 Áudio 0:09","visualizou né","{nome}??","oi sumid{a|o|e}"];
+// [mensagem, [💗 afetuoso, 💼 profissional, 😏 debochado]]
+var ZT={
+ mae:[["Filh{a|o|e}, vi seu vídeo. Tá comendo direito? 🥺",["Tô sim mãe, te amo ❤️ domingo vou aí","Obrigad{a|o|e} pelo feedback, mãe.","Comendo likes, mãe kkkk"]],
+  ["Mostrei seu post pra tia Neide. Ela disse que você tá abatid{a|o|e}.",["Fala pra tia Neide que eu mando beijo 💛","Agradeço a análise da tia Neide.","A tia Neide tá com inveja do meu engajamento"]],
+  ["🎤 Áudio 0:47 · “oi meu amor, é a mãe… não sei se isso tá gravando…”",["Mãe, tava gravando sim 😂 te amo","Áudio recebido. Retorno em breve.","Mãe, foram 47 segundos procurando o botão"]],
+  ["Seu pai quer saber se “isso de internet” tem carteira assinada.",["Fala pra ele que um dia eu levo vocês pra viajar com esse dinheiro ❤️","Prezada mãe, a resposta é não.","Tem, assinada pelo algoritmo"]],
+  ["Comprei uma blusa igual à sua do vídeo!! 😍 a moça da loja nem acreditou",["Aaa mãe, vamos tirar foto iguais 🥹","Ótima aquisição, mãe.","Agora o vídeo tem duas fãs da mesma blusa"]],
+  ["Tá agasalhad{a|o|e}? Vai esfriar 🧥",["Tô sim, com aquele moletom que você me deu 💛","Sim, estou adequadamente vestid{a|o|e}.","Tô de casaco de seguidores, mãe"]],
+  ["Filh{a|o|e}, um moço comentou coisa feia no seu vídeo. Posso responder? 😠",["Deixa mãe, ele não merece você 😂❤️","Por favor, não interaja com os comentários.","RESPONDE MÃE, SOLTA A FERA"]],
+  ["O grupo da família quer saber quando você vai aparecer na TV 📺",["Quando eu aparecer, você vai ser a primeira a saber 🥹","Sem previsão no momento.","Quando a TV aparecer no Photogram"]],
+  ["Sonhei com você hoje. Liga pra mãe quando der, tá? 💗",["Ligo hoje à noite, prometo ❤️","Agendado para quinta, 15h.","Sonhou que eu tinha 1 milhão de seguidores?"]],
+  ["Fiz bolo de cenoura e não tem ninguém pra comer a cobertura 🍫",["Guarda um pedaço que eu passo aí 🥹","Agradeço o convite, verificarei a agenda.","Posta o bolo que eu reposto"]]],
+ mae_fome:[["Você tá com cara de quem não come há dias nesse último story 😟 quer que eu mande marmita?",["Quero sim mãe, sua comida é a melhor 🥹","Agradeço, mas estou bem.","Só se a marmita vier com ring light"]]],
+ mae_hate:[["Tão falando de você no grupo da igreja… tá tudo bem, filh{a|o|e}? 😟",["Vai passar, mãe. Obrigad{a|o|e} por perguntar 💛","Estou gerenciando a crise.","Fala pro grupo da igreja me seguir então"]]],
+ pai:[["Filh{a|o|e}, como faz pra dar like? Apertei o coração 40 vezes.",["Uma vez só, pai, mas valeu demais 😂❤️","Basta um toque. Obrigad{a|o|e}.","Você deu e tirou o like 20 vezes"]],
+  ["Vi seu vídeo. Não entendi nada mas tá bonito. 👍",["Isso já é tudo pra mim, pai 🥹","Agradeço o retorno, pai.","Resumo perfeito da minha carreira"]],
+  ["Tem que pensar no futuro. Já pensou em concurso?",["Penso sim, pai, mas tô feliz fazendo isso 💛","Avaliarei a proposta.","Concurso de dancinha conta?"]],
+  ["Seu tio perguntou se você ganha dinheiro com isso. Falei que sim. Ganha?",["Ganho um pouco, e um dia te levo pra pescar com isso 🎣","Ganho conforme planilha em anexo.","Ganho em visibilidade, pai"]],
+  ["Te mandei um vídeo de um cara dizendo que celular frita o cérebro. É verdade?",["Não é não, pai, mas obrigad{a|o|e} por se preocupar 💛","Não procede.","Só se for de vergonha alheia"]],
+  ["Liguei 3 vezes. Tá viv{a|o|e}?",["Tô sim, pai, desculpa! Te ligo já ❤️","Afirmativo.","Tecnicamente sim"]],
+  ["Arrumei o chuveiro aqui. Se precisar de alguma coisa aí é só falar.",["Pai, você é o melhor 🥹","Agradeço a disponibilidade.","Precisa de seguidor, tem?"]],
+  ["Seu primo tá fazendo vídeo também. Mas o seu é melhor, não conta pra ele.",["Segredo nosso, pai 🤫❤️","Informação registrada.","O primo tem 12 seguidores, pai"]],
+  ["Domingo tem churrasco. Vai vir ou vai ficar “gravando conteúdo”?",["Vou! E sem celular na mesa 🍖","Confirmo presença.","Vou e vou gravar o tio do pavê"]]],
+ bia:[["MANO VOCÊ VIU O QUE A MARI POSTOU?? 👀",["Vi não, me conta tudo amiga 💛","Não acompanho, obrigad{a|o|e}.","Vi e já printei kkkkk"]],
+  ["deixei lasanha na geladeira pra você, não ousa deixar estragar 🍝",["VOCÊ É A MELHOR PESSOA DO MUNDO 😭","Agradeço a gentileza.","vou postar a lasanha e marcar o restaurante"]],
+  ["sexta tem karaokê, você vai ou vai ficar gravando story de novo? 🎤",["VOU! e sem celular, prometo 🎤","Verificarei minha agenda.","vou e vou gravar você desafinando"]],
+  ["a @gabi.games tá falando mal de você num grupo. tenho print. quer ver? 👀",["Quero, mas mais que isso: obrigad{a|o|e} por me defender 💛","Prefiro não saber, obrigad{a|o|e}.","MANDA AGORA kkkkk"]],
+  ["tô com crush numa pessoa do trabalho e não sei o que fazer socorro",["Me conta TUDO, vamos planejar 💘","Sugiro avaliar os prós e contras.","manda print que eu julgo"]],
+  ["você tá bem? seus stories tão meio tristes 🥺",["Tô cansad{a|o|e}, mas falar com você ajuda 💛","Estou bem, obrigad{a|o|e} pela preocupação.","é o filtro, amiga, o filtro é triste"]],
+  ["a dona cida curtiu um comentário meu porque eu comentei no seu post 😭😭",["AMIGA TÁ FAMOSA 😭💛","Parabéns pelo engajamento.","agora me deve 10%"]],
+  ["roubaram meu iogurte da geladeira. foi você? 🥛",["Fui eu, desculpa, te compro dois 🥺","Não tenho conhecimento do ocorrido.","foi o algoritmo"]],
+  ["o vizinho reclamou do barulho da sua live de novo kkkk",["Vou levar um bolo pra ele, pode deixar 💛","Ajustarei o volume.","manda ele se inscrever"]],
+  ["se você ficar famos{a|o|e} e me esquecer eu vazo o seu quarto real 😤",["NUNCA vou te esquecer, você é minha pessoa 💛","Anotado.","vaza, o quarto real tem mais seguidores que eu"]],
+  ["tem um creator novo copiando seus vídeos frame a frame 😤",["Obrigad{a|o|e} por ficar de olho em mim 💛","Vou avaliar com calma.","copiar meu caos? boa sorte kkkk"]]],
+ bia_hate:[["amiga o chirp tá PEGANDO FOGO com seu nome 🔥 quer que eu defenda?",["Só fica do meu lado, já é muito 💛","Prefiro que você não se envolva.","defende e posta print, BORA"]]],
+ marca:[["Olá! Somos a {marca} 💼 Vimos seu perfil e queremos fechar a parceria de {fee}. Topa?",["Aaaa que demais, amei vocês, topo sim!! 🥰","Olá! Podemos alinhar escopo e valores? Segue meu mídia kit 📎","Topo se o produto vier em dobro kkk"]],
+  ["Oi {nome}! Aqui é a Carol, da {marca}. Viu nossa proposta no MailGrid? 📎",["Vi sim, Carol!! Fiquei super feliz 💖","Vi, sim. Podemos conversar sobre entregáveis e prazo?","Vi, mas li só até o valor"]],
+  ["Bom dia! Nossa diretora AMOU seu último post. Bora fazer algo juntos? ✨",["Que fofa! Amei saber disso 🥹","Obrigad{a|o|e}! Envio uma proposta de pauta hoje.","Ela amou o post ou o alcance?"]],
+  ["Oi! Só confirmando: o briefing é {posts} post(s) com #publi, combinado?",["Combinadíssimo!! 🥰","Confirmo. Envio as prévias para aprovação 48 h antes.","Combinado, mas o #publi vai em fonte 2"]]],
+ crush0:{theo:[["vi seu story. aquele café era aesthetic ou só bagunça mesmo? 👀",["Era bagunça, mas fico feliz que você reparou 😊","Obrigad{a|o|e} pela visualização.","Era bagunça premium, você não entenderia 😏"]],
+    ["você tem cara de quem cancela rolê em cima da hora",["Só cancelo rolê ruim. Com você eu não cancelaria 😳","Depende da agenda.","E você tem cara de quem pula o treino de braço"]],
+    ["saudades 👀 (de te ver no meu feed, calma)",["Também senti, juro 🙈","Agradeço o acompanhamento.","Calma você, que eu nem postei hoje"]]],
+   lari:[["oi!! vi que você curtiu meu vídeo caindo do skate kkkk 🛹",["Curti porque você levantou rindo, achei lindo 🥹","Parabéns pelo conteúdo.","Curti a queda, não o skate"]],
+    ["tô indo numa feira de vinil sábado… quer ir? sem pressão!",["QUERO! 🥹 que convite fofo","Posso confirmar até sexta?","Só se você me ensinar a cair com estilo"]],
+    ["fiz um desenho do seu avatar, olha 🎨 (não ficou bom)",["Ficou LINDO, vou guardar pra sempre 💛","Obrigad{a|o|e} pela arte.","Ficou bom sim, mais bonito que o original"]]],
+   nic:[["fiz uma música e o refrão lembra seu último post. coincidência? 🎹",["Me manda?? Quero ouvir agora 🥹","Interessante. Qual a métrica?","Só se o refrão for sobre mim mesmo"]],
+    ["você parece gostar de sintetizador antigo. ou é só pose? 😌",["Gosto de verdade, e de quem toca também 😳","Tenho apreço por equipamento vintage.","É pose, mas uma pose muito boa"]],
+    ["show meu na quinta, lista vip tem um nome livre 👀",["Põe o meu, eu vou com certeza 💜","Agradeço o convite. Confirmo depois.","Só vou se tiver camarim"]]]},
+ crush1:[["aquele dia foi bom né. repete? 🙂",["Repete agora se quiser 🥰","Podemos marcar outro encontro.","Repete se você pagar o açaí"]],
+  ["sonhei que a gente fazia collab e você roubava a cena kkk",["Eu nunca roubaria a cena de você 😳","Uma collab seria estrategicamente interessante.","Sonho não, profecia"]],
+  ["tô ouvindo uma música que é a sua cara 🎧",["Manda!! Quero saber que cara eu tenho 🥹","Envie o link, por gentileza.","Espero que seja um hino"]],
+  ["seus amigos sabem de mim? 👀",["A Bia já sabe de tudo, inclusive o que eu não contei 🙈","Mantenho discrição sobre a vida pessoal.","Sabem que você existe. Por enquanto."]]],
+ crush2:[["bom dia, meu amor. já tomou água? 💧",["Tomei pensando em você 🥰","Hidratação em dia.","Tomei energético, conta?"]],
+  ["minha mãe quer te conhecer. sem pressão. (muita pressão)",["Vou amar conhecer ela 🥹 levo bolo","Podemos agendar para o fim de semana.","Ela já me segue, ela já me conhece"]],
+  ["posta a gente? ou ainda é segredo? 👀",["Quero postar, tô só criando coragem 🥰","Prefiro alinhar a comunicação antes.","Só se a foto tiver meu ângulo bom"]],
+  ["você tá trabalhando demais. hoje é filme e pipoca, celular na gaveta 🍿",["Combinado, você é meu descanso 💛","Bloqueio a agenda às 20h.","Celular na gaveta é crime contra o algoritmo"]],
+  ["comprei aquele salgadinho que você gosta. só isso. te amo.",["Te amo mais ainda agora 🥹","Agradeço a gentileza.","Amor é isso: salgadinho e silêncio"]]],
+ crushTaken:[["vi que você tá namorando. parabéns, de verdade 🙂",["Obrigad{a|o|e}, você é uma pessoa incrível 💛","Agradeço.","Ciúmes? 😏"]],
+  ["ainda tá de pé aquele açaí de amigos?",["Claro! Amizade de verdade 💛","Podemos marcar.","Amigos que pagam o próprio açaí"]]],
+ jorge_late:[["Bom dia. O aluguel venceu dia 10. Aguardo.",["Seu Jorge, desculpa! Pago essa semana sem falta 🙏","Prezado, o pagamento será efetuado em breve.","Seu Jorge, aceita pagamento em visibilidade?"]],
+  ["Passei aí e você não atendeu. O aluguel, {nome}.",["Desculpa, tava gravando! Já resolvo, prometo 🙏","Estou ciente da pendência.","Tava fingindo que não tinha ninguém"]]],
+ jorge:[["A infiltração do banheiro aumentou? O vizinho de baixo reclamou de goteira.",["Aumentou sim, mas tô cuidando. Obrigad{a|o|e} por avisar 🙏","Sim. Solicito reparo.","Aumentou, agora tem até o Paraguai"]],
+  ["Vi que você grava vídeo aí dentro. Não pode furar parede, viu?",["Pode deixar, uso fita dupla face 😅","Ciente das regras do contrato.","Nem a parede aguenta mais o ring light"]],
+  ["Meu neto te segue! Disse que você é famos{a|o|e}. É mesmo?",["Manda um beijo pro seu neto! 💛","Agradeço o interesse do seu neto.","Famos{a|o|e} demais pra pagar aluguel"]],
+  ["A taxa de condomínio vai subir mês que vem. Não fui eu, foi a assembleia.",["Tudo bem, Seu Jorge, obrigad{a|o|e} por avisar","Compreendo.","A assembleia sou eu também? Quero votar"]],
+  ["O barulho da sua live às 2 da manhã… dá uma maneirada.",["Desculpa! Vou fazer live mais cedo 🙏","Ajustarei os horários.","O chat que pediu, Seu Jorge"]],
+  ["Dei uma pintada no corredor. Ficou bonito pra sair nos seus vídeos?",["Ficou lindo, Seu Jorge! Vou mostrar 💛","Agradeço a manutenção.","Ficou bom, mas a luz é péssima"]]]
+};
+var ZR={
+ mae:{a:["❤️❤️❤️ te amo mais","Ai que coisa boa de ler 🥹","Já contei pra todo mundo do grupo 💗","Deus te abençoe, meu amor 🙏"],p:["Feedback?? Sou sua mãe 😐","Tá estranh{a|o|e}… aconteceu alguma coisa?","Nossa, que formal. Vou contar pro seu pai.","Parece mensagem de banco 😕"],dok:["kkkkkkk palhaç{a|o|e} igual seu pai ❤️","AHAHAH esse é meu filh{a|o|e}"],dbad:["🎤 Áudio 3:02","🎤 Áudio 2:47 · “eu não te criei pra isso…”","🎤 Áudio 3:15 (ela chamou a vizinha pra ouvir)"]},
+ pai:{a:["👍❤️","Orgulho de você.","Sua mãe tá chorando aqui do lado 😂","Fica com Deus, filh{a|o|e}."],p:["Tá falando igual gerente de banco.","Hum. Tá bom então.","Sua mãe perguntou se você tá bem."],dok:["kkkkk esse é meu sangue","Engraçad{a|o|e}. Puxou a mim."],dbad:["🎤 Áudio 3:20 · começa com “quando eu tinha sua idade…”","🎤 Áudio 2:58 sobre respeito","Não gostei. 👎"]},
+ bia:{a:["💛💛💛","eu sei que eu sou incrível","tô chorando aqui","melhor pessoa"],p:["virou empresa? 😐","quem é você e o que fez com {minha amiga|meu amigo|minhe amigue}?","ok, senhor{a||e} CEO 🙄"],d:["KKKKKKKKKKK","eu te amo e te odeio","printei, vai pro grupo (brincadeira… ou não)"]},
+ marca:{a:["Que fofura! Vamos te mandar uns mimos 🎁 (o orçamento ficou mais apertado, tá?)","Amamos a energia! 💖 Vamos ajustar o valor pro nosso budget."],p:["Perfeito. Profissionalismo é tudo: vamos subir o cachê. 🤝","Recebemos o mídia kit! Valor revisado pra cima ✅"],dok:["KKKKK nosso social media morreu de rir. Vamos repostar 😂","Amamos o deboche, é a cara da marca 🔥"],dbad:["Hum… acho que não temos o mesmo alinhamento. Vamos encerrar por aqui. 🙂","Nossa diretora não achou graça. Proposta cancelada."]},
+ crush:{a:["🥰","*digitando…* *digitando…* 💘","vem cá então","para que eu fico sem graça 🙈"],p:["a gente é colega de trabalho agora? 😕","ok… 🙂","tá. 🙂"],dok:["KKKKK te odeio (mentira)","você não presta e eu gosto","sabia que você ia responder assim 😏"]},
+ jorge:{a:["Bom saber. Você é dos bons. 👍","Tá certo. Qualquer coisa me chama."],p:["Ok.","Certo. Aguardo."],d:["Não achei graça.","Engraçadinh{a|o|e}. O aluguel também vai ser."]}
+};
+function zapPrompt(id){
+  var d=zcDef(id),C=S.zap.c[id],L;
+  if(id==="mae"){L=nutr()<35&&Math.random()<.7?ZT.mae_fome:S.st.h>=60&&Math.random()<.6?ZT.mae_hate:ZT.mae}
+  else if(id==="bia")L=S.st.h>=60&&Math.random()<.5?ZT.bia_hate:ZT.bia;
+  else if(id==="pai")L=ZT.pai;
+  else if(id==="marca")L=ZT.marca;
+  else if(id==="jorge")L=billLate("aluguel")>=1?ZT.jorge_late:ZT.jorge;
+  else if(d.type==="crush")L=S.date&&S.date!==id?ZT.crushTaken:C.st>=2?ZT.crush2:C.st===1?ZT.crush1:ZT.crush0[id];
+  var used=C.used||[],pool=L.filter(function(x){return used.indexOf(x[0])<0});if(!pool.length){pool=L;C.used=[]}
+  var P=pick(pool);(C.used=C.used||[]).push(P[0]);if(C.used.length>8)C.used.shift();
+  var o=id==="marca"?zapBrand():null;
+  function f(s){if(o){s=s.replace(/\{marca\}/g,o.b.n).replace(/\{fee\}/g,fmtR(o.fee)).replace(/\{posts\}/g,o.posts)}return tpl(s)}
+  return {t:f(P[0]),r:P[1].map(f),au:/^🎤/.test(P[0])?1:0};
+}
+function zapMonth(first){
+  var o=S.inbox.filter(function(x){return x.kind==="publi"&&!x.acc})[0];
+  var prevB=S.zap.marca;S.zap.marca=o?o.id:null;
+  if(o&&prevB!==o.id){var CB=S.zap.c.marca;CB.th=[];CB.pend=null;CB.un=0}
+  var P0={mae:.75,pai:.45,bia:.7,marca:1,theo:.35,lari:.35,nic:.35,jorge:.3};
+  ZC.forEach(function(d){
+    if(!zapVisible(d.id))return;var C=S.zap.c[d.id],p=P0[d.id];
+    if(first)p=d.id==="mae"||d.id==="bia"?1:d.id==="marca"?1:0;
+    if(d.type==="crush"){if(C.st>=1)p=.85;else if(S.date&&S.date!==d.id)p=.15}
+    if(d.id==="jorge"&&billLate("aluguel")>=1)p=1;
+    if(Math.random()>p)return;
+    if(C.pend){zapPush(d.id,{t:tpl(pick(NUDGE))});return}
+    var P=zapPrompt(d.id);C.pend=P;zapPush(d.id,{t:P.t,au:P.au});
+  });
+}
+function zapOpen(id){var C=S.zap.c[id];if(!C)return;C.un=0;if(C.pend)C.seenM=S.m}
+var PUXA=["oi! sumid{a|o|e} 👀","e aí, tudo bem?","oi oi","tô aqui pensando em você (no sentido bom)","bom dia!!","oi, tem um minuto?"];
+function canPull(id){var C=S.zap.c[id];return !!(C&&!C.pend&&C.pullM!==S.m&&zapVisible(id)&&id!=="marca")}
+function zapPull(id){if(!canPull(id))return false;var C=S.zap.c[id];C.pullM=S.m;C.th.push({me:1,t:tpl(pick(PUXA))});var P=zapPrompt(id);C.pend=P;C.th.push({t:P.t,au:P.au});C.ts=++S.zap.ts;C.seenM=S.m;return true}
+function zapReply(id,tone){
+  var C=S.zap.c[id],P=C&&C.pend,d=zcDef(id);if(!P)return null;
+  var dd={},info=[],rl=null,me=P.r[tone];
+  C.th.push({me:1,t:me});C.pend=null;C.ts=++S.zap.ts;
+  var R=ZR[d.type==="crush"?"crush":id];
+  if(d.type==="fam"){
+    if(tone===0){relAdd(id,15);dd.p=5;rl=pick(R.a);if(Math.random()<(id==="mae"?.3:.2)){var v=ri(5,20)*10;dd.$=v;info.push("💸 PIX de "+fmtR(v)+" “pro lanche”")}}
+    else if(tone===1){relAdd(id,-5);rl=pick(R.p)}
+    else if(relOf(id)>=60){relAdd(id,5);rl=pick(R.dok)}else{relAdd(id,-10);rl=pick(R.dbad);info.push("Áudio de 3 minutos. Você ouviu em 2x.")}
+  }else if(d.type==="amiga"){
+    if(tone===0){relAdd(id,10);rl=pick(R.a);var sec=biaSecret();if(sec)info.push("🔮 Segredo da Bia: “"+sec+"” vem aí…");if(relOf(id)>=80&&!S.flags.biaZap){S.flags.biaZap=1;S.bia++;if(S.bia>=4)unlock("bia")}}
+    else if(tone===1){relAdd(id,-10);rl=pick(R.p)}
+    else{relAdd(id,10);rl=pick(R.d);if(Math.random()<.2){dd.h=10;info.push("😬 O print vazou no Chirp (🔥 +10).")}}
+  }else if(d.type==="marca"){
+    var o=zapBrand();
+    if(!o){rl="(a proposta já foi encerrada)"}
+    else if(tone===0){o.fee=Math.round(o.fee*.9/10)*10;o.loyal=1;rl=pick(R.a);info.push("Cachê −10%, mas a marca ficou fiel: ela renova depois.")}
+    else if(tone===1){o.fee=Math.round(o.fee*1.1/10)*10;dd.r=2;rl=pick(R.p);info.push("Cachê +10%: agora "+fmtR(o.fee)+".")}
+    else if(Math.random()<.5){dd.fp=3;o.viralB=1;rl=pick(R.dok);info.push("A marca amou e repostou seu deboche (👥 +3%).")}
+    else{rl=pick(R.dbad);decline(o.id);S.zap.marca=null;info.push("Proposta cancelada.")}
+  }else if(d.type==="crush"){
+    var taken=S.date&&S.date!==id;
+    if(tone===0){relAdd(id,15);rl=pick(R.a);if(!taken){var pr=crushProgress(id);if(pr)info.push(pr)}}
+    else if(tone===1){relAdd(id,-15);rl=pick(R.p)}
+    else if(d.deb){relAdd(id,10);rl=pick(R.dok)}
+    else{rl=null;info.push("(visualizou e não respondeu 🙃)")}
+    var br=checkBreak(id);if(br)info.push(br);
+  }else if(d.type==="dono"){
+    if(tone===0){relAdd(id,10);rl=pick(R.a)}else if(tone===1){relAdd(id,5);rl=pick(R.p)}
+    else{relAdd(id,-10);rl=pick(R.d);if(Math.random()<.3){S.rentUp=(S.rentUp||0)+50;info.push("O Seu Jorge aumentou o aluguel em R$ 50.")}}
+  }
+  if(rl)C.th.push({t:tpl(rl)});
+  info.forEach(function(x){C.th.push({sys:1,t:x})});
+  var a=applyD(dd);checkDeath();
+  return {d:a,info:info};
+}
+function biaSecret(){
+  var q=S.queue.filter(function(x){var e=evById(x.id);return e&&!e.rep&&x.id!=="crise"});
+  if(q.length){var e0=evById(q[0].id);return e0?tpl(e0.t):null}
+  var el=eligible().filter(function(e){return !e.n||e.n===S.niche});if(!el.length)return null;
+  var e=pick(el);S.queue.push({id:e.id,m:S.m+1});return tpl(e.t);
+}
+function crushProgress(id){
+  var C=S.zap.c[id],a=relOf(id);
+  if(C.st===0&&a>=40){C.st=1;C.stM=S.m;return "🔥 Vocês estão ficando."}
+  if(C.st===1&&a>=70&&S.m>C.stM&&!S.date){C.st=2;C.stM=S.m;S.date=id;return "💘 Namoro! Por enquanto, segredo de vocês."}
+  if(C.st===2&&a>=90&&S.m>C.stM){C.st=3;C.stM=S.m;unlock("oficial");applyD({fp:3});return "💑 Namoro oficial! Posts de casal rendem +20% e 🧠 +5 por mês."}
+  return "";
+}
+function checkBreak(id){var C=S.zap.c[id];if(C.st>=2&&relOf(id)<30)return breakup(id);if(C.st===1&&relOf(id)<25){C.st=0;return "O clima esfriou. Vocês pararam de ficar."}return ""}
+function breakup(id){
+  var C=S.zap.c[id],pub=C.st===3,n=zcDef(id).n;C.st=0;S.date=null;relAdd(id,-20);
+  if(pub){applyD({h:15,p:-20});S.log.push({m:S.m,t:"Término público",l:"Fim do namoro com "+n});note({type:"toast",app:"C",t:"Chirp",x:"#acabou em alta: o término com "+n+" virou assunto (🔥 +15, 🧠 −20)."});return "💔 Término público. A internet já escolheu um lado."}
+  applyD({p:-8});return "💔 Vocês terminaram. Doeu, mas foi em silêncio."
+}
+function canCasal(){return !!(S.date&&S.zap.c[S.date]&&S.zap.c[S.date].st===3)}
+
+// ---- 🔍 Explorar (12 creators) ----
+var NPCS=[
+  {id:"mari",h:"marimaravilha",e:"👑",c:"#ff5ac8",f:4e6,role:"rival",lbl:"rival",posts:[["rose","💐 50 46 36,👑 50 20 20,✨ 80 70 14","primeiro post do mês e já tô no topo, normal 💅"],["gold","🥂 40 50 30,🛥️ 70 70 24,✨ 20 20 14","rotina de quem não para 🛥️ #blessed"],["beige","👗 50 50 38,🪞 80 30 20","look sem esforço nenhum (4 horas de produção) ✨"],["sunset","🌅 50 40 34,👙 50 72 20,🌴 20 40 20","não posto pra ninguém, posto pra mim 🌅"]]},
+  {id:"cida",h:"dona_cida_receitas",e:"👵",c:"#ffcf6b",f:1.4e6,role:"mentor",lbl:"mentora",posts:[["food","🍰 50 50 38,☕ 78 70 18,🌼 20 24 16","bolo de fubá da quarta-feira, receita no comentário 💛"],["warm","🍲 50 52 36,🧄 22 70 16,🌿 78 26 18","caldo verde pra esquentar a alma 🍲"],["mint","📒 50 50 30,✍️ 74 66 20,🌿 22 28 16","regra 14 do meu caderno: “quem posta com raiva, apaga com vergonha”"]]},
+  {id:"theo",h:"theo.fitlife",e:"💪",c:"#ff9fbd",f:2.1e6,role:"crush",lbl:"crush",posts:[["sky","🏋️ 50 50 36,💦 78 26 16,💪 22 70 18","treino de hoje: 2 h de academia, 40 min de story 💪"],["sunset","🏃 50 50 34,🌅 50 22 22,👟 78 74 16","corridinha no pôr do sol 🌅 #fitlife"],["mint","🥗 50 50 34,🥑 22 72 16,💧 78 26 16","dieta flexível: hoje teve brigadeiro 🙈"]]},
+  {id:"lari",h:"lari.skate",e:"🛹",c:"#9df07a",f:180000,role:"crush",lbl:"crush",posts:[["grass","🛹 50 56 38,🌳 20 30 22,✨ 80 22 14","primeiro kickflip depois de 300 tentativas 🛹"],["sky","🎨 50 46 34,🖌️ 78 70 18,🛹 22 74 18","pintei o shape novo, gostaram? 🎨"],["warm","🎧 50 46 32,💿 22 72 18,☕ 78 70 16","feira de vinil + café = sábado perfeito ☕"]]},
+  {id:"nic",h:"nic.synth",e:"🎹",c:"#a98bff",f:95000,role:"crush",lbl:"crush",posts:[["neon","🎹 50 52 38,🌌 78 22 18,💜 22 26 14","faixa nova saindo do forno 🎹 link na bio"],["night","🎤 50 46 34,✨ 22 22 14,🎶 78 70 18","show de ontem: 40 pessoas e muito amor 💜"],["party","🎛️ 50 50 36,🔊 22 70 18,💡 78 24 16","montei um sintetizador com peça de ferro-velho 🔧"]]},
+  {id:"darkk",h:"xX_Darkk_Xx",e:"💀",c:"#5a5f6c",f:3200,role:"hater",lbl:"polêmico",posts:[["dim","🎮 50 52 34,💀 22 24 18,🔥 78 72 16","GG EZ todo mundo é bot menos eu 💀"],["night","🖥️ 50 50 36,🥤 22 72 16,😤 78 26 18","rage de hoje: 3 controles e 1 teclado"],["neon","🏆 50 46 34,🎮 50 76 20,✨ 80 22 14","finalmente subi de elo (mãe, para de entrar no quarto)"]]},
+  {id:"gabi",h:"gabi.games",e:"🎮",c:"#5ac8ff",f:600000,role:"rival",lbl:"rival",posts:[["neon","🎮 50 52 38,🏆 78 24 18,💥 22 26 18","ACE de faca, sem mirar. vocês viram?? 🔪"],["night","🔴 20 20 14,🎧 50 50 36,💬 80 70 18","live de 10 h hoje, quem aguenta? 💜"],["party","🎉 50 50 36,🎂 22 74 18,💜 78 24 16","600 mil!! obrigada, chat 🎉"]]},
+  {id:"byte",h:"prof.byte",e:"🤓",c:"#45d08a",f:900000,role:"mentor",lbl:"mentor",posts:[["studio","💻 50 52 36,📚 22 70 18,💡 78 24 18","como montar um PC sem chorar, em 12 passos 💻"],["sky","📱 50 50 34,🔍 78 70 18,⚠️ 22 24 16","esse “iPhoni” de R$ 499 é golpe. fio 🧵"],["night","🤖 50 50 36,⚙️ 22 26 16,✨ 78 72 14","a IA não vai te substituir. quem sabe usar a IA, talvez 🤖"]]},
+  {id:"jp",h:"vlogdojp",e:"🎥",c:"#ffc23a",f:320000,role:"creator",lbl:"vlogger",posts:[["sunset","🚌 50 50 34,🌇 70 24 22,🎒 22 72 16","um dia comigo indo pro trabalho de ônibus 🚌"],["warm","🏠 50 50 36,🪴 20 40 18,☀️ 80 22 14","tour pelo apê novo (é alugado e minúsculo) 🏠"],["grass","🐶 50 52 36,🌳 22 30 20,🎾 78 74 16","adotei um cachorro e agora ele é o dono do canal 🐶"]]},
+  {id:"luana",h:"luana.vibes",e:"🌸",c:"#ffb3d9",f:12000,role:"fa",lbl:"fã-creator",posts:[["rose","🌸 50 50 36,✨ 22 22 14,💖 78 72 16","fiz o seu look da semana passada!! ficou parecido? 🌸"],["mint","📖 50 50 34,☕ 22 72 16,🌿 78 26 16","meta de leitura do mês: 4 livros (li meio)"],["sky","🎨 50 50 34,🖍️ 78 72 16,🌈 22 24 18","pintando o quarto de lilás, me desejem sorte 🎨"]]},
+  {id:"renda",h:"renda.extra.ja",e:"💸",c:"#c8f13a",f:250000,role:"golpe",scam:1,lbl:"???",posts:[["gold","💸 50 50 38,📈 78 24 18,🤑 22 72 18","ganhei R$ 12 mil essa semana sem sair de casa 🤑 link na bio"],["studio","🚗 50 52 36,💰 22 72 18,🔑 78 24 16","carro novo com o método. vagas limitadas!! 🚗"],["night","📱 50 50 34,💵 22 26 16,⏰ 78 72 16","últimas 3 vagas do grupo VIP 🔥 (R$ 497)"]]},
+  {id:"iphoni",h:"iphoni.oficial",e:"📱",c:"#e5e7eb",f:140000,role:"golpe",scam:1,lbl:"loja",posts:[["sky","📱 50 50 38,✨ 22 22 14,💯 78 72 16","iPhoni 15 Pro “original” por R$ 499 💯 só hoje"],["studio","📦 50 52 36,📱 22 70 18,🔥 78 24 16","entregamos em 3 a 90 dias úteis 📦"],["gold","⭐ 50 46 34,⭐ 30 46 20,⭐ 70 46 20","mais de 9 mil clientes satisfeitos ⭐⭐⭐⭐⭐ (confia)"]]}];
+function npcById(id){for(var i=0;i<NPCS.length;i++)if(NPCS[i].id===id)return NPCS[i];return null}
+function npcMonth(){NPCS.forEach(function(n){var N=S.npc[n.id];N.f=Math.round(N.f*rnd(1,1.05));N.post=N.post==null?ri(0,n.posts.length-1):(N.post+1)%n.posts.length;
+  N.lk=0;N.cm=0;N.co=0;N.ht=0;N.rp=0;N.res=null;if(!N.gone&&!n.scam&&relOf(n.id)>=50&&Math.random()<.12)N.inv=1})}
+function npcAct(id,act,tone){
+  var n=npcById(id),N=S.npc[id];if(!n||!N||N.gone)return null;var d={},txt="",ok=true;
+  if(act==="like"){if(N.lk||S.mon.likes>=10)return null;N.lk=1;S.mon.likes++;relAdd(id,2);txt="Curtiu. (Afeto +2)";
+    if(!n.scam&&relOf(id)>=50&&!N.inv&&Math.random()<.2){N.inv=1;txt="@"+n.h+" curtiu de volta e te convidou pra uma collab! 📩"}}
+  else if(act==="com"){if(N.cm)return null;N.cm=1;
+    if(tone===0){relAdd(id,5);d={fp:.5};txt="Comentário fofo. O público de @"+n.h+" te viu."}
+    else if(tone===1){relAdd(id,3);d={r:1};txt="Comentário profissional. Elogiaram sua postura."}
+    else if(Math.random()<.5){d={fp:3};relAdd(id,2);txt="Seu comentário debochado virou meme nos comentários! 😂"}
+    else{d={h:5};relAdd(id,-5);txt="O deboche virou treta nos comentários. 🔥"}}
+  else if(act==="collab"){if(N.co||S.en<1)return null;N.co=1;spendEn(1);
+    if(n.scam){d={r:-8,h:10};txt="“Parceria fechada!” Era golpe. Você divulgou o link e os seguidores caíram junto. 😬"}
+    else{var score=relOf(id)+S.st.f/N.f*50;if(N.inv||score>=70){var pct=rnd(10,40)*clamp(N.f/Math.max(1,S.st.f),.3,1);d={fp:pct};relAdd(id,5);N.inv=0;txt="Collab com @"+n.h+" saiu! O público dele(a) chegou junto. 🤝"}
+      else{ok=false;relAdd(id,-3);txt="@"+n.h+" visualizou e respondeu “quem sabe mais pra frente 🙏”. (precisa de Afeto + seguidores ≥ 70)"}}}
+  else if(act==="hate"){if(N.ht)return null;N.ht=1;N.rep=Math.max(0,N.rep-ri(3,8));d={p:-2};txt="Você mandou hate de uma conta fake. A culpa bateu (🧠 −2).";
+    if(Math.random()<.15){d={p:-2,r:-25,h:35};S.flags.contaFake=1;ok=false;txt="DESCOBRIRAM a conta fake. Print do seu login vazou no Chirp. 🌟 −25, 🔥 +35."}}
+  else if(act==="report"){if(N.rp||S.en<1)return null;N.rp=1;spendEn(1);
+    if(n.scam){N.gone=1;d={r:5};unlock("golpe");txt="Denúncia aceita! @"+n.h+" foi suspensa. 🚩"}
+    else{ok=false;d={r:-2};relAdd(id,-10);txt="A plataforma analisou e não achou nada. Denúncia falsa pega mal (🌟 −2)."}}
+  var a=applyD(d);checkDeath();N.res={txt:txt,d:a,ok:ok};return N.res;
+}
+
+// ---- 🛡️ comentários do seu perfil (13.2) ----
+var MODC={
+ fa:[["luana.vibes","amei a cor!! 😍"],["gabs_fan01","esse ficou MUITO bom, salvei 💾"],["tio_paulo58","Parabéns, {nome}. Mostrei pro meu neto."],["mari_nao_a_maravilha","único perfil de {nicho} que não é falso 🙌"],["bia.amiga","ESSA É MINHA PESSOA 😭💛"],["leitora.noturna","você me fez rir num dia difícil, obrigada 🥹"],["joao.sem.filtro","vim pelo explorar e fiquei 👀"]],
+ crit:[["critica.do.bem","a luz tá estourada no canto, mas o conteúdo é ótimo"],["edita.ai","o áudio ficou baixinho no começo, de resto top"],["sincerona","gostava mais dos vídeos antigos, mais naturais"],["prof.byte","dica: corta os 3 primeiros segundos que retém mais"],["olhar.atento","a legenda tá com erro de digitação, mas amei"]],
+ hater:[["xX_Darkk_Xx","feio demais kkk","não curti kkk"],["hater.profissional","conteúdo mais sem graça da internet","não é pra mim, mas ok"],["anonimo_9921","você é uma piada","hmm, não gostei"],["justiceira.web","vendid{a|o|e}, print tirado 📸","print tirado 📸"],["farmadelikes","flopa logo, pelo amor","nada a ver esse post"]],
+ bot:[["promo.seguidores","🔥 10 mil seguidores por R$ 9!! LINK NA BIO"],["bot_7731","Lindo! Ganhe dinheiro em casa 💸 chama no direct"],["cripto.amigo","invista R$ 100 e receba R$ 4.000 🚀"],["sorteio.oficial.pg","VOCÊ FOI SORTEAD{A|O|E}!! clique no link 🎁"]]};
+// a internet trata as pessoas de jeitos diferentes (sátira, 14.2). [user, realista, suavizado, ódio identitário]
+var IDCOM={
+ ela:{bom:[["tia_regina","tá diferente, fez alguma coisa? 😍"],["fofura.total","que linda, nem prestei atenção no que você falou kkk"]],pol:[["opiniao.forte","bonita mas fala demais","fala demais"]],
+   fa:[["luana.vibes","perfeita até de cara lavada 😍"],["tia_regina","tá diferente, fez alguma coisa? ✨"]],
+   crit:[["olhar.atento","tava melhor de cabelo solto, mas o vídeo tá bom"]],
+   hater:[["machão.raiz","volta pra cozinha","vai fazer outra coisa 🙄",1],["opiniao.forte","sem filtro você é outra pessoa kkkk","usa filtro né"]]},
+ ele:{bom:[["brabo.demais","brabo demais, irmão 🔥"],["parceiro_77","mano você é o cara"]],pol:[["sabe.tudo","aposto que nem sabe jogar","duvido que saiba"]],
+   fa:[["parceiro_77","conteúdo de qualidade, irmão 👊"],["brabo.demais","mano, esse é o vídeo do ano"]],
+   crit:[["sabe.tudo","aposto que nem sabe direito do que tá falando, mas o vídeo tá ok"]],
+   hater:[["sabe.tudo","aposto que nem sabe jogar","não convenceu"],["macho.alfa_","chorando na internet? homem não faz isso kkk","exagerado demais",1]]},
+ elu:{bom:[["comunidade.acolhe","que orgulho de você existir aqui 💜"],["nb.e.feliz","me sinto representade, obrigade 🥹"]],pol:[["tio.confuso","isso nem existe, escolhe um lado","não entendi"]],
+   fa:[["comunidade.acolhe","a gente tá contigo sempre 💜"],["nb.e.feliz","seu conteúdo me ajudou muito 🥹"]],
+   crit:[["tio.confuso","não entendo muito, mas o vídeo é bom"]],
+   hater:[["tio.confuso","isso nem existe","não entendi esse post",1],["anonimo_9921","escolhe logo um lado aí kkk","confuso esse post"]]}};
+function wpick(w){var t=0,k;for(k in w)t+=w[k];var r=Math.random()*t;for(k in w){r-=w[k];if(r<=0)return k}return k}
+function genMod(cat,type){
+  var n=ri(4,6),list=[],dmg=0,hidden=0,b=band();
+  var w={fa:cat==="flop"?3:cat==="viral"||cat==="bom"?5.5:3.5,crit:2,hater:1+b*1.4+(cat==="pol"?2.2:0),bot:1.5};
+  var ip=IDCOM[S.p&&S.p.pron];
+  for(var i=0;i<n;i++){
+    var k=wpick(w),c=ip&&ip[k]&&Math.random()<.35?pick(ip[k]):pick(MODC[k]);
+    var it={k:k,u:c[0],t:tpl(CFG.real||!c[2]?c[1]:c[2]),idh:!!c[3]};
+    if(it.idh&&CFG.filtro){hidden++;continue}
+    if(list.some(function(x){return x.u===it.u&&x.t===it.t}))continue;
+    list.push(it);if(k==="hater")dmg+=it.idh?3:2;
+  }
+  if(S.wordFilter)dmg=Math.ceil(dmg/2);
+  return {list:list,dmg:dmg,hidden:hidden};
+}
+var MODFX={fa:{pin:{fp:.5,p:2,l:8},like:{p:1,l:3},reply:{fp:1,r:1,p:2,l:5}},crit:{thank:{r:5,p:-1,l:3,h:-2},del:{r:-5,p:1,l:-5,h:5}},
+  hater:{reply:{fp:3,r:-2,p:-3,l:2,h:8},del:{p:4},block:{p:5,l:1}},bot:{del:{r:1,p:1},block:{r:1,p:1}}};
+var MODTXT={pin:"Fixado no topo. Seus fãs piraram. 📌",like:"Curtiu. A pessoa printou e postou “ELE(A) CURTIU”.",reply:"Resposta carinhosa. Virou o comentário mais curtido.",thank:"Agradeceu a crítica. Gente madura é rara: 🌟 subiu.",
+  del:"Apagado.",block:"Bloqueado. Paz.",hreply:"Sua resposta debochada virou meme… e treta."};
+function modAct(list,i,a){
+  var c=list[i];if(!c||c.done)return null;if(a==="pin"&&list.some(function(x){return x.pin}))return null;
+  var d=MODFX[c.k]&&MODFX[c.k][a];if(!d)return null;
+  c.done=a;if(a==="pin")c.pin=1;
+  var txt=c.k==="hater"&&a==="reply"?MODTXT.hreply:c.k==="crit"&&a==="del"?"Apagou a crítica. Alguém printou: “apaga crítica” 👀":MODTXT[a];
+  var r=applyD(d);
+  if(c.k==="hater"&&a==="block"&&Math.random()<.1){list.push({k:"hater",u:c.u.replace(/\d+$/,"")+ri(2,99),t:pick(["voltei 😈 achou que ia se livrar fácil?","conta nova, mesma opinião"])});txt="Bloqueado… mas voltou com conta nova. 🙄"}
+  c.res={txt:txt,d:r};checkDeath();return c.res;
+}
+function buyWordFilter(){if(S.wordFilter||S.en<1)return false;spendEn(1);S.wordFilter=true;return true}
+
+// ---- 🔴 LiveGrid ----
+var SLOTS=[{k:"madru",n:"Madrugada",e:"🌙",m:.7},{k:"tarde",n:"Tarde",e:"☀️",m:1},{k:"noite",n:"Noite",e:"🌆",m:1.3}];
+function liveBlock(){if(S.mon.detox)return "Detox digital: nada de live este mês.";return blockReason("live")}
+function liveViewers(slot){var sm=(SLOTS.filter(function(x){return x.k===slot})[0]||SLOTS[1]).m;
+  var v=S.st.f*.01*(1+S.st.lea/100)*sm+3+Math.min(8,S.st.f/200);if(billLate("net")>=1)v*=.7;return Math.max(4,Math.round(v))}
+function liveStart(hours,slot){
+  if(liveBlock()||S.en<hours||hours<1||hours>3)return null;
+  spendEn(hours,true,true);S.mon.lives++;S.mon.posts++;S.totalPosts++;
+  var v0=liveViewers(slot);
+  return {h:hours,slot:slot,v0:v0,v:v0,peak:v0,vSum:0,vN:0,gross:0,sc:{b:0,g:0,y:0,r:0},lea:0,paz:0,rep:0,hate:0,fp:0,rounds:[],reacts:0,specials:0,ign:0,ignRun:0,boost:0,
+    faint:nutr()<10,mood:1,minutes:0,donCut:false,traps:0,bans:0,qs:0,celebrated:false,faintHit:false,clip:0,lag:billLate("net")>=1};
+}
+var SCV={b:2,g:10,y:50,r:200};
+function chatDonation(L){
+  var p=clamp(.05+.03*Math.log10(L.v+1),.05,.2)*L.mood*(1+L.boost);
+  if(Math.random()>=p)return null;
+  var r=Math.random(),red=Math.min(.06,L.v/30000),yel=Math.min(.2,.04+L.v/6000);
+  var col=r<red?"r":r<red+yel?"y":r<red+yel+.3?"g":"b";
+  return {col:col,v:SCV[col]};
+}
+function chatInterval(v){return clamp(1500-Math.log10(v+1)*280,300,1500)}
+function roundPerf(r){var acc=r.shots?r.hits/r.shots:0;return clamp(acc*.5+Math.min(1,r.heads/20)*.3+Math.min(1,r.maxCombo/10)*.2,0,1)}
+function roundBand(p){return p>=.85?3:p>=.55?2:p>=.3?1:0}
+var RBANDS=[{e:"💀",n:"Desastre"},{e:"😬",n:"Ruim"},{e:"👍",n:"Bom"},{e:"🏆",n:"Clutch / Ace"}];
+function liveRound(L,r){
+  var perf=roundPerf(r),b=roundBand(perf),don=L.v*.02*(.5+perf)*5*(1+S.st.lea/100);
+  if(b===3){don*=1.6;L.fp+=8;unlock("clutch");L.mood=Math.min(1.8,L.mood+.25);L.clip+=.2}
+  else if(b===2){L.fp+=3;L.mood=Math.min(1.8,L.mood+.1)}
+  else if(b===1){don*=.5;L.paz-=3;L.mood=Math.max(.6,L.mood-.1)}
+  else L.mood=Math.max(.5,L.mood-.15);
+  r.perf=perf;r.band=b;r.don=Math.max(0,Math.round(don));L.rounds.push(r);
+  return r;
+}
+function liveDisaster(L,c){
+  if(c===0){L.fp+=5;L.hate+=10;L.rep-=5}
+  else if(c===1){L.fp+=3;L.lea+=5;L.paz+=2}
+  else{L.paz+=5;L.donCut=true}
+}
+function liveFaint(L){L.faintHit=true;return faint(true)}
+function liveEnd(L){
+  var react=L.specials?L.reacts/L.specials:.5;
+  var rp=L.rounds.length?L.rounds.reduce(function(a,r){return a+r.perf},0)/L.rounds.length:react;
+  var score=react*.5+rp*.5,good=score>=.42;
+  var mins=Math.max(1,Math.round(L.minutes||L.h*60)),avgV=L.vN?L.vSum/L.vN:L.v0;
+  var ad=.003*avgV*mins,net=L.gross*.7;if(L.donCut)net*=.5;
+  var money=Math.round((good?net+ad:(net+ad)*.5));
+  var hf=mins/60;
+  var pct=(good?rnd(3,8):rnd(0,1))*(hf/2*.6+.4)+L.fp;if(S.niche==="gamer")pct*=1.2;
+  var pz=Math.round((good?-4:-6)*hf)+L.paz,rep=(good?1:0)+L.rep,lea=clamp(L.lea,-15,15);
+  var d=applyD({fp:pct,$:money,p:pz,r:rep,l:lea,h:L.hate});
+  var viral=false;
+  if(Math.random()<L.clip+(good?.04:0)){viral=true;var d2=applyD({fp:rnd(8,20)});d.f+=d2.f;S.virals.push(S.m);S.mon.viral++;unlock("viral");note({type:"conf",txt:"Um clipe da sua live viralizou! 🎬"})}
+  S.mon.gain+=d.f;
+  if(!S.mon.best||d.f>S.mon.best.g)S.mon.best={g:d.f,type:"live"};
+  S.log.push({m:S.m,t:"Live de "+L.h+" h",l:(good?"Live boa":"Live morna")+" · "+fmtN(L.peak)+" no pico"});
+  checkDeath();
+  return {good:good,money:money,gross:Math.round(L.gross),fee:Math.round(L.gross*.3),ad:Math.round(ad),react:react,rp:rp,d:d,viral:viral,mins:mins};
+}
+// usado pela simulação (sem interface): live jogada com desempenho e taxa de reação dados
+function liveAuto(L,perf,react){
+  var msgs=Math.round(L.h*20000/chatInterval(L.v));
+  for(var i=0;i<msgs;i++){var sc=chatDonation(L);if(sc){L.gross+=sc.v;L.specials++;if(Math.random()<react){L.reacts++;L.lea+=1;L.boost=Math.min(.5,L.boost+.1)}}
+    else if(Math.random()<.12){L.specials++;if(Math.random()<react)L.reacts++}}
+  for(var h=0;h<L.h;h++){var hits=Math.round(20*perf*rnd(.8,1.1)),r={shots:Math.max(hits,Math.round(hits/Math.max(.3,perf))),hits:hits,heads:Math.round(hits*perf*.4),maxCombo:Math.round(hits*perf*.6),gold:0};
+    liveRound(L,r);L.gross+=r.don;if(r.band===0)liveDisaster(L,1)}
+  L.minutes=L.h*60;L.vSum=L.v0*L.mood;L.vN=1;L.peak=Math.round(L.v0*L.mood);
+  return liveEnd(L);
+}
+
+// ---- ✂️ ilha de edição ----
+var GRADES=[{g:"S",min:.95,m:1.5,viral:.1},{g:"A",min:.8,m:1.25},{g:"B",min:.6,m:1},{g:"C",min:.4,m:.8},{g:"F",min:0,m:.6}];
+function gradeOf(prec){for(var i=0;i<GRADES.length;i++)if(prec>=GRADES[i].min)return GRADES[i];return GRADES[4]}
+function editResult(g,prec){var G=GRADES.filter(function(x){return x.g===g})[0]||GRADES[2],t=editTools();return {g:G.g,mult:G.m,viral:G.viral||0,filtros:t.filtros,pro:t.pro,prec:prec==null?null:prec}}
+function editorHired(){return S.up.setup>=3}
+
+// ---- virada do mês (parte 2) ----
+function renewOffers(){if(!S.renew||!S.renew.length)return;var nm=S.renew.shift(),b=MARCAS.filter(function(x){return x.n===nm})[0];if(!b)return;var posts=ri(1,2);
+  S.inbox.push({id:S.oid++,kind:"publi",b:b,posts:posts,left:posts,fee:Math.round((80+S.st.f*.025)*(.7+.3*posts)*1.1/10)*10,due:S.m+2,known:true,acc:false,hit:false,renew:1})}
+function monthP2(sum,L){
+  (S.mon.paid||[]).forEach(function(x){L.push([x[0]+" · pago",x[1],null,1])});
+  if(S.autopay)autoPay().forEach(function(x){L.push([x[0].e+" "+x[0].n+" · débito automático",-x[1],null,1])});
+  var wasLate=S.mon.anyLate;
+  escalate(sum);
+  if(!wasLate&&!openBills().length){S.okMonths++;if(S.okMonths>=6)unlock("emdia")}else S.okMonths=0;
+  // comida
+  S.bemNext=nutr()>=70;
+  var dr=S.mon.mercado?10:(minor()&&S.up.casa===0?15:30);
+  S.fome=clamp(S.fome-dr,0,100);S.sede=clamp(S.sede-dr,0,100);
+  sum.notes.push(S.mon.mercado?"🛒 Com o mercado do mês, fome e sede caíram só 10.":dr===15?"🍲 A comida de casa segurou a fome (−15).":"🍔 Sem mercado do mês: fome e sede −30. O ZapEats tá aí.");
+  if(S.bemNext)sum.notes.push("😋 Bem alimentad{a|o|e} e hidratad{a|o|e}: +1 ⚡ no mês que vem.");
+  if(nutr()<10){S.faintNext=true;var fd=applyD({p:-10,$:-300});S.fome=45;S.sede=45;L.push(["🚑 UPA (desmaio de fome e sede)",-300,null,1]);sum.notes.push("🚑 Você desmaiou na virada do mês: 🧠 −10 e −1 ⚡ no mês que vem.");void fd}
+  if(S.mon.energ){S.energRun++;if(S.energRun>=3&&!S.queue.some(function(q){return q.id==="fu_coracao"})){S.energRun=0;S.queue.push({id:"fu_coracao",m:S.m+1})}}else S.energRun=0;
+  // ZapChat
+  var un=0;ZC.forEach(function(c){if(!zapVisible(c.id))return;var C=S.zap.c[c.id];un+=C.un;
+    if(C.pend&&C.seenM===S.m&&!C.pend.visto){C.pend.visto=1;relAdd(c.id,-10);sum.notes.push("👀 "+zapName(c.id)+" viu o “visto” e ficou sem resposta (Afeto −10).")}
+    if(zcDef(c.id).type==="crush"){var br=checkBreak(c.id);if(br)sum.notes.push(br)}});
+  if(un>=5){var pz=Math.floor(un/5);applyD({p:-pz});L.push(["💬 "+un+" mensagens não lidas",null,-pz])}
+  if(canCasal()){applyD({p:5});L.push(["💑 Namoro oficial",null,5])}
+  else if(S.date&&S.zap.c[S.date].st===2){applyD({p:2});L.push(["💘 Namorando (em segredo)",null,2])}
+  if(S.mon.posts===0&&!S.mon.detox)applyD({l:-3});
+  S.lastLives=S.mon.lives;
 }
 // ===== INTERFACE =====
 var $=function(id){return document.getElementById(id)};
@@ -1422,7 +2172,7 @@ function sfx(k){if(!snd)return;try{actx=actx||new (window.AudioContext||window.w
 // ---------- toasts / confete ----------
 function toast(o){
   var el=document.createElement("div");el.className="toast";el.setAttribute("role","status");
-  var ic={P:"📷",T:"🎵",M:"✉️",C:"💬",mae:"👩",bia:"💛",ach:"🏅"}[o.app]||"🔔";
+  var ic={P:"📷",T:"🎵",M:"✉️",C:"💬",mae:"👩",bia:"💛",ach:"🏅",Z:"💬",E:"🛵",L:"🔴"}[o.app]||"🔔";
   el.innerHTML='<div class="ic ic-'+esc(o.app)+'">'+ic+'</div><div class="tx"><b>'+esc(o.t)+'</b>'+esc(o.x)+'</div>'+(o.d?dchips(o.d,true):"");
   var box=$("toasts");while(box.children.length>=3)box.removeChild(box.firstChild);
   box.appendChild(el);sfx("notif");
@@ -1444,6 +2194,7 @@ function drain(){
     if(n.type==="ach"){if(CQ.indexOf(n.id)<0){CQ.push(n.id);store.set("conquistas",CQ)}var c=CONQ.filter(function(x){return x.id===n.id})[0];if(c)toast({app:"ach",t:"Conquista desbloqueada!",x:c.e+" "+withS(function(){return tpl(c.t)})})}
     else if(n.type==="conf"){confetti();sfx("viral");toast({app:"P",t:"🎉 "+n.txt,x:"Seu celular não para de vibrar."})}
     else if(n.type==="toast")toast(n);
+    else if(n.type==="faint"&&!GAME)faintDlg(n.d);
   });
 }
 
@@ -1480,6 +2231,7 @@ function postCard(r){
   var bb={bg:"mess",sc:pt.b.sc,cap:r.bcap};
   if(r.publi){o.bg="studio";o.sc=r.publi.b.e+" 50 50 40,✨ 22 22 16,✨ 78 24 14,"+n.e+" 80 76 18";bb={bg:"fluor",sc:"📄 30 50 26,🤳 64 46 26,😮‍💨 80 20 16",cap:"gravei 23 vezes até falar “"+r.publi.b.n+"” sem errar"}}
   if(r.trendObj&&r.trendObj.tx)o.stamp="⚠️ trend";
+  if(r.wm)o.stamp="VERSÃO DE AVALIAÇÃO";else if(r.edit&&r.edit.g)o.stamp="✂️ nota "+r.edit.g;
   return flipCard(postFace(o),btsFace(bb,true));
 }
 function roomScenes(){
@@ -1515,19 +2267,20 @@ function bindFlips(root){
 function dchips(d,small){
   var out=[];
   function c(v,lbl,fmt,inv){if(!v)return;var good=inv?v<0:v>0;out.push('<span class="chip '+(good?"up":"down")+'">'+lbl+" "+(v>0?"+":"−")+fmt(Math.abs(v))+'</span>')}
-  c(d.f,"👥",function(v){return fmtN(v)});c(d.$,"💰",function(v){return fmtR(v)});c(d.paz,"🧠",String);c(d.rep,"🌟",String);c(d.h,"🔥",String,true);
+  c(d.f,"👥",function(v){return fmtN(v)});c(d.$,"💰",function(v){return fmtR(v)});c(d.paz,"🧠",String);c(d.rep,"🌟",String);c(d.h,"🔥",String,true);c(d.lea,"💛",String);
   if(d.bia)out.push('<span class="chip '+(d.bia>0?"up":"down")+'">💛 Bia '+(d.bia>0?"curtiu":"ficou chateada")+'</span>');
   if(!out.length)return small?"":'<span class="chip">nada mudou</span>';
   return '<div class="chips">'+out.join("")+'</div>';
 }
 
 // ---------- HUD ----------
-var BARCOL={paz:"#5ac8ff",rep:"#ffc23a",h:"#ff6b5a"};
+var BARCOL={paz:"#5ac8ff",rep:"#ffc23a",h:"#ff6b5a",lea:"#ff5ac8",fome:"#ff9f43",sede:"#3ad1c4"};
+var HBARS=[["paz","🧠 Paz"],["rep","🌟 Rep."],["h","🔥 Hate"],["lea","💛 Fãs"],["fome","🍔 Fome"],["sede","💧 Sede"]];
 function hudHTML(){
   return '<header class="hud" id="hud"><div class="hud-in" id="hudIn"><div class="hrow">'+avHTML(S.p.avatar)+'<div class="hname"><b>@'+esc(S.p.handle)+'</b><small id="hMes"></small></div>'+
     '<button class="menu-b" type="button" data-act="menu" aria-label="Menu">⋮</button></div>'+
     '<div class="hnums"><div class="hn" id="hF"><b>0</b><small>👥 seguidores</small></div><div class="hn" id="hM"><b>R$ 0</b><small>💰 dinheiro</small></div><div class="en" id="hEn" aria-label="Energia"></div></div>'+
-    '<div class="bars">'+[["paz","🧠 Paz"],["rep","🌟 Rep."],["h","🔥 Hate"]].map(function(b){return '<div class="bar" id="hb-'+b[0]+'"><div class="bl"><span>'+b[1]+'</span><b>0</b></div><div class="tr"><div class="fi" style="background:'+BARCOL[b[0]]+'"></div></div></div>'}).join("")+'</div></div></header>';
+    '<div class="bars">'+HBARS.map(function(b){return '<div class="bar" id="hb-'+b[0]+'"><div class="bl"><span>'+b[1]+'</span><b>0</b></div><div class="tr"><div class="fi" style="background:'+BARCOL[b[0]]+'"></div></div></div>'}).join("")+'</div></div></header>';
 }
 function ticker(el,from,to,fmt){
   if(RM||from===to){el.textContent=fmt(to);return}
@@ -1537,15 +2290,16 @@ function ticker(el,from,to,fmt){
 function floatD(host,v,fmt,inv){if(!v||!host)return;var s=document.createElement("span");var good=inv?v<0:v>0;s.className="fd "+(good?"up":"down");s.textContent=(v>0?"+":"−")+fmt(Math.abs(v));host.appendChild(s);setTimeout(function(){s.remove()},1600)}
 function updHud(){
   if(!S||!$("hud"))return;
-  var cur={f:S.st.f,$:S.st.$,paz:S.st.paz,rep:S.st.rep,h:S.st.h},old=hudShown||cur;
-  $("hMes").textContent="Mês "+S.m+" · "+NICHOS[S.niche].e+" "+NICHOS[S.niche].curto+(S.m>12?" · "+Math.floor((S.m-1)/12)+" ano"+(S.m>24?"s":""):"");
+  var cur={f:S.st.f,$:S.st.$,paz:S.st.paz,rep:S.st.rep,h:S.st.h,lea:S.st.lea,fome:S.fome,sede:S.sede},old=Object.assign({},cur,hudShown||{});
+  $("hMes").textContent="Mês "+S.m+" · Dia "+dayOf()+" · "+NICHOS[S.niche].e+" "+NICHOS[S.niche].curto;
   ticker($("hF").querySelector("b"),old.f,cur.f,fmtN);ticker($("hM").querySelector("b"),old.$,cur.$,fmtR);
   $("hM").classList.toggle("neg",cur.$<0);
   floatD($("hF"),cur.f-old.f,fmtN);floatD($("hM"),cur.$-old.$,fmtR);
-  var en="";for(var i=0;i<enMax();i++)en+='<i class="'+(i<S.en?"":"off")+'">⚡</i>';if(S.freeProd)en+='<i title="Produzido grátis">🎟️</i>';$("hEn").innerHTML=en;$("hEn").setAttribute("aria-label","Energia: "+S.en+" de "+enMax());
-  ["paz","rep","h"].forEach(function(k){var el=$("hb-"+k);el.querySelector(".fi").style.width=cur[k]+"%";
+  var en="",tot=Math.max(enMax(),S.en);for(var i=0;i<tot;i++)en+='<i class="'+(i<S.en?"":"off")+'"'+(i>=enMax()?' title="Energia extra"':'')+'>⚡</i>';if(S.freeProd)en+='<i title="Produzido grátis">🎟️</i>';$("hEn").innerHTML=en;$("hEn").setAttribute("aria-label","Energia: "+S.en+" de "+enMax());
+  HBARS.forEach(function(b){var k=b[0],el=$("hb-"+k);el.querySelector(".fi").style.width=cur[k]+"%";
     var lb=el.querySelector(".bl b");lb.textContent=k==="h"?BANDS[band()].e+" "+cur[k]:cur[k];
-    el.classList.toggle("low",k==="h"?cur[k]>=60:cur[k]<=20);floatD(el,cur[k]-old[k],String,k==="h")});
+    el.classList.toggle("low",k==="h"?cur[k]>=60:(k==="fome"||k==="sede")?cur[k]<30:cur[k]<=20);floatD(el,cur[k]-old[k],String,k==="h")});
+  renderDock(UI.v);
   $("hudIn").style.setProperty("--roombg",BG[["dirt","beige","sunset","pool"][S.up.casa]]);
   hudShown=cur;
 }
@@ -1554,12 +2308,13 @@ function updHud(){
 function save(){if(!S||S.over)return;S.ui=UI.v==="resumo"||UI.v==="evento"?UI.v:"mes";store.set("run",S)}
 function go(v,d){UI.v=v;UI.d=d||{};render();scroller.scrollTop=0;save()}
 function render(){
-  var v=UI.v,game=["mes","post","publis","loja","vida","resumo","evento"].indexOf(v)>=0;
+  var v=UI.v,game=["mes","post","publis","loja","vida","resumo","evento","zap","explore","eats","live"].indexOf(v)>=0;
   if(game){
     if(!$("hud")){app.innerHTML=hudHTML()+'<div id="view"></div>';hudShown=null}
     var vw=$("view");vw.innerHTML='<section class="view">'+VIEWS[v]()+'</section>';
     updHud();bindFlips(vw);bindView(v);
   }else{app.innerHTML='<section class="view '+(v==="title"?"title":"")+'">'+VIEWS[v]()+'</section>';hudShown=null;bindFlips(app);bindView(v)}
+  renderDock(game?v:null);
   drain();
 }
 function back(){return '<div class="bk"><button class="btn sm" type="button" data-act="mes">← Mês '+S.m+'</button></div>'}
@@ -1634,14 +2389,14 @@ VIEWS.mes=function(){
   var pend=S.inbox.filter(function(o){return o.acc&&o.left>0}).length,news=S.inbox.filter(function(o){return !o.acc}).length;
   var c=S.contract,fc=fixedCosts().reduce(function(a,x){return a+x[1]},0);
   var info='<div class="lv">🎥 Setup'+pips(S.up.setup)+'</div><div class="lv">🏠 Moradia'+pips(S.up.casa)+'</div><div class="lv">👗 Estilo'+pips(S.up.estilo)+'</div>'+
-    '<div class="small muted">Custos fixos: '+fmtR(-fc)+'/mês</div>'+(c?'<div class="small">🤝 '+esc(c.ag)+': <b>'+S.mon.contractPosts+'/'+c.meta+'</b> posts'+(c.req?" (Clickbait)":"")+'</div>':"")+
+    '<div class="small muted">Fixos: '+fmtR(-fc)+'/mês'+(openBills().length?' · boletos: '+fmtR(billsTotal()):'')+'</div>'+(c?'<div class="small">🤝 '+esc(c.ag)+': <b>'+S.mon.contractPosts+'/'+c.meta+'</b> posts'+(c.req?" (Clickbait)":"")+'</div>':"")+
     (pend?'<div class="small">📝 '+pend+' publi'+(pend>1?"s":"")+' pra entregar</div>':"")+(S.mon.detox?'<div class="small">📵 Mês de detox</div>':"");
   var low=S.st.$<0?'<div class="chip down" style="align-self:flex-start">⚠️ Conta no vermelho'+(S.neg?": último aviso antes do despejo!":"")+'</div>':"";
-  return '<div class="panel trends"><h3>Trends do mês</h3>'+trow(tg,S.trends.g,"global")+trow(tn,S.trends.n,NICHOS[S.niche].curto)+'</div>'+low+
+  return alertsHTML()+'<div class="panel trends"><h3>Trends do mês</h3>'+trow(tg,S.trends.g,"global")+trow(tn,S.trends.n,NICHOS[S.niche].curto)+'</div>'+low+
    '<div class="roomrow">'+roomCard()+'<div class="info">'+info+'</div></div>'+
    '<div class="acts">'+
     act("post","🎬","Gravar / Postar",S.mon.detox?"Detox: sem posts":"Rápido, Produzido ou Clickbait")+
-    act("publis","🤝","Publis & Contratos","Caixa do MailGrid",news+pend)+
+    act("publisPub","🤝","Publis & Contratos","Caixa do MailGrid",news+pend)+
     act("loja","🛒","Upgrades","Setup, moradia e estilo")+
     act("vida","🌿","Vida Pessoal","Descansar também é estratégia")+'</div>'+
    '<button class="btn primary wide adv" type="button" data-act="avancar">⏭️ Avançar o Mês</button>'+
@@ -1658,11 +2413,13 @@ VIEWS.post=function(){
   var types=["q","p","c"].map(function(k){var t=PTYPES[k],free=k==="p"&&S.freeProd>0,cost=postCost(k);
     var why=canPost(k,free);
     return '<button class="opt'+(why?" dis":"")+'" type="button" data-type="'+k+'" aria-pressed="'+(type===k)+'"><div class="oh"><span class="oi">'+t.e+'</span><div class="grow"><b>'+T(n.posts[k].n)+'</b><p>'+t.n+' · '+t.desc+'</p></div></div><div class="chips">'+
-      '<span class="chip">⚡ '+(free?"grátis 🎟️":t.en)+'</span>'+(cost&&!free?'<span class="chip">💰 −'+fmtR(cost)+'</span>':"")+'<span class="chip">🧠 '+(k==="p"&&S.up.setup>=2?"−"+Math.round(t.paz/2):"−"+t.paz)+'</span>'+(k==="c"?'<span class="chip warn">🔥 +'+(S.niche==="life"?17:14)+'</span><span class="chip warn">🌟 −3</span>':"")+'</div></button>'}).join("");
+      '<span class="chip">⚡ '+(free?"grátis 🎟️":t.en)+'</span>'+(cost&&!free?'<span class="chip">💰 −'+fmtR(cost)+'</span>':"")+(k==="p"?'<span class="chip">✂️ edição</span><span class="chip">🍔 ×2</span>':"")+'<span class="chip">🧠 '+(k==="p"&&S.up.setup>=2?"−"+Math.round(t.paz/2):"−"+t.paz)+'</span>'+(k==="c"?'<span class="chip warn">🔥 +'+(S.niche==="life"?17:14)+'</span><span class="chip warn">🌟 −3</span>':"")+'</div></button>'}).join("");
   function topt(key){var st=key?S.trends[key]:null,t=st?trendById(st.id):null;var bad=t&&t.req&&t.req!==type;
     return '<button class="opt'+(bad?" dis":"")+'" type="button" data-tk="'+key+'" aria-pressed="'+(tk===key)+'"'+(bad?" disabled":"")+'><div class="oh"><span class="oi">'+(t?(t.tx?"⚠️":"📈"):"🦄")+'</span><div class="grow"><b>'+(t?esc(t.n):"Conteúdo próprio")+'</b><p>'+(t?(bad?"Só vale post Produzido.":"Hype "+st.hype+"% · força "+String(t.f).replace(".",",")+(t.tx?" · 🔥 +15 e 🌟 −5":"")):"Sem trend. Rende mais se você estiver “Original”.")+'</p></div></div>'+(t?'<div class="hype"><i style="width:'+st.hype+'%"></i></div>':"")+'</button>'}
   var why=canPost(type,type==="p"&&S.freeProd>0);
   return back()+'<h2>Gravar / Postar</h2><div class="tsel">'+types+'</div><h3>Entrar numa trend?</h3><div class="tsel">'+topt("")+topt("g")+topt("n")+'</div>'+
+    (canCasal()?swHTML("casal","💑 Post de casal com "+zcDef(S.date).n,"+20% de engajamento",!!UI.d.casal):"")+
+    (type==="p"&&!why?'<p class="rm-note">✂️ Produzido abre a ilha de edição (dá pra pular com nota C'+(editorHired()?" ou deixar com o editor, nota B":"")+').</p>':"")+
     (why?'<p class="err" style="color:var(--coral)">'+esc(why)+'</p>':"")+'<button class="btn primary wide adv" type="button" data-act="doPost"'+(why?" disabled":"")+'>Postar 🚀</button>';
 };
 function postRes(r){
@@ -1670,13 +2427,17 @@ function postRes(r){
    '<div class="res">'+(r.viral?'<span class="vbadge">🔥 VIRALIZOU</span>':r.flop?'<span class="vbadge flop">💤 flopou</span>':"")+
    '<div class="gain">+'+fmtN(r.gain)+'<small>seguidores com '+(r.publi?"a publi da "+esc(r.publi.b.n):T(NICHOS[S.niche].posts[r.type].n))+(r.trend?" · "+esc(r.trend):"")+'</small></div>'+dchips(Object.assign({},r.d,{f:0}))+
    (r.notes.length?'<p class="small muted">'+r.notes.map(esc).join(" ")+'</p>':"")+(r.extra?'<p class="small" style="color:var(--coral)">'+esc(r.extra)+'</p>':"")+
-   '<div class="panel coms"><h3>Comentários</h3>'+r.comments.map(comHTML).join("")+'</div>'+
+   '<div class="panel coms"><h3>Comentários</h3>'+r.comments.map(comHTML).join("")+'</div>'+modHTML(r)+
    (S.dead?'<button class="btn primary wide adv" type="button" data-act="fim">Ver o que aconteceu…</button>':
    '<div class="row">'+(r.publi?'<button class="btn grow" type="button" data-act="publis">Voltar às publis</button>':'<button class="btn grow" type="button" data-act="post"'+(S.en<1?" disabled":"")+'>Postar de novo</button>')+'<button class="btn primary grow" type="button" data-act="mes">Voltar ao mês</button></div>')+'</div>';
 }
 function comHTML(c){var e=["🙂","😺","🐸","🌸","👾","🦊","🐶","🌻"][c.u.length%8];return '<div class="com"><span class="ca">'+e+'</span><div><b>@'+esc(c.u)+'</b>'+esc(c.t)+'</div></div>'}
 
 VIEWS.publis=function(){
+  var tab=UI.d.tab||(openBills().length?"bills":"pub"),nb=openBills().length;
+  return back()+'<h2>MailGrid</h2><div class="tabs2" role="group" aria-label="Caixas do MailGrid"><button type="button" data-act="tab" data-tab="bills" aria-pressed="'+(tab==="bills")+'">🧾 Boletos'+(nb?" ("+nb+")":"")+'</button><button type="button" data-act="tab" data-tab="pub" aria-pressed="'+(tab==="pub")+'">🤝 Publis ('+S.inbox.length+')</button></div>'+(tab==="bills"?billsHTML():pubHTML());
+};
+function pubHTML(){
   var sealN={g:"🟢 confiável",y:"🟡 desconhecida",r:"🔴 duvidosa"};
   var items=S.inbox.map(function(o){
     if(o.kind==="contrato")return '<div class="mail-i"><div class="mh"><span class="be">🤝</span><div class="grow"><b>'+esc(o.ag)+'</b><br><small>Contrato de exclusividade</small></div><span class="seal s-y">📄 contrato</span></div>'+
@@ -1690,12 +2451,13 @@ VIEWS.publis=function(){
       '<div class="facts"><span>💰 '+fmtR(o.fee)+'</span><span>📝 '+o.posts+' post'+(o.posts>1?"s":"")+' (⚡1 cada)</span><span>⏳ até o mês '+o.due+'</span>'+(minor()?'<span>👩 mãe precisa aprovar</span>':"")+'</div>'+
       (why&&!o.acc?'<p class="note">'+esc(why)+'</p>':"")+btns+'</div>'}).join("");
   var c=S.contract;
-  return back()+'<h2>Publis & Contratos</h2><div class="mgtop"><span class="mg-logo" style="font-size:15px">✉️ MailGrid</span><span class="small" style="margin-left:auto;color:#5a6070">Caixa de entrada ('+S.inbox.length+')</span></div>'+
+  return '<div class="mgtop"><span class="mg-logo" style="font-size:15px">✉️ MailGrid</span><span class="small" style="margin-left:auto;color:#5a6070">Caixa de entrada ('+S.inbox.length+')</span></div>'+
+    (S.serasa?'<div class="chip down" style="align-self:flex-start;white-space:normal">📛 Nome sujo no SerasaZap: marcas 🟢 recusam</div>':"")+
     (saturated()?'<div class="chip warn" style="align-self:flex-start;white-space:normal">⚠️ “Só faz propaganda”: seus posts rendem −30%</div>':"")+
     (c?'<div class="panel small"><b>🤝 '+esc(c.ag)+'</b> · '+fmtR(c.sal)+'/mês · meta <b>'+S.mon.contractPosts+'/'+c.meta+'</b> posts'+(c.req?" Clickbait":"")+' este mês · faltam '+c.left+' meses</div>':"")+
     (items||'<div class="panel muted" style="text-align:center">📭 Caixa vazia. As marcas ainda não te acharam. Poste mais e cuide da reputação!</div>')+
-    '<p class="rm-note">Selo 🟢 só bônus · 🟡 20% de virar polêmica · 🔴 dinheiro alto, 🔥 +20 e 🌟 −10. Propostas não aceitas somem no fim do mês.</p>';
-};
+    '<p class="rm-note">Selo 🟢 só bônus · 🟡 20% de virar polêmica · 🔴 dinheiro alto, 🔥 +20 e 🌟 −10. Propostas não aceitas somem no fim do mês. Negocie pelo 💬 ZapChat.</p>';
+}
 VIEWS.loja=function(){
   return back()+'<h2>Upgrades</h2><div class="cardwrap">'+roomCard()+'<p class="fhint">seu cantinho: toque pra ver o real</p></div>'+
    ["setup","casa","estilo"].map(function(k){var U=UPS[k],l=S.up[k],cur=U.lv[l],nx=U.lv[l+1];
@@ -1703,7 +2465,9 @@ VIEWS.loja=function(){
      (nx?'<div class="opt" style="cursor:default"><b>'+esc(nx.n)+'</b><div class="chips"><span class="chip">💰 '+fmtR(nx.c)+'</span>'+(nx.m?'<span class="chip warn">'+fmtR(nx.m)+'/mês</span>':"")+'<span class="chip up">+'+Math.round(nx.b*100)+'% nos posts</span>'+
        (k==="setup"&&l+1===2?'<span class="chip up">Produzido −50% 🧠</span>':"")+(k==="setup"&&l+1===3?'<span class="chip up">⚡ +1/mês</span>':"")+(k==="casa"&&l+1===3?'<span class="chip warn">🔥 +2/mês</span>':"")+(k==="estilo"&&l+1===3?'<span class="chip up">🌟 +5</span>':"")+'</div>'+
        '<button class="btn sm primary" type="button" data-buy="'+k+'"'+(S.st.$<nx.c?" disabled":"")+'>Comprar</button></div>':'<p class="small">Nível máximo. 👑</p>')+
-     (l>0?'<button class="btn sm ghost" type="button" data-sell="'+k+'">Rebaixar (+'+fmtR(cur.c*.4)+')</button>':"")+'</div>'}).join("");
+     (l>0?'<button class="btn sm ghost" type="button" data-sell="'+k+'">Rebaixar (+'+fmtR(cur.c*.4)+')</button>':"")+'</div>'}).join("")+
+   '<div class="panel shop"><h3>👚 Guarda-roupa</h3><p class="cur">Todas as peças são pra todo mundo. O que muda é como o público fictício reage (o jogo mostra os vieses da internet de propósito).</p><div class="row wrap">'+
+   PECAS.map(function(x){var on=S.look===x.id;return '<button class="btn sm'+(on?" primary":"")+'" type="button" data-act="look" data-id="'+x.id+'" aria-pressed="'+on+'">'+x.e+' '+esc(x.n)+'</button>'}).join("")+'</div></div>';
 };
 VIEWS.vida=function(){
   var r=UI.d.res;
@@ -1742,6 +2506,7 @@ VIEWS.evento=function(){
     '<button class="btn primary wide adv" type="button" data-act="evCont">'+(S.dead?"Ver o que aconteceu…":S.evq.length?"Próximo evento →":"Ir pro mês "+S.m+" →")+'</button></div>'}
   else body='<div class="choices">'+chs.map(function(c,i){return '<button class="choice k-'+c.k+'" type="button" data-ch="'+i+'"><span class="ci">'+KI[c.k]+'</span><span>'+T(c.l)+'</span><span class="kb">'+(i+1)+'</span></button>'}).join("")+'</div><p class="rm-note">🔥 fama · 🌱 autenticidade · 🎲 arriscada</p>';
   return '<div><p class="small '+(crise?"crisis-t":"muted")+'" style="font-weight:600">'+(crise?"🚨 Alerta vermelho · Mês "+S.m:"⚡ Evento surpresa · Mês "+S.m)+'</p><h2 class="evt-t'+(crise?" crisis-t":"")+'" style="margin-top:4px">'+T(ev.t)+'</h2></div>'+
+   (!S.flags.dicaGen?'<p class="rm-note">💡 A internet trata as pessoas de jeitos diferentes. O jogo também mostra isso.</p>':"")+
    '<p class="ctx">'+T(ev.x)+'</p><div class="cardwrap">'+evCard(ev)+'<button class="btn sm" type="button" data-act="flip" data-flipfor="'+("fc"+flipN)+'">Ver bastidores 👀</button><p class="fhint">o que vai pro feed × o que rolou de verdade</p></div>'+body;
 };
 VIEWS.fim=function(){
@@ -1760,6 +2525,548 @@ VIEWS.fim=function(){
    '<div class="row"><button class="btn grow" type="button" data-act="mudar">Mudar personagem</button><button class="btn primary grow" type="button" data-act="denovo">Jogar de novo</button></div>'+
    '<button class="btn ghost" type="button" data-act="finais">Ver todos os finais</button>';
 };
+
+// ---------- parte 2: dock do celular e apps ----------
+var DOCK=[["mes","🏠","Mês"],["zap","💬","ZapChat"],["explore","🔍","Explorar"],["live","🔴","Live"],["eats","🛵","ZapEats"],["publis","✉️","MailGrid"]];
+function renderDock(v){
+  var host=$("dockHost"),show=!!(S&&!S.over&&v&&["mes","post","publis","loja","vida","zap","explore","eats","live"].indexOf(v)>=0);
+  document.body.classList.toggle("has-dock",show);
+  if(!show){if(host.innerHTML)host.innerHTML="";return}
+  var cur=["post","loja","vida"].indexOf(v)>=0?"mes":v;
+  var bz=zapUnread(),bm=openBills().length+S.inbox.filter(function(o){return !o.acc}).length,be=fband()>=2;
+  host.innerHTML='<nav class="dock" aria-label="Apps do celular">'+DOCK.map(function(d){
+    var b=d[0]==="zap"&&bz?'<span class="badge g">'+bz+'</span>':d[0]==="publis"&&bm?'<span class="badge">'+bm+'</span>':d[0]==="eats"&&be?'<span class="badge">!</span>':"";
+    return '<button class="dk" type="button" data-act="dock" data-to="'+d[0]+'"'+(cur===d[0]?' aria-current="page"':"")+'><i>'+d[1]+'</i><span>'+d[2]+'</span>'+b+'</button>'}).join("")+'</nav>';
+}
+function swHTML(k,label,desc,on){return '<button class="sw" type="button" role="switch" aria-checked="'+(!!on)+'" data-act="sw" data-k="'+k+'"><span>'+esc(label)+(desc?'<small>'+esc(desc)+'</small>':"")+'</span><i></i></button>'}
+function alertsHTML(){
+  var A=[],ob=openBills(),late=lateCount();
+  if(cut("luz"))A.push(["bad","💡","Luz cortada: só dá pra postar Rápido. Pague no MailGrid.","publis"]);
+  if(cut("net"))A.push(["bad","🌐","Internet cortada: sem live e sem Produzido.","publis"]);
+  if(ob.length){if(late)A.push(["bad","🧾",late+" boleto"+(late>1?"s":"")+" atrasado"+(late>1?"s":"")+" · "+fmtR(billsTotal())+" em aberto"+(S.serasa?" · nome sujo no SerasaZap":""),"publis"]);
+    else A.push(["warn","🧾","Boletos do mês: "+fmtR(billsTotal())+" · vencem dia 10 (antes de gastar o 1º ⚡)","publis"])}
+  var fb=fband();
+  if(fb>=2)A.push(["bad","😵","Fome/sede no vermelho: posts −20% e 🧠 −5 por ação. Peça no ZapEats!","eats"]);
+  else if(nutr()<50)A.push(["warn","🍔","Bateu fome. Com 70+ nos dois na virada, você ganha +1 ⚡.","eats"]);
+  var un=zapUnread();if(un)A.push(["","💬",un+" mensage"+(un>1?"ns":"m")+" não lida"+(un>1?"s":"")+" no ZapChat"+(un>=5?" (🧠 −1 a cada 5)":""),"zap"]);
+  return A.length?'<div class="alerts">'+A.map(function(a){return '<button class="alert '+a[0]+'" type="button" data-act="dock" data-to="'+a[3]+'"><span class="emo">'+a[1]+'</span><span>'+T(a[2])+'</span><span class="go">›</span></button>'}).join("")+'</div>':"";
+}
+function faintDlg(d){dialog("🚑 Desmaio",'<p class="ctx">'+T(S.faints>1?"Você esqueceu de comer e beber. Acordou na UPA com soro no braço e a Bia do lado, brava: “de novo, {nome}?”":"Você esqueceu de comer e beber. Acordou na UPA com soro no braço e a Bia do lado, segurando sua mão: “{nome}, você precisa comer.”")+'</p>'+dchips(d)+'<p class="small muted">−1 ⚡ e R$ 300 de UPA. Peça comida e água no ZapEats antes da próxima ação.</p>',
+  '<button class="btn" type="button" data-act="dockClose" data-to="eats">🛵 Abrir ZapEats</button><button class="btn primary" type="button" data-act="close">Entendi</button>')}
+
+// ---- MailGrid: boletos ----
+function billDesc(k){
+  if(k==="aluguel")return S.up.casa===0?(minor()?"Casa dos pais: sem aluguel":"Quitinete"):UPS.casa.lv[S.up.casa].n;
+  if(k==="luz")return (minor()&&S.up.casa===0?"A mãe paga a base":"Base "+fmtR([90,180,260,420][S.up.casa]))+(S.up.setup>=2?" · +R$ 120 do setup":"")+(S.lastLives>=2?" · +lives":"");
+  if(k==="net")return S.subs.net?"Obrigatória pra live e Produzido":"Não assinada";
+  var on=SOFT.filter(function(x){return S.subs[x.k]}).map(function(x){return x.n});return on.length?on.join(" + "):"Nenhum software assinado";
+}
+function lateNote(k,l){
+  if(k==="aluguel")return l>=2?"⚠️ Ordem de despejo: mais um mês sem pagar e você perde a casa.":"Atrasado: multa de 10% e áudio do Seu Jorge.";
+  if(k==="luz")return l>=2?"Luz cortada: só posts Rápidos pelo celular."+(l>=3?" Religação: R$ 250.":""):"Atrasado: multa de 2%. Mais um mês e corta.";
+  if(k==="net")return l>=2?"Cortada: sem live e sem Produzido."+(l>=3?" Religação: R$ 200.":""):"Atrasado: a internet tá lenta, lives travam (−30% de viewers).";
+  return l>=2?"Licença cancelada: a edição perdeu as ferramentas.":"Atrasado: vídeos com marca d’água “VERSÃO DE AVALIAÇÃO” (🌟 −3 por post).";
+}
+function billsHTML(){
+  var due=S.mon.used===0,ob=openBills();
+  var items=BILLS.map(function(b){var B=S.bills[b.k],l=billLate(b.k);
+    if(B.amt<=0&&B.cur<=0&&!(b.k==="soft"||b.k==="net"))return "";
+    var st=B.amt<=0?'<span class="bst ok">'+(B.cur>0?"✓ pago":"sem conta")+'</span>':l>=2?'<span class="bst cut">'+(b.k==="aluguel"?"despejo":b.k==="soft"?"cancelada":"cortado")+'</span>':l===1?'<span class="bst late">atrasado</span>':'<span class="bst open">em aberto</span>';
+    return '<div class="mail-i bill"><div class="mh"><span class="be">'+b.e+'</span><div class="grow" style="min-width:0"><b>'+b.n+'</b><br><small>'+esc(billDesc(b.k))+'</small></div><div style="text-align:right;flex:none"><div class="amt">'+fmtR(B.amt>0?B.amt:B.cur)+'</div>'+st+'</div></div>'+
+      (B.amt>0?'<div class="row wrap"><button class="btn sm primary" type="button" data-act="pay" data-k="'+b.k+'"'+(S.st.$<B.amt?" disabled":"")+'>Pagar '+fmtR(B.amt)+'</button>'+(S.st.$<B.amt?'<span class="note">Saldo insuficiente</span>':"")+'</div>':"")+
+      (l>=1?'<p class="note">'+esc(lateNote(b.k,l))+'</p>':"")+'</div>'}).join("");
+  var tot=billsTotal();
+  return '<div class="mgtop"><span class="mg-logo" style="font-size:15px">✉️ MailGrid</span><span class="small" style="margin-left:auto;color:#5a6070">📅 Dia '+dayOf()+(due?" · vence dia 10":" · o dia 10 já passou")+'</span></div>'+
+    (S.serasa?'<div class="alert bad"><span class="emo">📛</span><span>Nome sujo no SerasaZap: 2+ boletos atrasados. Marcas 🟢 recusam e 🌟 −5.</span></div>':"")+
+    (ob.length>1&&S.st.$>=tot?'<button class="btn primary wide" type="button" data-act="payAll">Pagar tudo · '+fmtR(tot)+'</button>':"")+
+    (ob.length?"":'<p class="rm-note">Tudo pago por aqui ✨'+(S.m===1?" O 1º mês foi pago na mudança.":"")+'</p>')+
+    items+
+    '<div class="mail-i"><b>Assinaturas e débito</b><small>Os boletos chegam no início do mês e vencem no dia 10, que é o mesmo que gastar o 1º ⚡.</small>'+
+    swHTML("autopay","🔁 Débito automático","Paga na virada do mês se tiver saldo",S.autopay)+
+    swHTML("net","🌐 Internet Premium · R$ 150/mês","Sem ela: nada de live nem Produzido",S.subs.net)+
+    SOFT.map(function(x){return swHTML(x.k,"🎬 "+x.n+" · "+fmtR(x.c)+"/mês",x.d,S.subs[x.k])}).join("")+
+    '<small>Assinar no meio do mês cobra o 1º mês na hora (ou vai pro boleto, se faltar saldo).</small></div>';
+}
+
+// ---- comentários do seu perfil ----
+var MODA={fa:[["pin","📌 Fixar"],["like","❤️ Curtir"],["reply","↩️ Responder"]],crit:[["thank","🙏 Agradecer"],["del","🗑️ Deletar"]],
+  hater:[["reply","😏 Responder"],["del","🗑️ Deletar"],["block","🚫 Bloquear"]],bot:[["del","🗑️ Deletar"],["block","🚫 Bloquear"]]};
+var MODDOT={fa:"💚",crit:"🟡",hater:"🔴",bot:"🤖"};
+function modHTML(r){
+  if(!r.mod||!r.mod.length)return "";
+  var pinned=r.mod.some(function(c){return c.pin});
+  return '<div class="panel mod" id="modP"><div class="row wrap"><h3 class="grow">Comentários no seu post · '+r.mod.length+'</h3>'+
+    (S.wordFilter?'<span class="chip up">🔇 filtro de palavras</span>':'<button class="btn sm" type="button" data-act="wfilter"'+(S.en<1?" disabled":"")+' title="Corta pela metade o dano dos haters na sua 🧠">🔇 Filtro de palavras ⚡1</button>')+'</div>'+
+    '<p class="small muted">💛 Lealdade '+S.st.lea+' · fã fiel doa mais nas lives e segura o 🔥 por você. Hater largado aí custa 🧠.</p>'+
+    r.mod.map(function(c,i){return '<div class="mc k-'+c.k+(c.pin?" pin":"")+(c.done?" done":"")+'"><div class="mt">'+MODDOT[c.k]+' <b>@'+esc(c.u)+'</b>'+esc(c.t)+(c.pin?' <span class="chip">📌 fixado</span>':"")+'</div>'+
+      (c.res?'<div class="mr">'+esc(c.res.txt)+'</div>'+dchips(c.res.d,true):"")+
+      '<div class="ma">'+MODA[c.k].filter(function(a){return !(a[0]==="pin"&&pinned)}).map(function(a){return '<button class="btn sm" type="button" data-act="mod" data-i="'+i+'" data-a="'+a[0]+'">'+a[1]+'</button>'}).join("")+'</div></div>'}).join("")+'</div>';
+}
+
+// ---- ZapEats ----
+function meterHTML(l,v,c){return '<div class="bar'+(v<30?" low":"")+'"><div class="bl"><span>'+l+'</span><b>'+v+'</b></div><div class="tr"><div class="fi" style="width:'+v+'%;background:'+c+'"></div></div></div>'}
+function foodHTML(it){
+  var why=canEat(it.id),ft=canFoto(it.id),fx=[];
+  if(it.fo)fx.push("🍔 "+(it.fo>0?"+":"−")+Math.abs(it.fo));if(it.se)fx.push("💧 "+(it.se>0?"+":"−")+Math.abs(it.se));if(it.p)fx.push("🧠 "+(it.p>0?"+":"−")+Math.abs(it.p));
+  if(it.id==="energ")fx.push(S.mon.energ?"⚡ já usado no mês":"⚡ +1 (1×/mês)");
+  return '<div class="vi"><span class="oi">'+it.e+'</span><div class="grow" style="min-width:0"><b>'+esc(it.n)+'</b><small>'+fx.join(" · ")+'</small>'+(it.foto?'<div class="foto">📸 '+esc(it.foto)+'</div>':"")+
+    (it.id==="miojo"&&S.miojoRun>=2?'<div class="foto" style="color:#ff9a8c">⚠️ 3º miojo seguido = 🧠 −5</div>':"")+'</div>'+
+    '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:none"><span class="cost">'+fmtR(it.c)+'</span><button class="btn sm primary" type="button" data-act="eat" data-id="'+it.id+'"'+(why?" disabled":"")+'>Pedir</button>'+
+    (ft?'<button class="btn sm" type="button" data-act="foto" data-id="'+it.id+'">📸 Postar</button>':"")+'</div></div>';
+}
+VIEWS.eats=function(){
+  var r=UI.d.res,fb=fband();
+  return back()+'<div class="eats-h"><span class="emo" style="font-size:24px">🛵</span><b>ZapEats</b><small>Entrega 25 min</small></div>'+
+   '<div class="panel"><div class="nut">'+meterHTML("🍔 Fome",S.fome,"#ff9f43")+meterHTML("💧 Sede",S.sede,"#3ad1c4")+'</div>'+
+   '<p class="small muted" style="margin-top:8px">'+FB[fb].e+' <b style="color:var(--text)">'+FB[fb].n+'</b> · cada ação gasta 🍔 −8 e 💧 −10 (live e Produzido, o dobro). Com 70+ nos dois na virada: +1 ⚡ e posts +5%. Abaixo de 30: posts −20% e 🧠 −5 por ação. Abaixo de 10: desmaio.</p></div>'+
+   (r?'<div class="resbox"><p>'+esc(r.txt)+(r.extra?" "+esc(r.extra):"")+'</p>'+dchips(r.d)+'</div>':"")+
+   '<h3>🍽️ Comida</h3><div class="vidal">'+FOOD.filter(function(x){return x.cat==="food"}).map(foodHTML).join("")+'</div>'+
+   '<h3>🥤 Bebidas</h3><div class="vidal">'+FOOD.filter(function(x){return x.cat==="drink"}).map(foodHTML).join("")+'</div>'+
+   '<div class="panel shop"><h3>🛒 Mercado do mês · '+fmtR(MERCADO)+'</h3><p class="cur">Despensa cheia: na virada do mês a fome e a sede caem só 10 (em vez de 30).</p>'+
+   (S.mon.mercado?'<span class="chip up" style="align-self:flex-start">✓ mercado feito este mês</span>':'<button class="btn sm primary" type="button" data-act="mercado"'+(S.st.$<MERCADO?" disabled":"")+'>Fazer o mercado</button>')+
+   swHTML("mercadoAuto","🔁 Repetir todo mês","Compra sozinho na virada se sobrar dinheiro",S.mercadoAuto)+'</div>';
+};
+
+// ---- ZapChat ----
+function relLabel(id){var d=zcDef(id),C=S.zap.c[id];
+  if(d.type==="crush")return S.date&&S.date!==id?"amizade":["crush","🔥 ficando","💘 namorando","💑 oficial"][C.st];
+  return {fam:"família",amiga:"amiga",marca:"marca",dono:"proprietário"}[d.type]}
+VIEWS.zap=function(){
+  var id=UI.d.c;if(id&&zapVisible(id))return zapConv(id);
+  var list=ZC.filter(function(c){return zapVisible(c.id)}).sort(function(a,b){return S.zap.c[b.id].ts-S.zap.c[a.id].ts});
+  return back()+'<div class="zap-h"><span class="emo" style="font-size:22px">💬</span><b>ZapChat</b><span class="small" style="margin-left:auto;opacity:.85">'+zapUnread()+' não lidas</span></div>'+
+   '<div class="zl">'+list.map(function(c){var C=S.zap.c[c.id],last=C.th[C.th.length-1];
+     return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
+       '<div class="zr">'+(C.un?'<span class="ur" aria-label="'+C.un+' não lidas">'+C.un+'</span>':(C.pend?'<span>responder</span>':'<span>'+esc(relLabel(c.id))+'</span>'))+'<span class="afe" title="Afeto '+relOf(c.id)+'"><i style="width:'+relOf(c.id)+'%"></i></span></div></button>'}).join("")+'</div>'+
+   '<p class="rm-note">💗 afetuoso · 💼 profissional · 😏 debochado. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
+};
+function zapConv(id){
+  var d=zcDef(id),C=S.zap.c[id];
+  var th='<div class="zc" id="zcBox" role="log">'+(C.th.length?C.th.map(function(m){return '<div class="bb'+(m.me?" me":m.sys?" sys":"")+(m.au?" au":"")+'">'+esc(m.t)+'</div>'}).join(""):'<div class="bb sys">Nenhuma mensagem ainda.</div>')+'</div>';
+  var tones=C.pend?'<div class="tones" role="group" aria-label="Responder">'+C.pend.r.map(function(t,i){return '<button class="tone t'+i+'" type="button" data-act="tone" data-i="'+i+'"><span class="tl">'+["💗 Afetuoso","💼 Profissional","😏 Debochado"][i]+' <kbd style="font-weight:600">'+(i+1)+'</kbd></span>'+esc(t)+'</button>'}).join("")+'</div>':'<p class="rm-note">Nada pra responder agora. Novas mensagens chegam na virada do mês'+(canPull(id)?", ou puxe assunto você mesm"+withS(function(){return tpl("{a|o|e}")})+".":".")+'</p>';
+  return '<div class="bk"><button class="btn sm" type="button" data-act="zapBack">← Conversas</button></div>'+
+   '<div class="zhead">'+avHTML({e:d.e,c:d.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(id))+'</b><div class="small muted">Afeto '+relOf(id)+'/100 · '+esc(relLabel(id))+'</div></div>'+
+   (d.type==="crush"&&C.st>=1?'<button class="btn sm ghost" type="button" data-act="terminar">💔 Terminar</button>':"")+'</div>'+
+   th+(UI.d.zres?dchips(UI.d.zres.d,true):"")+tones+
+   (canPull(id)?'<button class="btn sm" type="button" data-act="pull" style="align-self:flex-start">👋 Puxar assunto</button>':"");
+}
+
+// ---- Explorar ----
+VIEWS.explore=function(){
+  var list=NPCS.filter(function(n){return !S.npc[n.id].gone}),gone=NPCS.length-list.length;
+  return back()+'<div class="row"><h2 class="grow">Explorar</h2><span class="chip">❤️ '+(10-S.mon.likes)+'/10 curtidas</span></div>'+
+   '<p class="small muted">Creators com posts novos todo mês. Collab e denúncia gastam ⚡1. Comentar e curtir são de graça.</p>'+
+   '<div class="xg">'+list.map(npcCard).join("")+'</div>'+(gone?'<p class="rm-note">🚩 '+gone+' conta'+(gone>1?"s":"")+' suspensa'+(gone>1?"s":"")+' por golpe graças a você.</p>':"");
+};
+function npcCard(n){
+  var N=S.npc[n.id],p=n.posts[N.post||0],rc={rival:"r",mentor:"m",crush:"c"}[n.role]||"",id=n.id;
+  var acts;
+  if(UI.d.com===id&&!N.cm)acts=[0,1,2].map(function(i){return '<button class="btn sm" type="button" data-act="npc" data-id="'+id+'" data-a="com" data-t="'+i+'">'+["💗 Fofo","💼 Profissional","😏 Debochado"][i]+'</button>'}).join("")+'<button class="btn sm" type="button" data-act="npcCom" data-id="">✕</button>';
+  else acts='<button class="btn sm'+(N.lk?" on":"")+'" type="button" data-act="npc" data-id="'+id+'" data-a="like"'+(N.lk||S.mon.likes>=10?" disabled":"")+' aria-pressed="'+!!N.lk+'">'+(N.lk?"❤️ Curtido":"🤍 Curtir")+'</button>'+
+    '<button class="btn sm" type="button" data-act="npcCom" data-id="'+id+'"'+(N.cm?" disabled":"")+'>💬 '+(N.cm?"Comentado":"Comentar")+'</button>'+
+    '<button class="btn sm" type="button" data-act="npc" data-id="'+id+'" data-a="collab"'+(N.co||S.en<1?" disabled":"")+'>📩 Collab ⚡1</button>'+
+    '<button class="btn sm" type="button" data-act="npcHate" data-id="'+id+'"'+(N.ht?" disabled":"")+'>😈 Hate (fake)</button>'+
+    '<button class="btn sm" type="button" data-act="npc" data-id="'+id+'" data-a="report"'+(N.rp||S.en<1?" disabled":"")+'>🚩 Denunciar ⚡1</button>';
+  return '<article class="xp" id="np-'+id+'"><div class="ph">'+avHTML({e:n.e,c:n.c})+'<div style="min-width:0"><b>'+esc(n.h)+'</b><small>'+fmtN(N.f)+' seguidores</small></div><span class="role '+rc+'">'+esc(n.lbl)+'</span></div>'+
+   scene(p[0],p[1],"feed")+'<div class="pc" style="-webkit-line-clamp:3"><b>'+esc(n.h)+'</b>'+hl(esc(p[2]))+'</div>'+
+   '<div class="xmeta"><span>💗 Afeto '+relOf(id)+'</span>'+(N.inv?'<b style="color:#9d174d">· 📩 te chamou pra collab!</b>':"")+'</div>'+
+   (N.res?'<div class="xres">'+esc(N.res.txt)+dchips(N.res.d,true)+'</div>':"")+'<div class="xa">'+acts+'</div></article>';
+}
+
+// ---- LiveGrid (preparação) ----
+VIEWS.live=function(){
+  var why=liveBlock(),h=UI.d.h||Math.max(1,Math.min(2,S.en)),slot=UI.d.slot||"noite";
+  return back()+'<div class="row"><h2 class="grow">LiveGrid</h2><span class="onair">🔴 AO VIVO</span></div>'+
+   '<p class="small muted">⚡1 por hora · precisa de Internet Premium · gasta o dobro de 🍔 e 💧. Reaja ao chat, agradeça os SuperChats (a plataforma fica com 30%) e jogue rodadas de Counter-Block.</p>'+
+   '<h3>Duração</h3><div class="seg3">'+[1,2,3].map(function(x){return '<button class="opt" type="button" data-act="lh" data-h="'+x+'" aria-pressed="'+(h===x)+'"'+(S.en<x?" disabled":"")+'><b>'+x+' h</b><p>⚡'+x+' · '+x+' rodada'+(x>1?"s":"")+'</p></button>'}).join("")+'</div>'+
+   '<h3>Horário</h3><div class="tsel">'+SLOTS.map(function(x){return '<button class="opt" type="button" data-act="ls" data-k="'+x.k+'" aria-pressed="'+(slot===x.k)+'"><div class="oh"><span class="oi">'+x.e+'</span><div class="grow"><b>'+x.n+'</b><p>público ×'+String(x.m).replace(".",",")+'</p></div></div></button>'}).join("")+'</div>'+
+   '<div class="panel"><div class="ins"><div><small>👁 Viewers esperados</small><b>~'+fmtN(liveViewers(slot))+'</b></div><div><small>💛 Lealdade dos fãs</small><b>'+S.st.lea+'</b></div></div>'+
+   (billLate("net")>=1&&!cut("net")?'<p class="small" style="color:var(--coral);margin-top:8px">🐢 Internet atrasada: a live vai travar (−30% de viewers).</p>':"")+
+   (fband()>=2?'<p class="small" style="color:var(--coral);margin-top:8px">😵 Você está fraco(a): a mira vai tremer. Come alguma coisa antes!</p>':nutr()<30?'<p class="small" style="color:#ffd27a;margin-top:8px">🍔 Fome e sede baixas: live gasta o dobro. Risco de desmaio ao vivo.</p>':"")+'</div>'+
+   (why?'<p class="err" style="color:var(--coral)">'+esc(why)+'</p>':S.en<h?'<p class="err" style="color:var(--coral)">Energia insuficiente.</p>':"")+
+   '<button class="btn primary wide adv" type="button" data-act="goLive"'+(why||S.en<h?" disabled":"")+'>🔴 Entrar ao vivo · '+h+' h</button>';
+};
+
+// ---------- overlay de jogo (live / minigames) ----------
+var GAME=null,gameEl=$("game");
+function gameOpen(html,ctl){gameEl.innerHTML=html;GAME=ctl||{};}
+function gameClose(){var g=GAME;GAME=null;if(g&&g.stop)g.stop();gameEl.innerHTML=""}
+function speak(txt){if(!snd)return;try{var u=new SpeechSynthesisUtterance(txt);u.lang="pt-BR";u.rate=1.1;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function fmtClock(sec){sec=Math.max(0,Math.floor(sec));var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s2=sec%60;return h+":"+(m<10?"0":"")+m+":"+(s2<10?"0":"")+s2}
+
+var LV_CHAT=["oi {nome}!! 👋","primeira vez aqui, que vibe boa","manda um salve pra Bahia!","kkkkkkkk","que setup é esse 👀","alguém mais vendo do trabalho?","LETS GOOO","boa noite chat 💜","tô jantando vendo a live","o áudio tá baixinho","agora melhorou o áudio","quem chegou agora dá um oi","que música é essa?","já segui!","vim pelo clipe kkk","joga uma rodada!!","CADÊ O COUNTER-BLOCK","amo essa live 😭","{nome} bebe água 💧","chat tá rápido hoje","manda beijo pra vó","oi do Paraná 🌲","a Bia tá aí?","esse quarto é real? kkkk"];
+var LV_Q=["❓ qual seu setup?","❓ como você começou?","❓ dica pra quem tá começando?","❓ qual foi o pior perrengue?","❓ você responde DM?","❓ já pensou em desistir?","❓ jogo favorito?","❓ comida favorita?","❓ vai ter sorteio?","❓ como lida com hater?","❓ quanto ganha por live? (curiosidade)","❓ quem é a Bia?"];
+var LV_A=["Comecei com um celular rachado e fita crepe 😅","Respondo sim… em uns 3 meses kkk","Dica: posta com constância e bebe água 💧","Já pensei, mas aí vocês aparecem e passa 💛","Hater eu bloqueio e vou comer 🍜","A Bia é minha pessoa. Ela tá ouvindo, inclusive.","Sorteio só quando tiver prêmio de verdade, prometo","Comida favorita? Marmita da Dona Cida, sem dúvida 🍱"];
+var LV_HAT=[["xX_Darkk_Xx","que live chata","live meio parada"],["anonimo_9921","bot jogando kkkk desinstala","joga mal kkk"],["hater.profissional","sai da internet","não curti"],["troll_77","flopou kkkk tá vazio","tá vazio aqui"],["sabe.tudo","nem sabe o que tá fazendo","não sabe jogar"]];
+var LV_BOT=[["promo.seguidores","🔥 SEGUIDORES BARATOS link na bio"],["bot_7731","sigam meu canal 🤖🤖"],["cripto.amigo","ganhe R$ 5.000 por dia 🚀"]];
+var LV_FANS=["luana.vibes","gabs_fan01","tio_paulo58","nb.e.feliz","joao.sem.filtro","leitora.noturna","mari_nao_a_maravilha","bia.amiga","parceiro_77","comunidade.acolhe","fofura.total","dona_cida_receitas"];
+var LV_SC={b:["oi!! 💙","primeiro superchat da vida","pro café ☕","💙💙💙"],g:["manda um oi pra minha mãe!","pela live de hoje 💚","toma um lanche por minha conta","pra pagar o miojo 🍜"],
+  y:["{nome}, você me ajudou num dia difícil. Obrigada 💛","EU AMO ESSA LIVE","pra comprar uma ring light nova 💡","manda um salve pro pessoal do grupo 💛"],r:["Você mudou minha vida. Continua sendo você ❤️","Do fã-clube oficial: a gente te ama!! 🎉","Pra pagar a conta de luz da live kkkk ❤️"]};
+var LV_TRAP=[{p:"manda um salve pra minha amiga, ela é muito…",f:"manda um salve pra minha amiga, ela é muito ███████ e ██████ kkkkk"},{p:"lê em voz alta o nome do meu time:",f:"lê em voz alta: “a @marimaravilha é uma ██████” 😈"},{p:"repete comigo, é uma frase motivacional:",f:"repete comigo: “todo mundo que ██████ ████ merece ██████” (ataque disfarçado)"}];
+var LV_RX=[["MEU AVÔ JOGA MELHOR","KKKKKKKKKK","tá jogando de olho fechado?","desinstala 💀"],["bot kkkk","desinstala","mira de batata 🥔"],["boa","gg","jogou bem 👍","mandou bem"],["MONSTRO 🔥🔥🔥","CLIPA ISSO","ACE!!! 🏆","que mira é essa"]];
+var HOUR_MS=20000;
+
+function startLive(){
+  var h=UI.d.h||Math.max(1,Math.min(2,S.en)),slot=UI.d.slot||"noite";
+  var L=liveStart(h,slot);if(!L){rerender();return}
+  save();updHud();OUT.length&&drain();
+  var rs=roomScenes().front,cam=parseSc("").concat(rs.sc).concat([[S.p.avatar.e,50,62,30,0],["🎙️",72,72,10,0]]);
+  var st={L:L,msgs:[],sel:null,pin:null,id:0,pausedT:0,pauseAt:0,next:0,lastV:0,metaHit:false,rounds:0,round:null,over:false,faintAt:L.faint?.4:-1,meta:Math.max(20,Math.round(L.v0*.3/10)*10),rainUntil:0,bubbleT:0,cb:null};
+  var html='<div class="gm" role="dialog" aria-modal="true" aria-label="LiveGrid ao vivo"><div class="lvw" id="lv">'+
+    '<div class="lv-top"><span class="onair">🔴 AO VIVO</span><span>👁 <b id="lvV">'+fmtN(L.v)+'</b></span><span>⏱ <b id="lvT">0:00:00</b></span><span>💰 <b id="lvG">R$ 0</b></span><span class="sp"></span><button class="btn sm" type="button" data-lv="end" aria-label="Encerrar live">⏹<span class="hide-n"> Encerrar</span></button></div>'+
+    '<div class="lv-main"><div class="lv-stage" id="lvStage">'+scene(rs.bg,cam,"feed")+'<div class="lv-meta" id="lvMeta">⚡ Meta: '+fmtR(st.meta)+' · <span id="lvMp">0%</span><div class="tr"><i id="lvMb"></i></div></div></div>'+
+    '<div class="lv-chat"><div class="lv-pin" id="lvPin" hidden></div><div class="lv-msgs" id="lvMsgs" role="log" aria-live="off" aria-label="Chat da live"></div></div></div>'+
+    '<div class="lv-btns" id="lvBtns">'+[["thank","🙏 Agradecer"],["ask","❓ Ler pergunta"],["party","🎉 Comemorar"],["ignore","🙈 Ignorar"],["ban","🔨 Banir"],["round","🎯 Jogar rodada"]].map(function(b,i){return '<button class="lb" type="button" data-lv="'+b[0]+'">'+b[1]+' <kbd>'+(i+1)+'</kbd></button>'}).join("")+'</div>'+
+    '</div></div>';
+  var ctl={stop:function(){clearInterval(st.timer);if(st.cb)st.cb.stop();try{speechSynthesis.cancel()}catch(e){}},key:function(e,down){lvKey(st,e,down)}};
+  gameOpen(html,ctl);st.t0=performance.now();st.next=st.t0+600;
+  gameEl.onclick=function(e){var b=e.target.closest("[data-lv]");if(b&&!b.disabled){lvAct(st,b.dataset.lv);return}var m=e.target.closest("[data-mid]");if(m){st.sel=+m.dataset.mid;gameEl.querySelectorAll(".cm.sel").forEach(function(x){x.classList.remove("sel")});m.classList.add("sel")}};
+  sysMsg(st,"🔴 Você entrou ao vivo. "+fmtN(L.v)+" pessoas chegando…");
+  st.timer=setInterval(function(){lvTick(st)},100);lvTick(st);
+}
+function lvEl(id){return document.getElementById(id)}
+function lvElapsed(st){var now=performance.now();return now-st.t0-st.pausedT-(st.pauseAt?now-st.pauseAt:0)}
+function lvPause(st,on){var now=performance.now();if(on&&!st.pauseAt)st.pauseAt=now;else if(!on&&st.pauseAt){st.pausedT+=now-st.pauseAt;st.pauseAt=0}}
+function lvTick(st){
+  if(st.over)return;var L=st.L,now=performance.now(),el=lvElapsed(st),total=L.h*HOUR_MS;
+  L.minutes=el/HOUR_MS*60;
+  if(!st.pauseAt&&st.faintAt>=0&&el>=total*st.faintAt){st.faintAt=-1;lvFaint(st);return}
+  if(!st.pauseAt&&el>=total){lvFinish(st);return}
+  if(now-st.lastV>1500){st.lastV=now;var target=L.v0*L.mood*(st.round?1.1:1);L.v=Math.max(1,Math.round(target*rnd(.92,1.08)));L.peak=Math.max(L.peak,L.v);L.vSum+=L.v;L.vN++;lvEl("lvV").textContent=fmtN(L.v)}
+  if(now>=st.next){var iv=chatInterval(L.v)*(st.round?1.8:1)*(L.lag?1.25:1);st.next=now+iv*rnd(.6,1.4);if(!st.pauseAt||st.round)lvSpawn(st)}
+  // expira mensagens especiais (4 s)
+  st.msgs.forEach(function(m){if(m.act&&now-m.born>4000){m.act=false;var n=lvEl("cm"+m.id);if(n)n.classList.remove("act");
+    if(m.kind==="sc"&&!m.done){L.ignRun++;if(L.ignRun>=5){L.ignRun=0;L.lea-=5;sysMsg(st,"💛 Você deixou 5 doações sem resposta. O chat sentiu (💛 −5).")}}}});
+  if(st.rainUntil&&now>st.rainUntil){st.rainUntil=0;L.boost=Math.max(0,L.boost-.2)}
+  lvEl("lvT").textContent=fmtClock(el/HOUR_MS*3600);
+  lvEl("lvG").textContent=fmtR(L.gross);
+  var pct=Math.min(100,Math.round(L.gross/st.meta*100));lvEl("lvMp").textContent=pct+"%";lvEl("lvMb").style.width=pct+"%";
+  if(!st.metaHit&&L.gross>=st.meta){st.metaHit=true;sysMsg(st,"🎉 META BATIDA! Comemora com o chat!");sfx("viral")}
+  if(st.bubbleT&&now>st.bubbleT){st.bubbleT=0;var bb=lvEl("lvBub");if(bb)bb.remove()}
+  lvHot(st);
+}
+function lvActive(st,kind){for(var i=st.msgs.length-1;i>=0;i--){var m=st.msgs[i];if(m.act&&!m.done&&(!kind||m.kind===kind))return m}return null}
+function lvHot(st){
+  var B=lvEl("lvBtns");if(!B)return;var set=function(k,on,dis){var b=B.querySelector('[data-lv="'+k+'"]');if(!b)return;b.classList.toggle("hot",!!on);b.disabled=!!dis};
+  set("thank",lvActive(st,"sc"));set("ask",lvActive(st,"q"));set("party",st.metaHit&&!st.L.celebrated);set("ignore",false);set("ban",lvActive(st,"hat"));
+  set("round",!st.round&&st.rounds<st.L.h,st.round||st.rounds>=st.L.h);
+}
+function lvAdd(st,m){
+  m.id=++st.id;m.born=performance.now();st.msgs.push(m);if(st.msgs.length>60)st.msgs.splice(0,st.msgs.length-60);
+  var box=lvEl("lvMsgs");if(!box)return;var b=document.createElement("button");b.type="button";b.id="cm"+m.id;b.dataset.mid=m.id;
+  b.className="cm"+(m.kind==="sc"?" sc sc-"+m.col:m.kind==="q"?" q":m.kind==="hat"?" hat":m.kind==="bot"?" bot":"")+(m.act?" act":"");
+  b.innerHTML=(m.kind==="sc"?'<b>💲 '+fmtR(m.v)+' · @'+esc(m.u)+'</b>':'<b>@'+esc(m.u)+'</b>')+esc(m.t)+(m.act?'<span class="tm"></span>':"");
+  box.appendChild(b);while(box.children.length>40)box.removeChild(box.firstChild);
+}
+function sysMsg(st,t){var box=lvEl("lvMsgs");if(!box)return;var d=document.createElement("div");d.className="cm";d.style.color="var(--accent)";d.textContent=t;box.appendChild(d);while(box.children.length>40)box.removeChild(box.firstChild)}
+function lvSpawn(st,forceCol){
+  var L=st.L,sc=forceCol?{col:forceCol,v:SCV[forceCol]}:chatDonation(L);
+  if(sc){L.gross+=sc.v;L.sc[sc.col]++;
+    if(sc.col==="r"){var trap=Math.random()<.1,tr=pick(LV_TRAP),ok=tpl(pick(LV_SC.r));
+      var m={kind:"sc",col:"r",v:sc.v,u:pick(LV_FANS),t:trap?tr.p:ok.slice(0,30)+"…",full:trap?tr.f:ok,trap:trap,checked:false,act:false};lvAdd(st,m);L.specials++;st.pin=m;lvPin(st);sfx("coin");return}
+    L.specials++;lvAdd(st,{kind:"sc",col:sc.col,v:sc.v,u:pick(LV_FANS),t:tpl(pick(LV_SC[sc.col])),act:true});sfx("coin");return}
+  if(st.round){var rx=st.cbLast||2;lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(LV_RX[rx])});return}
+  var r=Math.random(),hp=.05+band()*.04;
+  if(r<.09){L.specials++;lvAdd(st,{kind:"q",u:pick(LV_FANS),t:pick(LV_Q),act:true})}
+  else if(r<.09+hp){var ip=IDCOM[S.p.pron],c=Math.random()<.3&&ip?pick(ip.hater):pick(LV_HAT);
+    if(c[3]&&CFG.filtro){sysMsg(st,"🛡️ O filtro de ódio removeu uma mensagem.");return}
+    L.specials++;lvAdd(st,{kind:"hat",u:c[0],t:CFG.real||!c[2]?c[1]:c[2],act:true})}
+  else if(r<.09+hp+.05){var bt=pick(LV_BOT);lvAdd(st,{kind:"bot",u:bt[0],t:bt[1]})}
+  else lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:tpl(pick(LV_CHAT))});
+}
+function lvPin(st){
+  var P=lvEl("lvPin"),m=st.pin;if(!P)return;if(!m){P.hidden=true;P.innerHTML="";return}
+  P.hidden=false;
+  P.innerHTML='<p><b>📌 🔴 '+fmtR(m.v)+' · @'+esc(m.u)+'</b> “'+esc(m.checked?m.full:m.t)+'”'+(m.checked&&m.trap?' <b style="color:#ff9a8c">⚠️ ofensivo</b>':"")+'</p><div class="row wrap">'+
+   (m.checked?"":'<button class="btn sm" type="button" data-lv="check">🔍 Conferir</button>')+'<button class="btn sm primary" type="button" data-lv="read">🗣️ Ler em voz alta</button><button class="btn sm" type="button" data-lv="pinIgnore">🙈 Ignorar</button>'+(m.checked&&m.trap?'<button class="btn sm" type="button" data-lv="pinBan">🔨 Banir</button>':"")+'</div>';
+}
+function lvBubble(st,txt){var stg=lvEl("lvStage");if(!stg)return;var o=lvEl("lvBub");if(o)o.remove();var b=document.createElement("div");b.className="bubble";b.id="lvBub";b.textContent=txt;stg.appendChild(b);st.bubbleT=performance.now()+3800}
+function lvMark(m,cls){m.done=true;m.act=false;var n=lvEl("cm"+m.id);if(n){n.classList.remove("act");n.classList.add(cls||"done");var t=n.querySelector(".tm");if(t)t.remove()}}
+function lvTarget(st,kind){var s=st.sel!=null?st.msgs.filter(function(m){return m.id===st.sel})[0]:null;if(s&&!s.done&&(!kind||s.kind===kind)&&(s.act||kind==="ban"))return s;return lvActive(st,kind==="ban"?null:kind)}
+function lvAct(st,a){
+  var L=st.L;if(st.over)return;
+  if(a==="end"){lvFinish(st);return}
+  if(st.round||st.pauseAt){if(a.indexOf("dis")===0){lvDis(st,+a.slice(3));return}if(a==="resume"){lvResume(st);return}if(a==="sum"){lvFinish(st,true);return}return}
+  if(a==="thank"){var m=lvTarget(st,"sc");if(!m||m.col==="r"){sysMsg(st,"(nenhuma doação pra agradecer agora)");return}
+    L.lea+={b:1,g:2,y:4}[m.col]+1;L.boost=Math.min(.5,L.boost+.1);L.reacts++;L.ignRun=0;lvMark(m);sfx("good");
+    if(m.col==="y"){lvBubble(st,"🗣️ “"+m.t+"”");speak(m.t)}else lvBubble(st,"🙏 Valeu demais, @"+m.u+"!")}
+  else if(a==="ask"){var q=lvTarget(st,"q");if(!q){sysMsg(st,"(nenhuma pergunta no ar)");return}
+    L.fp+=.5;L.lea+=2;L.reacts++;L.qs++;lvMark(q);lvBubble(st,q.t.replace("❓ ","")+" → "+pick(LV_A));sfx("tap")}
+  else if(a==="party"){if(!st.metaHit||L.celebrated)return;L.celebrated=true;L.boost+=.2;st.rainUntil=performance.now()+20000;sysMsg(st,"🎉 CHUVA DE DOAÇÃO! +20% por um tempo");confetti();sfx("viral");
+    for(var i=0;i<3;i++)setTimeout(function(){if(!st.over)lvSpawn(st,pick(["b","g","g","y"]))},300+i*450)}
+  else if(a==="ignore"){var g=lvTarget(st,null);if(g){if(g.kind==="sc"){L.ignRun++;if(L.ignRun>=5){L.ignRun=0;L.lea-=5;sysMsg(st,"💛 5 doações ignoradas seguidas (💛 −5).")}}lvMark(g)}}
+  else if(a==="ban"){var b=lvTarget(st,"ban");if(!b||b.kind==="fan"&&st.sel==null){sysMsg(st,"(toque numa mensagem ou espere um hater aparecer)");return}
+    if(b.kind==="hat"){L.paz+=3;L.bans++;L.reacts++;lvMark(b,"dead");sysMsg(st,"🔨 @"+b.u+" foi banido. Paz.");sfx("tap")}
+    else if(b.kind==="bot"){L.paz+=1;lvMark(b,"dead");sysMsg(st,"🔨 bot banido.")}
+    else{L.lea-=8;lvMark(b,"dead");sysMsg(st,"😬 Você baniu um fã por engano (💛 −8). O chat viu.");sfx("bad")}
+    st.sel=null}
+  else if(a==="check"&&st.pin){st.pin.checked=true;lvPin(st);sfx("tap")}
+  else if(a==="read"&&st.pin){var p=st.pin;st.pin=null;lvPin(st);lvMark(p);
+    if(p.trap){L.hate+=20;L.rep-=10;L.traps++;lvBubble(st,"🗣️ “"+p.full+"” 😱");speak("bip bip bip");sysMsg(st,"😱 VOCÊ LEU ISSO EM VOZ ALTA. Já tem clipe no Chirp. (🔥 +20, 🌟 −10)");sfx("bad")}
+    else{L.lea+=4;L.reacts++;lvBubble(st,"🗣️ “"+p.full+"”");speak(p.full);sfx("good")}}
+  else if(a==="pinIgnore"&&st.pin){var pi=st.pin;st.pin=null;lvPin(st);lvMark(pi);if(!pi.trap){L.lea-=2;sysMsg(st,"🙈 Ignorou um SuperChat vermelho (💛 −2).")}else sysMsg(st,"👏 Conferiu e não caiu na armadilha.")}
+  else if(a==="pinBan"&&st.pin){var pb=st.pin;st.pin=null;lvPin(st);lvMark(pb,"dead");L.paz+=3;L.reacts++;sysMsg(st,"🔨 Banido. O chat aplaudiu.")}
+  else if(a==="round"){if(st.round||st.rounds>=L.h)return;lvRound(st)}
+  lvHot(st);
+}
+function lvKey(st,e,down){
+  if(st.cb){st.cb.key(e,down);if(down&&e.key==="Escape")st.cb.forfeit();return}
+  if(!down)return;
+  var ov=gameEl.querySelector(".lv-ov");
+  if(ov){if(/^[123]$/.test(e.key)&&ov.querySelector('[data-lv="dis0"]')){lvAct(st,"dis"+(+e.key-1));e.preventDefault()}else if(e.key==="Enter"){var b=ov.querySelector("button");if(b){b.click();e.preventDefault()}}return}
+  var map={"1":"thank","2":"ask","3":"party","4":"ignore","5":"ban","6":"round"};
+  if(map[e.key]){e.preventDefault();lvAct(st,map[e.key])}
+}
+function lvOverlay(st,html){var stg=lvEl("lvStage");var o=document.createElement("div");o.className="lv-ov";o.id="lvOv";o.innerHTML=html;stg.appendChild(o);var b=o.querySelector("button");if(b)b.focus({preventScroll:true})}
+function lvRound(st){
+  var L=st.L;st.rounds++;st.round=true;lvPause(st,true);
+  var stg=lvEl("lvStage");lvEl("lv").classList.add("playing");sysMsg(st,"🎯 Rodada de Counter-Block começando!");
+  setTimeout(function(){
+    if(st.over)return;
+    st.cb=counterBlock(stg,{stable:S.up.setup>=2,slow:S.up.setup>=3,weak:fband()>=2,onEvent:function(t){
+      if(t==="head"){st.cbLast=3;if(Math.random()<.5)lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(["HEADSHOT 🔥","CLIPA","que tiro!!"])})}
+      else if(t==="hit")st.cbLast=2;else if(t==="miss3"){st.cbLast=1;lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(["errou kkk","a mira tá tremendo 😂","calma respira"])})}
+      else if(t==="gold"){lvSpawn(st,"y");sysMsg(st,"✨ Inimigo dourado = SuperChat garantido!")}}},function(res){
+      st.cb=null;var r=liveRound(L,res);var b=r.band;st.cbLast=b;
+      LV_RX[b].slice(0,3).forEach(function(t,i){setTimeout(function(){if(!st.over)lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:t})},200+i*260)});
+      var n=r.don<2?0:Math.min(6,Math.max(1,Math.min(Math.floor(r.don/2),Math.round(r.don/25)||1)));var each=n?r.don/n:0;
+      for(var i=0;i<n;i++){var col=each>=150?"r":each>=40?"y":each>=8?"g":"b";(function(c,v,k){setTimeout(function(){if(st.over)return;L.gross+=v;L.sc[c]++;L.specials++;lvAdd(st,{kind:"sc",col:c,v:Math.max(1,Math.round(v)),u:pick(LV_FANS),t:tpl(pick(LV_SC[c==="r"?"y":c])),act:true});sfx("coin")},500+k*350)})(col,each,i)}
+      var head='<p class="small muted">Rodada '+st.rounds+'/'+L.h+'</p><h3>'+RBANDS[b].e+' '+RBANDS[b].n+'</h3><p class="small">Precisão '+Math.round(res.shots?res.hits/res.shots*100:0)+'% · '+res.heads+' headshots · combo máx. '+res.maxCombo+' · desempenho '+Math.round(r.perf*100)+'%</p><p class="small">💸 Doações da rodada: ~'+fmtR(r.don)+'</p>';
+      if(b===0)lvOverlay(st,head+'<p class="small" style="color:#ff9a8c">O chat tá impiedoso. O que você faz?</p><div class="choices">'+
+        '<button class="choice k-f" type="button" data-lv="dis0"><span class="ci">😤</span><span>Rage: xingar o jogo ao vivo<br><small class="muted">👥 +5%, 🔥 +10, 🌟 −5</small></span><span class="kb">1</span></button>'+
+        '<button class="choice k-a" type="button" data-lv="dis1"><span class="ci">😂</span><span>Rir de si<br><small class="muted">👥 +3%, 💛 +5, 🧠 +2</small></span><span class="kb">2</span></button>'+
+        '<button class="choice k-r" type="button" data-lv="dis2"><span class="ci">🚪</span><span>Encerrar a live<br><small class="muted">🧠 +5, mas −50% das doações</small></span><span class="kb">3</span></button></div>');
+      else lvOverlay(st,head+(b===3?'<p class="small" style="color:var(--accent)">Chuva de SuperChat! 👥 +8% e chance de clipe viral.</p>':b===2?'<p class="small">👥 +3%. O chat curtiu.</p>':'<p class="small" style="color:#ffd27a">Doações −50% e 🧠 −3.</p>')+'<button class="btn primary" type="button" data-lv="resume">Voltar pro chat ↩</button>');
+    });
+  },350);
+}
+function lvDis(st,c){liveDisaster(st.L,c);if(c===2){lvFinish(st);return}sysMsg(st,c===0?"😤 Você deu rage ao vivo. Virou clipe.":"😂 Você riu de si e o chat riu junto. 💛");lvResume(st)}
+function lvResume(st){var o=lvEl("lvOv");if(o)o.remove();st.round=false;var lv=lvEl("lv");if(lv)lv.classList.remove("playing");lvPause(st,false);st.lastV=0;lvHot(st)}
+function lvFaint(st){
+  lvPause(st,true);var d=liveFaint(st.L);st.faintD=d;
+  lvOverlay(st,'<h3>🚑 Você desmaiou ao vivo</h3><p class="small">Fome e sede no zero. A câmera ficou ligada e o clipe já está em todo lugar. Metade do chat chora, a outra metade pergunta “foi armado?”.</p>'+dchips(d)+'<button class="btn primary" type="button" data-lv="sum">Ver resumo</button>');
+  sysMsg(st,"🚑 ALGUÉM CHAMA A AMBULÂNCIA");sfx("bad");
+}
+function lvFinish(st){
+  if(st.over)return;st.over=true;clearInterval(st.timer);if(st.cb){st.cb.stop();st.cb=null}
+  var L=st.L;L.minutes=Math.min(L.h*60,lvElapsed(st)/HOUR_MS*60);
+  var res=liveEnd(L);save();
+  var rows=[["⏱ Duração",fmtClock(L.minutes*60)],["👁 Pico de viewers",fmtN(L.peak)],["💲 SuperChats",fmtR(res.gross)],["🏦 Taxa da plataforma (30%)","−"+fmtR(res.fee)],["📺 Anúncios",fmtR(res.ad)],["🎯 Rodadas",L.rounds.length+"/"+L.h],["💬 Reações",Math.round(res.react*100)+"%"]];
+  gameEl.querySelector(".lvw").innerHTML='<div class="lvsum"><div><p class="small muted">LiveGrid · fim da live</p><h2>'+(L.faintHit?"🚑 Live interrompida":res.good?"🔥 Live boa!":"😐 Live morna")+'</h2></div>'+
+    (res.viral?'<span class="vbadge">🎬 CLIPE VIRAL</span>':"")+
+    '<div class="panel lines">'+rows.map(function(r){return '<div><span>'+r[0]+'</span><b>'+r[1]+'</b></div>'}).join("")+'<div style="border-top:1px solid var(--line);padding-top:5px"><span>💰 Você recebeu</span><b class="p">'+fmtR(res.money)+'</b></div></div>'+
+    dchips(res.d)+(L.traps?'<p class="small" style="color:#ff9a8c">😱 Você leu um SuperChat armadilha em voz alta.</p>':"")+
+    '<p class="small muted">'+(res.good?"Reagir ao chat e mandar bem nas rodadas deixa a live boa: mais seguidores e doações cheias.":"Live morna: doações pela metade. Reaja mais ao chat e treine a mira.")+'</p>'+
+    '<button class="btn primary wide adv" type="button" data-lv="close">'+(S.dead?"Ver o que aconteceu…":"Voltar ao celular")+'</button></div>';
+  gameEl.onclick=function(e){var b=e.target.closest('[data-lv="close"]');if(!b)return;gameClose();if(S.dead){finish(S.dead);return}UI.d={};go("mes")};
+  var cb=gameEl.querySelector('[data-lv="close"]');if(cb)cb.focus({preventScroll:true});
+  sfx(res.good?"viral":"tap");if(res.good&&!RM)confetti();
+}
+
+// ---------- 🎯 Counter-Block (FPS de blocos) ----------
+function counterBlock(host,o,onEnd){
+  var cv=document.createElement("canvas");cv.className="cb";cv.tabIndex=0;cv.setAttribute("role","img");
+  cv.setAttribute("aria-label","Counter-Block: mire nos inimigos de bloco que saem de trás das caixas. Mouse ou toque para mirar e atirar; setas ou WASD movem a mira e Espaço atira. Esc desiste.");
+  host.appendChild(cv);var ctx=cv.getContext("2d"),W=0,H=0,dpr=1,raf=0,dead=false;
+  var CR=[{x:.13,y:.62,s:.15},{x:.34,y:.7,s:.17},{x:.57,y:.6,s:.14},{x:.8,y:.68,s:.17},{x:.47,y:.86,s:.19}];
+  function size(){var r=host.getBoundingClientRect();dpr=Math.min(2,window.devicePixelRatio||1);W=Math.max(200,r.width);H=Math.max(140,r.height);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=false}
+  size();var ro=window.ResizeObserver?new ResizeObserver(size):null;if(ro)ro.observe(host);
+  var DUR=60,t0=performance.now(),E=[],goldIdx=Math.random()<.45?ri(4,18):-1;
+  for(var i=0;i<20;i++){var tt=1+i*2.6+rnd(-.4,.4);E.push({c:ri(0,CR.length-1),t:tt,up:rnd(1.6,2.3)*(o.slow?1.3:1)*(o.weak?.85:1),st:"wait",gold:i===goldIdx||Math.random()<.04,hitT:0,dx:rnd(-.25,.25)})}
+  var ax=W/2,ay=H*.45,shots=0,hits=0,heads=0,combo=0,maxC=0,missRun=0,gold=0,fx=[],keys={},shake=0,lastT=t0,fl=0;
+  function cs(c){return Math.max(34,Math.min(W,H*1.6)*c.s)}
+  function geo(e,now){var c=CR[e.c],s=cs(c),cx=c.x*W+e.dx*s*.3,cy=c.y*H,dt=(now-t0)/1000-e.t,f=0;
+    if(e.st==="up"){f=Math.min(1,dt/.22);var left=e.up-dt;if(left<.2)f=Math.max(0,left/.2)}
+    else if(e.st==="hit")f=Math.max(0,1-(now-e.hitT)/260);
+    var bw=s*.62,bh=s*.62,hs=s*.46,top=cy-s/2-f*(bh+hs*.9);
+    return {cx:cx,cy:cy,s:s,f:f,head:{x:cx-hs/2,y:top,w:hs,h:hs},body:{x:cx-bw/2,y:top+hs*.92,w:bw,h:bh}};}
+  function inR(px,py,r){return px>=r.x&&px<=r.x+r.w&&py>=r.y&&py<=r.y+r.h}
+  function jitter(now){var amp=(missRun>=3?(o.stable?6:13):0)+(o.weak?5:0);if(!amp)return [0,0];var k=now/1000;
+    if(RM)return [Math.sin(k*1.7)*amp,Math.cos(k*1.3)*amp*.7];return [Math.sin(k*23)*amp+Math.sin(k*7.1)*amp*.5,Math.cos(k*19)*amp*.8+Math.sin(k*5.3)*amp*.4]}
+  function fire(){
+    var now=performance.now();if(dead)return;shots++;var j=jitter(now),px=ax+j[0],py=ay+j[1];
+    if(!RM){fl=now;shake=4}sfx("tap");
+    var vis=E.filter(function(e){return e.st==="up"}).sort(function(a,b){return CR[b.c].y-CR[a.c].y}),hit=null,hd=false;
+    for(var i=0;i<vis.length;i++){var g=geo(vis[i],now);if(g.f<.35)continue;
+      // a caixa cobre o corpo de quem está atrás
+      if(inR(px,py,g.head)){hit=vis[i];hd=true;break}if(inR(px,py,g.body)&&py<g.cy-g.s/2){hit=vis[i];break}}
+    if(hit){hit.st="hit";hit.hitT=now;hits++;combo++;maxC=Math.max(maxC,combo);missRun=0;
+      if(hd)heads++;if(hit.gold){gold++;o.onEvent&&o.onEvent("gold")}
+      o.onEvent&&o.onEvent(hd?"head":"hit");
+      fx.push({x:px,y:py,t:now,txt:hd?"HEADSHOT ×2":"+1",c:hd?"#ffd23a":"#fff"});if(combo>=3)fx.push({x:W/2,y:H*.2,t:now,txt:"COMBO ×"+combo,c:"#c8f13a",big:1});
+      sfx(hd?"coin":"good")}
+    else{combo=0;missRun++;if(missRun===3)o.onEvent&&o.onEvent("miss3");fx.push({x:px,y:py,t:now,txt:"✕",c:"#ff6b5a"})}
+  }
+  function down(e){if(dead)return;var r=cv.getBoundingClientRect();ax=e.clientX-r.left;ay=e.clientY-r.top;fire();e.preventDefault();try{cv.focus({preventScroll:true})}catch(_){}}
+  function move(e){if(e.pointerType==="mouse"||e.buttons){var r=cv.getBoundingClientRect();ax=e.clientX-r.left;ay=e.clientY-r.top}}
+  cv.addEventListener("pointerdown",down);cv.addEventListener("pointermove",move);
+  function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}
+  function draw(now){
+    var T=(now-t0)/1000,sx=0,sy=0;if(shake>0&&!RM){sx=rnd(-shake,shake);sy=rnd(-shake,shake);shake*=.8;if(shake<.4)shake=0}
+    ctx.save();ctx.translate(sx,sy);
+    var g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#4fb6ff");g.addColorStop(.6,"#bfe9ff");g.addColorStop(.6,"#7cc56b");g.addColorStop(1,"#5c9c4c");ctx.fillStyle=g;ctx.fillRect(-10,-10,W+20,H+20);
+    var px=Math.max(6,Math.round(W/80));
+    for(var i=0;i<4;i++){var cx=((i*W*.31+T*8*(i%2?1:.6))%(W+120))-60;rect(cx,H*(.08+i*.06),px*8,px*2,"rgba(255,255,255,.9)");rect(cx+px*2,H*(.08+i*.06)-px,px*4,px,"rgba(255,255,255,.9)")}
+    for(var b=0;b<9;b++){var bw=W/9,bh=H*(.12+((b*37)%5)*.04);rect(b*bw,H*.6-bh,bw-2,bh,b%2?"#8fa3b8":"#a7b8c9");for(var w=0;w<3;w++)rect(b*bw+bw*.2+w*bw*.22,H*.6-bh+bh*.25,px*.8,px*.8,"#e6f1ff")}
+    for(var gx=0;gx<W;gx+=px*2)rect(gx,H*.6,px,px*.6,"#6ab55a");
+    var order=CR.map(function(c,i){return i}).sort(function(a,b2){return CR[a].y-CR[b2].y});
+    order.forEach(function(ci){
+      E.forEach(function(e){if(e.c!==ci||(e.st!=="up"&&e.st!=="hit"))return;var q=geo(e,now);if(q.f<=0)return;
+        ctx.save();ctx.beginPath();ctx.rect(-20,-20,W+40,q.cy+q.s/2+20);ctx.clip();
+        var body=e.gold?"#ffcc29":e.st==="hit"?"#ff8a7a":"#d94b4b",head=e.gold?"#ffe27a":e.st==="hit"?"#ffb3a8":"#f2c39b";
+        rect(q.body.x,q.body.y,q.body.w,q.body.h,body);rect(q.body.x,q.body.y+q.body.h*.45,q.body.w,q.body.h*.12,"rgba(0,0,0,.25)");
+        rect(q.head.x,q.head.y,q.head.w,q.head.h,head);rect(q.head.x,q.head.y,q.head.w,q.head.h*.22,e.gold?"#c99700":"#2b2b33");
+        var ey=q.head.y+q.head.h*.45,es=Math.max(3,q.head.w*.14);rect(q.head.x+q.head.w*.22,ey,es,es,"#111");rect(q.head.x+q.head.w*.64,ey,es,es,"#111");ctx.restore();});
+      var c=CR[ci],s=cs(c),x=c.x*W-s/2,y=c.y*H-s/2;
+      rect(x,y,s,s,"#b07a3c");rect(x,y,s,s*.1,"#8a5a26");rect(x,y+s*.9,s,s*.1,"#8a5a26");rect(x,y,s*.1,s,"#8a5a26");rect(x+s*.9,y,s*.1,s,"#8a5a26");
+      ctx.strokeStyle="#7a4c1c";ctx.lineWidth=Math.max(3,s*.07);ctx.beginPath();ctx.moveTo(x+s*.12,y+s*.12);ctx.lineTo(x+s*.88,y+s*.88);ctx.moveTo(x+s*.88,y+s*.12);ctx.lineTo(x+s*.12,y+s*.88);ctx.stroke();
+    });
+    fx=fx.filter(function(f){var a=(now-f.t)/700;if(a>1)return false;ctx.globalAlpha=1-a;ctx.fillStyle=f.c;ctx.font=(f.big?"800 "+Math.round(Math.max(16,W/28))+"px ":"800 14px ")+'"Unbounded",system-ui,sans-serif';ctx.textAlign="center";ctx.fillText(f.txt,f.x,f.y-(RM?0:a*24));ctx.globalAlpha=1;return true});
+    if(fl&&now-fl<60&&!RM){ctx.fillStyle="rgba(255,240,180,.18)";ctx.fillRect(0,0,W,H)}
+    ctx.restore();
+    var j=jitter(now),cx2=ax+j[0],cy2=ay+j[1];ctx.strokeStyle=missRun>=3?"#ff6b5a":"#fff";ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(cx2,cy2,11,0,Math.PI*2);ctx.moveTo(cx2-18,cy2);ctx.lineTo(cx2-6,cy2);ctx.moveTo(cx2+6,cy2);ctx.lineTo(cx2+18,cy2);ctx.moveTo(cx2,cy2-18);ctx.lineTo(cx2,cy2-6);ctx.moveTo(cx2,cy2+6);ctx.lineTo(cx2,cy2+18);ctx.stroke();
+    rect(cx2-1,cy2-1,2,2,"#ff3b30");
+    var left=Math.max(0,DUR-T),done=E.filter(function(e){return e.st==="gone"||e.st==="hit"}).length;
+    ctx.fillStyle="rgba(0,0,0,.55)";ctx.fillRect(6,6,W-12,26);ctx.fillStyle="#fff";ctx.font='600 '+(W<420?12:13)+'px "Geist",system-ui,sans-serif';ctx.textAlign="left";
+    ctx.fillText("⏱ "+Math.ceil(left)+"s · 🎯 "+hits+" · HS "+heads+(combo>=2?" · ×"+combo:""),14,24);ctx.textAlign="right";ctx.fillText((missRun>=3?"🫨 ":"")+"👾 "+done+"/20",W-14,24);
+    if(T<1.2){ctx.textAlign="center";ctx.font='800 '+Math.round(Math.max(18,W/22))+'px "Unbounded",system-ui,sans-serif';ctx.fillStyle="#fff";ctx.fillText("PREPARA…",W/2,H*.45)}
+  }
+  function step(now){
+    if(dead)return;var T=(now-t0)/1000,dt=Math.min(.05,(now-lastT)/1000);lastT=now;
+    var sp=Math.max(260,W*.7)*dt;if(keys.l)ax-=sp;if(keys.r)ax+=sp;if(keys.u)ay-=sp;if(keys.d)ay+=sp;ax=clamp(ax,0,W);ay=clamp(ay,0,H);
+    E.forEach(function(e){if(e.st==="wait"&&T>=e.t){var busy=E.some(function(x){return x!==e&&x.c===e.c&&x.st==="up"});if(busy)e.t+=.4;else e.st="up"}
+      else if(e.st==="up"&&T>=e.t+e.up)e.st="gone"});
+    draw(now);
+    var allDone=E.every(function(e){return e.st==="gone"||e.st==="hit"});
+    if(T>=DUR||allDone){end();return}
+    raf=requestAnimationFrame(step);
+  }
+  function end(){if(dead)return;dead=true;cancelAnimationFrame(raf);if(ro)ro.disconnect();cv.remove();onEnd({shots:shots,hits:hits,heads:heads,maxCombo:maxC,gold:gold})}
+  raf=requestAnimationFrame(step);try{cv.focus({preventScroll:true})}catch(_){}
+  return {stop:function(){dead=true;cancelAnimationFrame(raf);if(ro)ro.disconnect();if(cv.parentNode)cv.remove()},forfeit:function(){E.forEach(function(e){if(e.st==="wait"||e.st==="up")e.st="gone"});end()},
+    key:function(e,dn){var k=e.key,m={ArrowLeft:"l",a:"l",A:"l",ArrowRight:"r",d:"r",D:"r",ArrowUp:"u",w:"u",W:"u",ArrowDown:"d",s:"d",S:"d"}[k];
+      if(m){keys[m]=dn;e.preventDefault()}else if(dn&&(k===" "||k==="Enter")){fire();e.preventDefault()}}};
+}
+
+// ---------- ✂️ ilha de edição (ritmo) ----------
+function openEdit(name,cb){
+  var tools=editTools(),hire=editorHired(),weak=fband()>=2;
+  var html='<div class="gm" role="dialog" aria-modal="true" aria-label="Ilha de edição"><div class="ed" id="ed">'+
+    '<div class="row"><h2 class="grow">✂️ Ilha de edição</h2><button class="btn sm ghost" type="button" data-ed="skip">Pular (nota C)</button></div>'+
+    '<p class="small muted">'+esc(name)+'</p>'+
+    '<div class="chips">'+(tools.pro?'<span class="chip up">🧲 Ímã do Editor Pro</span>':'<span class="chip warn">Sem Editor Pro: sem ímã e com marca d’água</span>')+(tools.musica?'<span class="chip up">🎵 Batida marcada</span>':"")+(tools.filtros?'<span class="chip up">✨ Filtros Pro +5%</span>':"")+(weak?'<span class="chip down">😵 Com fome: ritmo acelerado</span>':"")+'</div>'+
+    '<div class="ed-cv"><canvas id="edC" role="img" tabindex="0" aria-label="Linha do tempo do vídeo. A agulha fica no centro. Corte nos pontos brilhantes, deslize os blocos vermelhos para cima e não corte os dourados."></canvas></div>'+
+    '<div id="edBody"><div class="legend"><div><i style="background:#fff;border-radius:50%"></i><span>Ponto brilhando chegando na agulha: <b>corte</b> (Espaço, toque ou botão)</span></div>'+
+    '<div><i style="background:#ff4d3d"></i><span>Bloco vermelho (tosse, “ééé”, vizinho): <b>deslize pra cima</b> ou ↑</span></div>'+
+    '<div><i style="background:#ffc23a"></i><span>Bloco dourado (piada boa, momento fofo): <b>não corte</b></span></div></div>'+
+    '<div class="row wrap" style="margin-top:10px"><button class="btn primary grow" type="button" data-ed="start">▶️ Começar a editar</button>'+(hire?'<button class="btn grow" type="button" data-ed="hire">🧑‍💻 Deixar com o editor (nota B)</button>':"")+'</div></div>'+
+    '</div></div>';
+  var st={cb:cb,tools:tools,weak:weak,run:false,done:false};
+  gameOpen(html,{stop:function(){st.done=true;cancelAnimationFrame(st.raf)},key:function(e,dn){edKey(st,e,dn)}});
+  gameEl.onclick=function(e){var b=e.target.closest("[data-ed]");if(!b||b.disabled)return;var a=b.dataset.ed;
+    if(a==="skip"){edDone(st,editResult("C",null),true)}else if(a==="hire"){edDone(st,editResult("B",null),true)}else if(a==="start")edStart(st);else if(a==="post")edFinish(st)};
+  gameEl.onpointerdown=function(e){var b=e.target.closest("[data-ed]");if(!b||!st.run)return;if(b.dataset.ed==="cut"){edCut(st);e.preventDefault()}else if(b.dataset.ed==="rem"){edRemove(st,null);e.preventDefault()}};
+  edSetup(st);st.now=2.2;edDraw(st,0);st.now=-2;
+  var f=gameEl.querySelector('[data-ed="start"]');if(f)f.focus({preventScroll:true});
+}
+function edSetup(st){
+  var cv=document.getElementById("edC");st.cv=cv;st.ctx=cv.getContext("2d");
+  function size(){var r=cv.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);st.W=r.width;st.H=r.height;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);st.ctx.setTransform(d,0,0,d,0,0)}
+  size();st.size=size;
+  st.DUR=30;st.speed=(Math.max(140,st.W*.32))*(st.weak?1.25:1);
+  var beatGap=st.tools.musica?1.2:1.15,blocks=[],t=3;
+  var RED=["tosse","ééé","silêncio","vizinho","espirro","celular tocou"],GOLD=["piada boa","momento fofo","risada","plot twist"];
+  var kinds=["r","r","g","r","r","g","r","g","r","g"];kinds.sort(function(){return Math.random()-.5});
+  kinds.forEach(function(k){t+=rnd(1.4,2.6);var d=k==="r"?rnd(.7,1.05):rnd(.8,1.15);if(t+d<st.DUR-1){blocks.push({k:k,a:t,b:t+d,lab:pick(k==="r"?RED:GOLD),rm:false,miss:false,cut:false});t+=d}});
+  st.blocks=blocks;st.beats=[];
+  for(var b=1.6;b<st.DUR-.5;b+=beatGap){var bt=b+(st.tools.musica?0:rnd(-.12,.12));if(blocks.some(function(x){return bt>x.a-.3&&bt<x.b+.3}))continue;st.beats.push({t:bt,hit:false,miss:false})}
+  st.win=st.tools.pro?.19:.11;st.hits=0;st.rem=0;st.wrong=0;st.gold=0;st.fb=[];st.now=-2;st.combo=0;st.lastTick=-1;
+  st.wave=[];for(var i=0;i<400;i++)st.wave.push(.25+Math.random()*.55);
+  cv.onpointerdown=function(e){if(!st.run)return;var r=cv.getBoundingClientRect();st.pd={x:e.clientX-r.left,y:e.clientY-r.top,t:st.now};try{cv.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()};
+  cv.onpointerup=function(e){if(!st.run||!st.pd)return;var r=cv.getBoundingClientRect(),y=e.clientY-r.top,pd=st.pd;st.pd=null;
+    if(y-pd.y<-26)edRemove(st,pd.x);else edCut(st,pd.t)};
+}
+function edX(st,t){return st.W/2+(t-st.now)*st.speed}
+function edStart(st){
+  if(st.run)return;st.run=true;
+  document.getElementById("edBody").innerHTML='<div class="ed-btns"><button class="btn primary" type="button" data-ed="cut">✂️ Cortar <kbd>Espaço</kbd></button><button class="btn" type="button" data-ed="rem">⬆️ Remover <kbd>↑</kbd></button></div><p class="rm-note" id="edFb" aria-live="polite">Corte quando o ponto encostar na agulha.</p>';
+  st.t0=performance.now()+1800;
+  var loop=function(now){if(st.done)return;st.now=(now-st.t0)/1000;edUpdate(st);edDraw(st,now);if(st.now>=st.DUR+.4){edEnd(st);return}st.raf=requestAnimationFrame(loop)};
+  st.raf=requestAnimationFrame(loop);try{st.cv.focus({preventScroll:true})}catch(_){}
+}
+function edFb(st,txt,good){st.fb.push({t:st.now,txt:txt,good:good});var p=document.getElementById("edFb");if(p)p.textContent=txt}
+function edUpdate(st){
+  var n=st.now;
+  st.beats.forEach(function(b){if(!b.hit&&!b.miss&&n>b.t+st.win){b.miss=true;st.combo=0}});
+  st.blocks.forEach(function(b){if(b.k==="r"&&!b.rm&&!b.miss&&n>b.b){b.miss=true;edFb(st,"✗ A “"+b.lab+"” ficou no vídeo!",false);sfx("bad")}});
+  if(st.tools.musica&&snd){var nb=st.beats.filter(function(b){return b.t<=n&&b.t>st.lastTick})[0];if(nb){st.lastTick=nb.t;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();tone(1400,0,.03,"square",.02)}catch(e){}}}
+}
+function edCut(st,at){
+  if(!st.run||st.now<0)return;var n=at==null?st.now:at;
+  var g=st.blocks.filter(function(b){return b.k==="g"&&n>=b.a&&n<=b.b})[0];
+  if(g){st.gold++;g.cut=true;st.combo=0;edFb(st,"✗ Você cortou “"+g.lab+"”!",false);sfx("bad");return}
+  var best=null,bd=9;st.beats.forEach(function(b){if(b.hit||b.miss)return;var d=Math.abs(b.t-n);if(d<bd){bd=d;best=b}});
+  if(best&&bd<=st.win){best.hit=true;st.hits++;st.combo++;edFb(st,bd<.05?"✓ PERFEITO":st.tools.pro&&bd>.11?"🧲 grudou na batida":"✓ no tempo",true);sfx("tap")}
+  else{st.wrong++;st.combo=0;edFb(st,"✗ corte fora da batida",false)}
+}
+function edRemove(st,x){
+  if(!st.run||st.now<0)return;var n=st.now,cand;
+  if(x!=null){var tAt=n+(x-st.W/2)/st.speed;cand=st.blocks.filter(function(b){return !b.rm&&!b.miss&&tAt>=b.a-.2&&tAt<=b.b+.2})[0]}
+  else cand=st.blocks.filter(function(b){return b.k==="r"&&!b.rm&&!b.miss&&b.b>n&&b.a<n+2.6})[0];
+  if(!cand){edFb(st,"nada pra remover aqui",false);return}
+  if(cand.k==="g"){cand.cut=true;cand.rm=true;st.gold++;edFb(st,"✗ Você jogou fora “"+cand.lab+"”!",false);sfx("bad");return}
+  cand.rm=true;cand.rmT=n;st.rem++;edFb(st,"✓ “"+cand.lab+"” removido",true);sfx("good");
+}
+function edKey(st,e,dn){if(!dn)return;
+  if(e.key==="Escape"){edDone(st,editResult("C",null),true);e.preventDefault();return}
+  if(!st.run){if(e.key==="Enter"&&!st.ended){edStart(st);e.preventDefault()}return}
+  if(e.key===" "||e.key==="Spacebar"){edCut(st);e.preventDefault()}else if(e.key==="ArrowUp"||e.key==="w"||e.key==="W"){edRemove(st,null);e.preventDefault()}}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function edDraw(st,now){
+  var c=st.ctx,W=st.W,H=st.H,n=st.now;if(!c)return;
+  c.clearRect(0,0,W,H);c.fillStyle="#10121a";c.fillRect(0,0,W,H);
+  var thumbY=26,thumbH=H*.2,waveY=thumbY+thumbH+10,waveH=H*.32,lane=waveY+waveH+16;
+  // clipes (miniaturas) que mudam a cada batida
+  var cols=["#2a3350","#3a2a50","#24413a","#4a3424"];
+  for(var i=-1;i<st.beats.length;i++){var a=i<0?0:st.beats[i].t,b=i+1<st.beats.length?st.beats[i+1].t:st.DUR;var x1=edX(st,a),x2=edX(st,b);if(x2<0||x1>W)continue;c.fillStyle=cols[(i+4)%4];c.fillRect(x1+1,thumbY,x2-x1-2,thumbH)}
+  // onda sonora
+  c.fillStyle="#5ac8ff";var step=5;
+  for(var x=0;x<W;x+=step){var t=n+(x-W/2)/st.speed;if(t<0||t>st.DUR)continue;var k=Math.abs(Math.floor(t*12))%st.wave.length,amp=st.wave[k];
+    st.beats.forEach(function(b){var d=Math.abs(b.t-t);if(d<.12)amp=Math.max(amp,1-d*4)});
+    var h=amp*waveH;c.globalAlpha=.75;c.fillRect(x,waveY+(waveH-h)/2,step-2,h)}
+  c.globalAlpha=1;
+  // blocos
+  st.blocks.forEach(function(b){var x1=edX(st,b.a),x2=edX(st,b.b);if(x2<-10||x1>W+10)return;var off=b.rm&&!RM?Math.min(1,(n-b.rmT)*3)*(waveH+40):0;if(b.rm&&(RM||off>=waveH+40))return;
+    c.globalAlpha=b.rm?Math.max(0,1-off/(waveH+40)):b.miss?.45:1;
+    c.fillStyle=b.k==="r"?"#ff4d3d":"#ffc23a";rr(c,x1,waveY-4-off,x2-x1,waveH+8,8);c.fill();
+    if(b.cut){c.strokeStyle="#fff";c.lineWidth=2;c.stroke()}
+    c.fillStyle=b.k==="r"?"#fff":"#3a2a00";c.font='700 12px "Geist",system-ui,sans-serif';c.textAlign="center";c.fillText((b.k==="r"?"✂ ":"★ ")+b.lab,(x1+x2)/2,waveY+waveH/2+4-off);c.globalAlpha=1});
+  // marcadores de batida
+  st.beats.forEach(function(b){var x=edX(st,b.t);if(x<-10||x>W+10)return;var near=Math.abs(b.t-n)<.25;
+    c.beginPath();c.arc(x,lane,b.hit?5:near&&!RM?9:7,0,Math.PI*2);c.fillStyle=b.hit?"#c8f13a":b.miss?"#4a505e":"#fff";c.fill();
+    if(!b.hit&&!b.miss&&(st.tools.musica||near)&&!RM){c.strokeStyle="rgba(255,255,255,.35)";c.lineWidth=3;c.beginPath();c.arc(x,lane,13,0,Math.PI*2);c.stroke()}});
+  // agulha
+  c.fillStyle="#fff";c.fillRect(W/2-1,thumbY-6,2,H-thumbY);c.beginPath();c.moveTo(W/2-8,thumbY-10);c.lineTo(W/2+8,thumbY-10);c.lineTo(W/2,thumbY);c.closePath();c.fill();
+  if(st.tools.pro){var mw=st.win*st.speed;c.strokeStyle="rgba(200,241,58,.55)";c.lineWidth=2;c.beginPath();c.moveTo(W/2-mw,lane-12);c.lineTo(W/2-mw,lane+12);c.moveTo(W/2+mw,lane-12);c.lineTo(W/2+mw,lane+12);c.stroke()}
+  // topo: progresso e contagem
+  c.fillStyle="#262a33";c.fillRect(10,8,W-20,6);c.fillStyle="#c8f13a";c.fillRect(10,8,(W-20)*clamp(n/st.DUR,0,1),6);
+  if(st.run&&n<0){c.fillStyle="#fff";c.font='800 40px "Unbounded",system-ui,sans-serif';c.textAlign="center";c.fillText(String(Math.ceil(-n)),W/2,H/2+14)}
+  var last=st.fb[st.fb.length-1];if(last&&n-last.t<.8){c.globalAlpha=1-(n-last.t)/.8;c.fillStyle=last.good?"#c8f13a":"#ff8a7a";c.font='800 15px "Unbounded",system-ui,sans-serif';c.textAlign="center";c.fillText(last.txt,W/2,H-8);c.globalAlpha=1}
+  if(st.combo>=3){c.fillStyle="#ffc23a";c.font='700 12px "Geist",system-ui,sans-serif';c.textAlign="right";c.fillText("combo ×"+st.combo,W-12,30)}
+}
+function edPrec(st){var tg=st.beats.length+st.blocks.filter(function(b){return b.k==="r"}).length;return clamp((st.hits+st.rem-.5*st.wrong-st.gold)/Math.max(1,tg),0,1)}
+function edEnd(st){
+  st.run=false;st.ended=true;cancelAnimationFrame(st.raf);
+  var p=edPrec(st),G=gradeOf(p);st.res=editResult(G.g,p);
+  document.getElementById("edBody").innerHTML='<div class="grade" style="color:'+({S:"#c8f13a",A:"#9df07a",B:"#5ac8ff",C:"#ffc23a",F:"#ff6b5a"})[G.g]+'">'+G.g+'</div>'+
+   '<p style="text-align:center">Precisão '+Math.round(p*100)+'% · ×'+String(G.m).replace(".",",")+' no post'+(G.viral?" · +10% de chance de viral":"")+'</p>'+
+   '<p class="rm-note">'+st.hits+'/'+st.beats.length+' cortes na batida · '+st.rem+' blocos removidos · '+st.gold+' momentos bons cortados'+(st.wrong?" · "+st.wrong+" cortes fora":"")+'</p>'+
+   '<button class="btn primary wide adv" type="button" data-ed="post">Postar 🚀</button>';
+  var b=gameEl.querySelector('[data-ed="post"]');if(b)b.focus({preventScroll:true});sfx(p>=.6?"good":"bad");
+}
+function edFinish(st){edDone(st,st.res,false)}
+function edDone(st,res,skipped){if(st.done&&!st.run&&st.closed)return;st.closed=true;st.done=true;cancelAnimationFrame(st.raf);var cb=st.cb;gameClose();cb(res,skipped)}
 
 // ---------- eventos de tela ----------
 function bindView(v){
@@ -1869,6 +3176,9 @@ function menuDlg(){
   dialog("Menu",'<button class="mitem" type="button" data-act="finais"><span class="emo">🏁</span>Finais descobertos<small>'+FIN.length+'/'+FINAIS.length+'</small></button>'+
    '<button class="mitem" type="button" data-act="conqs"><span class="emo">🏅</span>Conquistas<small>'+CQ.length+'/'+CONQ.length+'</small></button>'+
    '<button class="mitem" type="button" data-act="som"><span class="emo">'+(snd?"🔊":"🔇")+'</span>Som<small>'+(snd?"ligado":"desligado")+'</small></button>'+
+   '<button class="mitem" type="button" data-act="cfgReal"><span class="emo">🗨️</span>Comentários realistas<small>'+(CFG.real?"Ligado":"Suavizado")+'</small></button>'+
+   '<button class="mitem" type="button" data-act="cfgFiltro"><span class="emo">🛡️</span>Filtro automático de ódio<small>'+(CFG.filtro?"Ligado · grátis":"Desligado")+'</small></button>'+
+   '<p class="small muted">“Suavizado” troca os insultos por versões leves, sem mudar os números. O filtro de ódio é grátis desde o início: ninguém deveria ter que pagar pra não ser ofendid'+withS(function(){return tpl("{a|o|e}")})+'.</p>'+
    (S&&!S.over?'<button class="mitem" type="button" data-act="aposentar"'+(S.m<25?" disabled style=\"opacity:.5\"":"")+'><span class="emo">🏖️</span>Se aposentar<small>'+(S.m<25?"a partir do mês 25":"ver seu final")+'</small></button>'+
    '<button class="mitem" type="button" data-act="recomecar"><span class="emo">🔄</span>Recomeçar carreira<small>mesmo perfil</small></button>':"")+
    '<button class="mitem" type="button" data-act="mudar"><span class="emo">👤</span>Novo personagem<small>do zero</small></button>');
@@ -1883,6 +3193,8 @@ function startRun(niche){
   pickEventsStart();
   go("mes");
   toast({app:"P",t:"Photogram",x:tpl("Bem-vind{a|o|e}, {@}! Seus primeiros "+fmtN(S.st.f)+" seguidores chegaram (a maioria é da família).")});
+  setTimeout(function(){toast({app:"M",t:"MailGrid",x:"O 1º mês de contas foi pago na mudança. Os boletos chegam a partir do mês 2 e vencem dia 10."})},1200);
+  setTimeout(function(){if(S&&zapUnread())toast({app:"Z",t:"ZapChat",x:zapUnread()+" mensagens novas. A sua mãe já mandou áudio."})},2400);
 }
 function pickEventsStart(){var el=eligible().filter(function(e){return e.n===S.niche});if(el.length)S.queue.push({id:pick(el).id,m:2})}
 function finish(end){
@@ -1896,6 +3208,9 @@ function monthToasts(){
   setTimeout(function(){toast({app:"T",t:"Trends novas",x:tg.n+" e "+tn.n+(tg.tx||tn.tx?" (uma é tóxica ⚠️)":"")})},250);
   var n=S.inbox.filter(function(o){return !o.acc}).length;if(n)setTimeout(function(){toast({app:"M",t:"MailGrid",x:n+" proposta"+(n>1?"s":"")+" nova"+(n>1?"s":"")+" na caixa de entrada 📬"})},900);
   if(Math.random()<.55)setTimeout(function(){if(!S||S.over)return;var t=randomToast();toast(t);updHud();save()},1700);
+  var ob=openBills();if(ob.length)setTimeout(function(){toast({app:"M",t:"🧾 Boletos do mês",x:fmtR(billsTotal())+" em aberto · vencem dia 10 (antes do 1º ⚡)"})},1300);
+  else if(S.autopay&&S.m>1)setTimeout(function(){toast({app:"M",t:"Débito automático",x:"Boletos do mês pagos ✓"})},1300);
+  var un=zapUnread();if(un)setTimeout(function(){toast({app:"Z",t:"ZapChat",x:un+" mensage"+(un>1?"ns":"m")+" não lida"+(un>1?"s":"")})},2300);
 }
 document.addEventListener("click",function(e){
   var t=e.target.closest("[data-act],[data-type],[data-tk],[data-acc],[data-dec],[data-res],[data-del],[data-buy],[data-sell],[data-vida],[data-ch]");
@@ -1937,9 +3252,40 @@ document.addEventListener("click",function(e){
     case "vida":go("vida");break;
     case "flip":var f=$(t.dataset.flipfor);if(f&&f._toggle)f._toggle();break;
     case "doPost":
-      var res=doPost(UI.d.type||"q",UI.d.tk||null);if(!res)return;
-      var pt=NICHOS[S.niche].posts[res.type];res.cap=tpl(pick(pt.cap))+(res.trend?" "+res.trend:"");res.bcap=tpl(pick(pt.b.cap));res.loc=pick(LOCS);res.trendObj=UI.d.tk?trendById(S.trends[UI.d.tk].id):null;
-      sfx(res.viral?"viral":res.flop?"bad":"good");UI.d={res:res};rerender();scroller.scrollTop=0;save();break;
+      var ty=UI.d.type||"q";if(canPost(ty,ty==="p"&&S.freeProd>0))return;
+      if(ty==="p"){openEdit(tpl(NICHOS[S.niche].posts.p.n),function(ed){finishPost("p",ed)});return}
+      finishPost(ty,null);break;
+    case "dock":closeDlg();var to=t.dataset.to;if(to==="publis")go("publis",{tab:openBills().length?"bills":"pub"});else go(to);break;
+    case "dockClose":closeDlg();go(t.dataset.to);break;
+    case "publisPub":go("publis",{tab:"pub"});break;
+    case "tab":UI.d.tab=t.dataset.tab;sfx("tap");rerender();break;
+    case "pay":if(payBill(t.dataset.k)){sfx("coin");toast({app:"M",t:"MailGrid",x:"Boleto pago ✓"})}else sfx("bad");rerender();save();break;
+    case "payAll":BILLS.forEach(function(b){payBill(b.k)});sfx("coin");toast({app:"M",t:"MailGrid",x:"Tudo pago. Que sensação. ✨"});rerender();save();break;
+    case "sw":var sk=t.dataset.k;
+      if(sk==="autopay"){S.autopay=!S.autopay;if(S.autopay){var pd=autoPay();if(pd.length)toast({app:"M",t:"Débito automático",x:pd.length+" boleto"+(pd.length>1?"s pagos":" pago")+" agora ✓"})}}
+      else if(sk==="mercadoAuto")S.mercadoAuto=!S.mercadoAuto;else if(sk==="casal")UI.d.casal=!UI.d.casal;else setSub(sk,!S.subs[sk]);
+      sfx("tap");rerender();save();break;
+    case "eat":var er=eat(t.dataset.id);if(er){sfx("coin");UI.d={res:er};rerender();save()}break;
+    case "foto":var fr=foodFoto(t.dataset.id);if(fr){sfx("good");UI.d={res:{txt:fr.txt,d:fr.d}};rerender();save()}break;
+    case "mercado":if(buyMercado()){sfx("coin");UI.d={res:{txt:"Mercado do mês feito: geladeira cheia, armário cheio, alma em paz. 🛒",d:{$:-MERCADO}}};rerender();save()}break;
+    case "zc":zapOpen(t.dataset.id);go("zap",{c:t.dataset.id});scroller.scrollTop=scroller.scrollHeight;break;
+    case "zapBack":go("zap",{});break;
+    case "pull":if(zapPull(UI.d.c)){sfx("notif");UI.d={c:UI.d.c};rerender();scroller.scrollTop=scroller.scrollHeight;save()}break;
+    case "tone":zapReplyUI(+t.dataset.i);break;
+    case "terminar":dialog("💔 Terminar?","<p>"+T(S.zap.c[UI.d.c].st===3?"O namoro é oficial: o término vai ser público (🔥 +15, 🧠 −20).":"Vai doer, mas vai ser em silêncio (🧠 −8).")+"</p>",'<button class="btn ghost" type="button" data-act="close">Cancelar</button><button class="btn primary" type="button" data-act="terminarOk">Terminar</button>');break;
+    case "terminarOk":closeDlg();var bm=breakup(UI.d.c);S.zap.c[UI.d.c].th.push({sys:1,t:bm});sfx("bad");rerender();save();break;
+    case "npc":var nr=npcAct(t.dataset.id,t.dataset.a,t.dataset.t!=null?+t.dataset.t:null);UI.d.com=null;if(nr)sfx(nr.ok?"good":"bad");else toast({app:"P",t:"Photogram",x:S.mon.likes>=10?"Limite de 10 curtidas no mês.":"Sem energia pra isso agora."});rerender();save();break;
+    case "npcCom":UI.d.com=t.dataset.id||null;sfx("tap");rerender();break;
+    case "npcHate":dialog("😈 Mandar hate de conta fake?","<p>O rival perde um pouco de 🌟 e você sente culpa (🧠 −2). Cada vez tem <b>15% de chance</b> de descobrirem: 🌟 −25, 🔥 +35 e uma mancha na carreira.</p>",'<button class="btn ghost" type="button" data-act="close">Deixa pra lá</button><button class="btn primary" type="button" data-act="npcHateOk" data-id="'+esc(t.dataset.id)+'">Mandar mesmo assim</button>');break;
+    case "npcHateOk":closeDlg();var hr=npcAct(t.dataset.id,"hate");sfx(hr&&hr.ok?"tap":"bad");rerender();save();break;
+    case "mod":if(UI.d.res&&modAct(UI.d.res.mod,+t.dataset.i,t.dataset.a)){sfx("tap");rerender();save()}break;
+    case "wfilter":if(buyWordFilter()){sfx("good");toast({app:"P",t:"Filtro de palavras",x:"Ligado: haters doem metade na sua 🧠."})}rerender();save();break;
+    case "look":var lo=setLook(t.dataset.id);sfx("tap");toast({app:"P",t:"Look novo ✨",x:lo?"Você postou o look. Os comentários estão… agitados 👀":"Look atualizado. Ficou a sua cara."});rerender();save();break;
+    case "lh":UI.d.h=+t.dataset.h;sfx("tap");rerender();break;
+    case "ls":UI.d.slot=t.dataset.k;sfx("tap");rerender();break;
+    case "goLive":startLive();break;
+    case "cfgReal":CFG.real=!CFG.real;saveCfg();menuDlg();break;
+    case "cfgFiltro":CFG.filtro=!CFG.filtro;saveCfg();menuDlg();break;
     case "avancar":
       if(S.en>0&&!t.dataset.ok){confirmDlg("Você ainda tem ⚡"+S.en+" sobrando. Energia não acumula pro próximo mês. Avançar mesmo assim?","avancar");return}
       closeDlg();endMonth();sfx("tap");go("resumo");break;
@@ -1955,25 +3301,35 @@ document.addEventListener("click",function(e){
   }
 });
 function rerender(){var y=scroller.scrollTop;render();scroller.scrollTop=y}
+function finishPost(type,ed){
+  var res=doPost(type,UI.d.tk||null,{edit:ed,casal:UI.d.casal});if(!res){rerender();return}
+  var pt=NICHOS[S.niche].posts[res.type];res.cap=tpl(pick(pt.cap))+(res.trend?" "+res.trend:"")+(res.edit&&UI.d.casal&&canCasal()?" 💑":"");res.bcap=tpl(pick(pt.b.cap));res.loc=pick(LOCS);res.trendObj=UI.d.tk?trendById(S.trends[UI.d.tk].id):null;
+  sfx(res.viral?"viral":res.flop?"bad":"good");UI.v="post";UI.d={res:res};rerender();scroller.scrollTop=0;save();
+}
+function zapReplyUI(i){var id=UI.d.c,r=zapReply(id,i);if(!r)return;sfx("notif");UI.d={c:id,zres:r};rerender();scroller.scrollTop=scroller.scrollHeight;save()}
 function chooseUI(i){
   if(S.pend||!S.evq.length)return;
-  var id=S.evq[0],r=choose(id,i);S.evq.shift();S.pend={id:id,res:r};
+  var id=S.evq[0],r=choose(id,i);S.evq.shift();S.pend={id:id,res:r};S.flags.dicaGen=1;
   var tot=(r.d.paz||0)+(r.d.rep||0)-(r.d.h||0)/2;sfx(tot>=0?"good":"bad");
   rerender();save();
   var rb=app.querySelector(".resbox");if(rb)rb.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});
 }
+document.addEventListener("keyup",function(e){if(GAME&&GAME.key)GAME.key(e,false)});
 document.addEventListener("keydown",function(e){
+  if(GAME){if(GAME.key)GAME.key(e,true);return}
   if(ovl.innerHTML&&e.key==="Escape"){closeDlg();return}
   if(ovl.innerHTML)return;
   var tag=(e.target.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea"||tag==="select")return;
   if(UI.v==="evento"&&!S.pend&&/^[123]$/.test(e.key)){chooseUI(+e.key-1);return}
+  if(UI.v==="zap"&&UI.d.c&&/^[123]$/.test(e.key)&&S.zap.c[UI.d.c]&&S.zap.c[UI.d.c].pend){zapReplyUI(+e.key-1);return}
   if((e.key==="b"||e.key==="B")){var f=app.querySelector(".cardwrap .flip");if(f&&f._toggle)f._toggle()}
 });
 ovl.addEventListener("click",function(e){if(e.target.hasAttribute("data-ov"))closeDlg()});
 function loadRun(){
   var r=store.get("run",null);
   if(!r||r.v!==3||!r.p||!r.st||!NICHOS[r.niche]||!r.trends){store.del("run");go("title");return}
-  S=r;PROF=PROF||r.p;
+  S=migrate(r,false);PROF=PROF||r.p;
+  if(!S.flags.p2){S.flags.p2=1;setTimeout(function(){toast({app:"P",t:"Atualização do celular 📲",x:"Chegaram: 🍔 Fome/💧 Sede, boletos no MailGrid, ZapChat, Explorar, ZapEats e lives. Débito automático já vem ligado."})},600)}
   if(S.pend||S.evq&&S.evq.length&&S.ui==="evento")go("evento");
   else if(S.ui==="resumo"&&S.lastSum)go("resumo");
   else go("mes");
