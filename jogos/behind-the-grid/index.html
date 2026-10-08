@@ -499,6 +499,36 @@ body.has-dock .app{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
 .lv-ov .choices{width:min(100%,380px)}
 .cb{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
 .lvsum{display:flex;flex-direction:column;gap:12px;width:min(100%,460px);margin:auto;padding:6px 0;overflow-y:auto;max-height:100%}
+/* 🎙️ microfone */
+.micm{position:relative;height:8px;border-radius:8px;background:rgba(255,255,255,.14);overflow:hidden;flex:1;min-width:40px}
+.micm i{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#45d08a 0 60%,#ffc23a 60% 85%,#ff6b5a 85%);border-radius:inherit}
+.micbox{display:flex;flex-direction:column;gap:8px}
+.microw{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.microw b{color:var(--text);font-weight:600}
+.micerr{font-size:12.5px;line-height:1.4;color:#ffd27a;background:#2a2410;border:1px solid #4a3d16;border-radius:10px;padding:8px 10px}
+.lv-mic{position:absolute;top:8px;right:8px;z-index:5;display:flex;align-items:center;gap:7px;padding:4px;border-radius:999px;background:rgba(0,0,0,.62);color:#fff;font-size:12px;font-weight:600;max-width:calc(100% - 16px)}
+.lv-mic .micm{width:52px;flex:none;height:6px;margin-right:6px}
+.lv-mic .micm[hidden]{display:none}
+.lv-mic button{min-height:30px;padding:0 10px;border-radius:999px;background:#2b2f3a;border:1px solid #3a3f4b;color:#fff;font-size:12px;font-weight:700;white-space:nowrap}
+.lv-mic button[aria-checked="true"]{background:var(--accent);border-color:var(--accent);color:#14160c}
+.lv-mic button:disabled{opacity:.6}
+.lv-talk{position:absolute;left:50%;top:22%;transform:translateX(-50%);z-index:4;padding:2px 8px;border-radius:999px;background:#e8352b;color:#fff;font-size:11.5px;font-weight:700;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s}
+.lv-talk.on{opacity:1}
+.scene span.lv-av{transition:filter .15s}
+.scene span.lv-av.talk{filter:drop-shadow(0 0 6px #ff5a4a) drop-shadow(0 0 14px rgba(255,90,74,.7));animation:talkb .32s ease-in-out infinite alternate}
+@keyframes talkb{to{transform:translate(-50%,-56%) scale(1.06)}}
+.lvw.playing .lv-mic,.lvw.playing .lv-talk{display:none}
+.recbox{display:flex;flex-direction:column;gap:8px}
+.recbox h3{font-size:15px}
+.recbox audio{width:100%;height:40px}
+.recbox a.btn{color:var(--text);text-decoration:none}
+.recbox .row{gap:8px;flex-wrap:wrap}
+.moms{display:flex;flex-wrap:wrap;gap:6px}
+.moms button{min-height:32px;padding:0 11px;border-radius:999px;background:#2a1a10;border:1px solid #5a3a1c;color:#ffd27a;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.vox-t{font:800 34px/1 var(--display);text-align:center;font-variant-numeric:tabular-nums}
+.vox-t.rec{color:#ff6b5a}
+.vox-t.rec::before{content:"● ";font-size:.6em;vertical-align:middle;animation:pulse 1s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.scene span.lv-av.talk{animation:none}}
 @media (min-width:760px){.lv-main{flex-direction:row}.lv-stage{flex:1 1 auto;min-height:0}.lv-chat{flex:0 0 330px;min-height:0}.lvw.playing .lv-chat{flex:0 0 250px;min-height:0}}
 .ed{width:min(100%,720px);margin:auto;display:flex;flex-direction:column;gap:10px;max-height:100%;overflow-y:auto;padding:6px}
 .ed-cv{position:relative}
@@ -2487,19 +2517,20 @@ function liveEnd(L){
   var rp=L.rounds.length?L.rounds.reduce(function(a,r){return a+r.perf},0)/L.rounds.length:react;
   var score=react*.5+rp*.5,good=score>=.42;
   var mins=Math.max(1,Math.round(L.minutes||L.h*60)),avgV=L.vN?L.vSum/L.vN:L.v0;
-  var ad=.003*avgV*mins,net=L.gross*.7;if(L.donCut)net*=.5;
+  var tb=micBonus(L.talk||0);avgV*=1+.15*tb; // 🎙️ falar 40–80% do tempo: até +15% de viewers e +10% de doações
+  var ad=.003*avgV*mins,net=L.gross*.7*(1+.1*tb);if(L.donCut)net*=.5;
   var money=Math.round((good?net+ad:(net+ad)*.5));
   var hf=mins/60;
-  var pct=(good?rnd(3,8):rnd(0,1))*(hf/2*.6+.4)+L.fp;if(S.niche==="gamer")pct*=1.2;
+  var pct=(good?rnd(3,8):rnd(0,1))*(hf/2*.6+.4)+L.fp;if(S.niche==="gamer")pct*=1.2;pct*=1+.15*tb;
   var pz=Math.round((good?-4:-6)*hf)+L.paz,rep=(good?1:0)+L.rep,lea=clamp(L.lea,-15,15);
-  var d=applyD({fp:pct,$:money,p:pz,r:rep,l:lea,h:L.hate});
+  var d=applyD({fp:pct,$:money,p:pz,r:rep,l:lea,h:L.hate+(L.shout||0)});
   var viral=false;
   if(Math.random()<L.clip+(good?.04:0)){viral=true;var d2=applyD({fp:rnd(8,20)});d.f+=d2.f;S.virals.push(S.m);S.mon.viral++;unlock("viral");note({type:"conf",txt:"Um clipe da sua live viralizou! 🎬"})}
   S.mon.gain+=d.f;
   if(!S.mon.best||d.f>S.mon.best.g)S.mon.best={g:d.f,type:"live"};
   S.log.push({m:S.m,t:"Live de "+L.h+" h",l:(good?"Live boa":"Live morna")+" · "+fmtN(L.peak)+" no pico"});
   checkDeath();
-  return {good:good,money:money,gross:Math.round(L.gross),fee:Math.round(L.gross*.3),ad:Math.round(ad),react:react,rp:rp,d:d,viral:viral,mins:mins};
+  return {good:good,money:money,gross:Math.round(L.gross),fee:Math.round(L.gross*.3),ad:Math.round(ad),react:react,rp:rp,d:d,viral:viral,mins:mins,tb:tb};
 }
 // usado pela simulação (sem interface): live jogada com desempenho e taxa de reação dados
 function liveAuto(L,perf,react){
@@ -2720,6 +2751,7 @@ function updHud(){
 function save(){if(!S||S.over)return;S.ui=UI.v==="resumo"||UI.v==="evento"?UI.v:"mes";store.set("run",S)}
 function go(v,d){UI.v=v;UI.d=d||{};render();scroller.scrollTop=0;save()}
 function render(){
+  if(MIC.on&&MIC.owner==="setup"&&UI.v!=="live")micStop();
   var v=UI.v,game=["mes","post","publis","loja","vida","resumo","evento","zap","explore","eats","live"].indexOf(v)>=0;
   if(game){
     if(!$("hud")){app.innerHTML=hudHTML()+'<div id="view"></div>';hudShown=null}
@@ -3099,6 +3131,9 @@ VIEWS.live=function(){
    '<div class="panel"><div class="ins"><div><small>👁 Viewers esperados</small><b>~'+fmtN(liveViewers(slot))+'</b></div><div><small>💛 Lealdade dos fãs</small><b>'+S.st.lea+'</b></div></div>'+
    (billLate("net")>=1&&!cut("net")?'<p class="small" style="color:var(--coral);margin-top:8px">🐢 Internet atrasada: a live vai travar (−30% de viewers).</p>':"")+
    (fband()>=2?'<p class="small" style="color:var(--coral);margin-top:8px">😵 Você está fraco(a): a mira vai tremer. Come alguma coisa antes!</p>':nutr()<30?'<p class="small" style="color:#ffd27a;margin-top:8px">🍔 Fome e sede baixas: live gasta o dobro. Risco de desmaio ao vivo.</p>':"")+'</div>'+
+   '<h3>Microfone</h3><div class="micbox"><button class="sw" type="button" role="switch" aria-checked="'+MIC.on+'" data-act="micSw"'+(MIC.busy?' disabled aria-busy="true"':"")+'><span>🎙️ Usar meu microfone<small>'+(MIC.busy?"Ligando… aceite o pedido do navegador.":"Falar com o chat segura o público e rende bônus. A live é gravada só neste aparelho, nada é enviado.")+'</small></span><i></i></button>'+
+   (MIC.on?'<div class="microw"><span>Nível</span><div class="micm"><i data-micm></i></div><b id="micSt">silêncio</b></div><p class="small muted">Fala alguma coisa pra testar 👂 · durante a live, a tecla M liga e desliga.</p>':"")+
+   (!MIC.on&&UI.d.micTried&&MIC.err?'<p class="micerr" role="alert">'+esc(MIC.err)+'</p>':"")+'</div>'+
    (why?'<p class="err" style="color:var(--coral)">'+esc(why)+'</p>':S.en<h?'<p class="err" style="color:var(--coral)">Energia insuficiente.</p>':"")+
    '<button class="btn primary wide adv" type="button" data-act="goLive"'+(why||S.en<h?" disabled":"")+'>🔴 Entrar ao vivo · '+h+' h</button>';
 };
@@ -3122,22 +3157,289 @@ var LV_TRAP=[{p:"manda um salve pra minha amiga, ela é muito…",f:"manda um sa
 var LV_RX=[["MEU AVÔ JOGA MELHOR","KKKKKKKKKK","tá jogando de olho fechado?","desinstala 💀"],["bot kkkk","desinstala","mira de batata 🥔"],["boa","gg","jogou bem 👍","mandou bem"],["MONSTRO 🔥🔥🔥","CLIPA ISSO","ACE!!! 🏆","que mira é essa"]];
 var HOUR_MS=20000;
 
+// ---------- 💬 chat da live: falas por contexto ----------
+// tokens: {nome}, {a|o|e} (gênero), {crush}, {date}, {food}, {up}, {u} (outro viewer)
+var LV_REG=["luana.vibes","gabs_fan01","tio_paulo58","nb.e.feliz","joao.sem.filtro","leitora.noturna","mari_nao_a_maravilha","parceiro_77","comunidade.acolhe","fofura.total","dona_cida_receitas","kaio.zika","duda_do_rj","ze.do.pao","thay_lindona","mano.brabo22","vovó.tecla","pedrin_gameplay"];
+var LVC={
+ start:["CHEGUEI 🏃‍♂️","primeiro!!","salve salve {nome} 🔥","finalmente live 😭","tava esperando o dia todo","oi chat oi {nome}","notificação apitou e eu vim correndo","chegando atrasad{a|o|e}… ah não, chegou cedo kkk","boa noite família","bora que hoje tem","que saudade dessa live","tô de pijama e pronto pra live","salve do Ceará 🌵","alguém sabe o que vai ter hoje?","abri a live no busão kkk","{nome} acordou cedo hoje hein","colocando a live na TV da sala","manda salve pra quem chegou agora","começou bem, já tem gente no chat","o primeiro a chegar ganha o quê? 👀","já deixei o like 👍","presente, professor{a|o|e} 🙋","live nova, alegria nova","segura que hoje é brabo"],
+ flow:["kkkkkkkk mano","essa live tá muito boa","alguém mais aqui procrastinando?","mano que vibe","tô rindo sozinh{a|o|e} no quarto","o chat tá on hoje","quem tá vendo do celular dá um oi","{nome} é muito gente boa slk","assistindo e lavando louça","chat, bebam água 💧","que horas acaba a live?","ninguém: … o chat: kkkkk","isso aqui é melhor que novela","tô vendo de 3 contas kkk mentira","sou do grupo dos que só observam 👀","vim pelo TokTrend","alguém viu o último post? 🔥","que voz calma, dá até sono bom","é verdade que tem sorteio? (não tem né)","mano o fundo tá bonito","amei o cabelo hoje","manda salve pra Paraíba 🌞","manda salve pra minha vó que tá assistindo 👵","manda salve pra galera do 3º B","manda salve pro meu cachorro, ele tá vendo","manda salve pra Manaus 🌳","salve pra quem tá no trampo escondido","brabo demais","é o melhor canal que eu conheço sério","a live tá rendendo hein","o algoritmo me trouxe e eu fiquei","quem é novo aqui levanta a mão ✋","tô aqui desde os 100 seguidores 🫡","essa energia contagia","que conteúdo mano","oi mãe tô na live 👋","alguém sabe a senha do wi-fi? kkkk","to com fome vendo isso","a internet travou ou fui eu?","voltei, fui pegar pipoca 🍿","🗿🗿🗿","💀💀💀","KKKKKKKKKKKKK","sério, que live gostosa de assistir","chat educado hoje, milagre","o pessoal do Discord tá aqui","clipa tudo isso aí","tô salvando os melhores momentos","qual o nome do perfume? kkkk zoeira","{nome} faz uma dancinha 🙏","me nota {nome} 🥺","nunca pedi nada","esse chat é uma família 💜"],
+ niche:{
+  gamer:["mira de anime","qual a sensibilidade?","joga ranqueada depois!","esse jogo é muito brabo","bora uma x1 comigo","FPS tá liso hoje","que setup gamer é esse 🖥️","os inimigos de bloco tão fortes hoje","tem crosshair custom?","mano o counter-block tá viciante","quem ganha: você ou o bot? kkk","já zerou o novo lançamento?","joga terror depois 👻","ping tá bom?","tá usando mouse ou controle?","e o rank, subiu?","speedrun quando?","esse headshot foi limpo demais","chat, quem aqui é bronze? 🙋","o lag é do jogo ou da internet?","deixa o chat escolher o próximo jogo","GG WP","dá pra jogar com inscrito?","fala a build aí","ACE vem aí, confia"],
+  vlog:["mostra o quarto!","como foi seu dia?","faz um tour pela casa","conta a fofoca do dia ☕","vlog amanhã?","a Bia aparece hoje?","sua rotina me inspira demais","acordou que horas hoje?","mostra o café da manhã","conta do perrengue do ônibus kkk","cadê o vlog da faxina","sua vida é melhor que série","fala do rolê de sábado","essa luz da janela é tudo","mostra o lanche","perrengue chique ou perrengue mesmo?","o que tem pra janta?","faz um vlog com a sua mãe kkk","e o dia de folga, rolou?","essa sua sinceridade é rara","que vida real, amo","mostra a vista da janela","tô vendo sua live no ônibus","conta o mico da semana","manda o próximo vlog logo"],
+  life:["que look é esse 😍","de onde é essa blusa?","o make tá impecável","manda o link da peça","amei a paleta de cores","faz um arrume-se comigo","skincare tá em dia hein","que pele é essa","essa estética 🤍","quero o quarto igual","dá dica de look barato?","o cabelo tá perfeito","qual o batom?","faz provador de achadinhos","tá com cara de publi esse look kkk","faz um get ready","aesthetic demais","essa luz valoriza tudo","era isso que eu precisava ver hoje","minimalista e chique","esse acessório 😮‍💨","tendência ou fora de moda? vota chat","combinou demais","o espelho tá limpo hein","vibe de capa de revista"],
+  geek:["que placa de vídeo é essa?","fala do celular novo","Linux ou Windows? 🗿","review do teclado quando?","esse cabo tá organizado demais","quanta RAM?","IA vai dominar tudo?","monta um PC na live!","esse setup custa um rim","atualizou o firmware?","qual o melhor custo-benefício?","explica de novo que eu não entendi kkk","nerd demais, amo","tem tutorial disso?","qual linguagem você usa?","teclado mecânico barulhento 😍","faz unboxing!","Android ou iPhone? briga no chat","o wi-fi é 5G mesmo?","manda o print do benchmark","essa gambiarra tech é genial","solda ou fita isolante? kkk","bateria aguenta quanto?","testa o fone novo","geek raiz demais"],
+  food:["que fome 😭","passa a receita!","isso aí é com manteiga?","tô com água na boca","faz brigadeiro na live","qual o tempero secreto?","manda um pedaço pelo Pix kkk","isso leva quanto tempo?","dá pra fazer na air fryer?","receita da vó é outro nível","cheirinho chegou aqui","quero ver o empratamento","cozinha arrumada demais","faz um pão de queijo","é doce ou salgado hoje?","esse prato é de restaurante","ensina o arroz soltinho","e a louça depois? kkk","comida boa é comida de casa","faz versão barata","sal a gosto é quanto??","mano isso parece bom demais","receita fit ou raiz?","tô anotando tudo","comi vendo e deu mais fome"]
+ },
+ good:["MONSTRO 🔥","CLIPA ISSO AGORA","que jogada mano","foi brabo demais","NÃO ACREDITO KKKK","o chat foi à loucura","respeita 🫡","{nome} tá on hoje","nem o pro player faz isso","sem palavras 🗿","joga muito slk","isso foi limpo","{ela|ele|elu} é diferenciad{a|o|e}","manda pro campeonato","print, print, PRINT","hoje é dia","quem duvidou tá quieto agora","aplausos 👏👏👏","GG demais","mira de satélite 🛰️","cadê os haters agora?","isso vai pros melhores momentos"],
+ fail:["KKKKKKKKKKKKK","errou feio","não foi dessa vez 💀","calma, respira","faz parte","o bot ganhou kkkk","mano errou tudo","tá jogando de olho fechado?","foi o lag, confia","a mira foi passear","eu fazia igual, relaxa","acontece até com os melhores","próxima a gente amassa","desliga e liga de novo kkk","o controle tá desconectado?","joga de novo, vai","ri de si que passa","💀💀💀💀","que tragédia ao vivo kkk","ninguém viu nada 🙈"],
+ silence:["{nome}? tá aí?","foi beber água?","tá afk?","alguém cutuca {nome}","a live travou ou só tá quieto?","tô ouvindo só o ventilador kkk","responde o chat aí 👀","chat, vamos animar isso","manda um oi pra gente","{nome} sumiu 😭","acho que caiu no sono","modo estátua ativado 🗿"],
+ talk:["{ela|ele|elu} falou bonito 👏","KKKK essa voz","fala mais!","amo ouvir você falando","que voz boa de ouvir","verdade, concordo","mano que papo bom","fala da história de ontem!","sua risada é contagiante kkk","conta mais disso","voz de locutor{a|o|e} 🎙️","eu escutaria isso o dia todo","respondeu ao vivo 😭 me sinto especial","papo reto, gostei","que sotaque lindo","explicou melhor que meu professor","olha o storytelling 🔥","fala de novo que eu não ouvi kkk"],
+ loud:["o áudio tá estourando 😵","meu fone 💀","abaixa o ganho do mic aí","CALMA KKKK","tá gritando por quê? kkk","o vizinho ouviu isso","estourou meu tímpano","volume 1000%","o mic tá saturando","eu tava de fone… era","menos, menos kkkk","tá falando ou tá brigando? 😂"],
+ rage:["RAGE MODE 😤","quebra o teclado não kkkk","a raiva tá real","respira, conta até 10","gritou e eu ri muito","isso vai virar clipe de rage","calma que é só um jogo 😂","o chat ama um surto"],
+ mute:["cadê o áudio?","tá mutad{a|o|e}?","não tô ouvindo nada","o mic morreu?","fala alguma coisa kkk","áudio sumiu aqui","é live muda hoje?","ativa o mic aí 🎙️"],
+ don:["que doação brabaaa","olha o rico no chat 💸","manda Pix pra mim também kkk","eu doaria se não fosse pobre","essa doação foi linda","patrocinador oficial kkk","agora vai, meta chegando","generosidade nível máximo","valeu por apoiar a live 🙏","quero ser rico assim","{u} pagando o lanche de todo mundo","chuva de dinheiro 💸💸","doação + mensagem fofa = 💛","Pix caiu 🤑","respeita o doador"],
+ meta:["falta pouco pra meta!","bora bater a meta chat 🔥","quem doar agora é lenda","META META META","segura que vai bater","quase lá!!","alguém completa essa meta aí","a meta tá suando","só mais um pouquinho","se bater tem comemoração?","vai, vai, vai","a barrinha tá quase cheia"],
+ raid:["RAAAAID 🚀","chegamos!!","viemos da live do {u}","salve galera da raid","o povo chegou","raid brabo","oi oi oi gente nova","que chat lotado","invasão pacífica 🕊️","viemos em paz kkk","raid do bem 💜","bora seguir {nome} galera"],
+ late:["madrugada é outra vibe","alguém mais com insônia?","amanhã tem aula e eu aqui","3 da manhã e firme","quem dorme cedo não vê isso","live de madrugada é a melhor","boa noite pra quem é de boa noite","café ☕ ou energético ⚡?","o chat da madrugada é caótico kkk","não durmo enquanto não acabar","olha a hora!!","tá aguentando ainda {nome}?","já é amanhã tecnicamente","a gente aguenta mais uma hora"],
+ hate:["ignora os haters, a gente tá contigo","vi a treta no Chirp 👀","chat, sem treta hoje por favor","quem fala mal é quem mais assiste kkk","tá bombando de hater lá fora hein","não alimenta troll","foca em quem gosta de você 💜","as fofocas tão tensas essa semana","eu defendi você nos comentários","o print tá rodando, mas a gente sabe a verdade","respeita {nome} no chat","quem é fã de verdade fica"],
+ lowpaz:["você tá bem? parece cansad{a|o|e}","cuida da saúde mental 💜","pode encerrar se precisar, a gente entende","tá tudo bem não estar bem","descansa depois da live tá?","a gente gosta de você mesmo nos dias ruins","respira fundo, chat manda abraço 🫂","tira uma folga, você merece","olheira de quem não dorme hein","sua saúde vem primeiro"],
+ date:["e {date}? 👀","manda beijo pra {date} 💋","casal mais lindo da internet","quando sai o vlog de casal?","{date} tá assistindo? kkk","shippo muito 💑","conta como vocês se conheceram!","{date} apareceu no story ontem 👀","casal goals","o amor tá no ar 💘"],
+ crush:["oi {nome} 😳","vim só dar um oi, nada demais","boa live!! 💫","ri muito daquela parte kkk","tô assistindo, viu?","depois me conta como foi 😊","adorei o look de hoje","manda áudio depois 👀"],
+ crushx:["olha quem tá no chat 👀👀","{crush} tá aqui KKKK","CHAT, {crush} COMENTOU 😱","shippo {nome} e {crush}","{crush} assistindo de perto hein 😏","tá vermelh{a|o|e} {nome}? kkk"],
+ up:["mudou o cenário?? 😍","que {up} lindo!","investiu pesado hein","subiu de nível o canal","esse {up} ficou top","a live tá com outra cara","ostentação 🤑 kkk","o upgrade ficou brabo","agora sim, cenário de profissional","quanto custou isso aí? 👀"],
+ messy:["o quarto tá meio bagunçado kkk","é uma meia ali atrás? 🧦","arruma o quarto depois ein","bagunça organizada né","o cenário raiz é melhor","fita crepe segurando tudo kkk","a caixa de papelão é decoração?","um dia teremos estúdio","vida real sem filtro, amo","o fio pendurado me incomoda kkk"],
+ eats:["comeu {food} hoje? 🤤","{food} de novo kkk","vi que pediu {food} no ZapEats","dá um pedaço de {food}","tô com vontade de {food} agora","{food} é sustento","o motoboy do ZapEats já é da família","manda o cupom do ZapEats","alimentad{a|o|e} = live boa","pede {food} pra mim também"],
+ reply:["@{u} kkkk verdade","@{u} pensei a mesma coisa","@{u} mano kkkkk","@{u} nada a ver kkk","@{u} exatamente isso","@{u} tu é engraçado demais","@{u} concordo 100%","@{u} mentira kkkk","@{u} salve!","@{u} de onde você é?","@{u} vc de novo aqui kkk","@{u} sério?? 😂","@{u} o melhor comentário","@{u} eu também 🙋","@{u} para de spam kkk","@{u} isso aí","@{u} kkkk não aguento","@{u} 🗿","@{u} bem lembrado","@{u} chat unido 💜"]
+};
+// perguntas com resposta própria (o ❓ Ler pergunta usa a resposta)
+var LVQ={
+ gen:[["❓ como você começou?","Comecei com um celular rachado e fita crepe 😅"],["❓ qual seu maior sonho?","Pagar todos os boletos no mesmo dia. E um estúdio, vai."],["❓ você lê o chat todo?","Tento! Se não respondi, foi o chat rápido demais 😂"],["❓ já pensou em desistir?","Já, mas aí vocês aparecem e passa 💛"],["❓ qual a pior parte de ser influencer?","Os comentários das 3 da manhã. E os boletos."],["❓ tem dica pra quem tá começando?","Constância, verdade e água 💧. Nessa ordem."],["❓ vai ter encontro de fãs?","Quando tiver grana pro salão de festa, prometo!"],["❓ qual sua comida favorita?","Marmita da Dona Cida, sem dúvida 🍱"],["❓ como lida com hater?","Bloqueio e vou comer 🍜"],["❓ você responde DM?","Respondo sim… em uns 3 meses kkk"],["❓ que horas você dorme?","Dormir? Conheço de nome."],["❓ qual foi o pior perrengue?","Live sem luz, com lanterna do celular. Clássico."],["❓ quem é a Bia?","A Bia é minha pessoa. Ela tá ouvindo, inclusive."],["❓ vai ter sorteio?","Sorteio só quando tiver prêmio de verdade, prometo"],["❓ qual música tá tocando?","Playlist secreta. Talvez eu solte depois 🎧"]],
+ gamer:[["❓ qual seu jogo favorito?","Counter-Block, óbvio. Mas tenho um carinho por jogo de corrida."],["❓ qual sua sensibilidade?","Uma que eu mudo toda vez que erro kkk"],["❓ joga com inscrito?","Joga sim! Sexta é dia de inscrito."],["❓ mouse ou controle?","Mouse pra mirar, controle pra chorar."],["❓ qual seu rank?","Prefiro não comentar. Próxima pergunta 😂"]],
+ vlog:[["❓ como é sua rotina?","Acordo, café, conteúdo, boleto, conteúdo, dormir tarde."],["❓ a Bia vai aparecer no vlog?","Se ela deixar! Ela cobra cachê em pão de queijo."],["❓ onde você grava?","Aqui no meu cantinho mesmo, com luz da janela."],["❓ qual o melhor vlog que você fez?","O do perrengue no ônibus. Vocês amam um sofrimento."],["❓ edita sozinh{a|o|e}?","Edito sim, de madrugada, com muito café."]],
+ life:[["❓ onde você compra roupa?","Brechó e achadinho! O look caro é o que mais dá errado."],["❓ qual seu skincare?","Água, protetor solar e dormir (às vezes)."],["❓ dica de look barato?","Peça básica boa + um acessório que chama atenção."],["❓ qual seu perfume?","Segredo de estado. Mas é doce 🍓"],["❓ faz publi de tudo?","Só do que eu usaria de verdade. Juro."]],
+ geek:[["❓ qual seu setup?","Um PC que respira por aparelhos e muito amor."],["❓ Android ou iPhone?","O que tiver bateria no momento kkk"],["❓ vale a pena comprar placa agora?","Espera promoção. Sempre espera promoção."],["❓ qual linguagem aprender primeiro?","A que te fizer terminar um projeto. Comecei com JavaScript."],["❓ usa Linux?","Uso, e conto pra todo mundo, como manda a tradição 🗿"]],
+ food:[["❓ qual sua receita favorita?","Bolo de cenoura com cobertura que quebra. Insuperável."],["❓ cozinha todo dia?","Cozinho! Quando não é miojo gourmet kkk"],["❓ qual o tempero secreto?","Alho. Mais alho. E paciência."],["❓ dá pra fazer sem forno?","Dá sim, frigideira tampada resolve muita coisa."],["❓ receita barata pro mês?","Arroz, feijão, ovo e criatividade 🍳"]]
+};
+var LV_RAIDERS=["mano.brabo22","pedrin_gameplay","thay_lindona","kaio.zika","duda_do_rj"];
+function lvPickU(st,arr){var u=st.used||(st.used={}),free=arr.filter(function(x){return !u[x]});if(!free.length){return null}var x=pick(free);u[x]=1;return x}
+function lvCtx(st){
+  if(st.ctx&&performance.now()-st.ctx.t<5000)return st.ctx;
+  var c={t:performance.now(),crush:null,crushU:null,date:null,food:null,up:null};
+  try{
+    if(S.crushFav&&S.crushFav!==S.date){var d=zcDef(S.crushFav);if(d){c.crush=d.n;c.crushU=d.n.toLowerCase().replace(/[^a-z0-9]+/g,"")||"crush"}}
+    if(S.date&&S.zap.c[S.date]&&S.zap.c[S.date].st>=2){var dd=zcDef(S.date);if(dd)c.date=dd.n}
+    var ate=Object.keys(S.mon.ate||{}).map(foodById).filter(function(f){return f&&f.cat==="food"});if(ate.length)c.food=ate[ate.length-1].n;
+    var ups=(S.log||[]).filter(function(l){return l.m>=S.m-1&&/^Upgrade/.test(l.t)});if(ups.length)c.up=String(ups[ups.length-1].l).split(/[+,]/)[0].trim().toLowerCase();
+  }catch(e){}
+  st.ctx=c;return c;
+}
+function lvFill(st,t,extra){var c=lvCtx(st);
+  t=t.replace(/\{crush\}/g,c.crush||"crush").replace(/\{date\}/g,c.date||"mozão").replace(/\{food\}/g,c.food||"miojo").replace(/\{up\}/g,c.up||"cenário").replace(/\{u\}/g,extra||pick(LV_REG));
+  return tpl(t)}
+// escolhe um contexto pela situação da live e devolve {u,t} (ou null se tudo já foi dito)
+function lvChatLine(st){
+  var L=st.L,c=lvCtx(st),el=lvElapsed(st),tot=L.h*HOUR_MS,W=[],add=function(w,k){if(w>0)W.push([w,k])};
+  add(el<tot*.1||st.id<8?5:0,"start");add(3,"flow");add(2.2,"niche");
+  if(!st.metaHit&&L.gross>=st.meta*.7)add(1.6,"meta");
+  if(L.slot==="madru"||(L.h>=3&&el>tot*.6))add(1,"late");
+  if(st.lastAct&&performance.now()-st.lastAct>15000&&!(MIC.on&&MIC.talk))add(1.4,"silence");
+  if(band()>=2)add(1,"hate");if(S.st.paz<30)add(.9,"lowpaz");
+  if(c.date)add(.6,"date");if(c.crush)add(.6,"crush");if(c.up)add(.7,"up");if(S.up.casa===0)add(.45,"messy");if(c.food)add(.6,"eats");
+  if(st.lastFan)add(1,"reply");
+  for(var tries=0;tries<4;tries++){
+    var sum=W.reduce(function(a,w){return a+w[0]},0),r=Math.random()*sum,k=W[0][1];for(var i=0;i<W.length;i++){r-=W[i][0];if(r<=0){k=W[i][1];break}}
+    var u=pick(LV_REG),pool,ex=null;
+    if(k==="niche")pool=LVC.niche[S.niche]||LVC.flow;
+    else if(k==="flow")pool=LVC.flow.concat(LV_CHAT);
+    else if(k==="crush"){if(Math.random()<.5){pool=LVC.crush;u=c.crushU}else pool=LVC.crushx}
+    else if(k==="reply"){pool=LVC.reply;ex=st.lastFan;if(u===ex)u=pick(LV_FANS)}
+    else pool=LVC[k];
+    var t=lvPickU(st,pool);if(t)return {u:u,t:lvFill(st,t,ex),k:k};
+  }
+  return {u:pick(LV_FANS),t:tpl(pick(LV_CHAT)),k:"flow"};
+}
+// fala de um grupo específico (reações), sem repetir na mesma live
+function lvSay(st,k,u){var t=lvPickU(st,LVC[k]);if(!t)return false;lvAdd(st,{kind:"fan",u:u||pick(LV_REG),t:lvFill(st,t)});return true}
+function lvQuestion(st){var pool=(Math.random()<.45&&LVQ[S.niche]?LVQ[S.niche]:LVQ.gen).concat([]);var u=st.used||(st.used={}),free=pool.filter(function(q){return !u[q[0]]});
+  var q=free.length?pick(free):[pick(LV_Q),pick(LV_A)];u[q[0]]=1;return {t:tpl(q[0]),a:tpl(q[1])}}
+function lvRaid(st){
+  var L=st.L,who=pick(LV_RAIDERS),n=Math.max(8,Math.round(L.v*rnd(.12,.25)));st.raided=true;st.raidUntil=performance.now()+12000;
+  sysMsg(st,"🚀 RAID! @"+who+" chegou com "+fmtN(n)+" pessoas.");sfx("notif");lvExc(st,.8);
+  for(var i=0;i<3;i++)(function(k){setTimeout(function(){if(st.over)return;var t=lvPickU(st,LVC.raid);if(t)lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:lvFill(st,t,who)})},250+k*420)})(i);
+}
+// ---------- 🎙️ microfone (só pede depois do clique; áudio fica só na memória) ----------
+var MIC={on:false,busy:null,owner:null,stream:null,ctx:null,an:null,buf:null,lvl:0,rms:0,talk:false,talkT:0,clipT:0,raf:0,last:0,err:"",hideT:0};
+function micOk(){return !!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)}
+function micErrTxt(e){var n=e&&e.name||"";
+  if(!e)return "Este navegador não libera microfone aqui. Tudo bem: o jogo funciona normal sem ele.";
+  if(n==="NotAllowedError"||n==="SecurityError"||n==="PermissionDeniedError")return "Sem permissão pro microfone. Sem problema: tudo segue funcionando sem ele. Se mudar de ideia, libere o 🎙️ no cadeado da barra de endereço e tente de novo.";
+  if(n==="NotFoundError"||n==="DevicesNotFoundError"||n==="OverconstrainedError")return "Não achamos nenhum microfone conectado. Dá pra jogar normal sem ele.";
+  if(n==="NotReadableError"||n==="AbortError"||n==="TrackStartError")return "O microfone está ocupado em outro app (chamada, gravador…). Feche lá e tente de novo, ou siga sem ele.";
+  return "Não deu pra ligar o microfone agora. O jogo continua normal sem ele.";}
+function micStart(owner){
+  if(MIC.on)return Promise.resolve(true);
+  if(MIC.busy)return MIC.busy;
+  MIC.err="";
+  if(!micOk()){MIC.err=micErrTxt(null);return Promise.resolve(false)}
+  MIC.busy=navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(s){
+    MIC.busy=null;MIC.stream=s;MIC.on=true;MIC.owner=owner;MIC.talkT=0;MIC.clipT=0;
+    try{var AC=window.AudioContext||window.webkitAudioContext;MIC.ctx=new AC();var src=MIC.ctx.createMediaStreamSource(s);MIC.an=MIC.ctx.createAnalyser();MIC.an.fftSize=1024;src.connect(MIC.an);MIC.buf=new Float32Array(MIC.an.fftSize);if(MIC.ctx.state==="suspended")MIC.ctx.resume()}catch(e){MIC.an=null}
+    s.getAudioTracks().forEach(function(t){t.addEventListener("ended",function(){if(MIC.stream!==s)return;micStop();if(UI.v==="live"&&!GAME&&!ovl.innerHTML)rerender()})});
+    micLoop();return true;
+  },function(e){MIC.busy=null;MIC.err=micErrTxt(e);return false});
+  return MIC.busy;
+}
+function micStop(){
+  if(MIC.stream)MIC.stream.getTracks().forEach(function(t){try{t.stop()}catch(e){}});
+  if(MIC.ctx)try{MIC.ctx.close()}catch(e){}
+  cancelAnimationFrame(MIC.raf);MIC.raf=0;
+  MIC.stream=null;MIC.ctx=null;MIC.an=null;MIC.on=false;MIC.owner=null;MIC.lvl=0;MIC.rms=0;MIC.talk=false;micPaint();
+}
+function micRead(){
+  if(!MIC.an)return;var b=MIC.buf,s=0,pk=0,now=performance.now();
+  if(MIC.an.getFloatTimeDomainData)MIC.an.getFloatTimeDomainData(b);else return;
+  for(var i=0;i<b.length;i++){var x=b[i];s+=x*x;if(x<0)x=-x;if(x>pk)pk=x}
+  var rms=Math.sqrt(s/b.length),db=rms>0?20*Math.log10(rms):-100;
+  MIC.rms=rms;MIC.lvl=clamp((db+55)/50,0,1);
+  if(rms>.02)MIC.talkT=now;MIC.talk=MIC.talkT>0&&now-MIC.talkT<350;
+  if(pk>.98||rms>.35)MIC.clipT=now;
+}
+function micLoop(){cancelAnimationFrame(MIC.raf);var f=function(t){if(!MIC.on)return;micRead();if(!RM||t-MIC.last>250){MIC.last=t;micPaint()}MIC.raf=requestAnimationFrame(f)};MIC.raf=requestAnimationFrame(f)}
+function micPaint(){
+  var lv=MIC.on?MIC.lvl:0,on=MIC.on&&MIC.talk;
+  document.querySelectorAll("[data-micm]").forEach(function(i){i.style.transform="scaleX("+lv.toFixed(3)+")"});
+  var av=document.querySelector(".lv-av");if(av)av.classList.toggle("talk",on);
+  var tk=document.getElementById("lvTalk");if(tk){if(on&&av&&!tk.classList.contains("on")){var ar=av.getBoundingClientRect(),sr=tk.parentNode.getBoundingClientRect();tk.style.top=Math.max(4,ar.top-sr.top-8)+"px";tk.style.left=(ar.left+ar.width/2-sr.left)+"px"}tk.classList.toggle("on",on)}
+  var ms=document.getElementById("micSt");if(ms)ms.textContent=!MIC.on?"":on?"🔴 falando":"silêncio";
+}
+document.addEventListener("visibilitychange",function(){
+  clearTimeout(MIC.hideT);
+  if(document.hidden&&(MIC.on||MIC.busy))MIC.hideT=setTimeout(function(){if(!document.hidden||!MIC.on)return;
+    voxStopRec();micStop();if(UI.v==="live"&&!GAME&&!ovl.innerHTML)rerender();
+    toast({app:"L",t:"🎙️ Microfone desligado",x:"Você ficou um tempo fora da tela, então desligamos o microfone por segurança."})},30000);
+});
+window.addEventListener("pagehide",function(){voxStopRec();micStop()});
+
+// gravação (MediaRecorder) · sempre em memória
+function recMime(){if(!window.MediaRecorder)return null;var L=["audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus","audio/ogg","audio/mp4"];
+  if(!MediaRecorder.isTypeSupported)return "";for(var i=0;i<L.length;i++)try{if(MediaRecorder.isTypeSupported(L[i]))return L[i]}catch(e){}return ""}
+function recExt(type){return /ogg/.test(type)?"ogg":/mp4|aac|m4a/.test(type)?"m4a":"webm"}
+function recNew(stream,onDone){
+  var m=recMime();if(m===null||!stream)return null;var mr;
+  try{mr=m?new MediaRecorder(stream,{mimeType:m}):new MediaRecorder(stream)}catch(e){try{mr=new MediaRecorder(stream)}catch(e2){return null}}
+  var R={mr:mr,chunks:[],t0:performance.now(),dur:0,done:false,stopping:false};
+  mr.ondataavailable=function(e){if(e.data&&e.data.size)R.chunks.push(e.data)};
+  mr.onstop=function(){if(R.done)return;R.done=true;if(!R.dur)R.dur=(performance.now()-R.t0)/1000;var type=(mr.mimeType||m||"audio/webm").split(";")[0];
+    var blob=new Blob(R.chunks,{type:type});R.chunks=[];R.type=type;if(blob.size){R.blob=blob;R.url=URL.createObjectURL(blob)}if(onDone)onDone(R)};
+  try{mr.start(1000)}catch(e){return null}
+  return R;
+}
+function recStop(R){if(!R||R.stopping)return;R.stopping=true;R.dur=(performance.now()-R.t0)/1000;try{if(R.mr.state!=="inactive")R.mr.stop();else R.mr.onstop()}catch(e){try{R.mr.onstop()}catch(e2){}}}
+function recFree(R){if(!R)return;if(R.url){URL.revokeObjectURL(R.url);R.url=null}R.blob=null;R.freed=true}
+function fmtDur(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+":"+(s%60<10?"0":"")+s%60}
+// webm do MediaRecorder vem sem duração: força o navegador a calcular (senão a barra e os saltos falham)
+function fixDur(a){if(!a)return;a.addEventListener("loadedmetadata",function f(){a.removeEventListener("loadedmetadata",f);
+  if(a.duration===Infinity||isNaN(a.duration)){a.currentTime=1e7;a.addEventListener("timeupdate",function g(){a.removeEventListener("timeupdate",g);a.currentTime=0})}})}
+function recBox(R,name,delAttr,momsHTML){
+  return '<audio controls preload="metadata" src="'+R.url+'"></audio>'+(momsHTML||"")+
+    '<div class="row"><span class="small muted grow">⏱ '+fmtDur(R.dur)+' · '+Math.max(1,Math.round(R.blob.size/1024))+' KB</span>'+
+    '<a class="btn sm" href="'+R.url+'" download="'+esc(name)+'">⬇️ Baixar</a><button class="btn sm" type="button" '+delAttr+'>🗑️ Descartar</button></div>';
+}
+
+// ---------- 🎙️ gravador avulso (menu ⋮) ----------
+var VOX=null,VOX_MAX=300;
+function voxOpen(){
+  dialog("🎙️ Gravador de voz",'<p class="small muted">Grave um recado de voz. Fica só na memória deste aparelho: nada vai pra internet nem fica salvo no jogo. Baixe se quiser guardar.</p>'+
+    '<div class="vox-t" id="voxT" aria-live="off">0:00</div><div class="microw"><span>Nível</span><div class="micm"><i data-micm></i></div><b id="micSt"></b></div>'+
+    '<div id="voxErr"></div><div class="recbox" id="voxOut"></div>',
+    '<button class="btn ghost" type="button" data-act="close">Fechar</button><button class="btn primary" type="button" data-act="voxRec" id="voxB">⏺️ Gravar</button>',"vox");
+  VOX={R:null,own:false,timer:0,busy:false};
+}
+function voxBtn(){var b=$("voxB");if(!b||!VOX)return;var rec=VOX.R&&!VOX.R.stopping;b.disabled=!!VOX.busy;
+  b.textContent=VOX.busy?"🎙️ Ligando…":rec?"⏹️ Parar":VOX.R?"⏺️ Gravar de novo":"⏺️ Gravar";var t=$("voxT");if(t)t.classList.toggle("rec",!!rec)}
+function voxTick(){if(!VOX||!VOX.R)return;var s=(performance.now()-VOX.R.t0)/1000,t=$("voxT");if(t)t.textContent=fmtDur(s);
+  if(!MIC.on||s>=VOX_MAX)voxStopRec()}
+function voxStart(){
+  if(!VOX||VOX.busy)return;VOX.busy=true;voxBtn();var had=MIC.on,e=$("voxErr");if(e)e.innerHTML="";
+  micStart("vox").then(function(ok){
+    if(!VOX){if(ok&&!had)micStop();return}VOX.busy=false;
+    if(!ok){var e2=$("voxErr");if(e2)e2.innerHTML='<p class="micerr" role="alert">'+esc(MIC.err)+'</p>';voxBtn();return}
+    VOX.own=!had;if(VOX.R){recFree(VOX.R);VOX.R=null}var o=$("voxOut");if(o)o.innerHTML="";
+    var R=recNew(MIC.stream,voxDone);
+    if(!R){var e3=$("voxErr");if(e3)e3.innerHTML='<p class="micerr" role="alert">Este navegador não consegue gravar áudio aqui. O medidor funciona, mas a gravação não.</p>';if(VOX.own){micStop();VOX.own=false}voxBtn();return}
+    VOX.R=R;VOX.timer=setInterval(voxTick,200);voxTick();voxBtn();sfx("tap");
+  });
+}
+function voxStopRec(){if(!VOX||!VOX.R||VOX.R.stopping)return;clearInterval(VOX.timer);recStop(VOX.R);if(VOX.own){micStop();VOX.own=false}voxBtn()}
+function voxDone(R){
+  if(!VOX||VOX.R!==R){recFree(R);return}
+  var o=$("voxOut");if(!o)return;
+  if(!R.url){o.innerHTML='<p class="small muted">A gravação saiu vazia. Tente de novo.</p>';VOX.R=null;voxBtn();return}
+  var d=new Date(),p=function(n){return (n<10?"0":"")+n};
+  o.innerHTML='<h3>🎧 Seu recado</h3>'+recBox(R,"behind-the-grid-recado-"+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+"-"+p(d.getHours())+p(d.getMinutes())+"."+recExt(R.type),'data-act="voxDel"');
+  fixDur(o.querySelector("audio"));var t=$("voxT");if(t)t.textContent=fmtDur(R.dur);voxBtn();
+}
+function voxDel(){if(!VOX)return;if(VOX.R){recFree(VOX.R);VOX.R=null}var o=$("voxOut");if(o)o.innerHTML='<p class="small muted">🗑️ Gravação descartada.</p>';var t=$("voxT");if(t)t.textContent="0:00";voxBtn()}
+function voxLeave(){if(!VOX)return;var v=VOX;VOX=null;clearInterval(v.timer);if(v.R){if(!v.R.stopping)recStop(v.R);recFree(v.R)}if(v.own)micStop()}
+
+// ---------- 🎙️ microfone dentro da live ----------
+function lvMicInit(st){st.mic={totMs:0,onMs:0,talkMs:0,clipMs:0,used:false,was:false,lastTalk:0,silentT:0,nextRx:0,rt:[],rc:[],exc:0,cand:[],lastCand:0,segs:[],rec:null,loudN:0}}
+function lvExc(st,v){if(st.mic)st.mic.exc=Math.min(2,st.mic.exc+v)}
+function lvMicUI(st){var b=lvEl("lvMicB"),m=lvEl("lvMicM");
+  if(b){b.disabled=!!MIC.busy;b.setAttribute("aria-checked",String(MIC.on));b.textContent=MIC.busy?"🎙️ Ligando…":MIC.on?"🎙️ Mic ligado":"🎙️ Usar meu microfone"}
+  if(m)m.hidden=!MIC.on;micPaint()}
+function lvMic(st){
+  if(MIC.busy)return;
+  if(MIC.on){lvRecStop(st);micStop();sysMsg(st,"🎙️ Microfone desligado.");lvMicUI(st);return}
+  var p=micStart("live");lvMicUI(st);
+  p.then(function(ok){
+    if(st.over){if(ok)micStop();return}
+    if(ok){MIC.owner="live";lvRecStart(st);sysMsg(st,"🎙️ Microfone ligado! Fale com o chat: falar segura o público.");sfx("good")}
+    else sysMsg(st,"🎙️ "+MIC.err);
+    lvMicUI(st)});
+}
+function lvRecStart(st){if(!MIC.stream||st.mic.rec||st.over)return;
+  var R=recNew(MIC.stream,function(R){R.ready=true;if(st.closed){recFree(R);return}lvRecPaint(st)});
+  if(!R){if(!st.mic.noRec){st.mic.noRec=1;sysMsg(st,"(este navegador não grava áudio, mas o microfone conta pra live)")}return}
+  R.seg=st.mic.segs.length;st.mic.segs.push(R);st.mic.rec=R}
+function lvRecStop(st){if(st.mic&&st.mic.rec){recStop(st.mic.rec);st.mic.rec=null}}
+function lvAvg(a){if(!a.length)return 0;var s=0;for(var i=0;i<a.length;i++)s+=a[i];return s/a.length}
+function lvMicTick(st,now,dt){
+  var M=st.mic;M.totMs+=dt;M.exc*=Math.pow(.97,dt/100);
+  if(!MIC.on){if(M.rec)lvRecStop(st);if(M.was){M.was=false;M.rt=[];M.rc=[];lvMicUI(st)}return}
+  if(!M.was){M.was=true;M.lastTalk=now;M.silentT=now;M.nextRx=now+4000;lvMicUI(st)}
+  if(!M.rec&&MIC.owner==="live"&&!M.noRec)lvRecStart(st);
+  M.onMs+=dt;M.used=true;var clip=now-MIC.clipT<200;
+  if(MIC.talk){M.talkMs+=dt;M.lastTalk=now;M.silentT=now}
+  if(clip)M.clipMs+=dt;
+  M.rt.push(MIC.talk?1:0);M.rc.push(clip?1:0);if(M.rt.length>80){M.rt.shift();M.rc.shift()}
+  // 🔥 momentos: voz alta enquanto o chat está agitado
+  if(M.rec&&MIC.talk&&now-M.lastCand>500){var sc=MIC.lvl*(.35+M.exc);if(sc>.25){M.lastCand=now;M.cand.push({seg:M.rec.seg,t:(now-M.rec.t0)/1000,s:sc});if(M.cand.length>400)M.cand.splice(0,100)}}
+  if(now>=M.nextRx){M.nextRx=now+rnd(5000,9000);var tr=lvAvg(M.rt),cr=lvAvg(M.rc);
+    if(cr>.12){M.loudN++;lvSay(st,"loud");if(Math.random()<.5)lvSay(st,"rage")}
+    else if(tr>.25&&Math.random()<.75)lvSay(st,"talk")}
+  if(now-M.silentT>20000){M.silentT=now;lvSay(st,"mute")}
+}
+// viewers ficam mais quando você fala (até +6% durante a live); 20 s calad{a|o} com mic ligado: −4%
+function lvMicMul(st,now){var M=st.mic;if(!MIC.on||!M)return 1;return 1+.06*lvAvg(M.rt)-(now-M.lastTalk>20000?.04:0)}
+// bônus do fim da live pelo % de tempo falando: cheio entre 40% e 80%
+function micBonus(t){if(!t||t<.1)return 0;if(t<.4)return (t-.1)/.3;if(t<=.8)return 1;return 1-Math.min(1,(t-.8)/.2)*.5}
+function lvMoments(st){var c=st.mic.cand.slice().sort(function(a,b){return b.s-a.s}),out=[];
+  for(var i=0;i<c.length&&out.length<3;i++){var x=c[i];if(out.every(function(o){return o.seg!==x.seg||Math.abs(o.t-x.t)>=5}))out.push(x)}
+  return out.sort(function(a,b){return a.seg-b.seg||a.t-b.t})}
+function lvRecPaint(st){
+  var box=lvEl("lvRec");if(!box||!st.mic)return;var segs=st.mic.segs;
+  if(segs.some(function(R){return !R.done})){box.innerHTML='<h3>🎧 Sua gravação</h3><p class="small muted">Processando o áudio…</p>';return}
+  var live=segs.filter(function(R){return R.url}),moms=st.moms||[];
+  if(!live.length){box.innerHTML='<h3>🎧 Sua gravação</h3><p class="small muted">'+(segs.some(function(R){return R.freed})?"🗑️ Gravação descartada.":"Nada foi gravado.")+'</p>';return}
+  box.innerHTML='<h3>🎧 Sua gravação</h3><p class="small muted">Só na memória deste aparelho: some quando você fechar o resumo. Baixe se quiser guardar.</p>'+
+    live.map(function(R){var mm=moms.filter(function(m){return m.seg===R.seg});
+      var mh=mm.length?'<div class="moms" aria-label="Momentos">'+mm.map(function(m){return '<button type="button" data-mom="'+R.seg+":"+m.t.toFixed(1)+'">🔥 '+fmtDur(m.t)+'</button>'}).join("")+'</div>':"";
+      return '<div class="recbox" data-seg="'+R.seg+'">'+(segs.length>1?'<p class="small"><b>Trecho '+(R.seg+1)+'</b></p>':"")+
+        recBox(R,"behind-the-grid-live-mes-"+S.m+(segs.length>1?"-parte-"+(R.seg+1):"")+"."+recExt(R.type),'data-recdel="'+R.seg+'"',mh)+'</div>'}).join("");
+  box.querySelectorAll("audio").forEach(fixDur);
+}
+function lvMicKill(st){st.closed=true;if(!st.mic)return;lvRecStop(st);if(MIC.owner==="live")micStop();st.mic.segs.forEach(recFree)}
+
 function startLive(){
   var h=UI.d.h||Math.max(1,Math.min(2,S.en)),slot=UI.d.slot||"noite";
   var L=liveStart(h,slot);if(!L){rerender();return}
   save();updHud();OUT.length&&drain();
   var rs=roomScenes().front,cam=parseSc("").concat(rs.sc).concat([[S.p.avatar.e,50,62,30,0],["🎙️",72,72,10,0]]);
-  var st={L:L,msgs:[],sel:null,pin:null,id:0,pausedT:0,pauseAt:0,next:0,lastV:0,metaHit:false,rounds:0,round:null,over:false,faintAt:L.faint?.4:-1,meta:Math.max(20,Math.round(L.v0*.3/10)*10),rainUntil:0,bubbleT:0,cb:null};
+  var st={L:L,msgs:[],sel:null,pin:null,id:0,pausedT:0,pauseAt:0,next:0,lastV:0,metaHit:false,rounds:0,round:null,over:false,faintAt:L.faint?.4:-1,meta:Math.max(20,Math.round(L.v0*.3/10)*10),rainUntil:0,bubbleT:0,cb:null,used:{},lastAct:0,lastFan:null,raided:false,raidUntil:0};lvMicInit(st);
   var html='<div class="gm" role="dialog" aria-modal="true" aria-label="LiveGrid ao vivo"><div class="lvw" id="lv">'+
     '<div class="lv-top"><span class="onair">🔴 AO VIVO</span><span>👁 <b id="lvV">'+fmtN(L.v)+'</b></span><span>⏱ <b id="lvT">0:00:00</b></span><span>💰 <b id="lvG">R$ 0</b></span><span class="sp"></span><button class="btn sm" type="button" data-lv="end" aria-label="Encerrar live">⏹<span class="hide-n"> Encerrar</span></button></div>'+
-    '<div class="lv-main"><div class="lv-stage" id="lvStage">'+scene(rs.bg,cam,"feed")+'<div class="lv-meta" id="lvMeta">⚡ Meta: '+fmtR(st.meta)+' · <span id="lvMp">0%</span><div class="tr"><i id="lvMb"></i></div></div></div>'+
+    '<div class="lv-main"><div class="lv-stage" id="lvStage">'+scene(rs.bg,cam,"feed")+'<div class="lv-meta" id="lvMeta">⚡ Meta: '+fmtR(st.meta)+' · <span id="lvMp">0%</span><div class="tr"><i id="lvMb"></i></div></div>'+
+    '<div class="lv-mic"><div class="micm" id="lvMicM" hidden><i data-micm></i></div><button type="button" role="switch" aria-checked="false" id="lvMicB" data-lv="mic" title="Atalho: M">🎙️ Usar meu microfone</button></div><div class="lv-talk" id="lvTalk" aria-hidden="true">🔴 falando</div></div>'+
     '<div class="lv-chat"><div class="lv-pin" id="lvPin" hidden></div><div class="lv-msgs" id="lvMsgs" role="log" aria-live="off" aria-label="Chat da live"></div></div></div>'+
     '<div class="lv-btns" id="lvBtns">'+[["thank","🙏 Agradecer"],["ask","❓ Ler pergunta"],["party","🎉 Comemorar"],["ignore","🙈 Ignorar"],["ban","🔨 Banir"],["round","🎯 Jogar rodada"]].map(function(b,i){return '<button class="lb" type="button" data-lv="'+b[0]+'">'+b[1]+' <kbd>'+(i+1)+'</kbd></button>'}).join("")+'</div>'+
     '</div></div>';
-  var ctl={stop:function(){clearInterval(st.timer);if(st.cb)st.cb.stop();try{speechSynthesis.cancel()}catch(e){}},key:function(e,down){lvKey(st,e,down)}};
+  var ctl={stop:function(){clearInterval(st.timer);lvMicKill(st);if(st.cb)st.cb.stop();try{speechSynthesis.cancel()}catch(e){}},key:function(e,down){lvKey(st,e,down)}};
   gameOpen(html,ctl);st.t0=performance.now();st.next=st.t0+600;
   gameEl.onclick=function(e){var b=e.target.closest("[data-lv]");if(b&&!b.disabled){lvAct(st,b.dataset.lv);return}var m=e.target.closest("[data-mid]");if(m){st.sel=+m.dataset.mid;gameEl.querySelectorAll(".cm.sel").forEach(function(x){x.classList.remove("sel")});m.classList.add("sel")}};
-  sysMsg(st,"🔴 Você entrou ao vivo. "+fmtN(L.v)+" pessoas chegando…");
+  var avs=gameEl.querySelectorAll("#lvStage .scene span");if(avs.length>=2)avs[avs.length-2].classList.add("lv-av");
+  sysMsg(st,"🔴 Você entrou ao vivo. "+fmtN(L.v)+" pessoas chegando…");st.lastAct=performance.now();
+  if(MIC.on){MIC.owner="live";lvRecStart(st);sysMsg(st,"🎙️ Microfone ligado e gravando. Fala com o chat!")}lvMicUI(st);
   st.timer=setInterval(function(){lvTick(st)},100);lvTick(st);
 }
 function lvEl(id){return document.getElementById(id)}
@@ -3146,9 +3448,10 @@ function lvPause(st,on){var now=performance.now();if(on&&!st.pauseAt)st.pauseAt=
 function lvTick(st){
   if(st.over)return;var L=st.L,now=performance.now(),el=lvElapsed(st),total=L.h*HOUR_MS;
   L.minutes=el/HOUR_MS*60;
+  var dt=Math.min(500,now-(st.lastTick||now));st.lastTick=now;lvMicTick(st,now,dt);
   if(!st.pauseAt&&st.faintAt>=0&&el>=total*st.faintAt){st.faintAt=-1;lvFaint(st);return}
   if(!st.pauseAt&&el>=total){lvFinish(st);return}
-  if(now-st.lastV>1500){st.lastV=now;var target=L.v0*L.mood*(st.round?1.1:1);L.v=Math.max(1,Math.round(target*rnd(.92,1.08)));L.peak=Math.max(L.peak,L.v);L.vSum+=L.v;L.vN++;lvEl("lvV").textContent=fmtN(L.v)}
+  if(now-st.lastV>1500){st.lastV=now;var target=L.v0*L.mood*(st.round?1.1:1)*lvMicMul(st,now)*(now<st.raidUntil?1.1:1);L.v=Math.max(1,Math.round(target*rnd(.92,1.08)));L.peak=Math.max(L.peak,L.v);L.vSum+=L.v;L.vN++;lvEl("lvV").textContent=fmtN(L.v)}
   if(now>=st.next){var iv=chatInterval(L.v)*(st.round?1.8:1)*(L.lag?1.25:1);st.next=now+iv*rnd(.6,1.4);if(!st.pauseAt||st.round)lvSpawn(st)}
   // expira mensagens especiais (4 s)
   st.msgs.forEach(function(m){if(m.act&&now-m.born>4000){m.act=false;var n=lvEl("cm"+m.id);if(n)n.classList.remove("act");
@@ -3157,7 +3460,7 @@ function lvTick(st){
   lvEl("lvT").textContent=fmtClock(el/HOUR_MS*3600);
   lvEl("lvG").textContent=fmtR(L.gross);
   var pct=Math.min(100,Math.round(L.gross/st.meta*100));lvEl("lvMp").textContent=pct+"%";lvEl("lvMb").style.width=pct+"%";
-  if(!st.metaHit&&L.gross>=st.meta){st.metaHit=true;sysMsg(st,"🎉 META BATIDA! Comemora com o chat!");sfx("viral")}
+  if(!st.metaHit&&L.gross>=st.meta){st.metaHit=true;lvExc(st,1);sysMsg(st,"🎉 META BATIDA! Comemora com o chat!");sfx("viral")}
   if(st.bubbleT&&now>st.bubbleT){st.bubbleT=0;var bb=lvEl("lvBub");if(bb)bb.remove()}
   lvHot(st);
 }
@@ -3168,7 +3471,7 @@ function lvHot(st){
   set("round",!st.round&&st.rounds<st.L.h,st.round||st.rounds>=st.L.h);
 }
 function lvAdd(st,m){
-  m.id=++st.id;m.born=performance.now();st.msgs.push(m);if(st.msgs.length>60)st.msgs.splice(0,st.msgs.length-60);
+  m.id=++st.id;m.born=performance.now();st.msgs.push(m);if(m.kind==="fan"&&m.u)st.lastFan=m.u;if(st.msgs.length>60)st.msgs.splice(0,st.msgs.length-60);
   var box=lvEl("lvMsgs");if(!box)return;var b=document.createElement("button");b.type="button";b.id="cm"+m.id;b.dataset.mid=m.id;
   b.className="cm"+(m.kind==="sc"?" sc sc-"+m.col:m.kind==="q"?" q":m.kind==="hat"?" hat":m.kind==="bot"?" bot":"")+(m.act?" act":"");
   b.innerHTML=(m.kind==="sc"?'<b>💲 '+fmtR(m.v)+' · @'+esc(m.u)+'</b>':'<b>@'+esc(m.u)+'</b>')+esc(m.t)+(m.act?'<span class="tm"></span>':"");
@@ -3180,15 +3483,17 @@ function lvSpawn(st,forceCol){
   if(sc){L.gross+=sc.v;L.sc[sc.col]++;
     if(sc.col==="r"){var trap=Math.random()<.1,tr=pick(LV_TRAP),ok=tpl(pick(LV_SC.r));
       var m={kind:"sc",col:"r",v:sc.v,u:pick(LV_FANS),t:trap?tr.p:ok.slice(0,30)+"…",full:trap?tr.f:ok,trap:trap,checked:false,act:false};lvAdd(st,m);L.specials++;st.pin=m;lvPin(st);sfx("coin");return}
-    L.specials++;lvAdd(st,{kind:"sc",col:sc.col,v:sc.v,u:pick(LV_FANS),t:tpl(pick(LV_SC[sc.col])),act:true});sfx("coin");return}
-  if(st.round){var rx=st.cbLast||2;lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(LV_RX[rx])});return}
+    L.specials++;lvAdd(st,{kind:"sc",col:sc.col,v:sc.v,u:pick(LV_FANS),t:tpl(pick(LV_SC[sc.col])),act:true});sfx("coin");lvExc(st,sc.col==="y"?.8:.5);
+    if(Math.random()<.3)setTimeout(function(){if(!st.over)lvSay(st,"don")},450);return}
+  if(st.round){var rx=st.cbLast||2;if(Math.random()<.5&&lvSay(st,rx>=2?"good":"fail"))return;lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(LV_RX[rx])});return}
+  if(!st.raided&&lvElapsed(st)>L.h*HOUR_MS*.25&&Math.random()<.012){lvRaid(st);return}
   var r=Math.random(),hp=.05+band()*.04;
-  if(r<.09){L.specials++;lvAdd(st,{kind:"q",u:pick(LV_FANS),t:pick(LV_Q),act:true})}
+  if(r<.09){var qq=lvQuestion(st);L.specials++;lvAdd(st,{kind:"q",u:pick(LV_REG),t:qq.t,a:qq.a,act:true})}
   else if(r<.09+hp){var ip=IDCOM[S.p.pron],c=Math.random()<.3&&ip?pick(ip.hater):pick(LV_HAT);
     if(c[3]&&CFG.filtro){sysMsg(st,"🛡️ O filtro de ódio removeu uma mensagem.");return}
     L.specials++;lvAdd(st,{kind:"hat",u:c[0],t:CFG.real||!c[2]?c[1]:c[2],act:true})}
   else if(r<.09+hp+.05){var bt=pick(LV_BOT);lvAdd(st,{kind:"bot",u:bt[0],t:bt[1]})}
-  else lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:tpl(pick(LV_CHAT))});
+  else{var ln=lvChatLine(st);lvAdd(st,{kind:"fan",u:ln.u,t:ln.t})}
 }
 function lvPin(st){
   var P=lvEl("lvPin"),m=st.pin;if(!P)return;if(!m){P.hidden=true;P.innerHTML="";return}
@@ -3201,15 +3506,17 @@ function lvMark(m,cls){m.done=true;m.act=false;var n=lvEl("cm"+m.id);if(n){n.cla
 function lvTarget(st,kind){var s=st.sel!=null?st.msgs.filter(function(m){return m.id===st.sel})[0]:null;if(s&&!s.done&&(!kind||s.kind===kind)&&(s.act||kind==="ban"))return s;return lvActive(st,kind==="ban"?null:kind)}
 function lvAct(st,a){
   var L=st.L;if(st.over)return;
+  if(a==="mic"){lvMic(st);return}
   if(a==="end"){lvFinish(st);return}
+  st.lastAct=performance.now();
   if(st.round||st.pauseAt){if(a.indexOf("dis")===0){lvDis(st,+a.slice(3));return}if(a==="resume"){lvResume(st);return}if(a==="sum"){lvFinish(st,true);return}return}
   if(a==="thank"){var m=lvTarget(st,"sc");if(!m||m.col==="r"){sysMsg(st,"(nenhuma doação pra agradecer agora)");return}
     L.lea+={b:1,g:2,y:4}[m.col]+1;L.boost=Math.min(.5,L.boost+.1);L.reacts++;L.ignRun=0;lvMark(m);sfx("good");
     if(m.col==="y"){lvBubble(st,"🗣️ “"+m.t+"”");speak(m.t)}else lvBubble(st,"🙏 Valeu demais, @"+m.u+"!")}
   else if(a==="ask"){var q=lvTarget(st,"q");if(!q){sysMsg(st,"(nenhuma pergunta no ar)");return}
-    L.fp+=.5;L.lea+=2;L.reacts++;L.qs++;lvMark(q);lvBubble(st,q.t.replace("❓ ","")+" → "+pick(LV_A));sfx("tap")}
+    L.fp+=.5;L.lea+=2;L.reacts++;L.qs++;lvMark(q);lvBubble(st,q.t.replace("❓ ","")+" → "+(q.a||pick(LV_A)));sfx("tap")}
   else if(a==="party"){if(!st.metaHit||L.celebrated)return;L.celebrated=true;L.boost+=.2;st.rainUntil=performance.now()+20000;sysMsg(st,"🎉 CHUVA DE DOAÇÃO! +20% por um tempo");confetti();sfx("viral");
-    for(var i=0;i<3;i++)setTimeout(function(){if(!st.over)lvSpawn(st,pick(["b","g","g","y"]))},300+i*450)}
+    lvExc(st,1);for(var i=0;i<3;i++)setTimeout(function(){if(!st.over)lvSpawn(st,pick(["b","g","g","y"]))},300+i*450)}
   else if(a==="ignore"){var g=lvTarget(st,null);if(g){if(g.kind==="sc"){L.ignRun++;if(L.ignRun>=5){L.ignRun=0;L.lea-=5;sysMsg(st,"💛 5 doações ignoradas seguidas (💛 −5).")}}lvMark(g)}}
   else if(a==="ban"){var b=lvTarget(st,"ban");if(!b||b.kind==="fan"&&st.sel==null){sysMsg(st,"(toque numa mensagem ou espere um hater aparecer)");return}
     if(b.kind==="hat"){L.paz+=3;L.bans++;L.reacts++;lvMark(b,"dead");sysMsg(st,"🔨 @"+b.u+" foi banido. Paz.");sfx("tap")}
@@ -3228,6 +3535,7 @@ function lvAct(st,a){
 function lvKey(st,e,down){
   if(st.cb){st.cb.key(e,down);if(down&&e.key==="Escape")st.cb.forfeit();return}
   if(!down)return;
+  if((e.key==="m"||e.key==="M")&&!st.over&&!e.ctrlKey&&!e.metaKey){e.preventDefault();lvMic(st);return}
   var ov=gameEl.querySelector(".lv-ov");
   if(ov){if(/^[123]$/.test(e.key)&&ov.querySelector('[data-lv="dis0"]')){lvAct(st,"dis"+(+e.key-1));e.preventDefault()}else if(e.key==="Enter"){var b=ov.querySelector("button");if(b){b.click();e.preventDefault()}}return}
   var map={"1":"thank","2":"ask","3":"party","4":"ignore","5":"ban","6":"round"};
@@ -3240,10 +3548,10 @@ function lvRound(st){
   setTimeout(function(){
     if(st.over)return;
     st.cb=counterBlock(stg,{stable:S.up.setup>=2,slow:S.up.setup>=3,weak:fband()>=2,onEvent:function(t){
-      if(t==="head"){st.cbLast=3;if(Math.random()<.5)lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(["HEADSHOT 🔥","CLIPA","que tiro!!"])})}
+      if(t==="head"){st.cbLast=3;lvExc(st,.3);if(Math.random()<.5)lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(["HEADSHOT 🔥","CLIPA","que tiro!!"])})}
       else if(t==="hit")st.cbLast=2;else if(t==="miss3"){st.cbLast=1;lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:pick(["errou kkk","a mira tá tremendo 😂","calma respira"])})}
       else if(t==="gold"){lvSpawn(st,"y");sysMsg(st,"✨ Inimigo dourado = SuperChat garantido!")}}},function(res){
-      st.cb=null;var r=liveRound(L,res);var b=r.band;st.cbLast=b;
+      st.cb=null;var r=liveRound(L,res);var b=r.band;st.cbLast=b;if(b===3)lvExc(st,1.2);
       LV_RX[b].slice(0,3).forEach(function(t,i){setTimeout(function(){if(!st.over)lvAdd(st,{kind:"fan",u:pick(LV_FANS),t:t})},200+i*260)});
       var n=r.don<2?0:Math.min(6,Math.max(1,Math.min(Math.floor(r.don/2),Math.round(r.don/25)||1)));var each=n?r.don/n:0;
       for(var i=0;i<n;i++){var col=each>=150?"r":each>=40?"y":each>=8?"g":"b";(function(c,v,k){setTimeout(function(){if(st.over)return;L.gross+=v;L.sc[c]++;L.specials++;lvAdd(st,{kind:"sc",col:c,v:Math.max(1,Math.round(v)),u:pick(LV_FANS),t:tpl(pick(LV_SC[c==="r"?"y":c])),act:true});sfx("coin")},500+k*350)})(col,each,i)}
@@ -3266,15 +3574,25 @@ function lvFaint(st){
 function lvFinish(st){
   if(st.over)return;st.over=true;clearInterval(st.timer);if(st.cb){st.cb.stop();st.cb=null}
   var L=st.L;L.minutes=Math.min(L.h*60,lvElapsed(st)/HOUR_MS*60);
+  var M=st.mic;if(M.used){L.micUsed=true;L.talk=M.totMs?M.talkMs/M.totMs:0;var cf=M.onMs?M.clipMs/M.onMs:0;L.shout=cf>.08||M.loudN>=3?Math.min(6,Math.max(2,Math.round(cf*30))):0}
+  st.moms=M.segs.length?lvMoments(st):[];lvRecStop(st);if(MIC.on)micStop();
   var res=liveEnd(L);save();
   var rows=[["⏱ Duração",fmtClock(L.minutes*60)],["👁 Pico de viewers",fmtN(L.peak)],["💲 SuperChats",fmtR(res.gross)],["🏦 Taxa da plataforma (30%)","−"+fmtR(res.fee)],["📺 Anúncios",fmtR(res.ad)],["🎯 Rodadas",L.rounds.length+"/"+L.h],["💬 Reações",Math.round(res.react*100)+"%"]];
+  if(L.micUsed){rows.push(["🎙️ Tempo falando",Math.round(L.talk*100)+"%"]);if(res.tb>0)rows.push(["🗣️ Bônus de voz","+"+Math.round(15*res.tb)+"% viewers · +"+Math.round(10*res.tb)+"% doações"])}
   gameEl.querySelector(".lvw").innerHTML='<div class="lvsum"><div><p class="small muted">LiveGrid · fim da live</p><h2>'+(L.faintHit?"🚑 Live interrompida":res.good?"🔥 Live boa!":"😐 Live morna")+'</h2></div>'+
     (res.viral?'<span class="vbadge">🎬 CLIPE VIRAL</span>':"")+
     '<div class="panel lines">'+rows.map(function(r){return '<div><span>'+r[0]+'</span><b>'+r[1]+'</b></div>'}).join("")+'<div style="border-top:1px solid var(--line);padding-top:5px"><span>💰 Você recebeu</span><b class="p">'+fmtR(res.money)+'</b></div></div>'+
     dchips(res.d)+(L.traps?'<p class="small" style="color:#ff9a8c">😱 Você leu um SuperChat armadilha em voz alta.</p>':"")+
+    (L.shout?'<p class="small" style="color:#ff9a8c">📢 Você gritou tanto que o áudio estourou: virou clipe de rage (🔥 +'+L.shout+').</p>':"")+
+    (L.micUsed?'<p class="small muted">🎙️ '+(L.talk<.4?"Dica: falar entre 40% e 80% do tempo rende o bônus de voz cheio.":L.talk>.8?"Você falou quase o tempo todo. Deixe o chat respirar: acima de 80% o bônus cai.":"Na medida certa: você falou e deixou o chat falar.")+'</p>':"")+
+    (st.mic.segs.length?'<div class="panel recbox" id="lvRec"></div>':"")+
     '<p class="small muted">'+(res.good?"Reagir ao chat e mandar bem nas rodadas deixa a live boa: mais seguidores e doações cheias.":"Live morna: doações pela metade. Reaja mais ao chat e treine a mira.")+'</p>'+
     '<button class="btn primary wide adv" type="button" data-lv="close">'+(S.dead?"Ver o que aconteceu…":"Voltar ao celular")+'</button></div>';
-  gameEl.onclick=function(e){var b=e.target.closest('[data-lv="close"]');if(!b)return;gameClose();if(S.dead){finish(S.dead);return}UI.d={};go("mes")};
+  lvRecPaint(st);
+  gameEl.onclick=function(e){
+    var mo=e.target.closest("[data-mom]");if(mo){var pr=mo.dataset.mom.split(":"),au=gameEl.querySelector('.recbox[data-seg="'+pr[0]+'"] audio');if(au){try{au.currentTime=+pr[1];var pp=au.play();if(pp&&pp.catch)pp.catch(function(){})}catch(x){}}return}
+    var rd=e.target.closest("[data-recdel]");if(rd){var sg=st.mic.segs[+rd.dataset.recdel];if(sg){var au2=gameEl.querySelector('.recbox[data-seg="'+sg.seg+'"] audio');if(au2)au2.pause();recFree(sg)}lvRecPaint(st);sfx("tap");return}
+    var b=e.target.closest('[data-lv="close"]');if(!b)return;gameClose();if(S.dead){finish(S.dead);return}UI.d={};go("mes")};
   var cb=gameEl.querySelector('[data-lv="close"]');if(cb)cb.focus({preventScroll:true});
   sfx(res.good?"viral":"tap");if(res.good&&!RM)confetti();
 }
@@ -3552,10 +3870,11 @@ function bindPg(){
 
 // ---------- overlays ----------
 function dialog(title,body,foot,cls){
+  voxLeave();
   ovl.innerHTML='<div class="ov" data-ov><div class="dlg '+(cls||"")+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="dh"><h2>'+title+'</h2><button class="menu-b" type="button" data-act="close" aria-label="Fechar">✕</button></div><div class="db" id="dlgB">'+body+'</div>'+(foot?'<div class="df">'+foot+'</div>':"")+'</div></div>';
   var f=ovl.querySelector(".dlg button");if(f)f.focus();
 }
-function closeDlg(){ovl.innerHTML=""}
+function closeDlg(){voxLeave();ovl.innerHTML=""}
 var TERMOS=["1. Bem-vind{a|o|e}! Ao criar uma conta você concorda com tudo abaixo, inclusive com o que você não leu (ou seja, tudo).",
  "2. O MailGrid pode ler seus e-mails pra “melhorar sua experiência”. Sua experiência não vai melhorar.",
  "3. Senhas devem ter no mínimo 4 caracteres. A dica de senha é privada e ninguém vai ver. Provavelmente.",
@@ -3594,6 +3913,7 @@ function menuDlg(){
   dialog("Menu",'<button class="mitem" type="button" data-act="finais"><span class="emo">🏁</span>Finais descobertos<small>'+FIN.length+'/'+FINAIS.length+'</small></button>'+
    '<button class="mitem" type="button" data-act="conqs"><span class="emo">🏅</span>Conquistas<small>'+CQ.length+'/'+CONQ.length+'</small></button>'+
    '<button class="mitem" type="button" data-act="som"><span class="emo">'+(snd?"🔊":"🔇")+'</span>Som<small>'+(snd?"ligado":"desligado")+'</small></button>'+
+   '<button class="mitem" type="button" data-act="vox"><span class="emo">🎙️</span>Gravador de voz<small>recado avulso</small></button>'+
    '<button class="mitem" type="button" data-act="cfgReal"><span class="emo">🗨️</span>Comentários realistas<small>'+(CFG.real?"Ligado":"Suavizado")+'</small></button>'+
    '<button class="mitem" type="button" data-act="cfgFiltro"><span class="emo">🛡️</span>Filtro automático de ódio<small>'+(CFG.filtro?"Ligado · grátis":"Desligado")+'</small></button>'+
    '<p class="small muted">“Suavizado” troca os insultos por versões leves, sem mudar os números. O filtro de ódio é grátis desde o início: ninguém deveria ter que pagar pra não ser ofendid'+withS(function(){return tpl("{a|o|e}")})+'.</p>'+
@@ -3703,6 +4023,13 @@ document.addEventListener("click",function(e){
     case "lh":UI.d.h=+t.dataset.h;sfx("tap");rerender();break;
     case "ls":UI.d.slot=t.dataset.k;sfx("tap");rerender();break;
     case "goLive":startLive();break;
+    case "micSw":
+      if(MIC.on){micStop();UI.d.micTried=0;sfx("tap");rerender();break}
+      if(MIC.busy)break;UI.d.micTried=1;var mp=micStart("setup");rerender();
+      mp.then(function(ok){if(GAME){if(ok&&MIC.owner==="setup")MIC.owner="live";return}if(UI.v!=="live"){if(ok&&MIC.owner==="setup")micStop();return}if(ok)sfx("good");rerender()});break;
+    case "vox":voxOpen();break;
+    case "voxRec":if(VOX&&VOX.R&&!VOX.R.stopping)voxStopRec();else voxStart();break;
+    case "voxDel":voxDel();sfx("tap");break;
     case "cfgReal":CFG.real=!CFG.real;saveCfg();menuDlg();break;
     case "cfgFiltro":CFG.filtro=!CFG.filtro;saveCfg();menuDlg();break;
     case "avancar":
