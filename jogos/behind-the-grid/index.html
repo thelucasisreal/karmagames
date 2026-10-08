@@ -1614,7 +1614,9 @@ var CFG=store.get("cfg",null)||{};if(CFG.real==null)CFG.real=true;if(CFG.filtro=
 function saveCfg(){store.set("cfg",CFG)}
 function monDefaults(o){return Object.assign({fStart:0,$start:0,posts:0,polem:false,trendUsed:false,toxicUsed:false,gain:0,viral:0,detox:false,contractPosts:0,best:null,saveMoney:0,ings:0,lines:[],
   used:0,lives:0,likes:0,mercado:false,energ:false,ate:{},fotos:{},anyLate:false,paid:[]},o||{})}
+function applyBia(R){var b=zcDef("bia");if(!b)return;if(R.biaCrush){b.type="crush";b.g="f";b.pe="👩🏽‍🦱";b.deb=1}else{b.type="amiga";delete b.deb}}
 function syncDynCrush(R){
+  applyBia(R);
   for(var i=ZC.length-1;i>=0;i--)if(ZC[i].dyn)ZC.splice(i,1);
   (R.dynCrush||[]).forEach(function(id){var n=null;NPCS.forEach(function(x){if(x.id===id)n=x});if(n&&!zcDef(id))ZC.push({id:n.id,n:"@"+n.h,e:n.e,c:n.c,type:"crush",deb:1,g:"x",pe:n.e,dyn:1})});
 }
@@ -1836,7 +1838,10 @@ var ZT={
  crush0gen:[["oi 👀 vi que você me segue há um tempo… tudo bem?",["Tudo ótimo, melhor agora que você mandou msg 😳","Tudo bem, obrigad{a|o|e}.","Tô bem, e você que demorou pra perceber? 😏"]],
     ["seu último post ficou muito bom, sério",["Vindo de você, vale o dobro 🥹","Agradeço o feedback.","Eu sei 😎 brincadeira, valeu!"]],
     ["a gente devia fazer uma collab… ou um café ☕",["Café primeiro, collab depois 😊","Podemos alinhar uma agenda.","Café só se você pagar 😏"]]],
- crush0:{theo:[["vi seu story. aquele café era aesthetic ou só bagunça mesmo? 👀",["Era bagunça, mas fico feliz que você reparou 😊","Obrigad{a|o|e} pela visualização.","Era bagunça premium, você não entenderia 😏"]],
+ crush0:{bia:[["então… posso te falar uma coisa meio estranha? 👀",["Pode, eu também tenho uma pra te falar 😳","Pode falar, Bia.","Se for que você quebrou meu carregador, eu já sei"]],
+    ["sabe quando a gente dormiu vendo filme semana passada? eu não dormi 😳",["Eu também não… 🙈","Hm. Interessante.","Você ronca, então dormiu sim kkkk"]],
+    ["se a gente não fosse amigo(a)… você ficaria comigo?",["Ficaria. Muito. 💛","Prefiro não responder agora.","Depende, você ainda vai roubar meu moletom?"]]],
+  theo:[["vi seu story. aquele café era aesthetic ou só bagunça mesmo? 👀",["Era bagunça, mas fico feliz que você reparou 😊","Obrigad{a|o|e} pela visualização.","Era bagunça premium, você não entenderia 😏"]],
     ["você tem cara de quem cancela rolê em cima da hora",["Só cancelo rolê ruim. Com você eu não cancelaria 😳","Depende da agenda.","E você tem cara de quem pula o treino de braço"]],
     ["saudades 👀 (de te ver no meu feed, calma)",["Também senti, juro 🙈","Agradeço o acompanhamento.","Calma você, que eu nem postei hoje"]]],
    lari:[["oi!! vi que você curtiu meu vídeo caindo do skate kkkk 🛹",["Curti porque você levantou rindo, achei lindo 🥹","Parabéns pelo conteúdo.","Curti a queda, não o skate"]],
@@ -1995,7 +2000,7 @@ function zapNLU(t){
   if(r.elogio&&r.ironia)r.elogio=null;
   if(r.xing&&r.risada&&!r.grito&&/(burr|bob|best|doid|lerd|chat|palhac|trouxa)/.test(r.xing))r.zoeira=1; // "kkk sua besta" = zoeira de amigo
   if(/\?/.test(raw))r.pergunta=r.pergunta||"?";
-  var top=null;for(var i=0;i<ZTOP.length;i++)if(n.indexOf(ZTOP[i][0])>=0){top=ZTOP[i][1];break}r.top=top;if(!r.convite&&top&&(r.pergunta||/\b(quer|topa|bora|vamos)\b/.test(n)))r.convite="lugar";
+  var top=null;for(var i=0;i<ZTOP.length;i++)if(n.indexOf(ZTOP[i][0])>=0){top=ZTOP[i][1];break}r.top=top;if(!r.convite&&top&&/\b(quer|topa|bora|vamos|vamo|partiu|bora de)\b/.test(n))r.convite="lugar";
   // humor geral
   var bad=(r.xing&&!r.zoeira?3:0)+(r.negou?2:0)+(r.grito?1:0)+(r.ironia?1:0),good=(r.carinho?2:0)+(r.elogio?1.5:0)+(r.declara?2:0)+(r.desculpa?1:0)+(r.cumpr?.5:0);
   r.sent=bad>good?"bad":good>0?"good":"neutro";
@@ -2104,27 +2109,138 @@ var ZB={
 var ZQ={fam:["E você, já almoçou? 🍲","Quando vem visitar a gente?","Tá dormindo direito?"],amiga:["e o crush, hein? 👀","bora marcar um rolê?","viu a treta de hoje?"],
  crush:["o que você vai fazer no fim de semana? 👀","você prefere praia ou cinema?","qual sua comida favorita?","você é de dormir cedo ou de virar a noite?"],marca:[],dono:[]};
 function zapPick(pool,key,fb){var L=pool[key];if(!L||!L.length)L=pool[fb||"neutro"];return L&&L.length?pick(L):null}
+// ---- raciocínio da conversa: contexto, perguntas, "é brincadeira", persona de cada contato ----
+var ZPER={
+ mae:{doing:["fazendo almoço 🍲","vendo a novela","mandando bom dia no grupo da família","regando as plantas 🌿","lavando louça e pensando em você"],fav:{comida:"lasanha da vó",filme:"Titanic (choro toda vez)",musica:"Roberto Carlos",serie:"a novela das nove",jogo:"paciência no celular",cor:"azul",bebida:"café passado na hora",time:"o mesmo do seu pai, infelizmente",lugar:"a casa da sua vó"},likes:["novela","cafe","bolo","planta","igreja","feira","forro"],idade:"Isso não se pergunta pra uma dama 😤",mora:"Na mesma casa de sempre, ué. Seu quarto tá do jeitinho que você deixou."},
+ pai:{doing:["vendo o jogo ⚽","consertando o chuveiro (de novo)","cochilando no sofá","lavando o carro"],fav:{comida:"churrasco",filme:"Rocky",musica:"Raul Seixas",serie:"jornal",jogo:"dominó",cor:"verde",bebida:"café",time:"o nosso, claro",lugar:"a pescaria"},likes:["futebol","churrasco","pesca","carro","domino"],idade:"Tenho idade pra saber que isso aí de internet é arriscado.",mora:"Aqui, ué. Pergunta estranha."},
+ bia:{doing:["deitada vendo tiktrend kkk","fingindo que estudo","comendo miojo","stalkeando seu crush 👀"],fav:{comida:"açaí com tudo",filme:"Meninas Malvadas",musica:"pagode e Anitta",serie:"qualquer reality",jogo:"Stop no celular",cor:"amarelo",bebida:"refri",time:"não ligo pra futebol",lugar:"o barzinho da esquina"},likes:["acai","pagode","reality","fofoca","praia","festa"],idade:"a mesma que você, sua(eu) esquecid(a)",mora:"no mesmo prédio que você, ué kkkk"},
+ theo:{doing:["saindo do treino 💪","fazendo meal prep","gravando story na academia","alongando"],fav:{comida:"frango com batata doce (e brigadeiro escondido)",filme:"Rocky",musica:"funk pra treinar",serie:"documentário de esporte",jogo:"futebol",cor:"preto",bebida:"água com limão",time:"o Flamengo",lugar:"a academia"},likes:["academia","treino","praia","corrida","futebol","acai"],idade:"27",mora:"no Rio"},
+ nic:{doing:["fazendo uma batida nova 🎹","ensaiando pro show","garimpando sintetizador velho","ouvindo vinil"],fav:{comida:"pizza de madrugada",filme:"Interestelar",musica:"synthpop dos anos 80",serie:"Black Mirror",jogo:"Guitar Hero",cor:"roxo",bebida:"café gelado",time:"não acompanho",lugar:"um estúdio bagunçado"},likes:["musica","show","vinil","synth","cafe","noite"],idade:"25",mora:"em SP, num apê com mais teclado que móvel"},
+ rafa:{doing:["voltando da praia 🏄","encerando a prancha","vendo a previsão de onda","tomando água de coco"],fav:{comida:"peixe na brasa",filme:"Point Break",musica:"reggae",serie:"Outer Banks",jogo:"Tony Hawk",cor:"azul",bebida:"água de coco",time:"o Santos",lugar:"Itacaré"},likes:["praia","surf","coco","sol","reggae","natureza"],idade:"26",mora:"em Floripa"},
+ lari:{doing:["andando de skate 🛹","pintando um shape","na feira de vinil","caindo do skate kkk"],fav:{comida:"pastel de feira",filme:"Scott Pilgrim",musica:"punk rock",serie:"Euphoria",jogo:"Skate 3",cor:"verde",bebida:"caldo de cana",time:"não ligo",lugar:"a pista do bairro"},likes:["skate","vinil","pastel","arte","punk","feira"],idade:"23",mora:"em Curitiba"},
+ bela:{doing:["pintando uma tela 🎨","desenhando no caderno","num museu","organizando minha exposição"],fav:{comida:"comida japonesa",filme:"Frida",musica:"MPB",serie:"Fleabag",jogo:"não sou de jogo",cor:"laranja",bebida:"vinho",time:"nenhum",lugar:"o Inhotim"},likes:["arte","museu","mpb","vinho","desenho","exposicao"],idade:"25",mora:"em BH"},
+ nina:{doing:["jogando ranked 🎮","montando cosplay","em live","comendo miojo de madrugada"],fav:{comida:"lámen",filme:"Your Name",musica:"trilha de anime",serie:"Arcane",jogo:"Valorant",cor:"rosa",bebida:"energético (não conta pra minha mãe)",time:"o meu time de e-sports",lugar:"o evento de anime"},likes:["jogo","anime","cosplay","lamen","live","game"],idade:"22",mora:"em Recife"},
+ jorge:{doing:["conferindo os aluguéis","assistindo jornal"],fav:{comida:"feijoada",filme:"não assisto essas coisas",musica:"samba antigo",serie:"jornal",jogo:"dominó",cor:"marrom",bebida:"café",time:"Vasco",lugar:"a varanda"},likes:["samba","feijoada","domino"],idade:"72, e com saúde pra cobrar aluguel.",mora:"no térreo."},
+ marca:{doing:["fechando a campanha do trimestre"],fav:{comida:"não informamos",filme:"não informamos",musica:"nossa trilha de campanha",serie:"",jogo:"",cor:"a cor da nossa marca",bebida:"",time:"",lugar:""},likes:[],idade:"Somos uma empresa 😅",mora:"Nosso escritório fica em SP."}
+};
+function zPer(id){var p=ZPER[id];if(p)return p;var n=null;NPCS.forEach(function(x){if(x.id===id)n=x});
+  var dg=n&&n.posts?n.posts.map(function(x){return x[2]}):["postando"];
+  return {doing:["vendo seus stories 👀","editando um post","respondendo comentário"],fav:{comida:"pizza",filme:"um de comédia",musica:"de tudo um pouco",serie:"uma bem viciante",jogo:"Stop",cor:"preto",bebida:"café",time:"não ligo",lugar:"minha casa"},likes:[],idade:"isso é segredo 😏",mora:"por aí 😏",posts:dg}}
+var ZTOPIC=[
+ ["feliz",/\b(feliz|animad\w*|content\w*|deu certo|consegui|passei|ganhei|realizei)\b/],
+ ["fome",/\b(fome|famint\w*|nao comi|morrendo de fome)\b/],["sono",/\b(sono|insonia|nao dormi|virei a noite|exaust\w*)\b/],["doente",/\b(doente|gripad\w*|febre|dor de cabeca|passando mal|resfriad\w*|vomit\w*)\b/],
+ ["post",/\b(postei|post novo|video novo|viraliz\w*|bombou|flop\w*|seguidor\w*|engajamento|algoritmo)\b/],["academia",/\b(academia|treino|treinei|malh\w*|corri|corrida)\b/],
+ ["estudo",/\b(prova|faculdade|escola|estud\w*|vestibular|enem|trabalho de)\b/],["jogo",/\b(jogando|joguei|game|partida|ranked|rank|valorant|minecraft|free fire|fortnite)\b/],
+ ["musica",/\b(musica|cantando|playlist|show|pagode|funk|sertanejo)\b/],["serie",/\b(serie|filme|netflix|assistindo|anime|novela|dorama)\b/],
+ ["trabalho",/\b(trabalhando|trabalho|chefe|emprego|bico|plantao)\b/]
+];
+var ZTR={
+ fome:{fam:["Come alguma coisa AGORA, pelo amor de Deus! 🍲 Quer que eu mande um PIX pro ZapEats?","Fome?! Vem almoçar aqui domingo, faço sua comida favorita."],amiga:["pede um açaí e me chama kkkk","fome eu também, bora dividir uma pizza?"],crush:["fome? bora comer algo juntos? 👀","eu faço um lanche muito bom, só falando 😏"],dflt:["Vai comer alguma coisa, hein."]},
+ sono:{fam:["Dorme cedo hoje, nada de celular na cama! 😴","Você precisa descansar, filh{a|o|e}. Internet espera."],amiga:["vai dormir, criatura 😴","toma um chá e desliga esse celular"],crush:["vai descansar 😴 amanhã a gente se fala","se não conseguir dormir, me liga 👀"],dflt:["Descansa um pouco."]},
+ doente:{fam:["Doente?! Toma chá de limão com mel e me liga AGORA. Quer que eu vá aí? 🥺","Já foi no médico? Não fica se automedicando!"],amiga:["melhoras!! quer que eu leve uma sopa? 🍲","nossa, se cuida, tá? 🫂"],crush:["ahh melhoras 🥺 quer que eu leve um remédio?","se cuida, tá? fico preocupad{a|o|e}"],dflt:["Melhoras."]},
+ post:{fam:["Vi seu post! Mostrei pra todo mundo da igreja 😍","Seguidores pra quê se você tem sua mãe? 😂 Mas tá lindo!"],amiga:["vi!! já comentei e compartilhei 💛","o algoritmo é doido, não liga"],crush:["vi seu post 👀 ficou muito bom","eu sempre vejo seus posts primeiro (shh)"],dflt:["Vi seu post."]},
+ academia:{fam:["Isso! Saúde em primeiro lugar 💪","Não exagera no treino, hein!"],amiga:["olha el{a|e|e} fitness kkkk","eu fui até a porta da academia, conta?"],crush:["boa!! um dia a gente treina junto 💪","tá ficando em forma, é? 👀"],dflt:["Boa!"]},
+ estudo:{fam:["Isso! Estudo ninguém tira de você 📚","Boa sorte!! Vou acender uma vela 🕯️"],amiga:["boa sorte!! você vai arrasar","se precisar, eu te passo o resumo"],crush:["boa sorte!! depois me conta 🍀","inteligente ainda? aí complica 😳"],dflt:["Boa sorte."]},
+ jogo:{fam:["Joguinho de novo? Tá, mas come antes!","Ganhou pelo menos?"],amiga:["ganhou ou rage quit? kkkk","me chama pra próxima"],crush:["bora jogar junto qualquer dia? 🎮","aposto que eu te ganho 😏"],dflt:["Boa partida."]},
+ musica:{fam:["Música boa é a da minha época 😂","Canta pra mim depois!"],amiga:["manda a playlist!!","se for pagode eu tô dentro"],crush:["manda o link, quero ouvir o que você ouve 👀","bora num show juntos?"],dflt:["Legal."]},
+ serie:{fam:["Que série? Me indica que eu vejo também","Não fica a noite toda vendo, hein!"],amiga:["SEM SPOILER","me indica, tô sem nada pra ver"],crush:["bora ver junto? 🍿","me indica uma, prometo assistir"],dflt:["Legal."]},
+ feliz:{fam:["Que orgulho!! 🥹 Já contei pra família toda","Eu sabia que você ia conseguir ❤️"],amiga:["AAAAA EU SABIA 🎉","isso merece comemoração, bora?"],crush:["parabéns!! 🎉 merece um encontro de comemoração 👀","fico muito feliz por você 😊"],dflt:["Parabéns!"]},
+ trabalho:{fam:["Trabalho é bom, mas não esquece de descansar.","Seu chefe tá te tratando bem?"],amiga:["trabalhar é muito superestimado kkkk","força, guerreir{a|o|e}"],crush:["força aí! depois a gente se distrai 👀","trabalhador{a||e}, gosto 😏"],dflt:["Força."]}
+};
+var ZSTOP=" pensando pensar sei lá sabe que quem como onde quando porque voce voces estou esta eles elas minha meu seus suas isso esse essa aquilo nada tudo muito mais menos entao tambem agora hoje ontem amanha ainda sempre nunca sobre para pela pelo com sem uma umas uns tipo assim aqui ali dele dela gente coisa coisas acho achei falar falei fazer fazendo tava estava ";
+function zSalient(n){var w=n.trim().split(" ").filter(function(x){return x.length>=4&&ZSTOP.indexOf(" "+x+" ")<0&&!/^k+$|^(ha)+$/.test(x)});w.sort(function(a,b){return b.length-a.length});return w[0]||null}
+function zPickNew(L,C){var f=L.filter(function(x){return x!==C.lastNpc});return pick(f.length?f:L)}
+function zapSmart(id,d,typ,U,C,a,up,down,info,dd){
+  var n=U.n,per=zPer(id),k=typ==="fam"?"fam":typ==="amiga"?"amiga":typ==="crush"?"crush":"dflt";
+  var crushy=typ==="crush",isFam=typ==="fam",cl=U.cls,hard=cl==="bad"||cl==="malicia";
+  // 1) "é brincadeira": desfaz parte do estrago da última mensagem ruim
+  if(/(^| )(e|eh|era|foi|so|to|tava|estou|estava|calma|relaxa)? ?(so )?(brincadeira|brincadeirinha|zoeira|zuera|zueira|zoando|brincando|mentira)( |$)|to zoando|tava zoando|nao leva a serio/.test(n)&&!U.xing){
+    if(C.lastLoss>0){var back=Math.round(C.lastLoss*(a>=40?.6:.25));relAdd(id,back);C.lastLoss=0;info.length=0;info.push("😅 Explicou que era brincadeira (afeto +"+back+")");
+      if(a>=40)return zPickNew(isFam?["Ah bom! Quase me matou do coração 😂","Brincadeira sem graça, mas tá perdoad{a|o|e} 🙄❤️"]:typ==="amiga"?["KKKKK quase te bloqueei","sua besta, eu acreditei 😭"]:crushy?["ufa 😅 achei que você tava falando sério","brincadeira, é? 😒 tá… mas não faz mais isso"]:["Entendido. Vamos seguir."],C);
+      return zPickNew(isFam?["Brincadeira? Não pareceu. 😒","Sei… depois a gente conversa."]:crushy?["brincadeira estranha, hein 😬","não achei graça nenhuma"]:typ==="dono"?["Brincadeira com aluguel não existe."]:["Hm. Não pareceu brincadeira."],C)}
+    if(C.lastCls==="cantada"||C.lastCls==="declara")return crushy?zPickNew(["ah, então era brincadeira? 😕 achei que…","brincadeira, é? 😒 tá bom então"],C):"kkkkk ah bom";
+    return zPickNew(["kkkk brincadeira com o quê? 😂","eu nem tinha entendido, então tá de boa kkk"],C);
+  }
+  if(hard)return null;
+  // 2) repetiu a mesma mensagem
+  if(C.lastText&&C.lastText===n&&n.trim().length>2)return zPickNew(["você já falou isso kkkk","de novo? 😂 eu ouvi da primeira vez","tá travad{a|o|e}? kkkk mandou igual"],C);
+  // 3) responder à pergunta que o NPC fez
+  var q=C.ctx&&C.ctx.m===S.m&&C.ctx.k==="q"?C.ctx.q:null;
+  if(q){C.ctx=null;
+    if(/^e voce\? /.test(q)||/^e voce /.test(q)){var tt=q.replace(/^e voce\?? /,"").trim(),ans=U.raw.replace(/[?!.]/g,"").trim();if(ans.length>30)ans=zSalient(n)||"isso";up(2);
+      return zPickNew([ans+"? boa escolha 😄","hmm, "+ans+"… gostei, combina com você",ans+"?? sério? achei que você ia falar outra coisa kkkk"],C)}
+    if(/comida favorita/.test(q)){var food=U.raw.replace(/[?!.]/g,"").trim();if(food.length>30)food=zSalient(n)||"isso";up(3);return zPickNew([food+"?? boa escolha 😋 a minha é "+per.fav.comida,"hmm "+food+"… anotado 👀 a minha é "+per.fav.comida+", um dia te levo"],C)}
+    if(/praia ou cinema/.test(q)){var pc=/praia/.test(n)?"praia":/cinema/.test(n)?"cinema":null;if(pc){C.ctx={k:"convite",m:S.m,top:pc==="praia"?"praia":"um cineminha"};up(2);return pc==="praia"?"praia!! sabia 😎 bora num sábado de sol?":"cinema então 🍿 bora ver um filme essa semana?"}
+      if(/os dois|ambos|tanto faz/.test(n)){C.ctx={k:"convite",m:S.m,top:"praia"};return "os dois então kkkk começa pela praia? 😏"}}
+    if(/fim de semana/.test(q)){if(/\b(nada|nao sei|nenhum|em casa|ficar em casa|dormir|livre)\b/.test(n)){C.ctx={k:"convite",m:S.m,top:"a gente sair"};return "então tá livre… bora sair? 👀"}up(2);return zPickNew(["parece bom! se sobrar um tempinho, me chama 😊","olha só, agenda cheia hein 😏"],C)}
+    if(/dormir cedo ou de virar/.test(q)){if(/cedo/.test(n))return "cedo?? você é muito organizad{a|o|e} kkk eu viro a noite";if(/noite|virar|madrugada|tarde/.test(n))return "eu também!! clube da madrugada 🌙";if(/depende|os dois|tanto faz/.test(n))return "kkkk depende do dia né, justo"}
+    if(/ja almocou/.test(q)&&(U.sim||U.nao||/\b(nao|ainda|comi|almocei|sim)\b/.test(n))){return U.nao||/\b(nao|ainda nao)\b/.test(n)?"Vai comer AGORA! Não me faz ir aí 😤":"Muito bem! Comeu o quê? Verdura também?"}
+    if(/visitar a gente/.test(q)){return /\b(domingo|sabado|amanha|semana|logo|hoje)\b/.test(n)?"Combinado! Vou fazer bolo 🍰 Não vai furar, hein!":U.nao?"Ah… tá bom. Sua mãe espera 😔":"Tô esperando, hein! Seu quarto tá arrumadinho."}
+    if(/dormindo direito/.test(q)&&(U.sim||U.nao||/\b(nao|sim|mais ou menos|pouco|durmo)\b/.test(n))){return U.nao||/\bnao\b/.test(n)?"Eu sabia! Larga esse celular de noite 😠":"Ótimo! Mas não acredito muito, não 🤨"}
+    if(/crush/.test(q)){var cn=null;ZC.forEach(function(c){if(c.type==="crush"&&n.indexOf(c.n.replace("@","").split(".")[0])>=0)cn=c});
+      if(cn)return "EU SABIA que era "+cn.n+" 👀 conta TUDO";if(/\b(nada|nenhum|ninguem|sem crush)\b/.test(n))return "sei… você tá escondendo alguma coisa 🤨";return "hmmm misteriosx 👀"}
+    if(/role/.test(q)){if(U.sim||U.convite){C.ctx=null;return null}if(U.nao)return "sem graça 😒 próxima vez você não escapa"}
+    if(/treta de hoje/.test(q)&&(U.sim||U.nao||/\b(nao|sim|vi|qual)\b/.test(n))){return U.nao||/\bnao\b/.test(n)?"MANO. a @marimaravilha deixou de seguir metade das amigas. o Chirp tá pegando fogo 🔥":"pois é, né?? eu tô acompanhando igual novela 🍿"}
+  }
+  if(cl==="cantada"||cl==="declara")return null;
+  // 4) perguntas do jogador
+  if(/(o que|oq|que) (voce )?(ta|esta)? ?fazendo|fazendo o que|ta fazendo oq|fazendo oq/.test(n))return "tô "+pick(per.doing)+(crushy&&a>=50?" e pensando em você 😳":"")+(crushy?" e você?":"");
+  if(/gosta de mim|voce me ama|me ama\b|sente algo por mim|tem crush em mim|gosta de alguem/.test(n)){
+    if(isFam)return "Que pergunta! Você é a minha vida ❤️";if(typ==="amiga")return "claro, sua besta 💛 (como amig{a|o|e}, tá? kkk)";
+    if(!crushy)return "Hm… não entendi a pergunta 😅";
+    if(S.date===id||a>=70){up(3);return zPickNew(["gosto… muito 😳💘","você ainda pergunta? 🙈"],C)}if(a>=45)return "acho que tô começando a gostar 👀";return "a gente mal se conhece, né? 😅 mas quem sabe"}
+  var fm=n.match(/(qual|q) (e )?(a |o )?(sua|seu|tua|teu) (comida|filme|musica|serie|jogo|cor|time|lugar|bebida)/);
+  if(fm){var t=fm[5],v=per.fav[t];if(!v)return "não tenho muito isso, sei lá kkk";C.ctx={k:"q",m:S.m,q:"e voce "+t};return (isFam?"":"")+v.charAt(0).toUpperCase()+v.slice(1)+(crushy||typ==="amiga"?"! e a sua?":".")}
+  if(/posso (te )?(falar|contar|perguntar|pedir)|tenho (uma coisa|algo) (pra|para) (te )?(falar|contar)|preciso (te )?(falar|contar)/.test(n))return zPickNew(isFam?["Pode falar, meu amor. Aconteceu alguma coisa? 🥺","Fala! Tô aqui."]:typ==="amiga"?["fala!! já tô curios{a|o|e} 👀","pode, desembucha kkkk"]:crushy?["pode… tô curios{a|o|e} 😳","fala! agora fiquei nervos{a|o|e} kkkk"]:["Pode falar."],C);
+  if(/quantos anos|sua idade/.test(n))return per.idade;
+  if(/onde (voce )?mora|de onde (voce )?e\b|mora onde/.test(n))return per.mora;
+  if(/(ta|esta|ficou) (brav|chatead|magoad|irritad|puto|puta)|ta com raiva|brigou comigo/.test(n))return C.lastLoss>0||C.lastCls==="bad"||C.lastCls==="malicia"?zPickNew(["um pouco, né… depois do que você falou","tô sim. mas passa 😒"],C):zPickNew(["não, de boa! por quê? 😊","bravo? eu? kkkk tá tudo certo"],C);
+  var lk=n.match(/voce gosta de ([a-z ]{3,20})/);
+  if(lk&&!/mim/.test(lk[1])){var thing=lk[1].trim(),ok=per.likes.some(function(x){return thing.indexOf(x)>=0||x.indexOf(thing)>=0});
+    return ok?zPickNew(["AMO "+thing+"!! como você sabia? 😍","demais! "+thing+" é minha vida"],C):zPickNew([thing+"? não sou muito fã, mas topo conhecer 👀","hmm "+thing+"… nunca experimentei muito"],C)}
+  if(/^ (como assim|nao entendi|oi\?|que\?|hein|ue) $|nao entendi|como assim/.test(n)&&C.lastNpc)return zPickNew(["tipo, eu tava falando: “"+C.lastNpc+"”","esquece kkkk falei besteira","era só isso mesmo 😅"],C);
+  if(/^ (por que|porque|pq|pq\?) $/.test(n))return zPickNew(["porque sim, ué 😂","sei lá, deu vontade de falar","longa história… depois te conto"],C);
+  if(["neutro","pergunta","deb","tudoBem","sim","nao","cumpr"].indexOf(cl)<0)return null;
+  // 5) assunto do dia a dia
+  for(var i=0;i<ZTOPIC.length;i++)if(ZTOPIC[i][1].test(n)){var tp=ZTR[ZTOPIC[i][0]],L=tp[k]||tp.dflt;
+    if(ZTOPIC[i][0]==="fome"&&crushy)C.ctx={k:"convite",m:S.m,top:"um lanche"};
+    if(["doente","sono"].indexOf(ZTOPIC[i][0])>=0&&(isFam||typ==="amiga"||crushy))up(3);
+    if(ZTOPIC[i][0]==="feliz"&&(isFam||typ==="amiga"||crushy))up(3);
+    return zPickNew(L,C)}
+  // 6) pergunta genérica / mensagem neutra: responde ao que foi dito, sem "conta mais"
+  if(U.cls==="pergunta"||U.cls==="neutro"){var w=zSalient(n);
+    if(U.pergunta){if(/\b(voce|vc)\b/.test(U.n)||/^ (vai|quer|pode|topa|gosta|curte|ja) /.test(n))return zPickNew(isFam?["Acho que sim, meu amor.","Depende! Me explica melhor."]:["acho que sim 👀 por quê?","depende kkkk o que você tem em mente?","talvez 😏"],C);
+      return zPickNew(isFam?["Ai, isso eu não sei. Pergunta pro seu pai 😂","Boa pergunta! Me liga que eu explico."]:["boa pergunta kkkk eu acho que sim?","não faço ideia, mas posso descobrir 👀"],C)}
+    var fr=U.raw.replace(/[?!.]+$/,"").trim();if(fr.length<=34&&fr.split(" ").length>=2)return zPickNew(isFam?["“"+fr+"”? Tá tudo bem, filh{a|o|e}?","Hum… "+fr+". E aí, isso é bom ou ruim?"]:typ==="amiga"?["“"+fr+"” kkkk aconteceu alguma coisa?","peraí, "+fr+"? me explica isso direito 👀"]:crushy?["“"+fr+"”, é? 👀 aconteceu alguma coisa?","hm, "+fr+"… quero saber mais de você"]:["Certo: “"+fr+"”."],C);
+    if(w)return zPickNew(isFam?["“"+w+"”? Explica direito pra sua mãe 😅","Hum, "+w+"… e isso é bom ou ruim?"]:typ==="amiga"?[w+"?? como assim kkkk","peraí, "+w+"? me explica isso direito 👀"]:crushy?[w+"? interessante 👀 e você curte?","hm, "+w+"… me fala mais de você"]:["Entendido sobre "+w+"."],C);
+  }
+  return null;
+}
 function zapFree(id,text){
   var C=S.zap.c[id],d=zcDef(id);if(!C||!d||!zapVisible(id))return null;
   text=String(text||"").trim().slice(0,240);if(!text)return null;
   var U=zapNLU(text),cls=U.cls,hadPend=!!C.pend,typ=d.type==="fam"?"fam":d.type==="amiga"?"amiga":d.type==="crush"?"crush":d.type==="marca"?"marca":"dono";
   // contexto: o NPC tinha feito uma pergunta/convite e o jogador respondeu "sim"/"bora"/"não"
   var ctx=C.ctx&&C.ctx.m===S.m?C.ctx.k:null;
-  if(ctx==="convite"&&cls==="sim")cls="convite",U.top=C.ctx.top||U.top;
+  if(ctx==="convite"&&(cls==="sim"||U.sim))cls="convite",U.top=C.ctx.top||U.top;
+  if(ctx==="q"&&/role|bora marcar/.test(zapNorm(C.ctx.q))&&(cls==="sim"||U.sim))cls="convite";
+  var brinc=/brincadeira|zoeira|zoando|brincando|zuera/.test(U.n);
   // com pergunta pendente (mensagem do mês): boa/neutra/deboche seguem as regras dos tons
-  if(hadPend&&["bad","malicia","vazio","cantada","declara","convite","tristeza","dinheiro"].indexOf(cls)<0){
+  var topicHit=ZTOPIC.some(function(x){return x[1].test(U.n)});
+  if(hadPend&&!brinc&&!U.pergunta&&!topicHit&&["good","deb","prof","ironia"].indexOf(cls)>=0){
     var g=zapClassify(text),tone=g==="good"?0:g==="deb"?2:1;
     C.pend.r[tone]=text;var r=zapReply(id,tone);if(r){r.cls=cls;r.info.unshift(zapClsTxt(cls))}return r;
   }
-  C.th.push({me:1,t:text});if(hadPend)C.pend=null;C.ts=++S.zap.ts;C.seenM=S.m;C.ctx=null;
+  C.th.push({me:1,t:text});if(hadPend&&(cls==="bad"||cls==="malicia"))C.pend=null;C.ts=++S.zap.ts;C.seenM=S.m;var ctxKeep=C.ctx;C.ctx=null;
   var P=ZB[typ],dd={},info=[zapClsTxt(cls)],rl=null,a=relOf(id),fav=S.crushFav===id;
   // limite de ganho de afeto por mês (perda sempre conta)
   if(C.gainM!==S.m){C.gainM=S.m;C.gain=0}
   var cap=d.type==="crush"?(fav?30:22):15;
   function up(v){var room=Math.max(0,cap-C.gain);var g=Math.min(v,room);if(fav&&d.type==="crush")g=Math.min(Math.round(v*1.4),room);C.gain+=g;if(g>0)relAdd(id,g);else if(v>0&&!C.capWarn){C.capWarn=S.m;info.push("(Já conversaram bastante este mês: o afeto não sobe mais até o mês que vem, mas pode continuar a conversa.)")}return g}
-  function down(v){relAdd(id,-v)}
+  function down(v){relAdd(id,-v);C.lastLoss=(C.lastLoss||0)+v}
+  C.ctx=ctxKeep;var sm=cls==="convite"?null:zapSmart(id,d,typ,U,C,a,up,down,info,dd);if(C.ctx===ctxKeep)C.ctx=null;
   var taken=d.type==="crush"&&S.date&&S.date!==id,dating=d.type==="crush"&&S.date===id&&C.st>=2;
-  switch(cls){
+  if(sm!=null){rl=sm}else switch(cls){
    case "bad":
     rl=zapPick(P,"bad");
     if(typ==="fam"){down(20);dd.p=-5}
@@ -2171,11 +2287,12 @@ function zapFree(id,text){
    case "vazio":rl=zapPick(P,"vazio");break;
    default:rl=zapPick(P,cls,"neutro");if(cls==="tudoBem"||cls==="cumpr")up(2);
   }
-  if(rl){rl=rl.replace(/\{top\}/g,U.top||"").replace(/\{Top\}/g,U.top||"");C.th.push({t:tpl(rl)})}
+  if(rl){rl=rl.replace(/\{top\}/g,U.top||"").replace(/\{Top\}/g,U.top||"");rl=tpl(rl);C.th.push({t:rl})}
+  C.lastNpc=rl||C.lastNpc;C.lastText=U.n;C.lastCls=cls;if(["bad","malicia","ironia"].indexOf(cls)<0&&!brinc)C.lastLoss=0;
   info.forEach(function(x){C.th.push({sys:1,t:x})});
   // às vezes devolve uma pergunta, pra conversa continuar
-  if(rl&&["bad","malicia","vazio","tchau","ironia"].indexOf(cls)<0&&ZQ[typ].length&&Math.random()<(typ==="crush"?.45:.25)){
-    var qs=ZQ[typ].filter(function(x){return x!==C.lastQ});var q=pick(qs.length?qs:ZQ[typ]);C.lastQ=q;C.th.push({t:tpl(q)});if(/rolê|sair|praia ou cinema|fim de semana/.test(q))C.ctx={k:"convite",m:S.m,top:/praia/.test(q)?"praia":null}}
+  if(rl&&sm==null&&!C.ctx&&["bad","malicia","vazio","tchau","ironia"].indexOf(cls)<0&&ZQ[typ].length&&Math.random()<(typ==="crush"?.45:.25)){
+    var qs=ZQ[typ].filter(function(x){return x!==C.lastQ});var q=pick(qs.length?qs:ZQ[typ]);C.lastQ=q;q=tpl(q);C.th.push({t:q});C.lastNpc=q;C.ctx={k:"q",m:S.m,q:zapNorm(q)}}
   var res=applyD(dd);checkDeath();
   return {d:res,info:info,cls:cls};
 }
@@ -3578,7 +3695,9 @@ function finishPost(type,ed){
 }
 function markCrush(id){
   if(!S||!id)return;
-  var no={mae:"Crush na própria mãe? Melhor não 😳",pai:"Crush no seu pai?? Não, né 😂",jorge:"Crush no Seu Jorge? Ele só quer o aluguel 🏠",marca:"Crush numa marca? Isso se chama publi 💼",bia:"A Bia é sua melhor amiga… crush na amiga fica pra próxima atualização 👀"}[id];
+  var no={mae:"Crush na própria mãe? Melhor não 😳",pai:"Crush no seu pai?? Não, né 😂",jorge:"Crush no Seu Jorge? Ele só quer o aluguel 🏠",marca:"Crush numa marca? Isso se chama publi 💼"}[id];
+  if(id==="bia"&&!S.biaCrush){S.biaCrush=1;applyBia(S);toast({app:"P",t:"🧃💘 Crush na melhor amiga",x:"Agora a Bia é seu crush. Arriscado: se der errado, a amizade sente."})}
+  else if(id==="bia"&&S.biaCrush&&S.crushFav==="bia"&&!(S.zap.c.bia.st>=1)){S.biaCrush=0;S.crushFav=null;applyBia(S);toast({app:"P",t:"🧃 De volta à amizade",x:"A Bia voltou a ser só sua melhor amiga. (Será? 👀)"});rerender();save();return}
   if(no){toast({app:"P",t:"⭐ Não rolou",x:no});sfx("bad");return}
   var d=zcDef(id),n=null;NPCS.forEach(function(x){if(x.id===id)n=x});
   if(!d&&n){S.dynCrush=S.dynCrush||[];if(S.dynCrush.indexOf(id)<0)S.dynCrush.push(id);syncDynCrush(S);d=zcDef(id);
