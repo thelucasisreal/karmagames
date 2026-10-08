@@ -151,15 +151,7 @@ window.KARMA_JOGOS = [
     capa: "assets/capas/galinha.svg",
     adicionado: "2026-10-04",
   },
-  {
-    slug: "pitch",
-    titulo: "Pitch",
-    descricao: "Futebol 3D no navegador. Você é o camisa 10 no modo carreira, do campo de várzea até a glória.",
-    categoria: "Esporte",
-    autor: "Karma Games",
-    autoral: true,
-    emBreve: true,
-  },
+
   {
     slug: "voo-livre",
     capa: "assets/capas/voo-livre.svg",
