@@ -232,20 +232,49 @@
       EM_BREVE.map(tileEmBreve).join(""));
     lateral(jogo.categoria);
 
+    // Lobby: capa, nome e botão Jogar. O jogo só carrega depois do clique.
     const palco = $("#palco");
-    const frame = document.createElement("iframe");
-    frame.title = jogo.titulo;
-    frame.src = urlDoJogo(jogo);
-    frame.allow = "fullscreen; autoplay; gamepad";
-    frame.setAttribute("allowfullscreen", "");
-    frame.addEventListener("load", () => {
-      $("#carregando").classList.add("sumir");
-      try { frame.contentWindow.focus(); } catch { /* jogo de outro domínio */ }
-    });
-    palco.appendChild(frame);
+    const carregando = $("#carregando");
+    carregando.classList.add("sumir");
+    const lobby = document.createElement("div");
+    lobby.className = "lobby";
+    lobby.innerHTML = `
+      <img class="lobby-fundo" src="${esc(capaDe(jogo))}" alt="" aria-hidden="true">
+      <div class="lobby-conteudo">
+        <img class="lobby-capa" src="${esc(capaDe(jogo))}" alt="">
+        <h2 class="lobby-titulo">${esc(jogo.titulo)}</h2>
+        ${jogo.categoria ? `<span class="lobby-cat">${esc(jogo.categoria)}</span>` : ""}
+        ${jogo.descricao ? `<p class="lobby-desc">${esc(jogo.descricao)}</p>` : ""}
+        <button class="lobby-jogar" type="button">${icone("play")}<span>Jogar</span></button>
+        ${jogo.controles ? `<p class="lobby-controles">${icone("game-controller")}<span>${esc(jogo.controles)}</span></p>` : ""}
+      </div>`;
+    palco.appendChild(lobby);
+    lobby.querySelector(".lobby-capa").addEventListener("error", (e) => { e.target.remove(); lobby.querySelector(".lobby-fundo").remove(); });
+
+    let frame = null;
+    function comecar() {
+      if (frame) return;
+      carregando.classList.remove("sumir");
+      lobby.classList.add("sumir");
+      setTimeout(() => lobby.remove(), 400);
+      frame = document.createElement("iframe");
+      frame.title = jogo.titulo;
+      frame.src = urlDoJogo(jogo);
+      frame.allow = "fullscreen; autoplay; gamepad";
+      frame.setAttribute("allowfullscreen", "");
+      frame.addEventListener("load", () => {
+        carregando.classList.add("sumir");
+        try { frame.contentWindow.focus(); } catch { /* jogo de outro domínio */ }
+      });
+      palco.insertBefore(frame, carregando);
+      gravar(CHAVE_RECENTES, [jogo.slug, ...slugsRecentes().filter((s) => s !== jogo.slug)].slice(0, 16));
+    }
+    const botaoJogar = lobby.querySelector(".lobby-jogar");
+    botaoJogar.addEventListener("click", comecar);
 
     $("#btn-reiniciar").addEventListener("click", () => {
-      $("#carregando").classList.remove("sumir");
+      if (!frame) return comecar();
+      carregando.classList.remove("sumir");
       frame.src = urlDoJogo(jogo);
     });
     $("#btn-tela-cheia").addEventListener("click", () => {
@@ -259,7 +288,6 @@
       <p>${esc(jogo.descricao || "")}</p>
       ${jogo.controles ? `<div class="controles">${icone("game-controller")}<span>${esc(jogo.controles)}</span></div>` : ""}`;
 
-    gravar(CHAVE_RECENTES, [jogo.slug, ...slugsRecentes().filter((s) => s !== jogo.slug)].slice(0, 16));
   }
 
   if (PAGINA_JOGO) paginaJogo();
