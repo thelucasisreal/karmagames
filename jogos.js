@@ -21,6 +21,18 @@
 */
 window.KARMA_JOGOS = [
   {
+    slug: "behind-the-grid",
+    capa: "assets/capas/behind-the-grid.svg",
+    titulo: "Behind The Grid",
+    descricao: "Crie seu perfil, poste, feche publis e sobreviva ao hate. O feed é perfeito; os bastidores, nem tanto.",
+    categoria: "Simulação",
+    controles: "Clique ou toque nas ações · deslize o card para ver os bastidores",
+    autor: "Karma Games",
+    autoral: true,
+    destaque: true,
+    adicionado: "2026-10-08",
+  },
+  {
     slug: "xadrez",
     capa: "assets/capas/xadrez.svg",
     titulo: "Xadrez",

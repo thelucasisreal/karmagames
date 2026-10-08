@@ -18,6 +18,7 @@
     "Esporte": { icone: "ball", cor: "#a5d6a7" },
     "Casual": { icone: "heart", cor: "#f48fb1" },
     "Tabuleiro": { icone: "grid", cor: "#ffab91" },
+    "Simulação": { icone: "sparkle", cor: "#ce93d8" },
   };
 
   // ---------- utilidades ----------
