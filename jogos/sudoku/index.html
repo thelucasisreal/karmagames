@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sudoku · Karma Games</title>
+<meta name="theme-color" content="#0d0e12">
+<link rel="icon" href="data:,">
+<style>
+@font-face{font-family:"Unbounded";font-weight:800;font-style:normal;font-display:swap;src:url(../../assets/fonts/unbounded-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Geist";font-weight:400;font-style:normal;font-display:swap;src:url(../../assets/fonts/geist-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Geist";font-weight:600;font-style:normal;font-display:swap;src:url(../../assets/fonts/geist-sans-latin-600-normal.woff2) format("woff2")}
+:root{--bg:#0d0e12;--surface:#171920;--raised:#1f222b;--line:#262a33;--text:#f2f3f5;--muted:#9aa0ab;--accent:#c8f13a;--coral:#ff6b5a;--sky:#5ac8ff;--amber:#ffc23a;--r:12px;--ease:cubic-bezier(.16,1,.3,1);--display:"Unbounded",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--text);font:400 15px/1.4 "Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;height:100dvh;display:flex;justify-content:center;padding:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));touch-action:manipulation}
+::selection{background:var(--accent);color:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;white-space:nowrap;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
+.btn:hover{background:#292d38}
+.btn:active{transform:translateY(1px)}
+.btn.primary,.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.btn.primary:hover,.btn[aria-pressed="true"]:hover{background:#d4f75a}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--text);background:var(--raised)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.app{width:min(100%,520px);height:100%;display:flex;flex-direction:column;gap:10px}
+h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.score{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 10px;text-align:center}
+.stat .lbl{display:block;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .val{display:block;font:800 20px/1.3 var(--display);font-variant-numeric:tabular-nums}
+.stat.t .val{color:var(--accent)}.stat.e .val{color:var(--coral)}.stat.b .val{color:var(--sky)}
+.status{text-align:center;font-weight:600;min-height:1.4em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.play{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.wrap{flex:none;display:flex;align-items:center;justify-content:center}
+.pad{width:100%}
+.board{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:3px;padding:3px;width:var(--s);height:var(--s);background:#4a505e;border-radius:var(--r);box-shadow:0 4px 12px rgba(0,0,0,.3);--fs:calc(var(--s)*.056);--ns:max(8px,calc(var(--s)*.026))}
+.box{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:1px;background:#2e323c;overflow:hidden;min-width:0;min-height:0}
+.box:nth-child(1){border-top-left-radius:9px}.box:nth-child(3){border-top-right-radius:9px}.box:nth-child(7){border-bottom-left-radius:9px}.box:nth-child(9){border-bottom-right-radius:9px}
+.cell{position:relative;background:var(--surface);display:grid;place-items:center;font:800 var(--fs)/1 var(--display);color:var(--sky);min-width:0;min-height:0;overflow:hidden;transition:background-color .15s var(--ease)}
+.cell.g{color:var(--text)}
+.cell.h{color:var(--amber)}
+.cell.peer{background:#222632}
+.cell.same{background:#2a3219}
+.cell.sel{background:#34411a;box-shadow:inset 0 0 0 2px var(--accent)}
+.cell.bad{color:var(--coral)}
+.cell.bad.u:not(.sel){background:#3a1f1d}
+.cell:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--accent)}
+.cell .v{animation:pop .22s var(--ease)}
+@keyframes pop{from{transform:scale(.55);opacity:0}}
+.nt{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%;padding:1px}
+.nt span{display:grid;place-items:center;font:600 var(--ns)/1 "Geist",system-ui,sans-serif;color:var(--muted)}
+.nt span.on{color:var(--accent)}
+.board.won .cell{animation:flash .7s var(--ease) calc(var(--k)*35ms) backwards}
+@keyframes flash{30%{background:#4d6320}}
+.pad{display:flex;flex-direction:column;gap:8px}
+.nums{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.num{height:50px;min-width:0;border-radius:10px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background-color .2s var(--ease),opacity .2s,transform .2s var(--ease)}
+.num:hover{background:var(--raised)}
+.num:active{transform:translateY(1px)}
+.num .d{font:800 20px/1 var(--display)}
+.num .c{font-size:11px;font-weight:600;color:var(--muted);margin-top:3px;font-variant-numeric:tabular-nums}
+.num.done{opacity:.35}
+.notes .num .d{color:var(--accent)}
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.acts .btn{padding:0 6px;min-width:0}
+.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:rgba(13,14,18,.78);animation:fade .25s var(--ease)}
+.overlay[hidden]{display:none}
+.dlg{width:min(100%,320px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px 24px 24px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.5);animation:rise .35s var(--ease)}
+.dlg h2{font:800 24px/1.15 var(--display);margin-bottom:8px}
+.dlg p{color:var(--muted)}
+.dlg .row{display:flex;gap:8px;justify-content:center;margin-top:20px}
+.dlg .btn[hidden]{display:none}
+@keyframes fade{from{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(12px) scale(.97)}}
+@media (max-width:420px){.btn{padding:0 11px;font-size:13px}.stat .val{font-size:18px}.nums{gap:4px}.num{height:46px}.num .d{font-size:18px}}
+@media (min-width:600px) and (min-aspect-ratio:1/1){
+  .app{width:min(100%,780px)}
+  .play{flex-direction:row;gap:16px}
+  .pad{width:200px;flex:none;align-self:center}
+  .nums{grid-template-columns:repeat(3,1fr)}
+  .num{height:54px}.num .d{font-size:22px}
+  .acts{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="top">
+    <h1>Sudoku</h1>
+    <button class="btn ghost" type="button" id="novo">Novo jogo</button>
+  </div>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Dificuldade">
+      <button class="btn" type="button" data-diff="facil">Fácil</button>
+      <button class="btn" type="button" data-diff="medio">Médio</button>
+      <button class="btn" type="button" data-diff="dificil">Difícil</button>
+    </div>
+    <button class="btn" type="button" id="erros" aria-pressed="false">Mostrar erros</button>
+  </div>
+  <div class="score">
+    <div class="stat t"><span class="lbl">Tempo</span><span class="val" id="vt">00:00</span></div>
+    <div class="stat e"><span class="lbl">Erros</span><span class="val" id="ve">0</span></div>
+    <div class="stat b"><span class="lbl" id="lb">Recorde</span><span class="val" id="vb">—</span></div>
+  </div>
+  <p class="status" id="status" aria-live="polite"></p>
+  <div class="play">
+    <div class="wrap" id="wrap"><div class="board" id="board" role="grid" aria-label="Tabuleiro do Sudoku"></div></div>
+    <div class="pad" id="pad">
+      <div class="nums" id="nums" role="group" aria-label="Números"></div>
+      <div class="acts">
+        <button class="btn" type="button" id="desfazer">Desfazer</button>
+        <button class="btn" type="button" id="apagar">Apagar</button>
+        <button class="btn" type="button" id="anotar" aria-pressed="false">Anotar</button>
+        <button class="btn" type="button" id="dica">Dica</button>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="overlay" id="ov" hidden>
+  <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="ovt">
+    <h2 id="ovt"></h2>
+    <p id="ovp"></p>
+    <div class="row"><button class="btn" type="button" id="ovno"></button><button class="btn primary" type="button" id="ovok"></button></div>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var SLUG="karma:sudoku:";
+var store={get:function(k,d){try{var v=localStorage.getItem(SLUG+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set:function(k,v){try{localStorage.setItem(SLUG+k,JSON.stringify(v))}catch(e){}}};
+var $=function(id){return document.getElementById(id)};
+var now=function(){return window.performance&&performance.now?performance.now():Date.now()};
+var DIFFS={facil:{n:"Fácil",g:40},medio:{n:"Médio",g:32},dificil:{n:"Difícil",g:26}};
+
+/* ---------- geometria ---------- */
+var ROW=[],COL=[],BOX=[],PEERS=[],POP=[0];
+for(var i=0;i<81;i++){ROW[i]=i/9|0;COL[i]=i%9;BOX[i]=(ROW[i]/3|0)*3+(COL[i]/3|0)}
+for(i=0;i<81;i++){PEERS[i]=[];for(var j=0;j<81;j++)if(j!==i&&(ROW[j]===ROW[i]||COL[j]===COL[i]||BOX[j]===BOX[i]))PEERS[i].push(j)}
+for(i=1;i<1024;i++)POP[i]=POP[i>>1]+(i&1);
+function shuffle(a){for(var k=a.length-1;k>0;k--){var r=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[r];a[r]=t}return a}
+function zeros(){var a=[];for(var k=0;k<81;k++)a.push(0);return a}
+
+/* ---------- gerador ---------- */
+/* Busca com bitmasks e "menos candidatos primeiro". Conta soluções até `limit`;
+   ao parar no limite deixa a última solução gravada em g. */
+function search(g,limit,rand){
+  var R=[0,0,0,0,0,0,0,0,0],C=R.slice(),B=R.slice(),n=0,k,m;
+  for(k=0;k<81;k++)if(g[k]){m=1<<g[k];if((R[ROW[k]]|C[COL[k]]|B[BOX[k]])&m)return 0;R[ROW[k]]|=m;C[COL[k]]|=m;B[BOX[k]]|=m}
+  function rec(){
+    var best=-1,bm=0,bc=10,i,c,mm;
+    for(i=0;i<81;i++)if(!g[i]){mm=~(R[ROW[i]]|C[COL[i]]|B[BOX[i]])&1022;c=POP[mm];if(c<bc){bc=c;best=i;bm=mm;if(c<2)break}}
+    if(best<0){n++;return n>=limit}
+    if(!bc)return false;
+    var ds=[];for(var d=1;d<10;d++)if(bm&(1<<d))ds.push(d);
+    if(rand)shuffle(ds);
+    var r=ROW[best],cc=COL[best],b=BOX[best];
+    for(var q=0;q<ds.length;q++){
+      var bit=1<<ds[q];g[best]=ds[q];R[r]|=bit;C[cc]|=bit;B[b]|=bit;
+      if(rec())return true;
+      R[r]^=bit;C[cc]^=bit;B[b]^=bit;g[best]=0;
+    }
+    return false;
+  }
+  rec();return n;
+}
+function generate(diff){
+  var target=DIFFS[diff].g,t0=now(),best=null;
+  do{
+    var sol=zeros();search(sol,1,true);
+    var p=sol.slice(),giv=81,order=[];
+    for(var k=0;k<81;k++)order.push(k);
+    shuffle(order);
+    for(k=0;k<81&&giv>target;k++){
+      if(best&&now()-t0>280)break;
+      var c=order[k],v=p[c];p[c]=0;
+      if(search(p.slice(),2,false)!==1)p[c]=v;else giv--;
+    }
+    if(!best||giv<best.giv)best={p:p,s:sol,giv:giv};
+  }while(best.giv>target&&now()-t0<200);
+  return best;
+}
+
+/* ---------- estado ---------- */
+var boardEl=$("board"),wrap=$("wrap"),statusEl=$("status"),ov=$("ov"),numsEl=$("nums");
+var showErr=store.get("erros-visiveis",false)===true;
+var prefDiff=store.get("dificuldade","facil");if(!DIFFS[prefDiff])prefDiff="facil";
+var st=null,sel=40,notesMode=false,cells=[],cache=[],nums=[],dlgCancel=null,dlgOk=null,msgTimer=null;
+
+for(i=0;i<9;i++){var bx=document.createElement("div");bx.className="box";bx.setAttribute("role","presentation");boardEl.appendChild(bx)}
+for(i=0;i<81;i++){(function(i){
+  var c=document.createElement("button");c.type="button";c.className="cell";c.tabIndex=-1;c.setAttribute("role","gridcell");
+  c.style.setProperty("--k",ROW[i]+COL[i]);
+  c.addEventListener("click",function(){select(i,false)});
+  cells.push(c);cache.push("");boardEl.children[BOX[i]].appendChild(c);
+})(i)}
+for(i=1;i<=9;i++){(function(d){
+  var b=document.createElement("button");b.type="button";b.className="num";
+  b.innerHTML='<span class="d">'+d+'</span><span class="c"></span>';
+  b.addEventListener("click",function(){input(d)});
+  nums.push(b);numsEl.appendChild(b);
+})(i)}
+
+function valid(s){
+  if(!s||typeof s!=="object"||!DIFFS[s.d])return false;
+  var arrs=["p","s","v","n","h"];
+  for(var a=0;a<arrs.length;a++){var x=s[arrs[a]];if(!Array.isArray(x)||x.length!==81)return false;for(var k=0;k<81;k++)if(typeof x[k]!=="number")return false}
+  for(k=0;k<81;k++)if(s.p[k]&&s.p[k]!==s.s[k])return false;
+  return Array.isArray(s.u)&&typeof s.t==="number";
+}
+function save(){if(st)store.set("jogo",st)}
+function fmt(t){t=Math.max(0,Math.floor(t));var h=Math.floor(t/3600),m=Math.floor(t/60)%60,s=t%60;return (h?h+":"+(m<10?"0":""):"")+(m<10&&!h?"0":"")+m+":"+(s<10?"0":"")+s}
+function best(){var b=store.get("recorde:"+st.d,null);return typeof b==="number"&&b>0?b:null}
+function fixed(i){return st.p[i]>0||st.h[i]===1}
+function userCount(){for(var k=0;k<81;k++)if((!st.p[k]&&!st.h[k]&&st.v[k])||st.n[k])return true;return false}
+
+function newGame(d){
+  closeDlg();
+  var g=generate(d);
+  st={d:d,p:g.p,s:g.s,v:g.p.slice(),n:zeros(),h:zeros(),t:0,e:0,k:0,u:[],w:false};
+  prefDiff=d;store.set("dificuldade",d);
+  sel=40;for(var k=0;k<81;k++){var c=(40+k)%81;if(!st.p[c]){sel=c;break}}
+  notesMode=false;boardEl.classList.remove("won");
+  save();render();paintStats();say(DIFFS[d].n+" — preencha cada linha, coluna e bloco com 1 a 9.");
+}
+function askNew(d){
+  if(st&&!st.w&&userCount())showDlg("Começar outro jogo?","O progresso deste Sudoku "+DIFFS[st.d].n+" vai ser perdido.","Novo jogo",function(){newGame(d)},"Continuar");
+  else newGame(d);
+}
+
+/* ---------- ações ---------- */
+function select(i,focus){
+  if(i<0||i>80)return;sel=i;render();say("");
+  if(focus)cells[i].focus();
+}
+function clearPeerNotes(i,d,ch){
+  var bit=1<<d;PEERS[i].forEach(function(j){if(st.n[j]&bit){ch.push([j,st.v[j],st.n[j]]);st.n[j]^=bit}});
+}
+function push(ch){if(!ch.length)return;st.u.push(ch);if(st.u.length>150)st.u.shift()}
+function input(d){
+  if(!st||st.w)return;
+  if(sel<0)return;
+  if(fixed(sel)){say("Essa casa já vem preenchida.",true);return}
+  if(notesMode){
+    if(st.v[sel]){say("Apague o número para fazer anotações.",true);return}
+    push([[sel,0,st.n[sel]]]);st.n[sel]^=1<<d;save();render();return;
+  }
+  if(st.v[sel]===d)return;
+  var ch=[[sel,st.v[sel],st.n[sel]]];
+  st.v[sel]=d;st.n[sel]=0;clearPeerNotes(sel,d,ch);push(ch);
+  if(d!==st.s[sel]){
+    st.e++;paintStats();
+    if(conflicts()[sel])say("Esse "+d+" já aparece na linha, coluna ou bloco.",true);
+    else if(showErr)say("Esse "+d+" não é o número certo aqui.",true);
+    else say("");
+  }else say("");
+  save();render();checkWin();
+}
+function erase(){
+  if(!st||st.w||sel<0)return;
+  if(fixed(sel)){say("Essa casa não pode ser apagada.",true);return}
+  if(!st.v[sel]&&!st.n[sel])return;
+  push([[sel,st.v[sel],st.n[sel]]]);st.v[sel]=0;st.n[sel]=0;save();render();
+}
+function undo(){
+  if(!st||st.w)return;
+  var ch=st.u.pop();if(!ch){say("Nada para desfazer.",true);return}
+  for(var k=ch.length-1;k>=0;k--){var c=ch[k];if(fixed(c[0]))continue;st.v[c[0]]=c[1];st.n[c[0]]=c[2]}
+  sel=ch[0][0];save();render();say("");
+}
+function hint(){
+  if(!st||st.w)return;
+  var t=-1;
+  if(sel>=0&&!fixed(sel)&&st.v[sel]!==st.s[sel])t=sel;
+  else{var opts=[];for(var k=0;k<81;k++)if(!fixed(k)&&st.v[k]!==st.s[k])opts.push(k);if(opts.length)t=opts[Math.floor(Math.random()*opts.length)]}
+  if(t<0)return;
+  var d=st.s[t],ch=[];st.v[t]=d;st.n[t]=0;st.h[t]=1;clearPeerNotes(t,d,ch);push(ch);
+  st.k++;sel=t;save();render();paintStats();say("Dica: o "+d+" vai nessa casa.");checkWin();
+}
+function toggleNotes(){if(!st||st.w)return;notesMode=!notesMode;render();say(notesMode?"Modo anotação ligado — toque nos números para marcar candidatos.":"Modo anotação desligado.")}
+
+function checkWin(){
+  for(var k=0;k<81;k++)if(st.v[k]!==st.s[k])return;
+  st.w=true;notesMode=false;
+  var b=best(),rec=!b||st.t<b;if(rec)store.set("recorde:"+st.d,st.t);
+  save();render();paintStats();
+  boardEl.classList.remove("won");void boardEl.offsetWidth;boardEl.classList.add("won");
+  say("Resolvido em "+fmt(st.t)+"!");
+  var e=st.e===0?"nenhum erro":st.e===1?"1 erro":st.e+" erros",h=st.k===0?"nenhuma dica":st.k===1?"1 dica":st.k+" dicas";
+  var text=DIFFS[st.d].n+" em "+fmt(st.t)+" · "+e+" · "+h+". "+(rec?"Novo recorde!":"Recorde: "+fmt(b)+".");
+  setTimeout(function(){if(st.w)showDlg("Resolvido!",text,"Novo jogo",function(){newGame(st.d)},"Ver tabuleiro")},900);
+}
+
+/* ---------- desenho ---------- */
+function conflicts(){
+  var bad={};
+  for(var k=0;k<81;k++)if(st.v[k])for(var q=0;q<PEERS[k].length;q++){var j=PEERS[k][q];if(st.v[j]===st.v[k]){bad[k]=1;break}}
+  return bad;
+}
+function render(){
+  if(!st)return;
+  var bad=conflicts(),sv=sel>=0?st.v[sel]:0,counts=[0,0,0,0,0,0,0,0,0,0];
+  for(var k=0;k<81;k++){
+    var v=st.v[k],c=cells[k],cls="cell";
+    counts[v]++;
+    if(st.p[k])cls+=" g";else if(st.h[k])cls+=" h";else if(v)cls+=" u";
+    if(k===sel)cls+=" sel";
+    else if(sv&&v===sv)cls+=" same";
+    else if(sel>=0&&(ROW[k]===ROW[sel]||COL[k]===COL[sel]||BOX[k]===BOX[sel]))cls+=" peer";
+    if(v&&(bad[k]||(showErr&&!st.p[k]&&v!==st.s[k])))cls+=" bad";
+    if(c.className!==cls)c.className=cls;
+    var key=v?"v"+v:"n"+st.n[k]+"|"+(st.n[k]?sv:"");
+    if(cache[k]!==key){
+      cache[k]=key;
+      if(v)c.innerHTML='<span class="v">'+v+"</span>";
+      else if(st.n[k]){var h='<span class="nt">';for(var d=1;d<10;d++)h+="<span"+(d===sv?' class="on"':"")+">"+(st.n[k]&(1<<d)?d:"")+"</span>";c.innerHTML=h+"</span>"}
+      else c.innerHTML="";
+    }
+    var lbl="Linha "+(ROW[k]+1)+", coluna "+(COL[k]+1)+": "+(v?v+(st.p[k]?" (fixo)":""):"vazia"+(st.n[k]?", anotações "+noteList(st.n[k]):""));
+    if(c.getAttribute("aria-label")!==lbl)c.setAttribute("aria-label",lbl);
+    c.tabIndex=k===sel?0:-1;
+  }
+  for(d=1;d<10;d++){var left=Math.max(0,9-counts[d]);nums[d-1].querySelector(".c").textContent=left;nums[d-1].classList.toggle("done",left===0);nums[d-1].setAttribute("aria-label",(notesMode?"Anotar ":"Colocar ")+d+", faltam "+left)}
+  $("pad").classList.toggle("notes",notesMode);
+  $("anotar").setAttribute("aria-pressed",notesMode);
+  $("dica").textContent=st.k?"Dica · "+st.k:"Dica";
+  $("desfazer").disabled=!st.u.length||st.w;
+  document.querySelectorAll("[data-diff]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.diff===st.d)});
+  $("erros").setAttribute("aria-pressed",showErr);
+}
+function noteList(m){var a=[];for(var d=1;d<10;d++)if(m&(1<<d))a.push(d);return a.join(" ")}
+function paintStats(){
+  $("vt").textContent=fmt(st.t);$("ve").textContent=st.e;
+  var b=best();$("vb").textContent=b?fmt(b):"—";$("lb").textContent="Recorde "+DIFFS[st.d].n;
+}
+function say(msg,temp){
+  clearTimeout(msgTimer);
+  var base=st&&st.w?"Resolvido em "+fmt(st.t)+"!":notesMode?"Modo anotação ligado.":"Sudoku "+DIFFS[st?st.d:prefDiff].n+(sel>=0?" — linha "+(ROW[sel]+1)+", coluna "+(COL[sel]+1):"");
+  statusEl.textContent=msg||base;
+  if(msg&&temp)msgTimer=setTimeout(function(){statusEl.textContent=st&&st.w?"Resolvido em "+fmt(st.t)+"!":(notesMode?"Modo anotação ligado.":"Sudoku "+DIFFS[st.d].n)},2600);
+}
+
+/* ---------- diálogo ---------- */
+function showDlg(t,p,ok,onOk,no){
+  $("ovt").textContent=t;$("ovp").textContent=p;$("ovok").textContent=ok;dlgOk=onOk;
+  $("ovno").textContent=no||"";$("ovno").hidden=!no;dlgCancel=!!no;
+  ov.hidden=false;$("ovok").focus();
+}
+function closeDlg(){ov.hidden=true;dlgOk=null}
+$("ovok").addEventListener("click",function(){var f=dlgOk;closeDlg();if(f)f();if(cells[sel])cells[sel].focus()});
+$("ovno").addEventListener("click",function(){closeDlg();if(cells[sel])cells[sel].focus()});
+
+/* ---------- tempo ---------- */
+setInterval(function(){
+  if(!st||st.w||document.hidden||!ov.hidden)return;
+  st.t++;$("vt").textContent=fmt(st.t);
+  if(st.t%5===0)save();
+},1000);
+document.addEventListener("visibilitychange",function(){if(document.hidden)save()});
+window.addEventListener("pagehide",save);
+
+/* ---------- controles ---------- */
+document.querySelectorAll("[data-diff]").forEach(function(x){x.addEventListener("click",function(){var d=x.dataset.diff;if(st&&d===st.d&&!st.w)return;askNew(d)})});
+$("novo").addEventListener("click",function(){askNew(st?st.d:prefDiff)});
+$("erros").addEventListener("click",function(){showErr=!showErr;store.set("erros-visiveis",showErr);render();say(showErr?"Erros visíveis: números errados ficam em vermelho.":"Só conflitos ficam em vermelho.",true)});
+$("apagar").addEventListener("click",erase);
+$("desfazer").addEventListener("click",undo);
+$("anotar").addEventListener("click",toggleNotes);
+$("dica").addEventListener("click",hint);
+document.addEventListener("keydown",function(e){
+  if(!ov.hidden){if(e.key==="Escape"&&dlgCancel){closeDlg();if(cells[sel])cells[sel].focus()}return}
+  if(e.altKey)return;
+  if(e.ctrlKey||e.metaKey){if(e.key==="z"||e.key==="Z"){e.preventDefault();undo()}return}
+  var mv={ArrowRight:[0,1],ArrowLeft:[0,-1],ArrowDown:[1,0],ArrowUp:[-1,0]}[e.key];
+  if(mv){
+    e.preventDefault();
+    var b=sel<0?40:sel,r=(ROW[b]+mv[0]+9)%9,c=(COL[b]+mv[1]+9)%9;
+    select(r*9+c,true);return;
+  }
+  if(/^[1-9]$/.test(e.key)){e.preventDefault();input(+e.key);return}
+  if(e.key==="Backspace"||e.key==="Delete"||e.key==="0"){e.preventDefault();erase();return}
+  if(e.key==="n"||e.key==="N"){e.preventDefault();toggleNotes()}
+});
+
+function fit(){
+  var play=wrap.parentNode,pad=$("pad"),row=getComputedStyle(play).flexDirection==="row";
+  var w=play.clientWidth-(row?pad.offsetWidth+16:0),h=play.clientHeight-(row?0:pad.offsetHeight+12);
+  var s=Math.floor(Math.min(w,h,540));
+  boardEl.style.setProperty("--s",Math.max(200,s)+"px");
+}
+window.addEventListener("resize",fit);
+
+var saved=store.get("jogo",null);
+if(valid(saved)&&!saved.w){
+  st=saved;st.e=+st.e||0;st.k=+st.k||0;
+  sel=40;for(var q=0;q<81;q++){var cc=(40+q)%81;if(!st.p[cc]&&st.v[cc]!==st.s[cc]){sel=cc;break}}
+  fit();render();paintStats();say("Jogo retomado — continue de onde parou.",true);
+}else{fit();newGame(prefDiff)}
+})();
+</script>
+</body>
+</html>

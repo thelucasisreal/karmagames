@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9ad5"/>
+      <stop offset=".5" stop-color="#ffb35a"/>
+      <stop offset="1" stop-color="#ffe14a"/>
+    </linearGradient>
+    <radialGradient id="luz" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="madeira" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e09a52"/>
+      <stop offset="1" stop-color="#b8692a"/>
+    </linearGradient>
+    <linearGradient id="madeiraV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8a55c"/>
+      <stop offset="1" stop-color="#b8692a"/>
+    </linearGradient>
+    <linearGradient id="corpo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8ae0ff"/>
+      <stop offset="1" stop-color="#2a7aff"/>
+    </linearGradient>
+    <linearGradient id="peca" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e4e9f2"/>
+    </linearGradient>
+    <linearGradient id="certa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e2ff6a"/>
+      <stop offset="1" stop-color="#7fd320"/>
+    </linearGradient>
+    <linearGradient id="errada" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9a8a"/>
+      <stop offset="1" stop-color="#e8264a"/>
+    </linearGradient>
+    <filter id="sombra" filterUnits="userSpaceOnUse" x="-900" y="-700" width="2600" height="1900">
+      <feDropShadow dx="0" dy="9" stdDeviation="7" flood-color="#6a2a10" flood-opacity=".35"/>
+    </filter>
+    <g id="tile">
+      <rect x="-40" y="-40" width="80" height="80" rx="16" fill="#2a0a2a"/>
+      <rect x="-36" y="-40" width="72" height="72" rx="13" fill="url(#peca)"/>
+      <path d="M-26 -30 h22" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+    </g>
+    <g id="tile-ok">
+      <rect x="-40" y="-40" width="80" height="80" rx="16" fill="#2a0a2a"/>
+      <rect x="-36" y="-40" width="72" height="72" rx="13" fill="url(#certa)"/>
+      <path d="M-26 -30 h22" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+    </g>
+    <g id="tile-no">
+      <rect x="-40" y="-40" width="80" height="80" rx="16" fill="#2a0a2a"/>
+      <rect x="-36" y="-40" width="72" height="72" rx="13" fill="url(#errada)"/>
+      <path d="M-26 -30 h22" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fundo)"/>
+  <circle cx="400" cy="190" r="260" fill="url(#luz)"/>
+
+  <!-- brilhos -->
+  <g fill="#fff">
+    <path d="M150 170 l6 15 15 6 -15 6 -6 15 -6 -15 -15 -6 15 -6z"/>
+    <path d="M640 240 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z"/>
+    <path d="M560 40 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" opacity=".8"/>
+  </g>
+
+  <!-- letras soltas nas laterais -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="46" text-anchor="middle" filter="url(#sombra)">
+    <g transform="translate(88 92) rotate(-12) scale(.8)"><use href="#tile-ok"/><text y="14" fill="#2a0a2a">A</text></g>
+    <g transform="translate(712 96) rotate(10) scale(.8)"><use href="#tile-no"/><text y="14" fill="#fff">K</text></g>
+    <g transform="translate(70 300) rotate(8) scale(.62)"><use href="#tile"/><text y="14" fill="#2a0a2a">?</text></g>
+    <g transform="translate(728 330) rotate(-9) scale(.66)"><use href="#tile-ok"/><text y="14" fill="#2a0a2a">E</text></g>
+  </g>
+
+  <!-- forca de madeira -->
+  <g filter="url(#sombra)" stroke-linejoin="round">
+    <rect x="200" y="330" width="250" height="34" rx="14" fill="url(#madeiraV)" stroke="#2a0a2a" stroke-width="8"/>
+    <rect x="246" y="56" width="34" height="290" rx="12" fill="url(#madeira)" stroke="#2a0a2a" stroke-width="8"/>
+    <path d="M272 132 L340 66" stroke="#2a0a2a" stroke-width="30" stroke-linecap="round"/>
+    <path d="M272 132 L340 66" stroke="url(#madeira)" stroke-width="16" stroke-linecap="round"/>
+    <rect x="240" y="50" width="250" height="32" rx="12" fill="url(#madeiraV)" stroke="#2a0a2a" stroke-width="8"/>
+    <path d="M258 72 V330" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".35"/>
+    <path d="M258 62 H470" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+  </g>
+
+  <!-- corda e personagem balancando (segura a corda com as maos) -->
+  <g filter="url(#sombra)">
+    <g transform="rotate(-7 452 82)">
+      <path d="M452 80 V160" stroke="#2a0a2a" stroke-width="14" stroke-linecap="round"/>
+      <path d="M452 80 V160" stroke="#f6e3b0" stroke-width="7" stroke-linecap="round" stroke-dasharray="6 5"/>
+      <!-- bracos -->
+      <path d="M420 214 Q420 168 446 156 M484 214 Q484 168 458 156" fill="none" stroke="#2a0a2a" stroke-width="16" stroke-linecap="round"/>
+      <path d="M420 214 Q420 168 446 156 M484 214 Q484 168 458 156" fill="none" stroke="#3a8cff" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="446" cy="156" r="11" fill="#fff" stroke="#2a0a2a" stroke-width="6"/>
+      <circle cx="459" cy="152" r="11" fill="#fff" stroke="#2a0a2a" stroke-width="6"/>
+      <!-- pernas -->
+      <path d="M436 288 q-6 26 -20 34 M468 288 q6 26 18 36" fill="none" stroke="#2a0a2a" stroke-width="16" stroke-linecap="round"/>
+      <path d="M436 288 q-6 26 -20 34 M468 288 q6 26 18 36" fill="none" stroke="#3a8cff" stroke-width="8" stroke-linecap="round"/>
+      <ellipse cx="412" cy="324" rx="14" ry="9" fill="#ff5a7a" stroke="#2a0a2a" stroke-width="6"/>
+      <ellipse cx="490" cy="326" rx="14" ry="9" fill="#ff5a7a" stroke="#2a0a2a" stroke-width="6"/>
+      <!-- corpo -->
+      <ellipse cx="452" cy="244" rx="52" ry="56" fill="url(#corpo)" stroke="#2a0a2a" stroke-width="8"/>
+      <ellipse cx="426" cy="214" rx="13" ry="7" fill="#fff" opacity=".7" transform="rotate(-35 426 214)"/>
+      <g stroke="#2a0a2a" stroke-width="5">
+        <ellipse cx="438" cy="236" rx="11" ry="14" fill="#fff"/>
+        <ellipse cx="466" cy="236" rx="11" ry="14" fill="#fff"/>
+      </g>
+      <circle cx="441" cy="239" r="6" fill="#2a0a2a"/>
+      <circle cx="469" cy="239" r="6" fill="#2a0a2a"/>
+      <circle cx="443" cy="236" r="2.3" fill="#fff"/>
+      <circle cx="471" cy="236" r="2.3" fill="#fff"/>
+      <ellipse cx="424" cy="258" rx="7" ry="4.5" fill="#ff7aa8" opacity=".8"/>
+      <ellipse cx="482" cy="258" rx="7" ry="4.5" fill="#ff7aa8" opacity=".8"/>
+      <path d="M440 262 Q452 276 464 262 Z" fill="#8a0a2a" stroke="#2a0a2a" stroke-width="5" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- palavra em pecas: F _ R C A -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="50" text-anchor="middle" filter="url(#sombra)">
+    <g transform="translate(212 430) rotate(-4)"><use href="#tile"/><text y="15" fill="#2a0a2a">F</text></g>
+    <g transform="translate(306 436) rotate(2)"><use href="#tile"/><path d="M-20 14 H20" stroke="#b0b8c8" stroke-width="8" stroke-linecap="round"/></g>
+    <g transform="translate(400 430) rotate(-2)"><use href="#tile"/><text y="15" fill="#2a0a2a">R</text></g>
+    <g transform="translate(494 436) rotate(3)"><use href="#tile"/><text y="15" fill="#2a0a2a">C</text></g>
+    <g transform="translate(588 430) rotate(-3)"><use href="#tile"/><text y="15" fill="#2a0a2a">A</text></g>
+  </g>
+</svg>

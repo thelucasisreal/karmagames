@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5ad8ff"/>
+      <stop offset=".5" stop-color="#7a7cff"/>
+      <stop offset="1" stop-color="#c25aff"/>
+    </linearGradient>
+    <radialGradient id="luz" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="branco" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dfe4ff"/>
+    </linearGradient>
+    <linearGradient id="verde" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e4ff6a"/>
+      <stop offset="1" stop-color="#7fd12a"/>
+    </linearGradient>
+    <linearGradient id="laranja" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd25a"/>
+      <stop offset="1" stop-color="#ff7a2a"/>
+    </linearGradient>
+    <linearGradient id="rosa" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9ab0"/>
+      <stop offset="1" stop-color="#ff3a6a"/>
+    </linearGradient>
+    <linearGradient id="azul" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8ae4ff"/>
+      <stop offset="1" stop-color="#2a8aff"/>
+    </linearGradient>
+    <linearGradient id="grade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a3a9a"/>
+      <stop offset="1" stop-color="#2a1a5a"/>
+    </linearGradient>
+    <filter id="sombra" filterUnits="userSpaceOnUse" x="-900" y="-700" width="2600" height="1900">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#2a0a5a" flood-opacity=".4"/>
+    </filter>
+    <!-- peca base: quadrado 100x100 centrado -->
+    <g id="brilho">
+      <path d="M-34 -40 H20" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".75"/>
+      <circle cx="33" cy="-40" r="4.5" fill="#fff" opacity=".75"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#fundo)"/>
+  <circle cx="400" cy="250" r="280" fill="url(#luz)"/>
+
+  <!-- estrelinhas -->
+  <g fill="#fff">
+    <path d="M150 210 l7 17 17 7 -17 7 -7 17 -7 -17 -17 -7 17 -7z"/>
+    <path d="M640 250 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6z"/>
+    <path d="M590 60 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" opacity=".8"/>
+    <path d="M215 440 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" opacity=".8"/>
+  </g>
+
+  <!-- pecas soltas nas laterais -->
+  <g font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="66" text-anchor="middle" stroke-linejoin="round" paint-order="stroke" filter="url(#sombra)">
+    <g transform="translate(95 105) rotate(-14) scale(.85)">
+      <rect x="-50" y="-50" width="100" height="100" rx="22" fill="url(#rosa)" stroke="#2a0a3a" stroke-width="8"/>
+      <use href="#brilho"/>
+      <text y="24" fill="#fff" stroke="#2a0a3a" stroke-width="10">7</text>
+    </g>
+    <g transform="translate(705 120) rotate(12) scale(.8)">
+      <rect x="-50" y="-50" width="100" height="100" rx="22" fill="url(#laranja)" stroke="#2a0a3a" stroke-width="8"/>
+      <use href="#brilho"/>
+      <text y="24" fill="#fff" stroke="#2a0a3a" stroke-width="10">3</text>
+    </g>
+    <g transform="translate(110 380) rotate(10) scale(.75)">
+      <rect x="-50" y="-50" width="100" height="100" rx="22" fill="url(#azul)" stroke="#2a0a3a" stroke-width="8"/>
+      <use href="#brilho"/>
+      <text y="24" fill="#fff" stroke="#2a0a3a" stroke-width="10">1</text>
+    </g>
+    <g transform="translate(700 390) rotate(-10) scale(.85)">
+      <rect x="-50" y="-50" width="100" height="100" rx="22" fill="url(#verde)" stroke="#2a0a3a" stroke-width="8"/>
+      <use href="#brilho"/>
+      <text y="24" fill="#fff" stroke="#2a0a3a" stroke-width="10">8</text>
+    </g>
+  </g>
+
+  <!-- bloco 3x3 central -->
+  <g transform="translate(400 250) rotate(-4)" filter="url(#sombra)">
+    <rect x="-186" y="-186" width="372" height="372" rx="40" fill="url(#grade)" stroke="#2a0a3a" stroke-width="10"/>
+    <rect x="-170" y="-176" width="340" height="18" rx="9" fill="#fff" opacity=".18"/>
+    <g font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="62" text-anchor="middle" stroke-linejoin="round" paint-order="stroke">
+      <!-- linha 1 -->
+      <g transform="translate(-112 -112)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#branco)" stroke="#2a0a3a" stroke-width="7"/>
+        <use href="#brilho" opacity=".5"/>
+        <text y="22" fill="#4a3a9a" stroke="#2a0a3a" stroke-width="0">5</text>
+      </g>
+      <g transform="translate(0 -112)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#branco)" stroke="#2a0a3a" stroke-width="7"/>
+        <text y="22" fill="#4a3a9a">3</text>
+      </g>
+      <g transform="translate(112 -112)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#rosa)" stroke="#2a0a3a" stroke-width="7"/>
+        <use href="#brilho"/>
+        <text y="22" fill="#fff" stroke="#2a0a3a" stroke-width="9">7</text>
+      </g>
+      <!-- linha 2 -->
+      <g transform="translate(-112 0)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#branco)" stroke="#2a0a3a" stroke-width="7"/>
+        <text y="22" fill="#4a3a9a">6</text>
+      </g>
+      <g transform="translate(0 0)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#verde)" stroke="#2a0a3a" stroke-width="7"/>
+        <use href="#brilho"/>
+        <text y="22" fill="#fff" stroke="#2a0a3a" stroke-width="9">9</text>
+      </g>
+      <g transform="translate(112 0)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#branco)" stroke="#2a0a3a" stroke-width="7"/>
+        <text y="22" fill="#4a3a9a">1</text>
+      </g>
+      <!-- linha 3 -->
+      <g transform="translate(-112 112)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#azul)" stroke="#2a0a3a" stroke-width="7"/>
+        <use href="#brilho"/>
+        <text y="22" fill="#fff" stroke="#2a0a3a" stroke-width="9">4</text>
+      </g>
+      <g transform="translate(0 112)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="url(#branco)" stroke="#2a0a3a" stroke-width="7"/>
+        <text y="22" fill="#4a3a9a">8</text>
+      </g>
+      <!-- casa vazia com anotacoes -->
+      <g transform="translate(112 112)">
+        <rect x="-50" y="-50" width="100" height="100" rx="20" fill="#ffffff" fill-opacity=".22" stroke="#2a0a3a" stroke-width="7" stroke-dasharray="14 10"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- peca "2" chegando na casa vazia, com carinha -->
+  <g transform="translate(548 352) rotate(10)" filter="url(#sombra)">
+    <rect x="-56" y="-56" width="112" height="112" rx="24" fill="url(#laranja)" stroke="#2a0a3a" stroke-width="8"/>
+    <path d="M-38 -44 H18" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".75"/>
+    <circle cx="32" cy="-44" r="4.5" fill="#fff" opacity=".75"/>
+    <g stroke="#2a0a3a" stroke-width="5">
+      <ellipse cx="-19" cy="-6" rx="13" ry="16" fill="#fff"/>
+      <ellipse cx="19" cy="-6" rx="13" ry="16" fill="#fff"/>
+    </g>
+    <circle cx="-15" cy="-2" r="7" fill="#2a0a3a"/>
+    <circle cx="23" cy="-2" r="7" fill="#2a0a3a"/>
+    <circle cx="-13" cy="-6" r="2.6" fill="#fff"/>
+    <circle cx="25" cy="-6" r="2.6" fill="#fff"/>
+    <path d="M-12 22 Q2 38 16 22 Z" fill="#8a0a2a" stroke="#2a0a3a" stroke-width="5" stroke-linejoin="round"/>
+    <ellipse cx="-36" cy="18" rx="8" ry="5" fill="#ff5a6a" opacity=".55"/>
+    <ellipse cx="38" cy="18" rx="8" ry="5" fill="#ff5a6a" opacity=".55"/>
+  </g>
+
+  <!-- risquinhos de movimento -->
+  <g stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".85">
+    <path d="M630 300 l26 -10"/>
+    <path d="M638 330 l30 -4"/>
+    <path d="M632 362 l24 4"/>
+  </g>
+</svg>

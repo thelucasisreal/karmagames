@@ -1915,6 +1915,41 @@ function zapMonth(first){
     if(C.pend){zapPush(d.id,{t:tpl(pick(NUDGE))});return}
     var P=zapPrompt(d.id);C.pend=P;zapPush(d.id,{t:P.t,au:P.au});
   });
+  if(!first)admirerMonth();
+}
+// ---- 💘 personagens que têm crush em você ----
+var ADM_HINT=["👀 {n} curtiu 14 fotos antigas suas… às 3 da manhã.","👀 {n} respondeu todos os seus stories hoje.","👀 {n} comentou “🔥” no seu post e apagou logo depois.","👀 {n} viu seu story 6 vezes. Seis.","👀 {n} fixou seu comentário no perfil dele(a)."];
+var ADM_CONF=[["então… vou falar logo: acho que tô com crush em você 😳",["Eu também tava sentindo isso… 💘","Fico lisonjead{a|o|e}, mas prefiro manter a amizade.","Demorou, hein? 😏"]],
+ ["tô há semanas tentando criar coragem pra te mandar isso… você mexe comigo 🙈",["Para que eu fico vermelh{a|o|e}… eu também 😳","Obrigad{a|o|e}, de verdade. Mas não sinto o mesmo.","Só semanas? Achei que era desde sempre 😏"]],
+ ["promete que não vai printar? …eu gosto de você. pronto, falei 😶‍🌫️",["Prometo. E eu gosto de você também 💛","Não vou printar. Mas acho melhor ficarmos como amigos.","Já printei. Brincadeira 😂 eu também gosto"]]];
+function admCandidates(){
+  var out=[],seen=S.admHist||[];
+  function ok(id){return id!==S.date&&id!==S.crushFav&&seen.indexOf(id)<0&&!(S.zap.c[id]&&S.zap.c[id].st>=1)}
+  ZC.forEach(function(c){if(c.type==="crush"&&!c.dyn&&ok(c.id))out.push(c.id)});
+  if(!S.biaCrush&&ok("bia")&&relOf("bia")>=55)out.push("bia");
+  NPCS.forEach(function(n){if(["rival","creator","fa"].indexOf(n.role)>=0&&!zcDef(n.id)&&ok(n.id)&&!(S.npc[n.id]&&S.npc[n.id].gone))out.push(n.id)});
+  return out;
+}
+function admName(id){var d=zcDef(id);if(d)return id==="bia"?"A Bia":d.n;var n=null;NPCS.forEach(function(x){if(x.id===id)n=x});return n?"@"+n.h:id}
+function admirerMonth(){
+  var A=S.admirer;
+  if(A&&A.stage===1&&S.m>A.m){
+    var id=A.id;
+    if(id==="bia"){S.biaCrush=1;applyBia(S)}
+    else if(!zcDef(id)){S.dynCrush=S.dynCrush||[];if(S.dynCrush.indexOf(id)<0)S.dynCrush.push(id);syncDynCrush(S)}
+    if(!S.zap.c[id])S.zap.c[id]={th:[],pend:null,un:0,seenM:0,st:0,stM:0,ts:0};
+    S.crushKnown=S.crushKnown||[];if(S.crushKnown.indexOf(id)<0)S.crushKnown.push(id);
+    var C=S.zap.c[id];C.adm=1;S.rel[id]=Math.max(relOf(id),55);
+    var X=pick(ADM_CONF);C.pend={t:tpl(X[0]),r:X[1].map(tpl),au:0};zapPush(id,{t:C.pend.t});
+    A.stage=2;(S.admHist=S.admHist||[]).push(id);S.admirer=null;
+    note({type:"toast",app:"Z",t:"💘 Alguém tem crush em você!",x:admName(id)+" se declarou no ZapChat. Vai responder?"});
+    return;
+  }
+  if(A||S.m<3)return;
+  if(Math.random()>.12+Math.min(.1,(S.st.f||0)/2e6))return;
+  var L=admCandidates();if(!L.length)return;
+  var id=pick(L);S.admirer={id:id,m:S.m,stage:1};
+  note({type:"toast",app:"P",t:"Photogram",x:pick(ADM_HINT).replace("{n}",admName(id))});
 }
 function zapOpen(id){var C=S.zap.c[id];if(!C)return;C.un=0;if(C.pend)C.seenM=S.m}
 var PUXA=["oi! sumid{a|o|e} 👀","e aí, tudo bem?","oi oi","tô aqui pensando em você (no sentido bom)","bom dia!!","oi, tem um minuto?"];
@@ -3008,7 +3043,7 @@ VIEWS.eats=function(){
 
 // ---- ZapChat ----
 function relLabel(id){var d=zcDef(id),C=S.zap.c[id];
-  if(d.type==="crush")return S.date&&S.date!==id?"amizade":["crush","🔥 ficando","💘 namorando","💑 oficial"][C.st];
+  if(d.type==="crush"){if(C.adm&&C.st===0)return "💘 tem crush em você";return S.date&&S.date!==id?"amizade":["crush","🔥 ficando","💘 namorando","💑 oficial"][C.st]}
   return {fam:"família",amiga:"amiga",marca:"marca",dono:"proprietário"}[d.type]}
 VIEWS.zap=function(){
   var id=UI.d.c;if(id&&zapVisible(id))return zapConv(id);
