@@ -21,6 +21,18 @@
 */
 window.KARMA_JOGOS = [
   {
+    slug: "crossstrike",
+    capa: "assets/capas/crossstrike.svg",
+    titulo: "CrossStrike 3D",
+    descricao: "Tiro em primeira pessoa 5x5 contra bots: compre armas e vença 7 rounds.",
+    categoria: "Ação",
+    controles: "Clique pra mirar · WASD anda · mouse mira · clique atira · R recarrega · B compra · no celular: joystick e botões",
+    autor: "Karma Games",
+    autoral: true,
+    destaque: true,
+    adicionado: "2026-10-08",
+  },
+  {
     slug: "behind-the-grid",
     capa: "assets/capas/behind-the-grid.svg",
     titulo: "Behind The Grid",
