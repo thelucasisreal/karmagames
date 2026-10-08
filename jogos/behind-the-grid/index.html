@@ -414,6 +414,10 @@ body.has-dock .app{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
 .bb.sys{align-self:center;background:#1c2a30;font-size:12px;color:#b5c4cb;border-radius:10px;text-align:center}
 .bb.au{font-style:italic}
 .tones{display:flex;flex-direction:column;gap:6px}
+.zform{display:flex;gap:6px;margin-top:8px;position:sticky;bottom:calc(86px + env(safe-area-inset-bottom));z-index:3;background:var(--bg);padding:6px 0}
+.zform input{flex:1;min-width:0;height:42px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:15px}
+.zform input:focus{outline:none;border-color:var(--accent)}
+.zform .btn{width:42px;min-height:42px;padding:0;border-radius:50%;font-size:18px}
 .tone{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1.5px solid var(--line);text-align:left;font-size:14px;line-height:1.3;transition:border-color .2s,transform .15s}
 .tone:hover{border-color:#4a505e}.tone:active{transform:scale(.98)}
 .tone .tl{font-size:11.5px;font-weight:700;color:var(--muted)}
@@ -1764,17 +1768,22 @@ var ZC=[
   {id:"pai",n:"Pai",e:"👨",c:"#8fd3ff",type:"fam"},
   {id:"bia",n:"Bia",e:"🧃",c:"#ffd84d",type:"amiga"},
   {id:"marca",n:"Marca",e:"💼",c:"#c9cdf9",type:"marca"},
-  {id:"theo",n:"@theo.fitlife",e:"💪",c:"#ff9fbd",type:"crush",deb:1},
-  {id:"lari",n:"@lari.skate",e:"🛹",c:"#9df07a",type:"crush",deb:0},
-  {id:"nic",n:"@nic.synth",e:"🎹",c:"#a98bff",type:"crush",deb:1},
+  {id:"theo",n:"@theo.fitlife",e:"💪",c:"#ff9fbd",type:"crush",deb:1,g:"m",pe:"🧑🏽"},
+  {id:"nic",n:"@nic.synth",e:"🎹",c:"#a98bff",type:"crush",deb:1,g:"m",pe:"🧑🏻‍🎤"},
+  {id:"rafa",n:"@rafa.surf",e:"🏄",c:"#7fd6ff",type:"crush",deb:0,g:"m",pe:"🧔🏽"},
+  {id:"lari",n:"@lari.skate",e:"🛹",c:"#9df07a",type:"crush",deb:0,g:"f",pe:"👩🏻"},
+  {id:"bela",n:"@bela.art",e:"🎨",c:"#ffb38a",type:"crush",deb:1,g:"f",pe:"👩🏾‍🦱"},
+  {id:"nina",n:"@nina.games",e:"🎮",c:"#ff8ad8",type:"crush",deb:1,g:"f",pe:"👩🏼"},
   {id:"jorge",n:"Seu Jorge (proprietário)",e:"🏠",c:"#d8c6a2",type:"dono"}];
-var REL0={mae:62,pai:55,bia:60,jorge:45,theo:15,lari:15,nic:15,marca:50,mari:5,cida:25,darkk:0,gabi:10,byte:20,jp:20,luana:40,renda:30,iphoni:30};
+var REL0={mae:62,pai:55,bia:60,jorge:45,theo:15,lari:15,nic:15,rafa:15,bela:15,nina:15,marca:50,mari:5,cida:25,darkk:0,gabi:10,byte:20,jp:20,luana:40,renda:30,iphoni:30};
 function relOf(id){return S.rel&&S.rel[id]!=null?S.rel[id]:(REL0[id]!=null?REL0[id]:20)}
 function relAdd(id,v){S.rel[id]=clamp(relOf(id)+v,0,100);return S.rel[id]}
 function zcDef(id){for(var i=0;i<ZC.length;i++)if(ZC[i].id===id)return ZC[i];return null}
 function zapBrand(){var o=S.zap.marca!=null?offerById(S.zap.marca):null;return o&&o.kind==="publi"?o:null}
 function zapName(id){if(id==="marca"){var o=zapBrand();return o?o.b.n:"Marca"}return zcDef(id).n}
-function zapVisible(id){if(id==="jorge")return rentValue()>0||S.bills.aluguel.amt>0;if(id==="marca")return !!zapBrand();return true}
+function crushInt(){var p=S&&S.p||PROF||{};return p.int||({ela:"homens",ele:"mulheres"}[p.pron]||"todos")}
+function crushOn(d){var i=crushInt();return i==="todos"||(i==="homens"&&d.g==="m")||(i==="mulheres"&&d.g==="f")}
+function zapVisible(id){var zd=zcDef(id);if(zd&&zd.type==="crush"&&!crushOn(zd))return false;if(id==="jorge")return rentValue()>0||S.bills.aluguel.amt>0;if(id==="marca")return !!zapBrand();return true}
 function zapPush(id,m){var C=S.zap.c[id];if(!C)return;C.th.push(m);if(C.th.length>40)C.th.splice(0,C.th.length-40);if(!m.me&&!m.sys)C.un++;C.ts=++S.zap.ts}
 function zapUnread(){var n=0;ZC.forEach(function(c){if(zapVisible(c.id))n+=S.zap.c[c.id].un});return n}
 var NUDGE=["??","oi?","tá viv{a|o|e}? 👀","🎤 Áudio 0:09","visualizou né","{nome}??","oi sumid{a|o|e}"];
@@ -1823,6 +1832,15 @@ var ZT={
    lari:[["oi!! vi que você curtiu meu vídeo caindo do skate kkkk 🛹",["Curti porque você levantou rindo, achei lindo 🥹","Parabéns pelo conteúdo.","Curti a queda, não o skate"]],
     ["tô indo numa feira de vinil sábado… quer ir? sem pressão!",["QUERO! 🥹 que convite fofo","Posso confirmar até sexta?","Só se você me ensinar a cair com estilo"]],
     ["fiz um desenho do seu avatar, olha 🎨 (não ficou bom)",["Ficou LINDO, vou guardar pra sempre 💛","Obrigad{a|o|e} pela arte.","Ficou bom sim, mais bonito que o original"]]],
+   rafa:[["pegou onda hoje? (no sentido do algoritmo kkk) 🏄",["Peguei não, mas sua mensagem salvou o dia 😊","Engajamento estável, obrigad{a|o|e}.","Só se a onda for de hate"]],
+    ["vou dar aula de surf grátis domingo. bora? prometo não rir se você cair",["Bora!! Vou cair e você vai rir sim 😂💙","Vou verificar minha agenda.","Vou só pra tirar foto na prancha"]],
+    ["vi seu vídeo de ontem. você é mais engraçad{a|o|e} do que parece 😅",["E você é mais fofo do que parece 🙈","Obrigad{a|o|e} pelo feedback.","Eu pareço o quê, então? 😏"]]],
+   bela:[["fiz um retrato seu no meu caderno, posso postar? 🎨",["Pode!! Que honra 🥹","Pode, com os créditos, por favor.","Só se ficar mais bonito que eu"]],
+    ["exposição minha sexta, tem um convite com seu nome 👀",["Eu vou com certeza 💛","Confirmo presença até quinta.","Vou se tiver vinho de graça"]],
+    ["você tem cara de quem tem uma playlist triste secreta",["Tenho, e uma música lembra você 😳","Não comento sobre minhas playlists.","Tenho, e você tá nela como vilã"]]],
+   nina:[["te vi jogando no story. você é muito ruim kkkk (com carinho) 🎮",["Me ensina então 🥹","Estou em fase de aprendizado.","Ruim é seu aim, minha filha"]],
+    ["duo hoje à noite? se perder paga o açaí",["Fechado, já separei o pix do açaí 💜","Pode ser às 21h.","Prepara o pix então"]],
+    ["fiz cosplay novo, adivinha de quem? 👀",["De alguém lindo igual você 😳","Aguardo a revelação oficial.","De mim? Porque tá parecido"]]],
    nic:[["fiz uma música e o refrão lembra seu último post. coincidência? 🎹",["Me manda?? Quero ouvir agora 🥹","Interessante. Qual a métrica?","Só se o refrão for sobre mim mesmo"]],
     ["você parece gostar de sintetizador antigo. ou é só pose? 😌",["Gosto de verdade, e de quem toca também 😳","Tenho apreço por equipamento vintage.","É pose, mas uma pose muito boa"]],
     ["show meu na quinta, lista vip tem um nome livre 👀",["Põe o meu, eu vou com certeza 💜","Agradeço o convite. Confirmo depois.","Só vou se tiver camarim"]]]},
@@ -1872,7 +1890,7 @@ function zapMonth(first){
   var o=S.inbox.filter(function(x){return x.kind==="publi"&&!x.acc})[0];
   var prevB=S.zap.marca;S.zap.marca=o?o.id:null;
   if(o&&prevB!==o.id){var CB=S.zap.c.marca;CB.th=[];CB.pend=null;CB.un=0}
-  var P0={mae:.75,pai:.45,bia:.7,marca:1,theo:.35,lari:.35,nic:.35,jorge:.3};
+  var P0={mae:.75,pai:.45,bia:.7,marca:1,theo:.35,lari:.35,nic:.35,rafa:.35,bela:.35,nina:.35,jorge:.3};
   ZC.forEach(function(d){
     if(!zapVisible(d.id))return;var C=S.zap.c[d.id],p=P0[d.id];
     if(first)p=d.id==="mae"||d.id==="bia"?1:d.id==="marca"?1:0;
@@ -1923,6 +1941,81 @@ function zapReply(id,tone){
   var a=applyD(dd);checkDeath();
   return {d:a,info:info};
 }
+// ---- ZapChat: mensagem livre (o jogador escreve o que quiser) ----
+function zapNorm(t){return (" "+String(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")+" ").replace(/\s+/g," ")}
+var ZW={
+ bad:["idiota","burr","otari","lixo","odeio","cala a boca","cala boca","vai se ","vai tomar","foda","fdp","porra","caralh","merda","chato","chata","feio","feia","inutil","nojent","vtnc","vsf","pqp","desgrac","praga","imbecil","ridicul","vagabund","corno","besta","cuzao","arrombad","babaca","nao te aguento","me deixa em paz","nem ligo","tanto faz","sai fora","some daqui","morre","escroto","escrota","palhac","trouxa","mentiros","falso","falsa","interesseir","pao duro","golpista","ladrao","ladra","vai a merda","enche o saco","encher o saco","nao enche","bloquear","te bloque","nunca mais","que se dane","danem"],
+ badE:["🖕","😡","🤬","💩","🙄","👎","😤"],
+ good:["te amo","amo voce","amo vc","amo tu","obrigad","valeu","brigad","saudade","lindo","linda","lind","querid","carinho","abraco","beijo","bjs","parabens","orgulho","feliz","adoro","gosto","gostei","fofo","fofa","desculpa","perdao","foi mal","conta comigo","to aqui","estou aqui","se cuida","cuida","bom dia","boa noite","boa tarde","que bom","maravilh","incrivel","top","demais","amei","amo ","melhor","especial","sinto falta","te admiro","admiro","agradeco","gratidao","deus te abencoe","fica bem","tudo bem?","como voce ta","como vc ta","como voce esta","ajudar","ajudo","juntos","juntas","prometo","vou ai","visitar","almocar","jantar","cafe","ta tudo bem","tmj","te quero","❤","💛","💗","💖","💕","😍","🥰","🥹","😘","🙏","🤗","☺"],
+ deb:["kkk","haha","hehe","rsrs","kkkk","ata","aham","ta bom entao","claro ne","sei sei","conta outra","oxe","vish","e dai","eh dai","😏","😂","🤣","🙃","😜","🤡","💅","👀"],
+ prof:["proposta","contrato","valor","prazo","reuniao","combinado","entendido","agendar","orcamento","cache","pagamento","prezad","atenciosamente","cordialmente","conforme","nota fiscal","midia kit","briefing","entrega","parceria","negociar","desconto","parcelar","boleto","aluguel","recibo"]};
+function zapClassify(t){
+  var n=zapNorm(t),raw=String(t||""),sc={bad:0,good:0,deb:0,prof:0};
+  if(n.trim().length<2)return "vazio";
+  ZW.bad.forEach(function(w){if(n.indexOf(w)>=0)sc.bad+=2});
+  ZW.badE.forEach(function(w){if(raw.indexOf(w)>=0)sc.bad+=2});
+  ZW.good.forEach(function(w){if(n.indexOf(w)>=0||raw.indexOf(w)>=0){
+    // "nao te amo", "nao gosto"... vira negativo
+    var i=n.indexOf(w);if(i>=0&&/ (nao|nunca|jamais|nem) ([a-z]+ )?$/.test(n.slice(Math.max(0,i-14),i)))sc.bad+=2;else sc.good+=1.5}});
+  ZW.deb.forEach(function(w){if(n.indexOf(w)>=0||raw.indexOf(w)>=0)sc.deb+=1.5});
+  ZW.prof.forEach(function(w){if(n.indexOf(w)>=0)sc.prof+=1});
+  var letters=raw.replace(/[^A-Za-zÀ-ÿ]/g,"");
+  if(letters.length>=6&&letters===letters.toUpperCase()&&!/K{3,}/.test(letters))sc.bad+=1; // GRITANDO
+  if(/!{3,}/.test(raw)&&sc.good===0)sc.bad+=.5;
+  if(sc.bad>0&&sc.bad>=sc.good)return "bad";
+  if(sc.good>0&&sc.good>=sc.deb)return "good";
+  if(sc.deb>0)return "deb";
+  if(sc.prof>0)return "prof";
+  return "neutro";
+}
+// respostas na hora para mensagens livres (sem pergunta pendente)
+var ZF={
+ fam:{good:["Ai que coisa boa de ler 🥹❤️","Você é o orgulho dessa casa 💗","Já printei e mandei pro grupo da família!","Deus te abençoe, meu amor 🙏"],neutro:["Tá bom, filh{a|o|e}. 👍","Recebido. Você tá bem mesmo?","Hum, ok. Liga pra gente qualquer dia."],deb:["kkkkk você não presta","Puxou a mim, esse humor 😂","Rindo aqui com seu pai"],prof:["Por que você tá falando igual gerente de banco?","Tá estranh{a|o|e}… aconteceu alguma coisa?"],bad:["Nossa. Não te criei pra falar assim comigo. 😔","Vou fingir que não li isso.","Tá bom. Quando quiser conversar direito, me liga.","🎤 Áudio 3:12 · (choro e sermão)"],vazio:["??","Oi? Mandou sem querer?"]},
+ amiga:{good:["💛💛💛 eu sei que eu sou incrível","tô chorando aqui","melhor pessoa do mundo","AAAA para que eu fico sem graça"],neutro:["ok kkk","beleza","tá, e aí?","hm 👀 conta mais"],deb:["KKKKKKKKKK","eu te amo e te odeio","printei, vai pro grupo (brincadeira… ou não)"],prof:["virou empresa? 😐","ok, senhor{a||e} CEO 🙄"],bad:["Nossa. Do nada?","Tá. Vou lembrar disso.","Não precisava falar assim comigo. 😶","Uau. Fama subiu pra cabeça mesmo."],vazio:["???","digitou com o cotovelo?"]},
+ crush:{good:["🥰","*digitando…* *digitando…* 💘","para que eu fico sem graça 🙈","vem cá então 😳"],neutro:["haha ok","e aí, tudo bem?","🙂"],deb:["KKKKK te odeio (mentira)","você não presta e eu gosto","sabia que você ia falar isso 😏"],prof:["a gente é colega de trabalho agora? 😕","ok… 🙂"],bad:["Uau. Ok então. Tchau.","Nem te conheço direito e você me fala isso?","Pode esquecer meu número.","🚫 Você foi bloquead{a|o|e}… (brincadeira. ou não.)"],vazio:["??","oi?"]},
+ marca:{good:["Que fofura! 💖 Amamos sua energia.","Obrigada pelo carinho! Seguimos alinhados 🤝"],neutro:["Recebido! Retornamos em breve.","Anotado ✅"],deb:["Kkkk adoramos o humor! Mas vamos manter o profissionalismo, tá? 😅"],prof:["Perfeito. Seguimos com o combinado. 🤝","Recebido. Nosso time comercial vai analisar."],bad:["Lamentamos o tom da mensagem. Vamos encerrar a negociação.","Prezad{a|o|e}, não toleramos esse tipo de abordagem. Proposta cancelada."],vazio:["Olá! Podemos ajudar?"]},
+ dono:{good:["Bom saber. Você é dos bons. 👍","Tá certo. Qualquer coisa me chama."],neutro:["Ok.","Certo. Aguardo."],deb:["Não achei graça.","Engraçadinh{a|o|e}. O aluguel também vai ser."],prof:["Certo. Se for sobre o aluguel, pode mandar o comprovante.","Ok. Combinado é combinado."],bad:["Vou lembrar disso no reajuste do aluguel.","Respeito é bom e eu gosto. Aluguel subiu.","Com esse tom, a gente conversa no contrato."],vazio:["?"]}
+};
+function zapFree(id,text){
+  var C=S.zap.c[id],d=zcDef(id);if(!C||!d||!zapVisible(id))return null;
+  text=String(text||"").trim().slice(0,240);if(!text)return null;
+  var cls=zapClassify(text),hadPend=!!C.pend;
+  // com pergunta pendente: mensagem boa/neutra/deboche segue as regras dos tons
+  if(hadPend&&cls!=="bad"&&cls!=="vazio"){
+    var tone=cls==="good"?0:cls==="deb"?2:1;
+    C.pend.r[tone]=text;var r=zapReply(id,tone);if(r){r.cls=cls;r.info.unshift(zapClsTxt(cls))}return r;
+  }
+  C.th.push({me:1,t:text});if(hadPend)C.pend=null;C.ts=++S.zap.ts;C.seenM=S.m;
+  var pool=ZF[d.type==="fam"?"fam":d.type==="amiga"?"amiga":d.type==="crush"?"crush":d.type==="marca"?"marca":"dono"];
+  var dd={},info=[zapClsTxt(cls)],rl=pick(pool[cls]);
+  // efeitos de status: ruim sempre pesa; bom só conta 1x por mês por contato (pra não farmar)
+  var first=C.freeM!==S.m;C.freeM=S.m;
+  if(cls==="bad"){
+    if(d.type==="fam"){relAdd(id,-20);dd.p=-5}
+    else if(d.type==="amiga"){relAdd(id,-20);dd.p=-3;if(Math.random()<.3){dd.h=10;dd.r=-3;info.push("😬 A Bia mostrou o print pro grupo e vazou no Chirp (🔥 +10).")}}
+    else if(d.type==="crush"){relAdd(id,-25);dd.p=-3;var br=checkBreak(id);if(br)info.push(br)}
+    else if(d.type==="marca"){var o=zapBrand();dd.r=-5;if(o){decline(o.id);S.zap.marca=null;info.push("Proposta cancelada.")}if(Math.random()<.4){dd.h=15;info.push("📸 A marca postou o print da sua mensagem (🔥 +15).")}}
+    else{relAdd(id,-15);S.rentUp=(S.rentUp||0)+100;info.push("O Seu Jorge aumentou o aluguel em R$ 100.")}
+  }else if(first){
+    if(cls==="good"){
+      if(d.type==="fam"){relAdd(id,8);dd.p=3;if(Math.random()<.2){var v=ri(5,15)*10;dd.$=v;info.push("💸 PIX de "+fmtR(v)+" “só porque sim”")}}
+      else if(d.type==="amiga"){relAdd(id,8);dd.p=2}
+      else if(d.type==="crush"){relAdd(id,10);if(!(S.date&&S.date!==id)){var pr=crushProgress(id);if(pr)info.push(pr)}}
+      else if(d.type==="marca"){dd.r=1}
+      else relAdd(id,5);
+    }else if(cls==="deb"){
+      if(d.type==="crush"){if(d.deb)relAdd(id,6);else{relAdd(id,-4);rl=null;info.push("(visualizou e não respondeu 🙃)")}}
+      else if(d.type==="dono")relAdd(id,-5);
+      else relAdd(id,3);
+    }else if(cls==="prof"){if(d.type==="fam"||d.type==="amiga"||d.type==="crush")relAdd(id,-3);else relAdd(id,2)}
+    else if(cls==="neutro")relAdd(id,1);
+  }else if(cls!=="vazio")info.push("(Afeto só muda com 1 mensagem boa por mês, mas pode conversar à vontade.)");
+  if(rl)C.th.push({t:tpl(rl)});
+  info.forEach(function(x){C.th.push({sys:1,t:x})});
+  var a=applyD(dd);checkDeath();
+  return {d:a,info:info,cls:cls};
+}
+function zapClsTxt(c){return {good:"💗 Mensagem boa",neutro:"💬 Mensagem neutra",deb:"😏 Mensagem debochada",prof:"💼 Mensagem profissional",bad:"💢 Mensagem pesada",vazio:"🤨 Mensagem sem sentido"}[c]}
 function biaSecret(){
   var q=S.queue.filter(function(x){var e=evById(x.id);return e&&!e.rep&&x.id!=="crise"});
   if(q.length){var e0=evById(q[0].id);return e0?tpl(e0.t):null}
@@ -1942,7 +2035,7 @@ function breakup(id){
   if(pub){applyD({h:15,p:-20});S.log.push({m:S.m,t:"Término público",l:"Fim do namoro com "+n});note({type:"toast",app:"C",t:"Chirp",x:"#acabou em alta: o término com "+n+" virou assunto (🔥 +15, 🧠 −20)."});return "💔 Término público. A internet já escolheu um lado."}
   applyD({p:-8});return "💔 Vocês terminaram. Doeu, mas foi em silêncio."
 }
-function canCasal(){return !!(S.date&&S.zap.c[S.date]&&S.zap.c[S.date].st===3)}
+function canCasal(){return !!(S.date&&S.zap.c[S.date]&&S.zap.c[S.date].st>=2)}
 
 // ---- 🔍 Explorar (12 creators) ----
 var NPCS=[
@@ -1950,6 +2043,9 @@ var NPCS=[
   {id:"cida",h:"dona_cida_receitas",e:"👵",c:"#ffcf6b",f:1.4e6,role:"mentor",lbl:"mentora",posts:[["food","🍰 50 50 38,☕ 78 70 18,🌼 20 24 16","bolo de fubá da quarta-feira, receita no comentário 💛"],["warm","🍲 50 52 36,🧄 22 70 16,🌿 78 26 18","caldo verde pra esquentar a alma 🍲"],["mint","📒 50 50 30,✍️ 74 66 20,🌿 22 28 16","regra 14 do meu caderno: “quem posta com raiva, apaga com vergonha”"]]},
   {id:"theo",h:"theo.fitlife",e:"💪",c:"#ff9fbd",f:2.1e6,role:"crush",lbl:"crush",posts:[["sky","🏋️ 50 50 36,💦 78 26 16,💪 22 70 18","treino de hoje: 2 h de academia, 40 min de story 💪"],["sunset","🏃 50 50 34,🌅 50 22 22,👟 78 74 16","corridinha no pôr do sol 🌅 #fitlife"],["mint","🥗 50 50 34,🥑 22 72 16,💧 78 26 16","dieta flexível: hoje teve brigadeiro 🙈"]]},
   {id:"lari",h:"lari.skate",e:"🛹",c:"#9df07a",f:180000,role:"crush",lbl:"crush",posts:[["grass","🛹 50 56 38,🌳 20 30 22,✨ 80 22 14","primeiro kickflip depois de 300 tentativas 🛹"],["sky","🎨 50 46 34,🖌️ 78 70 18,🛹 22 74 18","pintei o shape novo, gostaram? 🎨"],["warm","🎧 50 46 32,💿 22 72 18,☕ 78 70 16","feira de vinil + café = sábado perfeito ☕"]]},
+  {id:"rafa",h:"rafa.surf",e:"🏄",c:"#7fd6ff",f:310000,role:"crush",lbl:"crush",posts:[["sky","🏄 50 52 38,🌊 50 80 30,☀️ 80 18 16","onda de 2 metros e eu de 1,70 de coragem 🌊"],["sunset","🛶 50 56 34,🌅 50 22 24,🐚 78 76 14","fim de tarde que não precisa de filtro 🌅"],["mint","🥥 50 50 34,🏝️ 22 30 20,😎 78 72 16","água de coco é minha personalidade 🥥"]]},
+  {id:"bela",h:"bela.art",e:"🎨",c:"#ffb38a",f:140000,role:"crush",lbl:"crush",posts:[["warm","🎨 50 50 38,🖼️ 22 28 20,🖌️ 78 72 16","3 semanas nessa tela e ainda não sei se terminei 🎨"],["night","🕯️ 50 50 30,📓 22 72 18,🌙 78 22 16","desenhando até as 3h de novo 🌙"],["grass","🌻 50 52 36,🎒 22 74 16,☀️ 80 18 16","pintura ao ar livre: 50% arte, 50% formiga 🐜"]]},
+  {id:"nina",h:"nina.games",e:"🎮",c:"#ff8ad8",f:420000,role:"crush",lbl:"crush",posts:[["neon","🎮 50 52 38,🏆 78 24 18,💜 22 26 14","subi pro diamante e ninguém me segura 🏆"],["party","🧝‍♀️ 50 50 38,✨ 22 22 14,📸 78 72 16","cosplay novo: 40 horas de EVA e cola quente ✨"],["night","🍜 50 52 32,🎧 22 30 18,🌙 78 22 14","live até as 4h, miojo às 4h05 🍜"]]},
   {id:"nic",h:"nic.synth",e:"🎹",c:"#a98bff",f:95000,role:"crush",lbl:"crush",posts:[["neon","🎹 50 52 38,🌌 78 22 18,💜 22 26 14","faixa nova saindo do forno 🎹 link na bio"],["night","🎤 50 46 34,✨ 22 22 14,🎶 78 70 18","show de ontem: 40 pessoas e muito amor 💜"],["party","🎛️ 50 50 36,🔊 22 70 18,💡 78 24 16","montei um sintetizador com peça de ferro-velho 🔧"]]},
   {id:"darkk",h:"xX_Darkk_Xx",e:"💀",c:"#5a5f6c",f:3200,role:"hater",lbl:"polêmico",posts:[["dim","🎮 50 52 34,💀 22 24 18,🔥 78 72 16","GG EZ todo mundo é bot menos eu 💀"],["night","🖥️ 50 50 36,🥤 22 72 16,😤 78 26 18","rage de hoje: 3 controles e 1 teclado"],["neon","🏆 50 46 34,🎮 50 76 20,✨ 80 22 14","finalmente subi de elo (mãe, para de entrar no quarto)"]]},
   {id:"gabi",h:"gabi.games",e:"🎮",c:"#5ac8ff",f:600000,role:"rival",lbl:"rival",posts:[["neon","🎮 50 52 38,🏆 78 24 18,💥 22 26 18","ACE de faca, sem mirar. vocês viram?? 🔪"],["night","🔴 20 20 14,🎧 50 50 36,💬 80 70 18","live de 10 h hoje, quem aguenta? 💜"],["party","🎉 50 50 36,🎂 22 74 18,💜 78 24 16","600 mil!! obrigada, chat 🎉"]]},
@@ -2230,6 +2326,7 @@ function postCard(r){
     likes:fmtN(Math.max(8,r.gain*rnd(2,4)+f*.04)),coms:fmtN(Math.max(2,f*.004+r.gain*.1)),shares:fmtN(Math.max(1,r.gain*.3))};
   var bb={bg:"mess",sc:pt.b.sc,cap:r.bcap};
   if(r.publi){o.bg="studio";o.sc=r.publi.b.e+" 50 50 40,✨ 22 22 16,✨ 78 24 14,"+n.e+" 80 76 18";bb={bg:"fluor",sc:"📄 30 50 26,🤳 64 46 26,😮‍💨 80 20 16",cap:"gravei 23 vezes até falar “"+r.publi.b.n+"” sem errar"}}
+  if(r.casal&&!r.publi){var pd=zcDef(r.casal);if(pd){o.sc=(S.p.avatar&&S.p.avatar.e||"🙂")+" 36 54 34,"+pd.pe+" 64 54 34,💞 50 22 20,"+pd.e+" 82 80 14";bb={bg:"mess",sc:"🤳 30 50 28,"+pd.pe+" 66 54 28,😵‍💫 80 22 16",cap:"foram 47 fotos até os dois saírem de olho aberto"}}}
   if(r.trendObj&&r.trendObj.tx)o.stamp="⚠️ trend";
   if(r.wm)o.stamp="VERSÃO DE AVALIAÇÃO";else if(r.edit&&r.edit.g)o.stamp="✂️ nota "+r.edit.g;
   return flipCard(postFace(o),btsFace(bb,true));
@@ -2339,7 +2436,8 @@ function emailSugs(){var w=norm(FORM.name).split(/\s+/).filter(Boolean);if(!w.le
   return [{v:f+"."+l,t:"pro"},{v:base+dim+g+(FORM.y||2006),t:"silly"},{v:"contato."+f,t:"pro"}]}
 function classifyEmail(v){if(/^contato\./.test(v)||/^[a-z]+\.[a-z]+$/.test(v))return "pro";if((v.match(/\d/g)||[]).length>=2||/gat|fof|lind|xx|princes|bb|love|kawai|zinh|inh[aoe]|top|lol/.test(v))return "silly";return "neutral"}
 function ageOf(){if(!FORM.y||FORM.mo==null||FORM.mo===""||!FORM.dd)return null;var t=new Date(),a=t.getFullYear()-FORM.y;if(t.getMonth()<FORM.mo||(t.getMonth()==FORM.mo&&t.getDate()<FORM.dd))a--;return a}
-function newForm(){var p=PROF||{};FORM={name:p.name||"",dd:p.dd||"",mo:p.mo!=null?p.mo:"",y:p.y||"",pron:p.pron||"ela",email:p.email||"",emailType:p.emailType||"neutral",pass:"",hint:p.hint||"",terms:false,read:false,
+function intOf(F){return F.int||({ela:"homens",ele:"mulheres"}[F.pron]||"todos")}
+function newForm(){var p=PROF||{};FORM={name:p.name||"",dd:p.dd||"",mo:p.mo!=null?p.mo:"",y:p.y||"",pron:p.pron||"ela",int:p.int||"",email:p.email||"",emailType:p.emailType||"neutral",pass:"",hint:p.hint||"",terms:false,read:false,
   handle:p.handle||"",bio:p.bio||"",avatar:p.avatar||{e:"😎",c:"#ffc23a"},err:""}}
 VIEWS.signup=function(){
   var F=FORM,o,i;
@@ -2352,6 +2450,7 @@ VIEWS.signup=function(){
    '<div class="fld"><label for="fName">Nome</label><input class="inp" id="fName" maxlength="24" autocomplete="off" placeholder="Como você se chama?" value="'+esc(F.name)+'"></div>'+
    '<div class="fld"><span class="lbl">Data de nascimento</span><div class="sels">'+dd+mo+yy+'</div><span class="hint" id="fAge"></span></div>'+
    '<div class="fld"><span class="lbl">Pronome</span><div class="seg" role="group" aria-label="Pronome">'+["ela","ele","elu"].map(function(p){return '<button type="button" data-pron="'+p+'" aria-pressed="'+(F.pron===p)+'">'+p+'</button>'}).join("")+'</div></div>'+
+   '<div class="fld"><span class="lbl">Tenho crush em</span><div class="seg" role="group" aria-label="Tenho crush em">'+[["homens","Homens"],["mulheres","Mulheres"],["todos","Todos"]].map(function(x){return '<button type="button" data-int="'+x[0]+'" aria-pressed="'+(intOf(F)===x[0])+'">'+x[1]+'</button>'}).join("")+'</div></div>'+
    '<div class="fld"><label for="fMail">E-mail</label><div class="mail" id="fMailW"><input id="fMail" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="30" placeholder="seu.nome" value="'+esc(F.email)+'"><span>@mailgrid.com</span></div><div class="sug" id="fSug"></div></div>'+
    '<div class="fld"><label for="fPass">Senha</label><input class="inp" id="fPass" type="password" autocomplete="new-password" maxlength="30" placeholder="••••••••"></div>'+
    '<div class="fld"><label for="fHint">Dica de senha</label><input class="inp" id="fHint" maxlength="40" autocomplete="off" placeholder="ninguém vai ver 👀" value="'+esc(F.hint)+'"></div>'+
@@ -2418,7 +2517,7 @@ VIEWS.post=function(){
     return '<button class="opt'+(bad?" dis":"")+'" type="button" data-tk="'+key+'" aria-pressed="'+(tk===key)+'"'+(bad?" disabled":"")+'><div class="oh"><span class="oi">'+(t?(t.tx?"⚠️":"📈"):"🦄")+'</span><div class="grow"><b>'+(t?esc(t.n):"Conteúdo próprio")+'</b><p>'+(t?(bad?"Só vale post Produzido.":"Hype "+st.hype+"% · força "+String(t.f).replace(".",",")+(t.tx?" · 🔥 +15 e 🌟 −5":"")):"Sem trend. Rende mais se você estiver “Original”.")+'</p></div></div>'+(t?'<div class="hype"><i style="width:'+st.hype+'%"></i></div>':"")+'</button>'}
   var why=canPost(type,type==="p"&&S.freeProd>0);
   return back()+'<h2>Gravar / Postar</h2><div class="tsel">'+types+'</div><h3>Entrar numa trend?</h3><div class="tsel">'+topt("")+topt("g")+topt("n")+'</div>'+
-    (canCasal()?swHTML("casal","💑 Post de casal com "+zcDef(S.date).n,"+20% de engajamento",!!UI.d.casal):"")+
+    (canCasal()?swHTML("casal","💑 Tirar foto com "+(zcDef(S.date).g==="f"?"sua namorada ":"seu namorado ")+zcDef(S.date).n,S.zap.c[S.date].st===2?"+20% de engajamento · assume o namoro no feed!":"+20% de engajamento",!!UI.d.casal):"")+
     (type==="p"&&!why?'<p class="rm-note">✂️ Produzido abre a ilha de edição (dá pra pular com nota C'+(editorHired()?" ou deixar com o editor, nota B":"")+').</p>':"")+
     (why?'<p class="err" style="color:var(--coral)">'+esc(why)+'</p>':"")+'<button class="btn primary wide adv" type="button" data-act="doPost"'+(why?" disabled":"")+'>Postar 🚀</button>';
 };
@@ -2638,7 +2737,7 @@ VIEWS.zap=function(){
    '<div class="zl">'+list.map(function(c){var C=S.zap.c[c.id],last=C.th[C.th.length-1];
      return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
        '<div class="zr">'+(C.un?'<span class="ur" aria-label="'+C.un+' não lidas">'+C.un+'</span>':(C.pend?'<span>responder</span>':'<span>'+esc(relLabel(c.id))+'</span>'))+'<span class="afe" title="Afeto '+relOf(c.id)+'"><i style="width:'+relOf(c.id)+'%"></i></span></div></button>'}).join("")+'</div>'+
-   '<p class="rm-note">💗 afetuoso · 💼 profissional · 😏 debochado. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
+   '<p class="rm-note">💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
 };
 function zapConv(id){
   var d=zcDef(id),C=S.zap.c[id];
@@ -2648,12 +2747,13 @@ function zapConv(id){
    '<div class="zhead">'+avHTML({e:d.e,c:d.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(id))+'</b><div class="small muted">Afeto '+relOf(id)+'/100 · '+esc(relLabel(id))+'</div></div>'+
    (d.type==="crush"&&C.st>=1?'<button class="btn sm ghost" type="button" data-act="terminar">💔 Terminar</button>':"")+'</div>'+
    th+(UI.d.zres?dchips(UI.d.zres.d,true):"")+tones+
+   (id!=="marca"||zapBrand()?'<form class="zform" id="zapForm" autocomplete="off"><input id="zapTxt" type="text" maxlength="240" placeholder="Escreva o que quiser…" aria-label="Escrever mensagem" enterkeyhint="send"><button class="btn primary sm" type="submit" aria-label="Enviar">➤</button></form>':"")+
    (canPull(id)?'<button class="btn sm" type="button" data-act="pull" style="align-self:flex-start">👋 Puxar assunto</button>':"");
 }
 
 // ---- Explorar ----
 VIEWS.explore=function(){
-  var list=NPCS.filter(function(n){return !S.npc[n.id].gone}),gone=NPCS.length-list.length;
+  var list=NPCS.filter(function(n){var zd=zcDef(n.id);return !S.npc[n.id].gone&&!(n.role==="crush"&&zd&&!crushOn(zd))}),gone=NPCS.length-list.length;
   return back()+'<div class="row"><h2 class="grow">Explorar</h2><span class="chip">❤️ '+(10-S.mon.likes)+'/10 curtidas</span></div>'+
    '<p class="small muted">Creators com posts novos todo mês. Collab e denúncia gastam ⚡1. Comentar e curtir são de graça.</p>'+
    '<div class="xg">'+list.map(npcCard).join("")+'</div>'+(gone?'<p class="rm-note">🚩 '+gone+' conta'+(gone>1?"s":"")+' suspensa'+(gone>1?"s":"")+' por golpe graças a você.</p>':"");
@@ -3083,7 +3183,9 @@ function bindSignup(){
   app.querySelector("#fSign").addEventListener("input",function(e){var t=e.target;t.classList.remove("bad");if(t.id==="fMail")$("fMailW").classList.remove("bad")});
   $("fName").addEventListener("input",function(e){F.name=e.target.value;sugs()});
   ["fDd","fMo","fY"].forEach(function(id){$(id).addEventListener("change",function(e){var k={fDd:"dd",fMo:"mo",fY:"y"}[id];F[k]=e.target.value===""?"":+e.target.value;age();sugs()})});
-  app.querySelectorAll("[data-pron]").forEach(function(b){b.addEventListener("click",function(){F.pron=b.dataset.pron;app.querySelectorAll("[data-pron]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});sugs();sfx("tap")})});
+  function paintInt(){app.querySelectorAll("[data-int]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.int===intOf(F))})}
+  app.querySelectorAll("[data-pron]").forEach(function(b){b.addEventListener("click",function(){F.pron=b.dataset.pron;app.querySelectorAll("[data-pron]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});if(!F.intSet)F.int="";paintInt();sugs();sfx("tap")})});
+  app.querySelectorAll("[data-int]").forEach(function(b){b.addEventListener("click",function(){F.int=b.dataset.int;F.intSet=1;paintInt();sfx("tap")})});
   $("fMail").addEventListener("input",function(e){var v=e.target.value.toLowerCase().replace(/[^a-z0-9._]/g,"");e.target.value=v;F.email=v;F.emailType=classifyEmail(v)});
   $("fSug").addEventListener("click",function(e){var b=e.target.closest("[data-mail]");if(!b)return;F.email=b.dataset.mail;F.emailType=b.dataset.mt;$("fMail").value=F.email;sfx("tap")});
   $("fPass").addEventListener("input",function(e){F.pass=e.target.value});
@@ -3127,7 +3229,7 @@ function bindPg(){
   app.querySelectorAll("[data-cor]").forEach(function(b){b.addEventListener("click",function(){F.avatar.c=b.dataset.cor;$("pAv").style.background=F.avatar.c;app.querySelectorAll("[data-cor]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});sfx("tap")})});
   $("fPg").addEventListener("submit",function(e){e.preventDefault();var s=handleState(F.handle);
     if(!s.ok){$("pErr").textContent=s.t;$("fHW").classList.add("bad");$("fH").focus();sfx("bad");return}
-    PROF={name:F.name.trim(),dd:F.dd,mo:F.mo,y:F.y,age:F.age,pron:F.pron,email:F.email,emailType:F.emailType,hint:F.hint.trim(),terms:F.read,handle:F.handle,bio:F.bio.trim(),avatar:{e:F.avatar.e,c:F.avatar.c}};
+    PROF={name:F.name.trim(),dd:F.dd,mo:F.mo,y:F.y,age:F.age,pron:F.pron,int:intOf(F),email:F.email,emailType:F.emailType,hint:F.hint.trim(),terms:F.read,handle:F.handle,bio:F.bio.trim(),avatar:{e:F.avatar.e,c:F.avatar.c}};
     store.set("perfil",PROF);sfx("good");go("niche")});
   st();hs();
 }
@@ -3302,10 +3404,17 @@ document.addEventListener("click",function(e){
 });
 function rerender(){var y=scroller.scrollTop;render();scroller.scrollTop=y}
 function finishPost(type,ed){
+  var casal=!!(UI.d.casal&&canCasal());
   var res=doPost(type,UI.d.tk||null,{edit:ed,casal:UI.d.casal});if(!res){rerender();return}
-  var pt=NICHOS[S.niche].posts[res.type];res.cap=tpl(pick(pt.cap))+(res.trend?" "+res.trend:"")+(res.edit&&UI.d.casal&&canCasal()?" 💑":"");res.bcap=tpl(pick(pt.b.cap));res.loc=pick(LOCS);res.trendObj=UI.d.tk?trendById(S.trends[UI.d.tk].id):null;
+  res.casal=casal?S.date:null;
+  if(casal&&S.zap.c[S.date].st===2){var CC=S.zap.c[S.date];CC.st=3;CC.stM=S.m;unlock("oficial");res.assumiu=1;toast({app:"P",t:"💑 Namoro assumido!",x:"Vocês apareceram juntos no feed. Agora é oficial: 🧠 +5 por mês."})}
+  var pt=NICHOS[S.niche].posts[res.type];res.cap=tpl(pick(pt.cap))+(res.trend?" "+res.trend:"")+(casal?" 💑 com "+zcDef(S.date).n:"");res.bcap=tpl(pick(pt.b.cap));res.loc=pick(LOCS);res.trendObj=UI.d.tk?trendById(S.trends[UI.d.tk].id):null;
   sfx(res.viral?"viral":res.flop?"bad":"good");UI.v="post";UI.d={res:res};rerender();scroller.scrollTop=0;save();
 }
+function zapSendUI(){var inp=$("zapTxt"),id=UI.d.c;if(!inp||!id)return;var r=zapFree(id,inp.value);if(!r){inp.focus();return}
+  sfx(r.cls==="bad"?"bad":r.cls==="good"?"good":"notif");UI.d={c:id,zres:r};rerender();scroller.scrollTop=scroller.scrollHeight;save();
+  var ni=$("zapTxt");if(ni&&!matchMedia("(pointer:coarse)").matches)ni.focus()}
+document.addEventListener("submit",function(e){if(e.target&&e.target.id==="zapForm"){e.preventDefault();zapSendUI()}});
 function zapReplyUI(i){var id=UI.d.c,r=zapReply(id,i);if(!r)return;sfx("notif");UI.d={c:id,zres:r};rerender();scroller.scrollTop=scroller.scrollHeight;save()}
 function chooseUI(i){
   if(S.pend||!S.evq.length)return;
