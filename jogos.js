@@ -21,29 +21,6 @@
 */
 window.KARMA_JOGOS = [
   {
-    slug: "nao-confia",
-    capa: "assets/capas/nao-confia.webp",
-    titulo: "Não Confia",
-    descricao: "Plataforma troll em 15 fases: o chão desaba, a porta foge e até a florzinha mata. Não confia em nada!",
-    categoria: "Plataforma",
-    controles: "← → anda · espaço pula · R reinicia a fase · Esc pausa · M som · no celular: botões na tela",
-    autor: "Karma Games",
-    autoral: true,
-    destaque: true,
-    adicionado: "2026-10-09",
-  },
-  {
-    slug: "20-perguntas",
-    capa: "assets/capas/20-perguntas.webp",
-    titulo: "Jogo das 20 Perguntas",
-    descricao: "Adivinhe o segredo com perguntas de sim ou não: contra o bot ou online com amigos, até no modo Mestre.",
-    categoria: "Quebra-cabeça",
-    controles: "Clique nas perguntas ou escreva a sua · digite o chute · online: crie uma sala e passe o código",
-    autor: "Karma Games",
-    autoral: true,
-    adicionado: "2026-10-09",
-  },
-  {
     slug: "crossstrike",
     capa: "assets/capas/crossstrike.svg",
     titulo: "CrossStrike 3D",
