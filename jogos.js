@@ -24,7 +24,7 @@ window.KARMA_JOGOS = [
     slug: "crossstrike",
     capa: "assets/capas/crossstrike.svg",
     titulo: "CrossStrike 3D",
-    descricao: "Tiro em primeira pessoa: 5x5 contra bots, duelo 1 contra 1 ou online com amigos. Mire na cabeça!",
+    descricao: "Tiro em equipe 5x5, 1 contra 1, Battle Royale ou online com amigos. 8 personagens (Viper, Ghost, Nova, Bulldog...) e finalização com cena!",
     categoria: "Ação",
     controles: "WASD anda · mouse mira · clique atira · botão direito (segurar) mira · R recarrega · B compra · no celular: joystick e botões",
     autor: "Karma Games",
