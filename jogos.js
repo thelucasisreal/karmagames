@@ -21,6 +21,18 @@
 */
 window.KARMA_JOGOS = [
   {
+    slug: "nao-confia",
+    capa: "assets/capas/nao-confia.webp",
+    titulo: "Não Confia",
+    descricao: "Plataforma troll com 100 fases em 10 mundos: o chão desaba, a porta foge e até a florzinha mata. Não confia em nada!",
+    categoria: "Ação",
+    controles: "← → anda · espaço pula (segurar pula mais alto) · R reinicia a fase · Esc pausa · M som · no celular: botões na tela",
+    autor: "Karma Games",
+    autoral: true,
+    destaque: true,
+    adicionado: "2026-10-11",
+  },
+  {
     slug: "crossstrike",
     capa: "assets/capas/crossstrike.svg",
     titulo: "CrossStrike 3D",
