@@ -41,6 +41,11 @@ function carregar() {
   }
 }
 const salvo = carregar();
+// O troll acabou enquanto o jogo estava fechado: devolve um pouco de paciencia
+if (salvo.trollAte && salvo.trollAte <= Date.now()) {
+  salvo.trollAte = 0;
+  salvo.paciencia = Math.max(salvo.paciencia, 30);
+}
 function gravar() {
   try { localStorage.setItem('naoConfia', JSON.stringify(salvo)); } catch { /* sem storage */ }
 }
@@ -131,6 +136,7 @@ const MAPA = {
 };
 
 function apertou(tecla) {
+  if (trollAtivo()) return;
   if (tecla === 'pulo' && !teclas.pulo) {
     pulsoPulo = true;
     if (estado === 'menu' || estado === 'fim') comecar();
@@ -139,6 +145,8 @@ function apertou(tecla) {
 }
 
 addEventListener('keydown', e => {
+  // Com o troll na tela, so da pra desligar o som
+  if (trollAtivo() && e.code !== 'KeyM') { e.preventDefault(); return; }
   const tecla = MAPA[e.code];
   if (tecla) {
     e.preventDefault();
@@ -208,19 +216,26 @@ const MUNDOS = [
 // ---------- deboche ----------
 
 const DEBOCHES = [
-  'O contador agradece.', 'Skill issue.', 'Tá treinando pra morrer?', 'Quase! (mentira)',
-  'Até minha avó passava.', 'Essa foi bonita, faz de novo.', 'Confiou, né?', 'Respira.',
-  'O chão mandou um beijo.', 'Já pensou em jogar xadrez?', 'Morreu com estilo.', 'Tenta com os olhos abertos.',
-  'Essa armadilha nem era difícil.', 'Ainda tem um monte de fase, hein.', 'Tá rindo? Eu tô.', 'Faltou só não morrer.',
-  'Isso foi de propósito? Fala que foi.', 'O jogo tá ganhando de você.', 'Deu ruim, campeão.', 'Calma, é só um jogo. Um jogo cruel.',
-  'Eu avisei. Não avisei? Então tá.', 'Recorde de velocidade pra morrer!', 'A porta riu de você.', 'Sua paciência mandou lembranças.',
-  'Que tal pular na hora certa?', 'Nem o bot faria isso.', 'Morrer também é progresso. Não é.', 'Mais uma pra coleção.',
-  'Isso é que é dedicação.', 'Errou rude.', 'Vai, de novo. Eu espero.', 'Tá achando que é fácil?',
+  'Patético.', 'Skill issue. Muito skill issue.', 'Desinstala, vai. Ninguém vai saber.', 'Até minha avó passava. De olho fechado.',
+  'Seus dedos pediram demissão.', 'Isso foi constrangedor de assistir.', 'O contador de mortes tá cansado de você.', 'Você joga com o cotovelo?',
+  'Eu esperava pouco. Você entregou menos.', 'O bot de teste passou. O bot.', 'Parabéns, você achou o jeito mais burro de morrer.', 'Nem tentando morrer você morria tão bem.',
+  'Essa armadilha era a mais fácil do jogo.', 'Você confia em tudo, né? Por isso tá aqui.', 'Seu reflexo é de tartaruga com sono.', 'Já pensou em jogar outra coisa? Tipo nada?',
+  'Morreu igual um NPC.', 'Tá rindo? Todo mundo tá rindo DE você.', 'Faltou só jogar bem.', 'Você é o motivo das instruções existirem.',
+  'Que vergonha. Sério, que vergonha.', 'Tem gente que nasceu pra isso. Não é você.', 'Recorde mundial de burrice!', 'Eu já vi peixe jogar melhor.',
+  'Isso foi de propósito? Fala que foi, por favor.', 'O jogo tá te humilhando e você deixa.', 'Chora não, tenta de novo. Ou chora.', 'Sua paciência foi embora. Sua dignidade também.',
+  'A fase 100 tá rindo de você daqui.', 'Você nunca vai chegar na fase 100.', 'Seu teclado merece alguém melhor.', 'Que tal pular na hora certa? Ou em qualquer hora?',
+  'Mais uma pra coleção de vergonha.', 'Errou rude. Errou feio. Errou muito.', 'Eu espero. Eu tenho o dia todo. Você não tem talento.', 'Desiste. É sério. Desiste.',
+  'Até a porta tá com pena de você.', 'Isso não foi azar. Foi você mesmo.', 'Você perdeu pra um quadrado laranja. Você É o quadrado laranja.', 'Print disso vai pro grupo da família.',
 ];
 let ultimoDeboche = '';
 function deboche() {
   let d;
-  do d = sortear(DEBOCHES); while (d === ultimoDeboche);
+  // Quanto mais voce morre na mesma fase, mais o jogo esfrega na sua cara
+  const extra = tentativa >= 5 ? [
+    `Tentativa ${tentativa}. TENTATIVA ${tentativa}.`, `${tentativa} vezes na mesma fase. Impressionante.`,
+    `Já são ${salvo.mortes} mortes. Orgulho zero.`, `Fase ${faseAtual + 1} de 100. Você não vai passar da ${faseAtual + 2}.`,
+  ] : [];
+  do d = sortear([...DEBOCHES, ...extra, ...extra]); while (d === ultimoDeboche);
   ultimoDeboche = d;
   return d;
 }
@@ -332,12 +347,14 @@ function montarFase() {
   const def = FASES[faseAtual];
   L = novaFase(def, tentativa);
   def.montar(L, tentativa, memoria);
+  if (SORTE && !def.semSorte) dadoDoTroll(L);
   p = novoJogador(memoria.checkpoint || L.inicioPos);
   bufferPulo = 0;
   pulsoPulo = false;
 }
 
 function comecar() {
+  if (trollAtivo()) return;
   faseAtual = Math.min(salvo.fase, FASES.length - 1);
   if (estado === 'fim') faseAtual = 0;
   tentativa = 1;
@@ -353,6 +370,7 @@ function morrer(motivo) {
   timerEstado = FRAMES_MORTO;
   salvo.mortes++;
   salvo.paciencia = Math.max(0, salvo.paciencia - 3);
+  if (salvo.paciencia === 0 && SORTE) chamarTroll();
   gravar();
   explosao(p.x + p.w / 2, p.y + p.h / 2, COR_JOGADOR, 28);
   tremor = 12;
@@ -423,6 +441,7 @@ function lerComando() {
   pulsoPulo = false;
   if (L.filtrarComando) cmd = L.filtrarComando(cmd);
   if (L.inverter) cmd.dir = -cmd.dir;
+  if (L.inverterDado > 0) { L.inverterDado--; cmd.dir = -cmd.dir; }
   if (L.semPulo) cmd.apertou = false;
   return cmd;
 }
@@ -668,6 +687,307 @@ function desmoronar(L, c0, c1, { intervalo = 2, r = 16, h = 2 } = {}) {
   return pedacos;
 }
 
+// ---------- dado do troll ----------
+// A cada tentativa o dado sorteia pegadinhas que nao estao no mapa da fase: espinho que cai do
+// ceu, espinho que brota do chao, chao que some, controle invertido, pulo maluco, apagao.
+// Cada uma acontece 1, 2 ou 3 vezes (tambem sorteado), num ponto ou num momento sorteado.
+// As vezes o dado nao tira nada, e ai voce fica esperando a pegadinha que nao vem.
+// ?sorte=0 desliga (o robo de teste usa pra fase ficar sempre igual).
+const SORTE = new URLSearchParams(location.search).get('sorte') !== '0';
+const entre = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const chance = pr => Math.random() < pr;
+
+// Linha do chao (grid) na coluna c: o primeiro bloco solido com ar em cima
+function chaoDaColuna(L, c) {
+  if (c < 1 || c >= COLS - 1) return -1;
+  for (let r = 2; r < LINHAS; r++) if (L.grid[r][c] && !L.grid[r - 1][c]) return r;
+  return -1;
+}
+
+const TROLLS = {
+  // Um espinho cai bem em cima da sua cabeca (com um "!" piscando antes pra dar tempo de fugir)
+  ceu(L, col = null, aviso = 20) {
+    const c = col ?? limitar(Math.floor(centroX() / T), 0, COLS - 1);
+    som('risadinha');
+    const marca = L.coisa({
+      update() {
+        if (--aviso > 0) return;
+        L.coisas.splice(L.coisas.indexOf(marca), 1);
+        const [e] = L.espinhos(c, -1, 1, 'baixo', { motivo: 'O DADO DO TROLL TE ACERTOU' });
+        e.update = () => {
+          e.y += 17;
+          const r = Math.floor((e.y + T) / T);
+          if (e.y > H || (r > 0 && r < LINHAS && L.grid[r][c] && e.y > 2 * T)) {
+            L.perigos.splice(L.perigos.indexOf(e), 1);
+            poof(e.x + 15, e.y + 20);
+          }
+        };
+      },
+      draw() {
+        if (Math.floor(aviso / 4) % 2) return;
+        texto('!', c * T + T / 2, 100, { tam: 40, cor: '#ff3b3b' });
+        texto('▼', c * T + T / 2, 132, { tam: 20, cor: '#ff3b3b' });
+        ctx.fillStyle = '#ff3b3b33';
+        ctx.fillRect(c * T, 0, T, H);
+      },
+    });
+    return true;
+  },
+  // Um espinho brota do chao logo na sua frente e depois some de novo
+  brota(L) {
+    const c = Math.floor(centroX() / T) + p.olhar * entre(2, 5);
+    const r = chaoDaColuna(L, c);
+    if (r < 0) return false;
+    let t = 0;
+    let espinho = null;
+    const brotinho = L.coisa({
+      update() {
+        t++;
+        if (t < 22) { if (t % 4 === 0) poeira(c * T + T / 2, r * T); return; }
+        if (!espinho) {
+          [espinho] = L.espinhos(c, r - 1, 1, 'cima', { escala: 0, motivo: 'BROTOU DO CHÃO (O DADO QUIS)' });
+          som('espinho');
+        }
+        if (t > 22 + 140) {
+          L.perigos.splice(L.perigos.indexOf(espinho), 1);
+          L.coisas.splice(L.coisas.indexOf(brotinho), 1);
+          poof(c * T + T / 2, r * T - 10);
+        }
+      },
+      draw() {
+        if (t >= 22) return;
+        ctx.fillStyle = '#00000055';
+        ctx.fillRect(c * T + 4, r * T - 3, T - 8, 3);
+      },
+    });
+    return true;
+  },
+  // O pedaco de chao na sua frente treme, cai, e volta uns segundos depois
+  buraco(L, col = null) {
+    const c = col ?? Math.floor(centroX() / T) + p.olhar * entre(1, 3);
+    const r = chaoDaColuna(L, c);
+    if (r < 0) return false;
+    let h = 0;
+    while (r + h < LINHAS && L.grid[r + h][c]) h++;
+    const b = L.bloco(c, r, 1, h, { comTopo: true });
+    L.solido(c, r, 1, h, 0);
+    let t = 0;
+    som('crack');
+    b.update = () => {
+      t++;
+      if (t < 12) { b.tremor = 1.5; return; }
+      if (t === 12) { b.tremor = 0; b.solido = false; b.vy = 0; }
+      if (t < 200) { b.vy += 0.6; b.y += b.vy; return; }
+      // Volta pro lugar (se voce nao estiver no meio do caminho)
+      const volta = { x: c * T, y: r * T, w: T, h: h * T };
+      if (toca(volta, corpoJogador())) return;
+      L.solido(c, r, 1, h, 1);
+      L.blocos.splice(L.blocos.indexOf(b), 1);
+      poof(c * T + T / 2, r * T);
+    };
+    return true;
+  },
+  inverte(L) {
+    L.inverterDado = entre(90, 180);
+    tremor = 5;
+    som('glitch');
+    return true;
+  },
+  // O proximo pulo sai gigante ou um pulinho de nada
+  pulo(L) {
+    if (L.def.puloInverte) return false;
+    L.puloDado = chance(0.5) ? 1.45 : 0.5;
+    return true;
+  },
+  // Varios espinhos do ceu em volta de voce, um atras do outro
+  chuva(L) {
+    const c0 = Math.floor(centroX() / T);
+    const cols = [-2, -1, 0, 1, 2].map(d => c0 + d * (chance(0.5) ? 1 : -1)).filter(c => c >= 0 && c < COLS);
+    cols.forEach((c, i) => L.depois(i * 0.12, () => TROLLS.ceu(L, c, 18)));
+    return true;
+  },
+  // Chao some em 2 ou 3 colunas seguidas na sua frente
+  cratera(L) {
+    const c0 = Math.floor(centroX() / T) + p.olhar * entre(1, 2);
+    let ok = false;
+    for (let i = 0; i < entre(2, 3); i++) ok = TROLLS.buraco(L, c0 + i * p.olhar) || ok;
+    return ok;
+  },
+  // Um vento te empurra pra um lado
+  vento(L) {
+    const dir = chance(0.5) ? 1 : -1;
+    let t = entre(50, 100);
+    som('glitch');
+    const v = L.coisa({
+      update() {
+        if (estado === 'jogando') p.empurrao = (p.empurrao || 0) + dir * 0.4;
+        if (--t <= 0) L.coisas.splice(L.coisas.indexOf(v), 1);
+        if (t % 4 === 0) particula(dir > 0 ? 0 : W, Math.random() * H, dir * 14, 0, '#ffffff66', 50, 3, 0);
+      },
+    });
+    return true;
+  },
+  // A porta (se for uma porta comum) muda de lugar
+  porta(L) {
+    const d = L.portas[0];
+    if (!d || d.update || d.aoTocar || !d.saida) return false;
+    const rPorta = Math.round((d.y + 45) / T);
+    const opcoes = [];
+    for (let c = 2; c < COLS - 1; c++) {
+      if (chaoDaColuna(L, c) === rPorta && Math.abs(c * T - d.x) > 4 * T && Math.abs(c * T - centroX()) > 3 * T) opcoes.push(c);
+    }
+    if (!opcoes.length) return false;
+    poof(d.x + 15, d.y + 20);
+    d.x = sortear(opcoes) * T;
+    poof(d.x + 15, d.y + 20);
+    som('risada');
+    dizer(sortear(['A PORTA SE MUDOU', 'ENDEREÇO NOVO', 'ERA AQUI, AGORA É ALI']), 50);
+    return true;
+  },
+  // Um bicho fantasma aparece na borda e te persegue atravessando tudo
+  perseguidor(L) {
+    const daEsquerda = centroX() > W / 2;
+    const vel = 1.9 + L.def.mundo * 0.14 + Math.random() * 0.6;
+    let vida = entre(300, 480);
+    const e = {
+      x: daEsquerda ? -30 : W + 4, y: limitar(p.y - 40 + Math.random() * 80, 2 * T, 15 * T), w: 26, h: 24,
+      vx: 0, vy: 0, tipo: 'bicho', cor: sortear(['#ff3b6b', '#7a4cff', '#22c55e']), espinhudo: chance(0.5),
+      ativo: true, visivel: true, motivo: sortear(['O BICHO TE PEGOU', 'COMIDO VIVO', 'ELE TE ACHOU']),
+      update() {
+        const dx = centroX() - (e.x + e.w / 2), dy = p.y + p.h / 2 - (e.y + e.h / 2);
+        const d = Math.hypot(dx, dy) || 1;
+        e.vx = dx / d * vel;
+        e.y += dy / d * vel;
+        e.x += e.vx;
+        if (--vida <= 0) { L.perigos.splice(L.perigos.indexOf(e), 1); poof(e.x + 13, e.y + 12); }
+      },
+    };
+    L.perigos.push(e);
+    som('risada');
+    dizer(sortear(['TEM ALGO ATRÁS DE VOCÊ', 'CORRE!', 'ELE TÁ COM FOME']), 45);
+    return true;
+  },
+  // Balas muito rapidas vindo da borda na altura da sua cabeca (com um risco vermelho antes)
+  bala(L) {
+    const n = entre(1, 3);
+    for (let i = 0; i < n; i++) {
+      L.depois(i * 0.35, () => {
+        if (estado !== 'jogando') return;
+        const daEsquerda = chance(0.5);
+        const y = p.y + p.h / 2 - 6;
+        let aviso = 18;
+        const risco = L.coisa({
+          update() {
+            if (--aviso > 0) return;
+            L.coisas.splice(L.coisas.indexOf(risco), 1);
+            const v = 13 + Math.random() * 6;
+            projetil(L, daEsquerda ? -30 : W + 10, y, daEsquerda ? v : -v, 0, { w: 20, h: 12, motivo: sortear(['BALA PERDIDA (EM VOCÊ)', 'NEM VIU DE ONDE VEIO', 'HEADSHOT']) });
+            som('tiro');
+          },
+          draw() {
+            ctx.fillStyle = Math.floor(aviso / 3) % 2 ? '#ff2a4acc' : '#ff2a4a44';
+            ctx.fillRect(daEsquerda ? 0 : W - 40, y + 4, 40, 4);
+          },
+        });
+      });
+    }
+    return true;
+  },
+  // O chao vira sabao por uns segundos
+  gelo(L) {
+    mudarFisica(L, { freio: 0.985, acel: 0.14 }, entre(150, 260));
+    som('glitch');
+    return true;
+  },
+  // Gravidade de lua ou de chumbo
+  gravidade(L) {
+    const lua = chance(0.5);
+    mudarFisica(L, { grav: L.fisBase.grav * (lua ? 0.45 : 1.55) }, entre(120, 220));
+    dizer(lua ? 'GRAVIDADE DE LUA' : 'VOCÊ ENGORDOU', 40);
+    return true;
+  },
+  // Te joga uns blocos pra tras
+  teleporte(L) {
+    const dx = -p.olhar * entre(3, 7) * T;
+    const alvo = { x: limitar(p.x + dx, 2, W - p.w - 2), y: p.y, w: p.w, h: p.h };
+    if (solidosEm(alvo).length) return false;
+    poof(centroX(), p.y + 13);
+    p.x = alvo.x;
+    poof(centroX(), p.y + 13);
+    som('virar');
+    dizer(sortear(['VOLTA AQUI', 'ESQUECEU ALGO?', 'DE NOVO, DO COMEÇO (QUASE)']), 40);
+    return true;
+  },
+  apagao(L) {
+    L.apagao = entre(40, 75);
+    som('raio');
+    return true;
+  },
+};
+
+// Troca um pedaco da fisica por um tempo e depois volta ao normal
+function mudarFisica(L, mudanca, frames) {
+  L.fis = { ...L.fisBase, ...mudanca };
+  L.fisAte = L.t + frames;
+}
+
+function dadoDoTroll(L) {
+  L.fisBase = { ...L.fis };
+  L.coisa({ update() { if (L.fisAte && L.t >= L.fisAte) { L.fis = { ...L.fisBase }; L.fisAte = 0; } } });
+  const m = L.def.mundo;
+  // 76% das tentativas tem pegadinha; nas outras 24% voce fica com medo a toa
+  if (chance(0.24)) return;
+  const max = faseAtual === 0 ? 2 : m < 2 ? 4 : m < 5 ? 6 : Object.keys(TROLLS).length;
+  const tipos = Object.keys(TROLLS).sort(() => Math.random() - 0.5).slice(0, entre(1, max));
+
+  const inicio = Math.floor(L.inicioPos.x / T);
+  const porta = L.portas[0] ? Math.floor(L.portas[0].x / T) : COLS - 2;
+  const de = Math.min(inicio, porta) + 3, ate = Math.max(inicio, porta) - 2;
+
+  const antes = L.aoPular;
+  L.aoPular = () => {
+    if (L.puloDado) { p.vy *= L.puloDado; som(L.puloDado > 1 ? 'mola' : 'risadinha'); L.puloDado = 0; }
+    antes?.();
+  };
+
+  // Fora as marcadas, de tempos em tempos o dado rola de novo e repete uma delas (a fase toda)
+  const intervalo = () => entre(Math.max(90, 260 - m * 18), Math.max(200, 480 - m * 25));
+  let proxima = intervalo();
+  L.coisa({
+    update() {
+      if (estado !== 'jogando' || L.t < 60 || --proxima > 0) return;
+      proxima = TROLLS[sortear(tipos)](L) ? intervalo() : 20;
+    },
+  });
+
+  for (const tipo of tipos) {
+    const vezes = tipo === 'porta' ? entre(2, 5) : entre(2, m < 3 ? 4 : 6);
+    for (let i = 0; i < vezes; i++) {
+      const disparar = () => {
+        if (estado !== 'jogando' || L.t < 40) return false;
+        return TROLLS[tipo](L);
+      };
+      if (ate > de && chance(0.55)) {
+        // Num ponto sorteado do caminho: dispara quando voce passa por ali
+        const cx = entre(de, ate) * T + T / 2;
+        let lado = null;
+        const ponto = L.coisa({
+          update() {
+            const agora = Math.sign(centroX() - cx);
+            if (lado === null) { lado = agora; return; }
+            if (agora && agora !== lado && disparar()) L.coisas.splice(L.coisas.indexOf(ponto), 1);
+            if (agora) lado = agora;
+          },
+        });
+      } else {
+        // Num momento sorteado (se nao der na hora, tenta de novo um pouco depois)
+        const tentar = () => { if (!disparar()) L.depois(0.7, tentar); };
+        L.depois(1 + Math.random() * 8, tentar);
+      }
+    }
+  }
+}
+
 function bandeira(L, c, aoTocar, extra = {}) {
   const f = L.coisa({
     x: c * T + 10, y: 14 * T, w: 22, h: 2 * T, ativa: false, ...extra,
@@ -741,9 +1061,9 @@ function espelhar(L) {
 }
 
 // Botao de pressao no chao (dispara uma vez)
-function botao(L, c, rChao, aoApertar, { rotulo = '', cor = '#ff3b3b' } = {}) {
+function botao(L, c, rChao, aoApertar, { rotulo = '', cor = '#ff3b3b', largura = 2, piscar = null } = {}) {
   const b = L.coisa({
-    x: c * T + 3, y: rChao * T - 8, w: T * 2 - 6, h: 8, apertado: false,
+    x: c * T + 3, y: rChao * T - 8, w: T * largura - 6, h: 8, apertado: false,
     update() {
       const pisou = p.noChao && toca({ x: b.x, y: b.y - 2, w: b.w, h: b.h + 2 }, corpoJogador());
       if (pisou && !b.apertado) {
@@ -755,10 +1075,10 @@ function botao(L, c, rChao, aoApertar, { rotulo = '', cor = '#ff3b3b' } = {}) {
     draw() {
       ctx.fillStyle = '#333';
       ctx.fillRect(b.x - 3, b.y + 4, b.w + 6, 4);
-      ctx.fillStyle = cor;
+      ctx.fillStyle = piscar?.() ? '#ffffff' : cor;
       const alt = b.apertado ? 3 : 8;
       ctx.fillRect(b.x, b.y + 8 - alt, b.w, alt);
-      if (rotulo) texto(rotulo, b.x + b.w / 2, b.y - 22, { tam: 15 });
+      if (rotulo) texto(rotulo, limitar(b.x + b.w / 2, 28, W - 28), b.y - 22, { tam: largura < 2 ? 13 : 15 });
     },
   });
   return b;
@@ -1377,7 +1697,7 @@ function desenharHud() {
   if (!L.tituloCaiu) desenharBanner(W / 2 - 190, 8);
   desenharPaciencia(W - 12, 8);
   texto(`TENTATIVA ${tentativa}`, W - 16, 62, { tam: 13, alinhar: 'right', contorno: '#00000099' });
-  if (L.inverter && !L.semAvisoInversao) texto('🙃 CONTROLES INVERTIDOS', W - 16, 82, { tam: 13, alinhar: 'right', cor: '#ffd23f', contorno: '#000' });
+  if ((L.inverter && !L.semAvisoInversao) || L.inverterDado > 0) texto('🙃 CONTROLES INVERTIDOS', W - 16, 82, { tam: 13, alinhar: 'right', cor: '#ffd23f', contorno: '#000' });
   L.desenharHudExtra?.();
 }
 
@@ -1513,9 +1833,15 @@ function desenharMundo() {
   desenharJogador();
   desenharParticulas();
   L.desenharAcima?.();
+  if (L.apagao > 0) {
+    ctx.fillStyle = `rgba(5,4,10,${Math.min(1, L.apagao / 8)})`;
+    ctx.fillRect(0, 0, W, H);
+    L.apagao--;
+  }
 }
 
 function desenhar() {
+  if (trollAtivo()) return desenharTroll();
   ctx.save();
   if (tremor > 0) {
     ctx.translate((Math.random() - 0.5) * tremor, (Math.random() - 0.5) * tremor);
@@ -1554,6 +1880,131 @@ function desenhar() {
   ctx.restore();
 }
 
+// ---------- o troll da paciencia ----------
+// Paciencia chegou a zero: aparece um troll gigante gritando com voce por 5 minutos.
+// O fim fica salvo, entao recarregar a pagina nao adianta. So o M (som) funciona.
+const TROLL_MS = 5 * 60 * 1000;
+const XINGAMENTOS = [
+  'RUIM!', 'LIXO!', 'DESISTE!', 'VOCÊ É UMA VERGONHA!', 'SEU HORRÍVEL!', 'PERDEDOR!',
+  'QUE VERGONHA!', 'NEM TENTA MAIS!', 'VOCÊ É MUITO RUIM!', 'DESINSTALA!', 'PATÉTICO!', 'HORRÍVEL! HORRÍVEL!',
+];
+let trollNaTela = false;
+let trollFala = 0;
+let trollFrase = XINGAMENTOS[0];
+const trollAtivo = () => SORTE && salvo.trollAte > Date.now();
+
+function chamarTroll() {
+  salvo.trollAte = Date.now() + TROLL_MS;
+  trollFala = 0;
+}
+
+function gritar(frase) {
+  if (mudo) return;
+  // Grito sintetizado bem alto + a voz do navegador xingando
+  tom(260, 0.7, { tipo: 'sawtooth', vol: 0.4, ate: 900 });
+  tom(180, 0.7, { tipo: 'square', vol: 0.3, ate: 620, atraso: 0.05 });
+  ruido(0.6, 0.35);
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(frase);
+    u.lang = 'pt-BR';
+    u.volume = 1;
+    u.rate = 1.15;
+    u.pitch = 0.4;
+    speechSynthesis.speak(u);
+  } catch { /* navegador sem voz */ }
+}
+
+function atualizarTroll() {
+  if (!trollNaTela) {
+    trollNaTela = true;
+    teclas.esq = teclas.dir = teclas.pulo = false;
+    piada = null;
+  }
+  if (--trollFala <= 0) {
+    let f;
+    do f = sortear(XINGAMENTOS); while (f === trollFrase);
+    trollFrase = f;
+    trollFala = 150;
+    tremor = 25;
+    gritar(f);
+  }
+  if (trollFala % 20 === 0) tom(90 + Math.random() * 60, 0.15, { tipo: 'sawtooth', vol: 0.2 });
+  atualizarParticulas();
+}
+
+function sairTroll() {
+  trollNaTela = false;
+  try { speechSynthesis.cancel(); } catch { /* sem voz */ }
+  salvo.trollAte = 0;
+  salvo.paciencia = 30;
+  gravar();
+  dizer('O TROLL CANSOU DE VOCÊ', 90, 'Paciência: 30%. Não gasta tudo de novo.');
+  if (L && (estado === 'jogando' || estado === 'morto' || estado === 'pausa')) {
+    tentativa++;
+    montarFase();
+    estado = 'jogando';
+  }
+}
+
+function desenharTroll() {
+  ctx.save();
+  const sacode = trollFala > 120 ? 18 : 4;
+  ctx.translate((Math.random() - 0.5) * sacode, (Math.random() - 0.5) * sacode);
+  ctx.fillStyle = quadro % 10 < 5 ? '#3a0008' : '#5c0010';
+  ctx.fillRect(-30, -30, W + 60, H + 60);
+  // Cara do troll
+  const cx = W / 2, cy = 250, boca = 30 + Math.abs(Math.sin(quadro / 3)) * 45;
+  ctx.fillStyle = '#5aa83a';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 190, 170, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#4a8f2f';
+  for (const lado of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(cx + lado * 175, cy - 40);
+    ctx.lineTo(cx + lado * 260, cy - 110);
+    ctx.lineTo(cx + lado * 185, cy + 10);
+    ctx.fill();
+  }
+  for (const lado of [-1, 1]) {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.ellipse(cx + lado * 70, cy - 50, 42, 30, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#c40000';
+    ctx.beginPath();
+    ctx.arc(cx + lado * 70 + (Math.random() - 0.5) * 8, cy - 46, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#1d3d12';
+    ctx.lineWidth = 14;
+    ctx.beginPath();
+    ctx.moveTo(cx + lado * 120, cy - 110);
+    ctx.lineTo(cx + lado * 25, cy - 75);
+    ctx.stroke();
+  }
+  ctx.fillStyle = '#2a0505';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 75, 110, boca, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#fff8d6';
+  for (let i = -4; i <= 4; i++) {
+    ctx.beginPath();
+    ctx.moveTo(cx + i * 22 - 10, cy + 75 - boca + 4);
+    ctx.lineTo(cx + i * 22 + 10, cy + 75 - boca + 4);
+    ctx.lineTo(cx + i * 22, cy + 75 - boca + 26);
+    ctx.fill();
+  }
+  ctx.restore();
+  const tam = 64 + (trollFala > 130 ? (trollFala - 130) * 2 : 0);
+  texto(trollFrase, W / 2, 470, { tam: Math.min(tam, 96), cor: '#ffe14d', contorno: '#000' });
+  const falta = Math.max(0, salvo.trollAte - Date.now());
+  const min = Math.floor(falta / 60000), seg = Math.floor(falta / 1000) % 60;
+  texto('SUA PACIÊNCIA ACABOU', W / 2, 36, { tam: 26, cor: '#fff', contorno: '#000' });
+  texto(`O TROLL VAI EMBORA EM ${min}:${String(seg).padStart(2, '0')}`, W / 2, 522, { tam: 18, cor: '#ffb3b3', contorno: '#000' });
+  desenharParticulas();
+}
+
 // ---------- laco principal (passo fixo de 60 Hz) ----------
 
 let anterior = performance.now();
@@ -1562,6 +2013,8 @@ const PASSO_MS = 1000 / 60;
 
 function atualizar() {
   quadro++;
+  if (trollAtivo()) return atualizarTroll();
+  if (trollNaTela) sairTroll();
   if (estado === 'jogando') passo();
   else if (estado === 'morto' && --timerEstado <= 0) {
     tentativa++;

@@ -288,15 +288,30 @@ FASES.push(
     montar(L) {
       L.chao(0, 24);
       L.espinhos(25, 17, 7);
-      L.inicio(4, 15);
+      L.inicio(16, 15);
+      // Parede na esquerda pra voce poder "andar parado" enquanto ela vem
+      L.solido(2, 13, 1, 3);
+      // No caminho pra tras o chao desaba: tem que pular enquanto a porta corre atras de voce
+      desmoronar(L, 8, 11, { intervalo: 1 });
       L.placa(10, 11, ['A PORTA TÁ ALI →', 'VAI, PEGA ELA →', 'AGORA ELA NÃO FOGE →', 'CONFIA →']);
-      const d = L.porta(14, 16, { olhos: true });
+      const d = L.porta(22, 16, { olhos: true });
+      // Quando voce quase alcanca, ela teleporta pro outro lado (1 vez, ou ate 3 com o dado)
+      let saltos = SORTE ? entre(1, 3) : 1;
+      const vem = SORTE ? 5.5 + Math.random() * 1.5 : 6;
       // Andou pra frente: ela foge. Andou pra tras: ela vem atras de voce.
       d.update = () => {
         const dir = p.cmd?.dir || 0;
         if (dir > 0) d.x += 5.5;
-        else if (dir < 0) d.x -= 6;
+        else if (dir < 0) d.x -= vem;
         d.x = limitar(d.x, 0, W - d.w);
+        if (saltos > 0 && Math.abs(d.x + d.w / 2 - centroX()) < 45) {
+          saltos--;
+          poof(d.x + 15, d.y + 20);
+          d.x = 23 * T;
+          poof(d.x + 15, d.y + 20);
+          som('risada');
+          dizer(sortear(['QUASE!', 'TCHAU!', 'PEGA EU!', 'AINDA NÃO']), 50);
+        }
       };
     },
   },
@@ -305,36 +320,73 @@ FASES.push(
     montar(L, tentativa) {
       L.chao();
       L.solido(26, 0, 1, 16);
-      L.inicio(2, 15);
+      L.inicio(1, 15);
       L.porta(29, 16);
-      // A cada morte os botoes trocam de lugar
-      const [cVerde, cVermelho] = tentativa % 2 ? [8, 17] : [17, 8];
-      botao(L, cVerde, 16, b => {
-        som('risada');
-        dizer('POR QUE VOCÊ APERTOU?!');
-        // Chove espinho na tela inteira: nao tem pra onde correr
-        for (let c = 0; c < 26; c++) projetil(L, c * T, -40 - (c % 3) * 25, 0, 9, { w: T, grav: 0.5, motivo: 'CHUVA DE ESPINHO' });
-      }, { rotulo: 'APERTE ✔', cor: '#3ddc84' });
-      botao(L, cVermelho, 16, () => {
-        L.solido(26, 0, 1, 16, 0);
-        for (let r = 0; r < 16; r++) poof(26 * T + 15, r * T + 15);
-        som('esmagar');
-        dizer('...TÁ BOM, PODE PASSAR');
-      }, { rotulo: 'NÃO APERTE ✖' });
+      L.placa(13, 9, ['SÓ UM É O CERTO', 'ERROU, MORREU', 'ESCOLHE BEM', 'TEM CERTEZA?']);
+      // 13 botoes colados no chao, com um quadradinho de chao entre eles: so um abre a parede.
+      // O certo muda a cada morte e so pisca rapidinho no comeco (quem piscou, perdeu).
+      const certo = SORTE ? entre(0, 12) : 1;
+      const pisca = () => (L.t > 20 && L.t < 30) || (L.t > 58 && L.t < 63);
+      const mentiras = ['ESSE ✔', 'CONFIA', 'NÃO', 'EU!', '100%', 'SIM', 'ESSE', 'PISA', 'AQUI', 'CERTO', 'JURO', 'VAI', 'OK'];
+      const botoes = [];
+      for (let i = 0; i < 13; i++) {
+        const cor = sortear(['#3ddc84', '#ff3b3b', '#ffd23f', '#4aa8ff']);
+        botoes.push(botao(L, i * 2, 16, () => {
+          if (i !== certo) {
+            som('risada');
+            flash = 0.6;
+            return morrer(sortear(['BOTÃO ERRADO, GÊNIO', 'ERA O OUTRO, ÓBVIO', 'APERTOU O ERRADO KKKK', 'UM EM TREZE E VOCÊ ERROU']));
+          }
+          for (const b of botoes) b.apertado = true;
+          L.solido(26, 0, 1, 16, 0);
+          for (let r = 0; r < 16; r++) poof(26 * T + 15, r * T + 15);
+          som('esmagar');
+          dizer('...TÁ, ACERTOU. SORTE.');
+        }, { rotulo: mentiras[(i + L.tentativa) % mentiras.length], cor, largura: 1, piscar: () => i === certo && pisca() }));
+      }
     },
   },
   {
     nome: 'Buraco Amigo', mundo: 0, saidaBaixo: true,
     montar(L) {
-      L.chao(0, 12);
-      L.chao(16, 31);
-      L.inicio(2, 15);
-      L.placa(14, 11, ['⚠ CUIDADO: BURACO ⚠', '⚠ NEM PENSE EM PULAR ⚠', '⚠ É SÉRIO, É FUNDO ⚠']);
-      L.solido(20, 13, 2, 3);
-      L.solido(23, 10, 2, 6);
-      L.solido(26, 7, 6, 9);
-      L.placa(27, 4, 'SAÍDA ↓');
-      L.porta(29, 7, { aoTocar: () => morrer('A PORTA TE DEU UM SOCO') });
+      // Em cima: o buraco "da saida" tem espinho e a porta te soca. O caminho de verdade e' um
+      // buraco escondido logo atras de onde voce nasce, que cai num tunel secreto.
+      L.chao();
+      L.solido(0, 10, COLS, 1);
+      L.solido(0, 11, 1, 5);
+      L.inicio(14, 9);
+      for (const c of [11, 12]) {
+        L.solido(c, 10, 1, 1, 0);
+        L.bloco(c, 10, 1, 1, { solido: false });
+      }
+      L.solido(20, 10, 3, 1, 0);
+      L.espinhos(20, 10, 3, 'cima', { motivo: 'ERA SÓ UM BURACO COM ESPINHO, GÊNIO' });
+      L.placa(21, 6, ['⚠ CUIDADO: BURACO ⚠', '⚠ NEM PENSE EM PULAR ⚠', '⚠ É SÉRIO, É FUNDO ⚠']);
+      L.placa(21, 8, 'SAÍDA ↓');
+      L.porta(29, 10, { aoTocar: () => morrer('A PORTA TE DEU UM SOCO') });
+      // No tunel tem dois buracos limpinhos, um de cada lado... e nenhum dos dois e' a saida
+      // (o espinho ta la no fundo, so que invisivel)
+      L.buraco(7, 8);
+      L.buraco(15, 16);
+      for (const e of L.perigos.filter(e => e.y === 17 * T)) { e.visivel = false; e.motivo = 'NENHUM DOS DOIS, NÉ'; }
+      L.placa(7.5, 13, '← SAÍDA');
+      L.placa(15.5, 13, 'SAÍDA →');
+      // Enquanto voce esta em cima, o tunel parece terra maciça
+      const capa = L.coisa({
+        aberto: false,
+        update() { if (p.y > 10.5 * T) capa.aberto = true; },
+        draw() {
+          if (capa.aberto) return;
+          for (let r = 11; r < LINHAS; r++) for (let c = 1; c < COLS; c++) desenharBloco(c * T, r * T, T, T, L.mundo, false);
+        },
+      });
+      // Pulou o da esquerda: o buraco de verdade abre logo na frente dele
+      L.gatilho(5, 11, 2, 5, () => {
+        L.solido(3, 16, 2, 2, 0);
+        poof(4 * T, 16 * T);
+        som('crack');
+        dizer('AGORA SIM, PULA', 50);
+      });
     },
   },
   {
