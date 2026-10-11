@@ -26,7 +26,7 @@ window.KARMA_JOGOS = [
     titulo: "CrossStrike 3D",
     descricao: "Tiro em equipe 5x5, 1 contra 1, Battle Royale ou online com amigos. 8 personagens (Viper, Ghost, Nova, Bulldog...) e finalização com cena!",
     categoria: "Ação",
-    controles: "WASD anda · mouse mira · clique atira · botão direito (segurar) mira · R recarrega · B compra · no celular: joystick e botões",
+    controles: "WASD anda · mouse mira · clique atira · botão direito (segurar) mira · 1 a 4 troca (principal, secundária, faca, apoio) · G granada · R recarrega · B compra · no celular: joystick e botões",
     autor: "Karma Games",
     autoral: true,
     destaque: true,

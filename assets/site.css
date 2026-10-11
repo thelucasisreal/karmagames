@@ -294,6 +294,28 @@ a.tile:hover .tile-nome, a.tile:focus-visible .tile-nome { opacity: 1; transform
 }
 @media (pointer: coarse) { .tile-nome { opacity: 1; transform: none; } .t1 .tile-nome { display: none; } }
 
+/* ---------- Celular: jogo em tela cheia ---------- */
+#btn-sair { display: none; }
+body.imersivo { overflow: hidden; }
+body.imersivo .palco-celula {
+  position: fixed; inset: 0; z-index: 100;
+  width: 100vw; height: 100vh; height: 100dvh;
+  border-radius: 0; box-shadow: none; animation: none;
+}
+body.imersivo .jogo-barra { height: auto; min-height: 46px; padding: 0 8px 0 14px; padding-bottom: env(safe-area-inset-bottom); }
+body.imersivo .jogo-barra .btn-redondo { width: 38px; height: 38px; }
+body.imersivo #btn-sair { display: grid; }
+body.imersivo #btn-tela-cheia { display: none; }
+body.imersivo .jogo-titulo span { display: none; }
+body.imersivo .jogo-titulo h1 { font-size: 15px; }
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Deitado sobra pouca altura: a barra vira uma coluna fina do lado. */
+  body.imersivo .palco-celula { flex-direction: row; }
+  body.imersivo .jogo-barra { flex-direction: column; justify-content: center; width: 50px; min-height: 0; padding: env(safe-area-inset-top) 6px 0; padding-right: max(6px, env(safe-area-inset-right)); }
+  body.imersivo .jogo-titulo { display: none; }
+  body.imersivo .jogo-acoes { margin: 0; flex-direction: column; }
+}
+
 /* ---------- Lateral: marca, busca e "Todos os jogos" com filtros ---------- */
 .pagina { display: grid; grid-template-columns: 264px minmax(0, 1fr); align-items: start; }
 .pagina > main, .pagina > .mural { min-width: 0; }

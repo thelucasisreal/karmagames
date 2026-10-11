@@ -252,8 +252,30 @@
     palco.appendChild(lobby);
     lobby.querySelector(".lobby-capa").addEventListener("error", (e) => { e.target.remove(); lobby.querySelector(".lobby-fundo").remove(); });
 
+    // No celular o jogo ocupa a tela inteira (como no Poki), com uma barrinha e o botão de sair.
+    const celula = $("#palco-celula");
+    const ehCelular = () => matchMedia("(pointer: coarse) and (max-width: 1024px), (max-width: 760px)").matches;
+    function entrarImersivo() {
+      if (document.body.classList.contains("imersivo")) return;
+      document.body.classList.add("imersivo");
+      history.pushState({ imersivo: true }, "");
+      const tela = document.documentElement;
+      const pedir = tela.requestFullscreen || tela.webkitRequestFullscreen;
+      if (pedir) Promise.resolve(pedir.call(tela, { navigationUI: "hide" })).catch(() => {});
+    }
+    function sairImersivo(voltarHistorico) {
+      if (!document.body.classList.contains("imersivo")) return;
+      document.body.classList.remove("imersivo");
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      if (voltarHistorico && history.state && history.state.imersivo) history.back();
+    }
+    // O botão "voltar" do Android sai da tela cheia em vez de sair da página.
+    addEventListener("popstate", () => sairImersivo(false));
+    $("#btn-sair").addEventListener("click", () => sairImersivo(true));
+
     let frame = null;
     function comecar() {
+      if (ehCelular()) entrarImersivo();
       if (frame) return;
       carregando.classList.remove("sumir");
       lobby.classList.add("sumir");
@@ -279,6 +301,7 @@
       frame.src = urlDoJogo(jogo);
     });
     $("#btn-tela-cheia").addEventListener("click", () => {
+      if (ehCelular()) return entrarImersivo();
       if (document.fullscreenElement) document.exitFullscreen();
       else if (palco.requestFullscreen) palco.requestFullscreen().catch(() => {});
       else if (palco.webkitRequestFullscreen) palco.webkitRequestFullscreen();
