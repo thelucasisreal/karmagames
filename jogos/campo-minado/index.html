@@ -17,7 +17,7 @@ body{background:var(--bg);color:var(--text);font:400 15px/1.4 "Geist",system-ui,
 ::selection{background:var(--accent);color:var(--bg)}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
 .btn:hover{background:#292d38}
 .btn:active{transform:translateY(1px)}
 .btn.primary,.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
@@ -28,13 +28,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-
 h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
 .stats{display:flex;gap:8px}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 12px;min-width:76px;text-align:center}
-.stat .lbl{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.stat .lbl{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .stat .val{display:block;font:800 16px/1.35 var(--display);font-variant-numeric:tabular-nums}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .seg,.acts{display:flex;gap:6px;flex-wrap:wrap}
 .hint{color:var(--muted);font-size:14px;text-align:center}
-.wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
-.board{display:grid;gap:var(--gap);padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.wrap{flex:1;min-height:0;display:flex;touch-action:manipulation;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.board{margin:auto;flex:none;display:grid;gap:var(--gap);padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .c{width:var(--cell);height:var(--cell);border-radius:min(12px,calc(var(--cell)*.22));background:#2b2f3a;box-shadow:inset 0 -2px 0 rgba(0,0,0,.28);display:grid;place-items:center;font:800 calc(var(--cell)*.48)/1 var(--display);font-variant-numeric:tabular-nums;transition:background-color .18s var(--ease);touch-action:manipulation;-webkit-touch-callout:none}
 .c:hover{background:#353a47}
 .c:focus-visible{outline-offset:1px;position:relative;z-index:1}
@@ -58,6 +58,19 @@ body.flagmode .c:not(.o){cursor:crosshair}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{opacity:0;transform:translateY(12px) scale(.97)}}
 @media (max-width:420px){.stat{min-width:62px;padding:6px 8px}.stat .val{font-size:14px}.btn{padding:0 12px;font-size:13px}.board{padding:5px}}
+/*deitado no celular: placar e botões à esquerda, campo à direita*/
+@media (max-height:500px) and (orientation:landscape){
+  body{padding-top:max(8px,env(safe-area-inset-top));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  .app{display:grid;grid-template-columns:clamp(200px,34vw,260px) minmax(0,1fr);grid-template-rows:auto auto 1fr;gap:10px 14px}
+  .top,.bar,.hint{grid-column:1}
+  .wrap{grid-column:2;grid-row:1/4}
+  h1{font-size:20px}
+  .stat{min-width:0;flex:1;padding:4px 3px}.stat .lbl{font-size:12px;letter-spacing:0;text-transform:none;overflow:hidden;text-overflow:ellipsis}.stat .val{font-size:14px}
+  .stats{width:100%}
+  .bar{flex-direction:column;align-items:stretch}
+  .seg .btn,.acts .btn{flex:1;padding:0 8px;font-size:13px}
+  .hint{text-align:left;font-size:13px;align-self:end}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}}
 </style>
 </head>
@@ -106,9 +119,11 @@ var WRONG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L
 var $=function(id){return document.getElementById(id)};
 var boardEl=$("board"),wrap=$("wrap"),minesEl=$("mines"),timeEl=$("time"),bestEl=$("best"),ov=$("ov"),modeBtn=$("mode");
 var level=store.get("nivel","facil");if(!LEVELS[level])level="facil";
+var TOQUE=!!(window.matchMedia&&matchMedia("(pointer: coarse)").matches),MINC=TOQUE?26:16;
 var R,C,M,cells,els,started,ended,flags,opened,t0,timer,flagMode=false,focusI=0,portrait=null;
 
 function bestFor(lv){var b=store.get("recorde:"+lv,null);return typeof b==="number"?b:null}
+function dica(){if(!TOQUE)return;$("hint").textContent=flagMode?"Modo bandeira: cada toque marca ou tira uma bandeira.":"Toque cava. Toque longo ou o botão Bandeira marca."+(wrap.scrollWidth>wrap.clientWidth+2||wrap.scrollHeight>wrap.clientHeight+2?" Arraste para ver o resto.":"")}
 function showBest(){var b=bestFor(level);bestEl.textContent=b==null?"—":b+"s"}
 function isPortrait(){return wrap.clientHeight>wrap.clientWidth*1.05}
 function nbrs(i){var r=Math.floor(i/C),c=i%C,o=[];for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;var rr=r+dr,cc=c+dc;if(rr>=0&&rr<R&&cc>=0&&cc<C)o.push(rr*C+cc)}return o}
@@ -129,14 +144,14 @@ function build(){
   boardEl.appendChild(frag);
   minesEl.textContent=M;timeEl.textContent="0";showBest();
   document.querySelectorAll("[data-lv]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.lv===level?"true":"false")});
-  fit();
+  fit();dica();
 }
 function fit(){
   var gap=2,pad=parseFloat(getComputedStyle(boardEl).paddingLeft)*2+2;
   var w=wrap.clientWidth-pad,h=wrap.clientHeight-pad;
   var cell=Math.floor(Math.min((w-gap*(C-1))/C,(h-gap*(R-1))/R,46));
   if(cell>=26)gap=3;
-  cell=Math.max(16,Math.floor(Math.min((w-gap*(C-1))/C,(h-gap*(R-1))/R,46)));
+  cell=Math.max(MINC,Math.floor(Math.min((w-gap*(C-1))/C,(h-gap*(R-1))/R,46)));
   boardEl.style.setProperty("--cell",cell+"px");boardEl.style.setProperty("--gap",gap+"px");
   boardEl.style.gridTemplateColumns="repeat("+C+",var(--cell))";
 }
@@ -238,13 +253,13 @@ boardEl.addEventListener("keydown",function(e){
   else return;
   e.preventDefault();
 });
-modeBtn.addEventListener("click",function(){flagMode=!flagMode;modeBtn.setAttribute("aria-pressed",flagMode);document.body.classList.toggle("flagmode",flagMode)});
+modeBtn.addEventListener("click",function(){flagMode=!flagMode;modeBtn.setAttribute("aria-pressed",flagMode);document.body.classList.toggle("flagmode",flagMode);dica()});
 document.querySelectorAll("[data-lv]").forEach(function(b){b.addEventListener("click",function(){level=b.dataset.lv;store.set("nivel",level);build()})});
 $("new").addEventListener("click",build);
 $("again").addEventListener("click",function(){build();els[0].focus()});
 $("see").addEventListener("click",function(){ov.hidden=true;$("new").focus()});
 document.addEventListener("keydown",function(e){if(!ov.hidden&&e.key==="Escape"){ov.hidden=true}});
-window.addEventListener("resize",function(){if(!started&&isPortrait()!==portrait)build();else fit()});
+window.addEventListener("resize",function(){if(!started&&isPortrait()!==portrait)build();else{fit();dica()}});
 build();
 })();
 </script>

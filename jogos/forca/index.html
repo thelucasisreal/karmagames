@@ -17,7 +17,7 @@ body{background:var(--bg);color:var(--text);font:400 15px/1.4 "Geist",system-ui,
 ::selection{background:var(--accent);color:var(--bg)}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
 .btn:hover{background:#292d38}
 .btn:active{transform:translateY(1px)}
 .btn.primary,.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
@@ -103,14 +103,32 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
 .err{color:var(--coral)!important;font-size:13px;min-height:1.3em;margin-top:8px}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{opacity:0;transform:translateY(12px) scale(.97)}}
-@media (max-width:420px){.btn{padding:0 12px;font-size:13px}.stat .val{font-size:19px}.k{font-size:16px;border-radius:7px}}
-@media (max-height:700px){:root{--kh:42px}.app{gap:8px}.stat{padding:6px 10px}.stat .val{font-size:19px}}
-@media (max-height:600px){:root{--kh:38px}.btn{min-height:36px}}
+@media (max-width:420px){body{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}.btn{padding:0 12px;font-size:13px}.stat .val{font-size:19px}.kr{gap:4px}.k{width:calc((100% - 36px)/10);font-size:17px;border-radius:7px}}
+@media (max-height:760px){:root{--kh:50px}.app{gap:8px}.stat{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:4px 10px}.stat .val{font-size:18px}}
+@media (max-height:600px){:root{--kh:46px}}
+/*deitado no celular: boneco à esquerda, palavra e teclado à direita*/
+.lado{display:contents}
+.score{order:1}.status{order:2}.stage{order:3}.word{order:4}.kb{order:5}
+@media (max-height:500px) and (orientation:landscape){
+  :root{--kh:min(46px,calc((100dvh - 160px)/3))}
+  body{padding-top:max(8px,env(safe-area-inset-top));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  .app{width:min(100%,900px);flex-direction:row;gap:16px}
+  .lado{display:flex;flex-direction:column;gap:6px;min-width:0;min-height:0}
+  .lado:first-child{flex:.8}.lado:last-child{flex:1}
+  .lado:last-child .word{flex:1;align-content:flex-end}
+  h1{font-size:20px}
+  .btn{padding:0 11px;font-size:13px}
+  .bar{justify-content:flex-start}
+  .stat{padding:3px 8px}.stat .lbl{font-size:12px}.stat .val{font-size:16px}
+  .status{font-size:13px}
+  .kr{gap:4px}.k{width:calc((100% - 36px)/10);font-size:16px}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 </style>
 </head>
 <body>
 <main class="app">
+  <div class="lado">
   <div class="top">
     <h1>Forca</h1>
     <button class="btn ghost" type="button" id="reset">Zerar placar</button>
@@ -126,12 +144,6 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
       <button class="btn" type="button" data-diff="dificil">Difícil</button>
     </div>
   </div>
-  <div class="score">
-    <div class="stat w"><span class="lbl">Vitórias</span><span class="val" id="vw">0</span></div>
-    <div class="stat s"><span class="lbl" id="ls">Sequência</span><span class="val" id="vs">0</span></div>
-    <div class="stat l"><span class="lbl">Derrotas</span><span class="val" id="vl">0</span></div>
-  </div>
-  <p class="status" id="status" aria-live="polite"></p>
   <div class="stage" id="stage">
     <svg class="art" id="art" viewBox="0 0 200 200" width="200" height="200" aria-hidden="true">
       <g class="gal">
@@ -159,8 +171,17 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
       </g>
     </svg>
   </div>
+  </div>
+  <div class="lado">
+  <div class="score">
+    <div class="stat w"><span class="lbl">Vitórias</span><span class="val" id="vw">0</span></div>
+    <div class="stat s"><span class="lbl" id="ls">Sequência</span><span class="val" id="vs">0</span></div>
+    <div class="stat l"><span class="lbl">Derrotas</span><span class="val" id="vl">0</span></div>
+  </div>
+  <p class="status" id="status" aria-live="polite"></p>
   <div class="word" id="word" aria-live="polite"></div>
   <div class="kb" id="kb" role="group" aria-label="Teclado"></div>
+  </div>
 </main>
 <div class="overlay" id="ov" hidden>
   <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="ovt">

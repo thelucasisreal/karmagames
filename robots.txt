@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+# Os jogos "crus" ficam dentro das páginas jogar/<slug>/; quem deve aparecer na busca é a página.
+Disallow: /jogos/
+Disallow: /scripts/
+
+Sitemap: https://karmagames.com.br/sitemap.xml

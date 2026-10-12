@@ -190,6 +190,28 @@ function drawPauseBtn() {
   rrect(b.x + b.s * 0.55, b.y + b.s * 0.28, b.s * 0.12, b.s * 0.44, 2); ctx.fill();
 }
 
+/* Botão de som (toque): aparece no menu, na pausa e no fim */
+const muteBtn = {x: 12, y: 10, s: 44};
+function showMute() { return state === 'menu' || state === 'over' || state === 'paused'; }
+function hitMute(x, y) { const b = muteBtn; return showMute() && x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawMuteBtn() {
+  const b = muteBtn, cx = b.x + b.s / 2, cy = b.y + b.s / 2, u = b.s / 40;
+  ctx.fillStyle = COL.shadow; rrect(b.x + 2, b.y + 3, b.s, b.s, 12); ctx.fill();
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, b.s, b.s, 12); ctx.fill();
+  ctx.fillStyle = COL.text; ctx.strokeStyle = COL.text; ctx.lineCap = 'round'; ctx.lineWidth = 2.6 * u;
+  ctx.beginPath();
+  ctx.moveTo(cx - 11 * u, cy - 4 * u); ctx.lineTo(cx - 6 * u, cy - 4 * u); ctx.lineTo(cx + 1 * u, cy - 10 * u);
+  ctx.lineTo(cx + 1 * u, cy + 10 * u); ctx.lineTo(cx - 6 * u, cy + 4 * u); ctx.lineTo(cx - 11 * u, cy + 4 * u); ctx.closePath(); ctx.fill();
+  if (muted) {
+    ctx.strokeStyle = COL.coral;
+    ctx.beginPath(); ctx.moveTo(cx + 5 * u, cy - 5 * u); ctx.lineTo(cx + 12 * u, cy + 5 * u); ctx.moveTo(cx + 12 * u, cy - 5 * u); ctx.lineTo(cx + 5 * u, cy + 5 * u); ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.arc(cx + 2 * u, cy, 6 * u, -0.8, 0.8); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx + 2 * u, cy, 11 * u, -0.8, 0.8); ctx.stroke();
+  }
+  ctx.lineCap = 'butt';
+}
+
 /* Cartão de tela (início / pausa / fim) */
 function drawCard(o) {
   ctx.fillStyle = 'rgba(42,27,61,' + (o.dim == null ? 0.5 : o.dim) + ')';
@@ -256,7 +278,7 @@ function hudStat(label, value, x, y, align, color) {
 function drawMuteNote() {
   if (muteFlash <= 0 || !fontsReady) return;
   ctx.globalAlpha = clamp(muteFlash, 0, 1);
-  otxt(muted ? 'Som desligado (M)' : 'Som ligado (M)', W / 2, H - 28, FT(14), COL.hud, COL.text, 5);
+  otxt(muted ? 'Som desligado' + (coarse ? '' : ' (M)') : 'Som ligado' + (coarse ? '' : ' (M)'), W / 2, H - 28, FT(14), COL.hud, COL.text, 5);
   ctx.globalAlpha = 1;
 }
 
@@ -494,10 +516,12 @@ const GAME = {
     hudStat('Pontos', score, 16, 12, 'left', '#ffd23f');
     hudStat('Recorde', Math.max(best, score), W - 66, 12, 'right');
     const hs = W < 420 ? 15 : 19, gap = hs * 2.3, hx = W / 2 - gap * (VIDAS - 1) / 2;
+    // tela estreita: corações numa linha abaixo do placar para não encostar no recorde
+    const hy = W < 480 ? 76 : 34;
     for (let i = 0; i < VIDAS; i++) {
       const lost = i >= lives;
       const bump = (!lost && i === lives - 1 && loseFlash > 0 && !reduceMotion) ? 1 + loseFlash * 0.3 : 1;
-      heart(hx + i * gap, 34, hs * bump, !lost);
+      heart(hx + i * gap, hy, hs * bump, !lost);
     }
     if (state === 'ending') otxt('Acabaram as vidas!', W / 2, H / 2, FT(fitFont('Acabaram as vidas!', W - 40, 44, FT)), '#ffffff', COL.text, 9);
     if (state === 'over') {
@@ -553,6 +577,7 @@ cv.addEventListener('pointerdown', e => {
   try { cv.focus({preventScroll: true}); } catch (err) {}
   try { cv.setPointerCapture(e.pointerId); } catch (err) {}
   const [x, y] = ptr(e);
+  if (fontsReady && hitMute(x, y)) { toggleMute(); return; }
   if (state === 'paused') { resume(); return; }
   if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
   if (state === 'over') { if (stateT > 0.6) GAME.start(x, y); return; }
@@ -595,6 +620,7 @@ function frame(t) {
     GAME.drawUI();
     if (state === 'play' || state === 'paused') drawPauseBtn();
     if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma · M liga ou desliga o som'});
+    if (showMute()) drawMuteBtn();
     drawMuteNote();
   }
 }

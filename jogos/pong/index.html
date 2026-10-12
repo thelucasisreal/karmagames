@@ -128,7 +128,7 @@ function fitFont(s, maxW, size, maker) {
 
 /* Botão de pausa (toque) */
 const pauseBtn = {x: 0, y: 0, s: 40};
-function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function layoutPauseBtn() { pauseBtn.s = 44; pauseBtn.x = W - pauseBtn.s - 10; pauseBtn.y = 8; }
 function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
 function drawPauseBtn() {
   const b = pauseBtn;
@@ -197,7 +197,7 @@ function drawCard(o) {
 
 /* HUD: rótulo pequeno + valor */
 function hudStat(label, value, x, y, align, color) {
-  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(label.toUpperCase(), x, y, FS(12), COL.muted, align, 'top');
   txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
 }
 
@@ -301,6 +301,17 @@ const GAME = {
     if (down) me.target = null;
   },
   pointer(type, x, y, e) {
+    // toque: arrasta relativo ao dedo (a raquete não fica embaixo do polegar); mouse segue o cursor
+    if (e && e.pointerType === 'touch') {
+      if (type === 'down') { this.drag = {v0: vFromScreen(x, y), mv: me.v}; me.target = me.v; }
+      else if (type === 'move' && this.drag) {
+        const v = vFromScreen(x, y), raw = this.drag.mv + (v - this.drag.v0) * 1.4;
+        me.target = clamp(raw, P / 2, B - P / 2);
+        if (raw !== me.target) this.drag = {v0: v, mv: me.target}; // bateu na borda: volta sem zona morta
+      }
+      else if (type !== 'move') this.drag = null;
+      return;
+    }
     if (type === 'down' || (type === 'move' && (e.pointerType === 'mouse' || (e.buttons & 1)))) me.target = vFromScreen(x, y);
   },
   update(dt) {
@@ -388,9 +399,9 @@ const GAME = {
       return;
     }
     // topo: rótulos
-    txt('VOCÊ', 14, 12, FS(11), COL.muted, 'left', 'top');
+    txt('VOCÊ', 14, 12, FS(12), COL.muted, 'left', 'top');
     txt(String(ps), 14, 27, FT(22), COL.acc, 'left', 'top');
-    txt('CPU', 74, 12, FS(11), COL.muted, 'left', 'top');
+    txt('CPU', 74, 12, FS(12), COL.muted, 'left', 'top');
     txt(String(cs), 74, 27, FT(22), COL.sky, 'left', 'top');
     txt('SEQUÊNCIA ' + streak + ' · RECORDE ' + best, W - 64, 30, FS(12), COL.muted, 'right', 'middle');
     if (state === 'over') {

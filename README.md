@@ -31,7 +31,22 @@ Depois abra http://localhost:8080
 },
 ```
 
-4. `git add . && git commit -m "Novo jogo: Meu Jogo" && git push`. Em um ou dois minutos está no ar.
+4. Escreva o texto da página do jogo em `scripts/conteudo.json` (sobre, como jogar, dicas e perguntas frequentes; copie o formato de outro jogo).
+5. Gere as páginas: `node scripts/seo.mjs` (e `node scripts/imagens.mjs` para a imagem de prévia do jogo, depois `node scripts/seo.mjs` de novo).
+6. `git add . && git commit -m "Novo jogo: Meu Jogo" && git push`. Em um ou dois minutos está no ar.
+
+## Páginas geradas (SEO)
+
+`index.html`, `jogar/<slug>/`, `categoria/<slug>/`, `sobre/`, `contato/`, `privacidade/`, `termos/`, `404.html`, `jogar.html`, `sitemap.xml`, `robots.txt`, `llms.txt`, `site.webmanifest` e `ads.txt` são **gerados** por `node scripts/seo.mjs`. Não edite esses arquivos à mão: mude `jogos.js`, `scripts/conteudo.json`, `scripts/paginas.mjs` ou `scripts/site.json` e rode o script de novo.
+
+`scripts/site.json`:
+
+| Campo | Para quê |
+|-------|----------|
+| `email` | contato público (páginas Contato e Privacidade) |
+| `adsenseCliente` | código do AdSense (`ca-pub-...`): liga o script de anúncios e cria o `ads.txt` |
+| `googleVerificacao` | código da meta tag do Search Console (não precisa se verificar pelo DNS) |
+| `atualizado` | data da última atualização (sitemap e políticas) |
 
 Jogo hospedado em outro lugar? Use o campo `url: "https://..."` em vez de criar a pasta (o site precisa permitir ser aberto em iframe).
 

@@ -375,4 +375,43 @@ body.imersivo .jogo-titulo h1 { font-size: 15px; }
   .filtro .num, .lateral-sorte, .lateral-rodape { display: none; }
 }
 
-@media (min-width: 761px) { .rodape { display: none; } }
+.lateral-links { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0 4px; font-size: 12.5px; }
+.lateral-links a { color: var(--muted); text-decoration: none; }
+.lateral-links a:hover { color: var(--ink); text-decoration: underline; }
+@media (max-width: 760px) { .lateral-links { display: none; } }
+
+/* ---------- Texto das páginas (sobre o jogo, categorias, institucionais) ---------- */
+.texto {
+  max-width: 900px; margin: 8px auto var(--vao); padding: 26px 28px 30px;
+  background: #fff; border-radius: var(--r); box-shadow: var(--shadow);
+  font-size: 16px; line-height: 1.65;
+}
+.texto-pagina { margin-top: var(--vao); }
+.texto h1 { margin: 0 0 12px; font: 800 clamp(24px, 3.4vw, 32px)/1.15 var(--display); letter-spacing: -0.03em; text-wrap: balance; }
+.texto h2 { margin: 28px 0 8px; font: 800 19px/1.25 var(--display); letter-spacing: -0.02em; }
+.texto h1 + h2, .migalhas + h2 { margin-top: 4px; }
+.texto p { margin: 0 0 12px; color: #34404f; max-width: 70ch; }
+.texto ul, .texto ol { margin: 0 0 12px; padding-left: 22px; color: #34404f; max-width: 72ch; }
+.texto li { margin: 4px 0; }
+.texto li::marker { color: var(--muted); }
+.texto a { color: var(--ink); text-decoration-color: #9bb5c8; text-underline-offset: 3px; }
+.texto a:hover { text-decoration-color: var(--ink); }
+.texto .controles { margin: 0 0 12px; }
+.migalhas ol { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 14px; padding: 0; list-style: none; font-size: 13.5px; color: var(--muted); }
+.migalhas li { margin: 0; }
+.migalhas li + li::before { content: "›"; margin-right: 4px; }
+.migalhas a { color: var(--muted); text-decoration: none; }
+.migalhas a:hover { color: var(--ink); text-decoration: underline; }
+.faq { display: grid; gap: 8px; }
+.faq details { border-radius: 12px; background: #f1f5f8; }
+.faq summary { padding: 12px 16px; font-weight: 600; cursor: pointer; list-style-position: inside; }
+.faq details p { margin: 0; padding: 0 16px 14px; }
+.links-jogos { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 !important; list-style: none; }
+.links-jogos li { margin: 0; }
+.links-jogos a { display: inline-block; padding: 6px 14px; border-radius: 99px; background: #f1f5f8; font-weight: 600; font-size: 14px; text-decoration: none; }
+.links-jogos a:hover { background: var(--accent); }
+.rodape-links { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.rodape-links a { text-decoration: none; }
+.rodape-links a:hover { text-decoration: underline; }
+@media (min-width: 761px) { .rodape { padding-left: calc(264px + var(--vao)); } }
+@media (max-width: 600px) { .texto { margin-inline: 10px; padding: 20px 18px 22px; } }

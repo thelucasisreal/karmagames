@@ -128,7 +128,7 @@ function fitFont(s, maxW, size, maker) {
 
 /* Botão de pausa (toque) */
 const pauseBtn = {x: 0, y: 0, s: 40};
-function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function layoutPauseBtn() { pauseBtn.s = 44; pauseBtn.x = W - pauseBtn.s - 10; pauseBtn.y = 8; }
 function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
 function drawPauseBtn() {
   const b = pauseBtn;
@@ -197,17 +197,17 @@ function drawCard(o) {
 
 /* HUD: rótulo pequeno + valor */
 function hudStat(label, value, x, y, align, color) {
-  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(label.toUpperCase(), x, y, FS(12), COL.muted, align, 'top');
   txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
 }
 
 let perfNow = 0;
 
 /* ---------- Quebra-Blocos ---------- */
-const LH = 800;
+let LH = 800;                       // celular deitado usa campo mais baixo
 let LW = 600, sc = 1, ox = 0, oy = 0;
 const BR = 9;                       // raio da bola
-const PY = LH - 70, PH = 16;        // posição/altura da raquete
+let PY = LH - 70; const PH = 16;    // posição/altura da raquete
 let paddle = {x: 300, w: 130, target: null, vx: 0};
 let ball = {x: 0, y: 0, vx: 0, vy: 0, stuck: true, speed: 440};
 let bricks = [], level = 1, lives = 3, score = 0;
@@ -215,7 +215,10 @@ let keys = {left: false, right: false};
 let trail = [], banner = 0, bannerText = '', lostT = 0, launchArmed = false;
 const LIME = ['#c8f13a', '#b9e035', '#a9cd31', '#99ba2d', '#8aa82a', '#7c9727'];
 
-function computeLW() { LW = clamp(Math.round(LH * W / H), 480, 1120); }
+function computeLW() {
+  LH = W > H && H < 500 ? 620 : 800; PY = LH - 70;
+  LW = clamp(Math.round(LH * W / H), 480, 1120);
+}
 function fit() {
   sc = Math.min(W / LW, H / LH);
   ox = (W - LW * sc) / 2; oy = (H - LH * sc) / 2;
@@ -336,9 +339,19 @@ const GAME = {
   },
   pointer(type, x, y, e) {
     const lx = (x - ox) / sc;
-    if (type === 'down') { paddle.target = lx; launchArmed = true; }
-    else if (type === 'move') { if (e.pointerType === 'mouse' || (e.buttons & 1) || e.pressure > 0) paddle.target = lx; }
-    else if (type === 'up') { if (launchArmed && state === 'play') launch(); launchArmed = false; }
+    const touch = e && e.pointerType === 'touch';
+    // toque: arrasta relativo ao dedo, assim o polegar não cobre a raquete nem a bola
+    if (type === 'down') { if (touch) { this.drag = {lx, px: paddle.x}; paddle.target = paddle.x; } else paddle.target = lx; launchArmed = true; }
+    else if (type === 'move') {
+      if (touch) {
+        if (!this.drag) return;
+        const raw = this.drag.px + (lx - this.drag.lx) * 1.4, lo = paddle.w / 2, hi = LW - paddle.w / 2;
+        paddle.target = clamp(raw, lo, hi);
+        if (raw !== paddle.target) this.drag = {lx, px: paddle.target}; // bateu na borda: volta sem zona morta
+      } else if (e.pointerType === 'mouse' || (e.buttons & 1) || e.pressure > 0) paddle.target = lx;
+    }
+    else if (type === 'up') { if (launchArmed && state === 'play') launch(); launchArmed = false; this.drag = null; }
+    else this.drag = null;
   },
   update(dt) {
     paddleBounce = Math.max(0, paddleBounce - dt * 5);
@@ -417,20 +430,23 @@ const GAME = {
     drawParts();
     // HUD dentro do campo
     if (fontsReady && state !== 'menu') {
-      txt('PONTOS', 22, 18, FS(12), COL.muted, 'left', 'top');
-      txt(String(score), 22, 34, FT(22), COL.acc, 'left', 'top');
-      txt('FASE', LW / 2, 18, FS(12), COL.muted, 'center', 'top');
-      txt(String(level), LW / 2, 34, FT(22), COL.text, 'center', 'top');
+      // campo encolhido (celular): textos crescem no espaço lógico para ficar com >= 12px na tela
+      const ls = Math.max(12, 12 / sc), vs = Math.max(22, 17 / sc), ly = Math.max(8, 18 - (ls - 12)), vy = ly + ls + 2;
+      txt('PONTOS', 22, ly, FS(ls), COL.muted, 'left', 'top');
+      txt(String(score), 22, vy, FT(vs), COL.acc, 'left', 'top');
+      txt('FASE', LW / 2, ly, FS(ls), COL.muted, 'center', 'top');
+      txt(String(level), LW / 2, vy, FT(vs), COL.text, 'center', 'top');
       const overlap = pauseBtn.y + pauseBtn.s > oy && pauseBtn.x < ox + LW * sc;
       const rx = overlap ? (pauseBtn.x - ox) / sc - 12 : LW - 22;
-      txt('VIDAS', rx, 18, FS(12), COL.muted, 'right', 'top');
+      txt('VIDAS', rx, ly, FS(ls), COL.muted, 'right', 'top');
+      const dr = Math.max(6, 4 / sc);
       for (let i = 0; i < 3; i++) {
         ctx.fillStyle = i < lives ? COL.text : COL.line;
-        ctx.beginPath(); ctx.arc(rx - 6 - i * 18, 47, 6, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.arc(rx - dr - i * dr * 3, vy + vs * 0.45, dr, 0, 7); ctx.fill();
       }
       if (state === 'play' && ball.stuck && banner <= 0) {
         ctx.globalAlpha = reduceMotion ? 1 : 0.6 + 0.4 * Math.sin(perfNow * 4);
-        txt(coarse ? 'Toque para lançar' : 'Espaço para lançar', LW / 2, PY - 60, FS(17), COL.muted);
+        txt(coarse ? 'Toque para lançar' : 'Espaço para lançar', LW / 2, PY - 60, FS(Math.max(17, 13 / sc)), COL.muted);
         ctx.globalAlpha = 1;
       }
       if (banner > 0 && state === 'play') {

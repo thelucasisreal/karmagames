@@ -2,65 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Jogar · Karma Games</title>
-  <meta name="description" content="Jogue grátis direto no navegador na Karma Games.">
-  <meta name="theme-color" content="#62d9cf">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=20261011a">
+  <title>Abrindo o jogo · Karma Games</title>
+  <meta name="robots" content="noindex, follow">
+  <script>
+    var j = new URLSearchParams(location.search).get("j") || "";
+    var jogos = ["nao-confia","crossstrike","behind-the-grid","paciencia","blocos","sudoku","forca","xadrez","dama","ligue-4","reversi","pedra-papel-tesoura","biscoito","genius","torre","pescaria","meteoros","toupeira","balao","galinha","voo-livre","cobrinha","2048","quebra-blocos","campo-minado","memoria","pong","jogo-da-velha"];
+    location.replace(jogos.indexOf(j) >= 0 ? "jogar/" + j + "/" : "./");
+  </script>
 </head>
-<body data-pagina="jogar">
-  <div class="pagina">
-    <aside class="lateral" id="lateral" aria-label="Categorias"></aside>
-  <main id="conteudo">
-    <div class="mural" id="mural">
-      <section class="palco-celula" id="palco-celula">
-        <div class="palco" id="palco">
-          <div class="palco-carregando" id="carregando"><img class="marca-simbolo" src="assets/marca.svg" alt="Carregando jogo"></div>
-        </div>
-        <div class="jogo-barra">
-          <div class="jogo-titulo">
-            <h1 id="jogo-nome">Carregando</h1>
-            <span id="jogo-categoria"></span>
-          </div>
-          <div class="jogo-acoes" id="jogo-acoes" hidden>
-            <button class="btn-redondo" id="btn-reiniciar" type="button" aria-label="Recomeçar o jogo" title="Recomeçar">
-              <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrow-clockwise"/></svg>
-            </button>
-            <button class="btn-redondo" id="btn-sair" type="button" aria-label="Sair do jogo" title="Sair">
-              <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-x"/></svg>
-            </button>
-            <button class="btn-redondo" id="btn-tela-cheia" type="button" aria-label="Tela cheia" title="Tela cheia">
-              <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrows-out"/></svg>
-            </button>
-          </div>
-        </div>
-      </section>
-    </div>
-    <div class="jogo-info" id="jogo-info"></div>
-  </main>
-  </div>
-
-  <div class="busca-painel" id="busca-painel" hidden>
-    <div class="busca-topo">
-      <label class="busca">
-        <span class="sr-only">Buscar jogo</span>
-        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-magnifying-glass"/></svg>
-        <input id="busca" type="search" placeholder="O que você quer jogar?" autocomplete="off" enterkeyhint="search">
-      </label>
-      <button class="btn-redondo" id="busca-fechar" type="button" aria-label="Fechar busca">
-        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-x"/></svg>
-      </button>
-    </div>
-    <div class="mural" id="busca-resultados"></div>
-  </div>
-
-  <footer class="rodape">
-    <a class="marca" href="./"><img class="marca-simbolo" src="assets/marca.svg" alt=""><span>karma<b>games</b></span></a>
-    <span>Todos os jogos são grátis. Sem download, sem cadastro.</span>
-  </footer>
-
-  <script src="jogos.js?v=20261011a"></script>
-  <script src="assets/site.js?v=20261011a"></script>
-</body>
+<body><p><a href="./">Ver todos os jogos</a></p></body>
 </html>

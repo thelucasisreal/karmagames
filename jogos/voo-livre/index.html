@@ -128,7 +128,7 @@ function fitFont(s, maxW, size, maker) {
 
 /* Botão de pausa (toque) */
 const pauseBtn = {x: 0, y: 0, s: 40};
-function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function layoutPauseBtn() { pauseBtn.s = 44; pauseBtn.x = W - pauseBtn.s - 10; pauseBtn.y = 8; }
 function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
 function drawPauseBtn() {
   const b = pauseBtn;
@@ -197,7 +197,7 @@ function drawCard(o) {
 
 /* HUD: rótulo pequeno + valor */
 function hudStat(label, value, x, y, align, color) {
-  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(label.toUpperCase(), x, y, FS(12), COL.muted, align, 'top');
   txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
 }
 
@@ -371,7 +371,7 @@ const GAME = {
       txt(String(score), LW / 2, 64, FT(sz), COL.text);
       if (state === 'play' && stateT < 1.6) {
         ctx.globalAlpha = clamp(1.6 - stateT, 0, 1);
-        txt(coarse ? 'Toque para voar' : 'Espaço para voar', LW / 2, GROUND + 38, FS(16), COL.muted);
+        txt(coarse ? 'Toque para voar' : 'Espaço para voar', LW / 2, GROUND + 38, FS(Math.max(16, 13 / sc)), COL.muted);
         ctx.globalAlpha = 1;
       }
     }

@@ -128,7 +128,7 @@ function fitFont(s, maxW, size, maker) {
 
 /* Botão de pausa (toque) */
 const pauseBtn = {x: 0, y: 0, s: 40};
-function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function layoutPauseBtn() { pauseBtn.s = 44; pauseBtn.x = W - pauseBtn.s - 10; pauseBtn.y = 8; }
 function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
 function drawPauseBtn() {
   const b = pauseBtn;
@@ -137,6 +137,21 @@ function drawPauseBtn() {
   ctx.fillStyle = COL.muted;
   ctx.fillRect(b.x + b.s * 0.36, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
   ctx.fillRect(b.x + b.s * 0.54, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
+}
+
+/* Botão de som (aparece na pausa, para quem joga no toque) */
+function somBtn() { return {x: pauseBtn.x, y: H - pauseBtn.s - 12, s: pauseBtn.s}; }
+function hitSom(x, y) { const b = somBtn(); return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawSomBtn() {
+  const b = somBtn(), s = b.s;
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, s, s, 12); ctx.fill();
+  ctx.fillStyle = COL.text; ctx.strokeStyle = COL.text; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(b.x + s * 0.2, b.y + s * 0.4); ctx.lineTo(b.x + s * 0.32, b.y + s * 0.4); ctx.lineTo(b.x + s * 0.5, b.y + s * 0.24);
+  ctx.lineTo(b.x + s * 0.5, b.y + s * 0.76); ctx.lineTo(b.x + s * 0.32, b.y + s * 0.6); ctx.lineTo(b.x + s * 0.2, b.y + s * 0.6); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  if (muted) { ctx.moveTo(b.x + s * 0.62, b.y + s * 0.38); ctx.lineTo(b.x + s * 0.82, b.y + s * 0.62); ctx.moveTo(b.x + s * 0.82, b.y + s * 0.38); ctx.lineTo(b.x + s * 0.62, b.y + s * 0.62); }
+  else { ctx.arc(b.x + s * 0.52, b.y + s * 0.5, s * 0.14, -0.9, 0.9); ctx.moveTo(b.x + s * 0.52 + s * 0.26 * Math.cos(-0.9), b.y + s * 0.5 + s * 0.26 * Math.sin(-0.9)); ctx.arc(b.x + s * 0.52, b.y + s * 0.5, s * 0.26, -0.9, 0.9); }
+  ctx.stroke(); ctx.lineCap = 'butt'; ctx.lineWidth = 1;
 }
 
 /* Cartão de tela (início / pausa / fim) */
@@ -207,12 +222,12 @@ function drawCard(o) {
 /* HUD: rótulo pequeno + valor, numa pílula para ler sobre fundo colorido */
 function hudStat(label, value, x, y, align, color) {
   ctx.font = FT(22); const vw = ctx.measureText(String(value)).width;
-  ctx.font = FS(11); const lw = ctx.measureText(label.toUpperCase()).width;
+  ctx.font = FS(12); const lw = ctx.measureText(label.toUpperCase()).width;
   const w = Math.max(vw, lw) + 24, h = 50;
   const bx = align === 'right' ? x - w + 12 : align === 'center' ? x - w / 2 : x - 12;
   ctx.fillStyle = 'rgba(0,0,0,0.18)'; rrect(bx + 2, y - 6 + 3, w, h, 14); ctx.fill();
   ctx.fillStyle = COL.surf; rrect(bx, y - 6, w, h, 14); ctx.fill();
-  txt(label.toUpperCase(), x, y, FS(11), COL.muted, align, 'top');
+  txt(label.toUpperCase(), x, y, FS(12), COL.muted, align, 'top');
   txt(String(value), x, y + 15, FT(22), color || COL.text, align, 'top');
 }
 
@@ -297,7 +312,11 @@ const GAME = {
     const touch = e && e.pointerType === 'touch';
     if (type === 'down') { this.drag = touch ? {x, sx: shipX} : null; targetX = touch ? shipX : x; }
     else if (type === 'move') {
-      if (this.drag) targetX = clamp(this.drag.sx + (x - this.drag.x) * 1.3, 0, W);
+      if (this.drag) {
+        const raw = this.drag.sx + (x - this.drag.x) * 1.3, lo = 26 * u, hi = W - 26 * u;
+        targetX = clamp(raw, lo, hi);
+        if (raw !== targetX) this.drag = {x, sx: targetX}; // bateu na borda: volta sem zona morta
+      }
       else if (!touch) targetX = x;
     } else this.drag = null;
   },
@@ -440,10 +459,12 @@ const GAME = {
     }
     hudStat('Pontos', score, 24, 16, 'left', COL.acc);
     // vidas
-    const hs = 13, hx = W / 2 - (3 * hs * 2.6) / 2 + hs * 1.3;
-    ctx.fillStyle = COL.surf; rrect(W / 2 - hs * 4.6, 10, hs * 9.2, 40, 14); ctx.fill();
-    for (let i = 0; i < 3; i++) drawHeart(hx + i * hs * 2.6, 30, hs, 0, i >= lives);
-    if (W > 380) hudStat('Recorde', Math.max(best, score), W - 76, 16, 'right');
+    // tela estreita: corações descem para baixo dos pontos, sem encostar no recorde
+    const hs = 13, narrow = W < 560, cx = narrow ? 12 + hs * 4.6 : W / 2, cy = narrow ? 86 : 30;
+    const hx = cx - (3 * hs * 2.6) / 2 + hs * 1.3;
+    ctx.fillStyle = COL.surf; rrect(cx - hs * 4.6, cy - 20, hs * 9.2, 40, 14); ctx.fill();
+    for (let i = 0; i < 3; i++) drawHeart(hx + i * hs * 2.6, cy, hs, 0, i >= lives);
+    hudStat('Recorde', Math.max(best, score), W - 76, 16, 'right');
     if (state === 'over') {
       drawCard({kicker: newRecord ? 'Novo recorde!' : 'Kabum!', title: 'Fim de jogo', big: lastScore, rows: [['Recorde', String(best)], ['Estrelas', String(got)], ['Tempo', Math.floor(elapsed) + 's']], cta: 'Jogar de novo', hint: coarse ? 'Toque para jogar de novo' : 'Enter ou Espaço para jogar de novo'});
     }
@@ -608,7 +629,7 @@ cv.addEventListener('pointerdown', e => {
   try { cv.setPointerCapture(e.pointerId); } catch (err) {}
   unlockAudio();
   const [x, y] = ptr(e);
-  if (state === 'paused') { resume(); return; }
+  if (state === 'paused') { if (hitSom(x, y)) toggleMute(); else resume(); return; }
   if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
   if (state === 'over') { if (stateT > 0.5) GAME.start(x, y); return; }
   if (state === 'play' && hitPause(x, y)) { pause(); return; }
@@ -647,7 +668,7 @@ function frame(t) {
     GAME.drawUI();
     if (state === 'play' || state === 'paused') drawPauseBtn();
     drawMuteToast();
-    if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma'});
+    if (state === 'paused') { drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? 'Alto-falante no canto liga ou desliga o som' : 'P ou Esc pausa e retoma'}); drawSomBtn(); }
   }
 }
 resize();

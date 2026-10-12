@@ -99,6 +99,8 @@ body.touch #slots i{font-size:10px;padding:0 5px}
 #spec{position:absolute;left:50%;bottom:max(64px,calc(env(safe-area-inset-bottom) + 64px));transform:translateX(-50%);padding:6px 14px;font-weight:600;font-size:14px;white-space:nowrap;max-width:94vw;overflow:hidden;text-overflow:ellipsis}
 #reloadbar{position:absolute;left:50%;top:calc(50% + 34px);width:80px;height:4px;margin-left:-40px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden}
 #reloadbar i{display:block;height:100%;width:0;background:var(--accent)}
+#reloadbar.bow{width:120px;margin-left:-60px;height:5px}
+#reloadbar.bow i{background:#ffb13a}
 #scope{position:absolute;inset:0;display:none;background:radial-gradient(circle at 50% 50%,transparent 0,transparent min(38vw,38vh),rgba(0,0,0,.92) calc(min(38vw,38vh) + 2px))}
 #scope::before,#scope::after{content:"";position:absolute;background:rgba(0,0,0,.85)}
 #scope::before{left:0;right:0;top:50%;height:1px}
@@ -262,6 +264,8 @@ body.touch #gear{bottom:auto;top:calc(max(8px,env(safe-area-inset-top)) + 54px);
 #cutfx::before{top:0}#cutfx::after{bottom:0}
 #cutcap{position:absolute;left:50%;bottom:calc(11vh + 18px);transform:translateX(-50%);font:800 clamp(18px,4vw,30px) var(--display);letter-spacing:.08em;color:#fff;text-shadow:0 2px 10px #000;white-space:nowrap;opacity:0;transition:opacity .25s}
 #cutcap.on{opacity:1}
+#cutsub{position:absolute;left:50%;bottom:calc(11vh + 22px);transform:translateX(-50%);font:italic 600 clamp(16px,2.6vw,22px) "Geist",sans-serif;color:#fff;text-shadow:0 2px 8px #000;white-space:nowrap;opacity:0;transition:opacity .3s}
+#cutsub.on{opacity:1}
 #cutskip{position:absolute;right:16px;top:calc(11vh + 10px);font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
 body.cut #hud,body.cut #touch{visibility:hidden}
 .field{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
@@ -293,7 +297,7 @@ body.cut #hud,body.cut #touch{visibility:hidden}
 <body>
 <div id="game">
 <canvas id="c" tabindex="0" aria-label="Arena 3D do CrossStrike"></canvas>
-<div id="cutfx" hidden><span id="cutcap">FINALIZAÇÃO</span><span id="cutskip"></span></div>
+<div id="cutfx" hidden><span id="cutsub"></span><span id="cutcap">FINALIZAÇÃO</span><span id="cutskip"></span></div>
 
 <div class="hud" id="hud" hidden>
   <canvas id="mini" aria-hidden="true"></canvas>
@@ -430,7 +434,9 @@ body.cut #hud,body.cut #touch{visibility:hidden}
         <li><b>G</b> granada · <b>F</b> inspecionar a faca / trocar pela arma do chão (BR)</li>
         <li><b>R</b> recarregar</li>
         <li><b>1 2 3 4 / rodinha</b> principal, secundária, faca, apoio</li>
-        <li><b>Faca:</b> clique corta, botão direito apunhala</li>
+        <li><b>Faca:</b> clique perfura e faz sangrar (5 por segundo, 5 s), botão direito apunhala, <b>R</b> arremessa</li>
+        <li><b>Arco:</b> segure o clique pra puxar (6 s = 90 de dano, segura o quanto quiser) e solte; a flecha faz sangrar; <b>R</b> flecha tripla a cada 30 s</li>
+        <li><b>P</b> pula a cena de execução</li>
         <li><b>B</b> comprar</li>
         <li><b>Tab</b> placar</li>
         <li><b>Esc</b> pausar</li>
@@ -445,7 +451,8 @@ body.cut #hud,body.cut #touch{visibility:hidden}
         <li><b>Comprar</b> no começo da rodada</li>
         <li><b>Mira</b> liga e desliga a mira</li>
         <li><b>Joystick no máximo</b> corre</li>
-        <li><b>Parede</b> parede de gel · <b>Habilidade</b></li>
+        <li><b>Parede</b> parede de gel · <b>Habilidade</b> · <b>Recarregar</b> com a faca arremessa e com o arco arma a flecha tripla</li>
+        <li><b>Arco:</b> segure o botão de tiro pra puxar a corda e solte pra disparar</li>
         <li><b>Curar</b> usa kit ou inalador (BR)</li>
         <li><b>II</b> pausa · <b>☰</b> placar</li>
       </ul>
@@ -590,12 +597,16 @@ const WEAPONS = {
   revolver: { nome: 'Revólver .44', preco: 600, dano: 52, cad: 0.42, auto: false, pente: 6, reserva: 24, recarga: 2.3, spread: 0.006, mov: 0.05, recuo: 0.045, cabeca: 3.2, queda: 0.004, vel: 1, premio: 300, pell: 1, desc: '6 balas pesadas. Dois tiros derrubam.' },
   deagle:   { nome: 'Desert Eagle', preco: 800, dano: 46, cad: 0.3, auto: false, pente: 7, reserva: 28, recarga: 1.9, spread: 0.008, mov: 0.06, recuo: 0.035, cabeca: 3.5, queda: 0.004, vel: 0.98, premio: 300, pell: 1, desc: 'Cromada e brutal. Na cabeça, resolve.' },
   sniper:   { nome: 'Sniper', preco: 4000, dano: 115, cad: 1.25, auto: false, pente: 5, reserva: 20, recarga: 3.0, spread: 0.07, scoped: 0.0012, mov: 0.09, recuo: 0.05, cabeca: 2.5, queda: 0, vel: 0.85, premio: 100, pell: 1, zoom: true, desc: 'Um tiro, um abate. Zoom no botão direito.' },
-  faca:     { nome: 'Faca', preco: 0, dano: 40, cad: 0.42, auto: false, pente: 0, reserva: 0, recarga: 0, spread: 0, mov: 0, recuo: 0, cabeca: 1, queda: 0, vel: 1.12, premio: 1500, pell: 0, melee: true, desc: 'Clique corta, botão direito apunhala. Pelas costas é fatal.' },
+  glock:    { nome: 'Glock automática', preco: 500, dano: 18, cad: 0.06, auto: true, pente: 20, reserva: 80, recarga: 1.5, spread: 0.02, mov: 0.02, recuo: 0.009, cabeca: 3, queda: 0.014, vel: 1, premio: 300, pell: 1, desc: 'Pistola em rajada: 20 balas em pouco mais de 1 segundo.' },
+  ak:       { nome: 'AK-47', preco: 2500, dano: 38, cad: 0.11, auto: true, pente: 30, reserva: 90, recarga: 2.5, spread: 0.006, mov: 0.06, recuo: 0.017, cabeca: 4, queda: 0.003, vel: 0.92, premio: 300, pell: 1, desc: 'Coice forte, mas cada bala dói mais que a do fuzil.' },
+  lmg:      { nome: 'Metralhadora', preco: 3300, dano: 30, cad: 0.085, auto: true, pente: 100, reserva: 100, recarga: 4.8, spread: 0.014, mov: 0.07, recuo: 0.01, cabeca: 3, queda: 0.004, vel: 0.8, premio: 300, pell: 1, desc: '100 balas no pente. Pesada e lenta pra recarregar.' },
+  arco:     { nome: 'Arco e flecha', preco: 1800, dano: 90, cad: 0.45, auto: false, pente: 20, reserva: 0, recarga: 0, spread: 0, mov: 0, recuo: 0, cabeca: 1.5, queda: 0, vel: 0.98, premio: 600, pell: 0, bow: true, desc: 'Segure pra puxar a corda: quanto mais tempo, mais dano (até 90 em 6 s) e segura o quanto quiser. A flecha faz sangrar 3 por segundo durante 3 s. R: flecha tripla.' },
+  faca:     { nome: 'Faca', preco: 0, dano: 40, cad: 0.42, auto: false, pente: 0, reserva: 0, recarga: 0, spread: 0, mov: 0, recuo: 0, cabeca: 1, queda: 0, vel: 1.12, premio: 1500, pell: 0, melee: true, desc: 'Clique perfura e faz sangrar, botão direito apunhala, R arremessa. Pelas costas é fatal.' },
   granada:  { nome: 'Granada', preco: 300, dano: 120, cad: 0.9, auto: false, pente: 0, reserva: 0, recarga: 0, spread: 0, mov: 0, recuo: 0, cabeca: 1, queda: 0, vel: 1.04, premio: 300, pell: 0, thrown: true, desc: 'Explode 2 s depois de jogar. Dano em área. Até 2.' },
   kit:      { nome: 'Kit médico', preco: 400, dano: 0, cad: 0.5, auto: false, pente: 0, reserva: 0, recarga: 0, spread: 0, mov: 0, recuo: 0, cabeca: 1, queda: 0, vel: 0.95, premio: 0, pell: 0, item: true, desc: 'Cura 65 de vida em 3 s. Clique pra usar (ou H).' }
 };
 // 4 espaços: 1 principal, 2 secundária, 3 faca, 4 apoio (granada ou kit médico)
-const PRIM = ['sub', 'fuzil', 'escopeta', 'sniper'], SEC = ['pistola', 'revolver', 'deagle'], GUNS = [...SEC, ...PRIM];
+const PRIM = ['sub', 'fuzil', 'ak', 'lmg', 'escopeta', 'sniper', 'arco'], SEC = ['pistola', 'glock', 'revolver', 'deagle'], GUNS = [...SEC, ...PRIM];
 const ALLW = [...GUNS, 'faca', 'granada', 'kit'];
 const SLOT_NOME = ['Principal', 'Secundária', 'Faca', 'Apoio'];
 const slotOf = w => PRIM.includes(w) ? 1 : SEC.includes(w) ? 2 : w === 'faca' ? 3 : 4;
@@ -608,7 +619,7 @@ function slotItem(e, n) {
   return e.gren > 0 ? 'granada' : e.kit > 0 ? 'kit' : null;
 }
 // melhor arma de fogo que tem (principal, senão secundária)
-const bestGun = e => ['fuzil', 'sub', 'escopeta', 'sniper'].find(k => e.inv[k]) || SEC.slice().reverse().find(k => e.inv[k]) || 'pistola';
+const bestGun = e => ['fuzil', 'ak', 'lmg', 'sub', 'escopeta', 'sniper', 'arco'].find(k => e.inv[k]) || SEC.slice().reverse().find(k => e.inv[k]) || 'pistola';
 // a secundária inicial: o Viper sempre começa com a Desert Eagle
 function resetInv(e) { e.inv = { [e.cls === 'viper' ? 'deagle' : 'pistola']: true }; }
 // pega uma arma de fogo: a do mesmo espaço sai da mão (devolve qual saiu)
@@ -619,7 +630,7 @@ function giveGun(e, k) {
   return old;
 }
 // mira (botão direito): fov = fração do campo normal, spr = multiplicador da dispersão
-const ADS = { faca: { fov: 1, spr: 1 }, granada: { fov: 1, spr: 1 }, kit: { fov: 1, spr: 1 }, revolver: { fov: 0.78, spr: 0.45 }, deagle: { fov: 0.78, spr: 0.45 }, pistola: { fov: 0.82, spr: 0.5 }, sub: { fov: 0.78, spr: 0.6 }, fuzil: { fov: 0.6, spr: 0.3 }, escopeta: { fov: 0.85, spr: 0.75 }, sniper: { fov: 0, spr: 0 } };
+const ADS = { faca: { fov: 1, spr: 1 }, granada: { fov: 1, spr: 1 }, kit: { fov: 1, spr: 1 }, revolver: { fov: 0.78, spr: 0.45 }, deagle: { fov: 0.78, spr: 0.45 }, pistola: { fov: 0.82, spr: 0.5 }, sub: { fov: 0.78, spr: 0.6 }, fuzil: { fov: 0.6, spr: 0.3 }, escopeta: { fov: 0.85, spr: 0.75 }, sniper: { fov: 0, spr: 0 }, glock: { fov: 0.82, spr: 0.55 }, ak: { fov: 0.62, spr: 0.32 }, lmg: { fov: 0.68, spr: 0.4 }, arco: { fov: 0.75, spr: 1 } };
 const VEST = 650;
 const DIFF = {
   facil:   { react: 0.7,  aimStart: 0.15, aimMin: 0.045, settle: 1.4, head: 0.05, burst: [2, 4], pause: [0.45, 0.8], turn: 3.2, speed: 4.6, strafe: 0.35, cover: 0.35, rateMul: 1.5 },
@@ -1053,6 +1064,7 @@ const markerMat = new THREE.SpriteMaterial({ map: markerTex(), depthTest: false,
 const enemyMarkMat = new THREE.SpriteMaterial({ map: markerTex('#ff3b3b'), depthTest: false, transparent: true, fog: false, sizeAttenuation: false }); // mesmo tamanho na tela, perto ou longe
 
 const LITE = isTouch; // no celular os bonecos têm menos peças
+let BOW3 = null;
 function makeBotMesh(team, idx, col) {
   const g = new THREE.Group();
   const body = new THREE.MeshLambertMaterial({ color: col ?? TEAMCOL[team], emissive: 0x000000 });
@@ -1094,15 +1106,27 @@ function makeBotMesh(team, idx, col) {
   // arma: corpo, cano, pente e coronha
   const gun = new THREE.Group(); gun.position.set(0.14, 1.36, -0.55);
   for (const [gg, x, y, z, mt] of LITE ? [[G_.gun, 0, 0, 0, M_.gunBody]] : [[G_.gunBody, 0, 0, 0, M_.gunBody], [G_.gunBarrel, 0, 0.02, -0.36, M_.dark], [G_.gunMag, 0, -0.13, -0.06, M_.gunMag], [G_.gunStock, 0, -0.02, 0.29, M_.gunStock]]) { const m = new THREE.Mesh(gg, mt); m.position.set(x, y, z); m.castShadow = true; gun.add(m); }
+  // arco (3ª pessoa): punho, duas lâminas e a corda
+  const bow = new THREE.Group(); bow.visible = false;
+  if (!BOW3) { // peças do arco compartilhadas por todos os bonecos
+    const pts = [[0.06, 0], [0.2, 0.06], [0.36, 0.095], [0.46, 0.08], [0.52, 0.035]];
+    const lim = s => new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(0, p[0] * s, p[1]))), 12, 0.014, 6).scale(2, 1, 1);
+    BOW3 = { up: lim(1), dn: lim(-1), riser: new THREE.BoxGeometry(0.045, 0.2, 0.06), grip: new THREE.CylinderGeometry(0.03, 0.032, 0.09, 8), tip: new THREE.SphereGeometry(0.018, 8, 6), str: new THREE.BoxGeometry(0.008, 1, 0.008),
+      wd: new THREE.MeshLambertMaterial({ color: 0x5a3622 }), lam: new THREE.MeshLambertMaterial({ color: 0xd9b27a }), leather: new THREE.MeshLambertMaterial({ color: 0x3a2216 }), brass: new THREE.MeshLambertMaterial({ color: 0xc9a043 }), st: new THREE.MeshBasicMaterial({ color: 0xe9e3cf }) };
+  }
+  { const A = BOW3;
+    bow.add(new THREE.Mesh(A.riser, A.lam), new THREE.Mesh(A.grip, A.leather));
+    for (const [geo, s] of [[A.up, 1], [A.dn, -1]]) { const lm = new THREE.Mesh(geo, A.wd); lm.castShadow = true; bow.add(lm); const tp = new THREE.Mesh(A.tip, A.brass); tp.position.set(0, 0.52 * s, 0.035); bow.add(tp); }
+    const sr = new THREE.Mesh(A.str, A.st); sr.scale.y = 1.04; sr.position.z = 0.07; bow.add(sr); bow.userData.str = sr; }
   const flash = new THREE.Sprite(flashMat); flash.scale.set(0.6, 0.6, 1); flash.position.set(0.14, 1.38, -0.98); flash.visible = false;
   const blob = new THREE.Mesh(G_.blob, M_.blob); blob.position.y = 0.02; blob.renderOrder = 1;
-  g.add(legL, legR, torso, vest, belt, head, helm, armL, armR, gun, flash, blob);
+  g.add(legL, legR, torso, vest, belt, head, helm, armL, armR, gun, bow, flash, blob);
   if (!LITE) g.add(pL, pR);
   g.rotation.order = 'YXZ';
   for (const m of [legL, legR, torso, vest, head, helm, armL, armR]) m.castShadow = true;
   const mk = new THREE.Sprite(markerMat); mk.scale.set(0.35, 0.35, 1); mk.position.y = 2.45; mk.renderOrder = 5; g.add(mk); g.userData.marker = mk;
   const emk = new THREE.Sprite(enemyMarkMat); emk.scale.set(0.045, 0.045, 1); emk.position.y = 2.5; emk.renderOrder = 6; emk.visible = false; g.add(emk); g.userData.emk = emk;
-  g.userData = Object.assign(g.userData, { legL, legR, torso, gun, flash, body, armL, armR, helm, head, eL, eR, brL, brR, mouth, vest, blob, knife, teeth, smL, smR, gore });
+  g.userData = Object.assign(g.userData, { legL, legR, torso, gun, flash, body, armL, armR, helm, head, eL, eR, brL, brR, mouth, vest, blob, knife, bow, teeth, smL, smR, gore });
   scene.add(g);
   return g;
 }
@@ -1171,7 +1195,26 @@ function vmRail(g, len, x, y, z, col = VMC.dark) {
   for (let i = 0; i < n; i++) vmBox(g, 0.038, 0.008, 0.011, x, y + 0.009, z - len / 2 + 0.011 + i * 0.022, col, 0.5, 0.45);
 }
 const vmSleeve = new THREE.MeshStandardMaterial({ color: VMC.sleeve, roughness: 0.85 });
-const VM = {};
+// luva fechada (punho): s = 1 mão direita, -1 esquerda. Os dedos ficam do lado de dentro
+function vmFist(parent, s = 1) {
+  const f = new THREE.Group(), gl = vmMat(VMC.glove, 0, 0.9), dk = vmMat(0x1d2026, 0, 0.9);
+  const pa = new THREE.Mesh(new THREE.BoxGeometry(0.056, 0.07, 0.085), gl); pa.position.set(0.008 * s, 0, 0); f.add(pa);
+  for (let i = 0; i < 4; i++) {
+    const fi = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.058, 0.02), gl); fi.position.set(-0.026 * s, -0.004 - i * 0.002, -0.03 + i * 0.021); f.add(fi);
+    const kn = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.016, 0.019), dk); kn.position.set(-0.012 * s, 0.032, -0.03 + i * 0.021); f.add(kn);
+  }
+  const th = new THREE.Mesh(new THREE.BoxGeometry(0.022, 0.02, 0.05), gl); th.position.set(-0.016 * s, 0.03, -0.04); th.rotation.y = 0.35 * s; f.add(th);
+  const cf = new THREE.Mesh(new THREE.BoxGeometry(0.066, 0.076, 0.024), dk); cf.position.set(0.008 * s, 0, 0.05); f.add(cf);
+  parent.add(f); return f;
+}
+// antebraço (manga) esticado entre dois pontos do mesmo grupo
+const vmArmGeo = new THREE.BoxGeometry(0.075, 0.075, 1).translate(0, 0, 0.5);
+function vmForearm(parent) { const m = new THREE.Mesh(vmArmGeo, vmSleeve); m.rotation.order = 'YXZ'; parent.add(m); return m; }
+function vmSpan(m, ax, ay, az, bx, by, bz) {
+  const dx = bx - ax, dy = by - ay, dz = bz - az, l = Math.hypot(dx, dy, dz) || 1e-4;
+  m.position.set(ax, ay, az); m.rotation.set(-Math.asin(dy / l), Math.atan2(dx, dz), 0, 'YXZ'); m.scale.set(1, 1, l);
+}
+const VM = {}, _vmV = new THREE.Vector3();
 function buildVM() {
   const mk = (name, tip) => { const g = new THREE.Group(); g.visible = false; g.userData.tip = tip; vmRoot.add(g); VM[name] = g; return g; };
   const B = vmBox, Y = vmCyl, C = VMC, T = TEX;
@@ -1326,6 +1369,136 @@ function buildVM() {
   B(mg, 0.05, 0.07, 0.08, 0, -0.085, -0.06, C.dark, 0.4, 0.5);
   Y(g, 0.006, 0.2, -0.02, -0.06, -0.4, C.dark, 0.6, 0.35); Y(g, 0.006, 0.2, 0.02, -0.06, -0.4, C.dark, 0.6, 0.35);
 
+  // ---------- Glock automática (pente estendido e seletor de rajada) ----------
+  g = mk('glock', new THREE.Vector3(0, 0.012, -0.22));
+  sl = new THREE.Group(); mg = new THREE.Group(); g.add(sl, mg); g.userData.slide = sl; g.userData.mag = mg;
+  B(sl, 0.066, 0.07, 0.26, 0, 0.006, -0.07, C.dark, 0.55, 0.35);
+  B(sl, 0.046, 0.004, 0.24, 0, 0.042, -0.075, C.metal, 0.7, 0.28);
+  for (let i = 0; i < 4; i++) B(sl, 0.069, 0.05, 0.004, 0, 0.004, 0.025 + i * 0.01, 0x0c0d10, 0.5, 0.4);
+  Y(g, 0.012, 0.012, 0, 0.012, -0.203, 0x0a0a0a, 0.6, 0.4);
+  B(g, 0.062, 0.034, 0.22, 0, -0.046, -0.06, C.tex, 0.1, 0.7, T.poly).material.color.setHex(C.poly);
+  B(g, 0.018, 0.012, 0.07, 0, -0.1, -0.045, C.poly, 0.1, 0.7); B(g, 0.018, 0.04, 0.012, 0, -0.08, -0.08, C.poly, 0.1, 0.7);
+  B(g, 0.008, 0.03, 0.008, 0, -0.075, -0.035, C.dark, 0.6, 0.3).rotation.x = 0.3;
+  B(g, 0.06, 0.14, 0.075, 0, -0.12, 0.035, C.tex, 0.05, 0.85, T.grip).rotation.x = 0.2;
+  B(mg, 0.05, 0.27, 0.055, 0, -0.17, 0.045, C.dark, 0.4, 0.5).rotation.x = 0.2; B(mg, 0.06, 0.02, 0.07, 0, -0.3, 0.075, C.dark, 0.4, 0.5).rotation.x = 0.2;
+  B(sl, 0.014, 0.014, 0.024, 0.036, 0.026, 0.045, C.acc, 0, 0.5); // seletor de rajada
+  B(sl, 0.01, 0.016, 0.012, 0, 0.05, -0.192, C.dark); vmGlow(sl, dot, 0, 0.054, -0.185, 0xf4ff9a);
+  B(sl, 0.045, 0.018, 0.012, 0, 0.05, 0.05, C.dark); vmGlow(sl, dot, -0.012, 0.054, 0.057, 0xf4ff9a); vmGlow(sl, dot, 0.012, 0.054, 0.057, 0xf4ff9a);
+
+  // ---------- AK-47 (madeira, pente curvo laranja) ----------
+  g = mk('ak', new THREE.Vector3(0, 0.012, -0.74));
+  B(g, 0.07, 0.075, 0.3, 0, 0.0, -0.02, C.blued, 0.7, 0.3);
+  B(g, 0.064, 0.022, 0.29, 0, 0.046, -0.02, C.blued, 0.75, 0.25);
+  for (let i = 0; i < 3; i++) B(g, 0.066, 0.004, 0.012, 0, 0.058, 0.06 + i * 0.03, C.dark, 0.5, 0.4);
+  B(g, 0.03, 0.03, 0.04, 0, 0.065, -0.18, C.blued, 0.7, 0.3); // alça de mira
+  B(g, 0.072, 0.065, 0.22, 0, -0.005, -0.29, C.wood, 0, 0.55, T.wood);
+  B(g, 0.052, 0.036, 0.19, 0, 0.05, -0.28, C.wood, 0, 0.55, T.wood);
+  Y(g, 0.013, 0.28, 0, 0.012, -0.53, C.dark, 0.6, 0.35);
+  Y(g, 0.009, 0.2, 0, 0.05, -0.47, C.blued, 0.7, 0.3);
+  B(g, 0.026, 0.06, 0.03, 0, 0.042, -0.6, C.blued, 0.7, 0.3); B(g, 0.006, 0.03, 0.006, 0, 0.085, -0.6, C.dark);
+  Y(g, 0.019, 0.07, 0, 0.012, -0.7, C.dark, 0.5, 0.4);
+  B(g, 0.004, 0.03, 0.12, 0.037, 0.02, 0.02, C.metal, 0.8, 0.3); // trava lateral
+  g.userData.ch = B(g, 0.03, 0.014, 0.024, 0.045, 0.03, 0.11, C.metal, 0.8, 0.3);
+  mg = new THREE.Group(); g.add(mg); g.userData.mag = mg;
+  B(mg, 0.046, 0.1, 0.075, 0, -0.085, -0.09, 0x8a3c18, 0.1, 0.55).rotation.x = -0.12;
+  B(mg, 0.046, 0.1, 0.075, 0, -0.175, -0.115, 0x8a3c18, 0.1, 0.55).rotation.x = -0.35;
+  B(mg, 0.046, 0.09, 0.075, 0, -0.255, -0.16, 0x8a3c18, 0.1, 0.55).rotation.x = -0.6;
+  for (let i = 0; i < 3; i++) B(mg, 0.048, 0.006, 0.07, 0, -0.07 - i * 0.07, -0.09 - i * 0.03, 0x5a250e, 0.1, 0.6).rotation.x = -0.15 - i * 0.22;
+  B(g, 0.045, 0.13, 0.06, 0, -0.1, 0.08, C.wood, 0, 0.55, T.wood).rotation.x = 0.3;
+  B(g, 0.015, 0.01, 0.07, 0, -0.07, 0.0, C.blued, 0.7, 0.3);
+  B(g, 0.058, 0.085, 0.3, 0, -0.045, 0.28, C.wood, 0, 0.55, T.wood).rotation.x = 0.13;
+  B(g, 0.06, 0.12, 0.02, 0, -0.07, 0.43, C.dark, 0.3, 0.6).rotation.x = 0.13;
+
+  // ---------- Metralhadora (caixa de munição, cano com camisa e bipé) ----------
+  g = mk('lmg', new THREE.Vector3(0, 0.02, -0.92));
+  B(g, 0.088, 0.1, 0.36, 0, 0.0, -0.02, C.body, 0.55, 0.38);
+  { const fc = new THREE.Group(); fc.position.set(0, 0.055, -0.02); g.add(fc); B(fc, 0.084, 0.026, 0.22, 0, 0.0, 0, C.dark, 0.5, 0.4); vmRail(fc, 0.18, 0, 0.018, 0); }
+  Y(g, 0.034, 0.3, 0, 0.02, -0.36, C.body, 0.55, 0.38);
+  for (let i = 0; i < 6; i++) for (const s of [-1, 1]) B(g, 0.01, 0.018, 0.026, s * 0.033, 0.02, -0.25 - i * 0.045, 0x050505);
+  Y(g, 0.02, 0.42, 0, 0.02, -0.6, C.dark, 0.6, 0.35);
+  Y(g, 0.024, 0.08, 0, 0.02, -0.84, C.dark, 0.5, 0.4);
+  B(g, 0.02, 0.06, 0.02, 0, 0.06, -0.78, C.dark); B(g, 0.016, 0.06, 0.016, 0, 0.08, -0.06, C.dark);
+  B(g, 0.016, 0.03, 0.14, 0, 0.115, -0.3, C.dark, 0.5, 0.4); B(g, 0.012, 0.05, 0.012, 0, 0.09, -0.24, C.dark); B(g, 0.012, 0.05, 0.012, 0, 0.09, -0.36, C.dark); // alça
+  for (const s of [-1, 1]) B(g, 0.012, 0.012, 0.3, s * 0.02, -0.025, -0.6, C.dark, 0.6, 0.35); // bipé dobrado
+  mg = new THREE.Group(); g.add(mg); g.userData.mag = mg;
+  B(mg, 0.12, 0.13, 0.15, -0.015, -0.115, -0.08, C.olive, 0.15, 0.65);
+  B(mg, 0.124, 0.012, 0.154, -0.015, -0.05, -0.08, 0x3a4a2a, 0.2, 0.6);
+  B(mg, 0.06, 0.02, 0.012, -0.015, -0.12, -0.158, 0x3a4a2a, 0.2, 0.6);
+  for (let i = 0; i < 6; i++) { const bu = B(mg, 0.012, 0.012, 0.04, -0.05 + i * 0.006, -0.035 + i * 0.012, -0.045 - (i % 2) * 0.004, C.brass, 0.9, 0.25); bu.rotation.y = 0.2; }
+  B(g, 0.05, 0.13, 0.06, 0, -0.11, 0.08, C.tex, 0.05, 0.85, T.grip).rotation.x = 0.3;
+  B(g, 0.015, 0.01, 0.07, 0, -0.08, 0.0, C.body, 0.55, 0.38);
+  B(g, 0.07, 0.1, 0.26, 0, -0.02, 0.29, C.tex, 0.1, 0.7, T.poly).material.color.setHex(C.poly);
+  B(g, 0.072, 0.12, 0.025, 0, -0.03, 0.42, C.dark, 0, 0.9);
+  B(g, 0.09, 0.006, 0.12, 0, -0.05, -0.02, C.acc, 0, 0.5);
+
+  // ---------- Arco recurvo (madeira escura com faixas claras, encaixes de metal, punho de couro) ----------
+  // a esquerda segura o punho, a direita puxa a corda; os braços ficam presos no ombro (vmRoot), não no arco
+  g = mk('arco', new THREE.Vector3(0, 0, -0.9));
+  {
+    const bw = new THREE.Group(); g.add(bw);
+    const wood = vmMat(0x8a5a3a, 0.05, 0.42, T.wood), woodDk = vmMat(0x4a2c1a, 0.05, 0.4, T.wood), lam = vmMat(0xe2c290, 0.05, 0.5);
+    const BM = (p, sx, sy, sz, x, y, z, m) => { const o = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), m); o.position.set(x, y, z); p.add(o); return o; };
+    const blk = vmMat(0x15161a, 0.55, 0.32), brass = vmMat(C.brass, 0.9, 0.25), leather = vmMat(0x5a3220, 0, 0.8, T.grip);
+    // punho (riser): madeira em camadas, mais largo em cima e embaixo, com a janela da flecha
+    for (const s of [1, -1]) {
+      BM(bw, 0.03, 0.12, 0.05, 0, s * 0.1, 0.004, wood);
+      BM(bw, 0.034, 0.05, 0.055, 0, s * 0.155, 0.006, woodDk);
+      BM(bw, 0.036, 0.04, 0.06, 0, s * 0.185, 0.008, blk); // encaixe da lâmina
+      for (const x of [-0.019, 0.019]) { const pin = Y(bw, 0.006, 0.004, x, s * 0.185, 0.008, C.brass, 0.9, 0.25); pin.rotation.set(0, Math.PI / 2, 0); }
+      BM(bw, 0.032, 0.006, 0.052, 0, s * 0.13, 0.004, lam); // filete claro
+    }
+    const gp = Y(bw, 0.021, 0.085, 0, -0.012, 0.012, 0x5a3220, 0, 0.8); gp.rotation.x = 0; gp.geometry = new THREE.CylinderGeometry(0.02, 0.023, 0.085, 10); gp.material = leather;
+    for (const y of [0.032, -0.056]) { const r = Y(bw, 0.024, 0.006, 0, y, 0.012, C.brass, 0.9, 0.25); r.geometry = new THREE.CylinderGeometry(0.024, 0.024, 0.006, 12); }
+    BM(bw, 0.018, 0.075, 0.042, -0.007, 0.07, 0.002, wood); // janela (o lado da flecha fica aberto)
+    BM(bw, 0.03, 0.006, 0.03, 0.012, 0.034, 0.004, brass); // apoio da flecha
+    BM(bw, 0.003, 0.03, 0.03, 0.002, 0.052, 0.004, vmMat(0x2a2d33, 0, 0.9)); // feltro
+    vmGlow(bw, new THREE.BoxGeometry(0.004, 0.004, 0.004), 0.02, 0.098, -0.02, C.acc); // pino de mira
+    B(bw, 0.004, 0.024, 0.004, 0.02, 0.084, -0.02, C.dark, 0.6, 0.3);
+    // lâminas recurvas (achatadas, com a faixa clara na barriga): dobram quando puxa
+    const L0 = 0.19, pts = [[0, 0], [0.09, 0.028], [0.18, 0.045], [0.25, 0.042], [0.3, 0.022], [0.33, -0.004]];
+    const TIP = [0.33, -0.004], limbs = [];
+    for (const s of [1, -1]) {
+      const piv = new THREE.Group(); piv.position.set(0, L0 * s, 0.008); bw.add(piv);
+      const curve = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(0, p[0] * s, p[1])));
+      const lm = new THREE.Mesh(new THREE.TubeGeometry(curve, 24, 0.0075, 8), woodDk); lm.scale.x = 2.7; piv.add(lm);
+      const st = new THREE.Mesh(new THREE.TubeGeometry(curve, 24, 0.0042, 6), lam); st.scale.x = 3.2; st.position.z = 0.0045; piv.add(st);
+      const pts2 = pts.slice(3).map(p => new THREE.Vector3(0, p[0] * s, p[1] - 0.003));
+      const tc = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts2), 8, 0.0082, 8), blk); tc.scale.x = 2.75; piv.add(tc); // ponta reforçada
+      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.011, 10, 8), brass); cap.position.set(0, TIP[0] * s, TIP[1]); cap.scale.set(1.8, 1, 1); piv.add(cap);
+      limbs.push(piv);
+    }
+    // corda (dois pedaços até o encaixe da flecha), com abafadores vermelhos perto das pontas
+    const strMat = vmMat(0xf1ead6, 0, 0.6), strGeo = new THREE.CylinderGeometry(0.0024, 0.0024, 1, 6).translate(0, 0.5, 0).rotateX(Math.PI / 2);
+    const sU = new THREE.Mesh(strGeo, strMat), sL = new THREE.Mesh(strGeo, strMat); bw.add(sU, sL);
+    const pufGeo = new THREE.SphereGeometry(0.009, 8, 6), pufMat = vmMat(C.red, 0, 0.95);
+    const pufs = [0, 1].map(() => { const m = new THREE.Mesh(pufGeo, pufMat); m.scale.set(1, 1.6, 1); bw.add(m); return m; });
+    const serv = Y(bw, 0.0042, 0.05, 0, 0, 0, 0x1b1d22, 0.1, 0.6); serv.geometry = new THREE.CylinderGeometry(0.0042, 0.0042, 0.05, 8); // reforço no meio da corda
+    // 3 flechas de carbono (a do meio sempre; as dos lados só com a flecha tripla armada)
+    const shaftM = vmMat(0x23262b, 0.35, 0.35), wrapM = vmMat(C.acc, 0, 0.55), steel = vmMat(0xd5dbe2, 0.95, 0.18), nockM = vmMat(0xff7a2a, 0, 0.4);
+    const ars = [0, 1, 2].map(() => {
+      const ar = new THREE.Group(); bw.add(ar);
+      Y(ar, 0.0048, 0.7, 0, 0, -0.35, 0x23262b, 0.35, 0.35).material = shaftM;
+      Y(ar, 0.0056, 0.12, 0, 0, -0.07, C.acc, 0, 0.55).material = wrapM;
+      Y(ar, 0.0055, 0.016, 0, 0, -0.008, 0, 0, 0).material = nockM;
+      Y(ar, 0.0062, 0.03, 0, 0, -0.71, 0, 0, 0, 0.0048).material = steel;
+      const hd = new THREE.Mesh(new THREE.ConeGeometry(0.0085, 0.05, 4).rotateX(-Math.PI / 2), steel); hd.position.z = -0.748; ar.add(hd);
+      for (const r of [0, Math.PI / 2]) { const bl = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.0012, 0.04), steel); bl.position.z = -0.74; bl.rotation.z = r; ar.add(bl); } // lâminas da ponta
+      for (let i = 0; i < 3; i++) {
+        const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(0.075, 0); sh.quadraticCurveTo(0.05, 0.02, 0.012, 0.022); sh.lineTo(0, 0);
+        const v = new THREE.Mesh(new THREE.ShapeGeometry(sh), vmMat(i ? 0xf4f4f4 : C.red, 0, 0.7)); v.material.side = THREE.DoubleSide;
+        const vg = new THREE.Group(); vg.rotation.z = i * Math.PI * 2 / 3; ar.add(vg);
+        v.rotation.set(0, Math.PI / 2, 0); v.position.set(0, 0.004, -0.025); vg.add(v);
+      }
+      return ar;
+    });
+    // mãos e braços
+    const lf = vmFist(bw, -1); lf.position.set(0.002, -0.012, 0.016); lf.rotation.set(-Math.PI / 2, 0, 0);
+    const lArm = vmForearm(g);
+    const rf = vmFist(bw, 1); rf.scale.setScalar(0.9);
+    const rArm = vmForearm(g);
+    g.userData.bw = { bw, limbs, sU, sL, ars, rf, rArm, lArm, pufs, serv, L0, TIP, aim: 0 };
+  }
+
   // ---------- Faca tática ----------
   g = mk('faca', new THREE.Vector3(0, 0, -0.25));
   {
@@ -1339,15 +1512,34 @@ function buildVM() {
     B(k, 0.0105, 0.006, 0.11, 0, 0.003, -0.1, 0x8a9099, 0.8, 0.3);
     B(k, 0.006, 0.009, 0.165, 0, -0.027, -0.11, 0xffffff, 1, 0.05);
     B(k, 0.009, 0.034, 0.06, 0, 0.002, -0.212, 0xdfe4ea, 1, 0.12).rotation.x = 0.45;
+    // sangue na lâmina (aparece depois de acertar alguém e vai sumindo)
+    const bm = new THREE.MeshStandardMaterial({ color: 0xa00d0d, metalness: 0.2, roughness: 0.2, transparent: true, opacity: 0, depthWrite: false });
+    for (const [h, y, z, l] of [[0.03, -0.01, -0.15, 0.12], [0.02, -0.016, -0.08, 0.05]]) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.0115, h, l), bm); m.position.set(0, y, z); k.add(m); }
+    { const m = new THREE.Mesh(new THREE.BoxGeometry(0.0115, 0.03, 0.05), bm); m.position.set(0, 0.0, -0.21); m.rotation.x = 0.45; k.add(m); }
+    VM.kBlood = bm;
+    // mão direita fechada no cabo (só uma mão: a esquerda fica fora da tela)
+    const fist = vmFist(k, 1); fist.position.set(0.004, -0.004, 0.048); fist.scale.set(1.02, 1.04, 1.25);
+    vmSpan(vmForearm(k), 0.012, -0.012, 0.11, 0.1, -0.2, 0.62);
   }
-  g.rotation.x = 0.25; g.position.set(-0.01, 0.07, -0.02); g.scale.setScalar(1.35);
+  g.rotation.set(0.3, 0.2, -0.5); g.position.set(-0.02, 0.07, -0.02); g.scale.setScalar(1.35);
   VM.trail = new THREE.Mesh(new THREE.RingGeometry(0.26, 0.33, 24, 1, 0.5, 2.1), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
   VM.trail.position.set(-0.08, -0.06, -0.32); vmRoot.add(VM.trail);
 
   // ---------- Granada (gomos, alavanca e pino) ----------
   g = mk('granada', new THREE.Vector3(0, 0, -0.05));
   { const bd = new THREE.Mesh(new THREE.SphereGeometry(0.055, 18, 12), vmMat(C.tex, 0.15, 0.7, T.gren)); bd.position.set(0, -0.06, -0.03); bd.scale.y = 1.15; g.add(bd);
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.004, 8, 18), vmMat(C.brass, 0.9, 0.25)); ring.position.set(-0.035, 0.035, -0.03); ring.rotation.y = 0.6; g.add(ring); }
+    // argola dourada com o pino (sai inteira quando a mão puxa)
+    const pin = new THREE.Group(); pin.position.set(-0.035, 0.035, -0.03); g.add(pin); g.userData.pin = pin;
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.004, 8, 18), vmMat(C.brass, 0.9, 0.25)); ring.rotation.y = 0.6; pin.add(ring);
+    const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.045, 6), vmMat(C.brass, 0.9, 0.25)); rod.rotation.z = Math.PI / 2; rod.position.set(0.03, -0.012, 0); pin.add(rod);
+    // mão esquerda (luva) que puxa a argola
+    const hand = new THREE.Group(); g.add(hand); g.userData.hand = hand; hand.visible = false;
+    const glove = vmMat(0x2b2d33, 0.1, 0.8), cuff = vmMat(0x1d1f24, 0.1, 0.8);
+    { const pa = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.035, 0.07), glove); hand.add(pa);
+      for (let i = 0; i < 3; i++) { const fi = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.016, 0.04), glove); fi.position.set(0.03, 0.006 - i * 0.012, -0.03); fi.rotation.y = -0.5; hand.add(fi); }
+      const th = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.018, 0.035), glove); th.position.set(0.018, 0.022, -0.02); hand.add(th);
+      const ar = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.2), cuff); ar.position.set(-0.03, -0.01, 0.13); ar.rotation.y = 0.35; hand.add(ar); }
+  }
   Y(g, 0.02, 0.035, 0, 0.012, -0.03, C.metal, 0.8, 0.3).rotation.x = 0;
   { const fz = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.022, 0.035, 12), vmMat(C.metal, 0.8, 0.3)); fz.position.set(0, 0.012, -0.03); g.add(fz); }
   B(g, 0.015, 0.09, 0.02, 0.036, -0.03, -0.03, C.metal, 0.8, 0.3).rotation.z = -0.15;
@@ -1543,7 +1735,7 @@ function tone(freq, dur, vol, type = 'sine', to = 0, delay = 0, pan = 0) {
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
   o.connect(g); g.connect(outNode(pan)); o.start(t); o.stop(t + dur + 0.02);
 }
-const SHOT = { revolver: [0.3, 1900, 90], deagle: [0.28, 2100, 85], pistola: [0.11, 3200, 150], sub: [0.07, 3600, 130], fuzil: [0.14, 2500, 120], escopeta: [0.32, 1700, 90], sniper: [0.5, 2100, 70] };
+const SHOT = { revolver: [0.3, 1900, 90], deagle: [0.28, 2100, 85], pistola: [0.11, 3200, 150], sub: [0.07, 3600, 130], fuzil: [0.14, 2500, 120], escopeta: [0.32, 1700, 90], sniper: [0.5, 2100, 70], glock: [0.09, 3400, 160], ak: [0.16, 2200, 105], lmg: [0.15, 2000, 100], arco: [0.12, 900, 200] };
 function sfxShot(w, dist = 0, pan = 0) {
   if (!auOK()) return;
   const v = 1 / (1 + dist / 9); if (v < 0.05) return;
@@ -1739,13 +1931,13 @@ function updateHUD() {
   setText('hpv', String(Math.max(0, Math.ceil(P.hp)))); $('hp').classList.toggle('low', P.hp < 30);
   setText('arv', String(Math.ceil(P.armor)));
   setText('monv', '$' + P.money);
-  setText('wname', wNome(P, P.cur) + (P.reloadT > 0 ? ' · recarregando' : ''));
+  setText('wname', wNome(P, P.cur) + (P.reloadT > 0 ? ' · recarregando' : P.cur === 'arco' && P.bowT >= 0 ? ` · ${bowDamage(bowCharge(P.bowT))} de dano${P.tripla ? ' (tripla)' : ''}` : ''));
   const inf = G.mode === 'treino';
   const gun = GUNS.includes(P.cur), cnt = P.cur === 'granada' ? P.gren : P.cur === 'kit' ? P.kit : 0;
   const am = gun ? P.ammo[P.cur] + '|' + (inf ? '∞' : P.reserve[P.cur]) : P.cur + cnt;
   if (hudCache.am !== am) {
     hudCache.am = am;
-    $('ammov').innerHTML = gun ? `${P.ammo[P.cur]} <small>/ ${inf ? '∞' : P.reserve[P.cur]}</small>` : P.cur === 'faca' ? '—' : '×' + cnt;
+    $('ammov').innerHTML = P.cur === 'arco' ? `${inf ? '∞' : P.ammo.arco} <small>flechas</small>` : gun ? `${P.ammo[P.cur]} <small>/ ${inf ? '∞' : P.reserve[P.cur]}</small>` : P.cur === 'faca' ? '—' : '×' + cnt;
     $('ammov').classList.toggle('empty', gun && P.ammo[P.cur] === 0);
   }
   const slotKey = slotList().join() + P.cur + P.gren + '|' + P.kit;
@@ -1766,6 +1958,8 @@ function updateHUD() {
   // habilidade, parede, itens e acessórios
   if (isCombat()) {
     const C = CLASSES[P.cls], parts = [];
+    if (P.cur === 'arco') parts.push(`<span class="pill${P.tripla ? ' act' : P.bowCd > 0 ? '' : ' ready'}" style="--c:#ffb13a"><kbd>${isTouch ? '' : 'R'}</kbd>Flecha tripla<b>${P.tripla ? 'armada' : P.bowCd > 0 ? Math.ceil(P.bowCd) + 's' : 'pronta'}</b>${!P.tripla && P.bowCd > 0 ? `<i style="width:${(100 * (1 - P.bowCd / BOW_SKILL_CD)).toFixed(0)}%"></i>` : ''}</span>`);
+    if (P.cur === 'faca') parts.push(`<span class="pill${P.knifeCd > 0 ? '' : ' ready'}" style="--c:#e6ebf0"><kbd>${isTouch ? '' : 'R'}</kbd>Arremesso<b>${P.knifeCd > 0 ? Math.ceil(P.knifeCd) + 's' : 'pronto'}</b>${P.knifeCd > 0 ? `<i style="width:${(100 * (1 - P.knifeCd / KNIFE_CD)).toFixed(0)}%"></i>` : ''}</span>`);
     if (P.abT > 0) parts.push(`<span class="pill act" style="--c:${C.cor}"><kbd>${isTouch ? '' : 'E'}</kbd>${C.ativa}<b>${P.abT.toFixed(1)}s</b><i style="width:${(100 * P.abT / P.abMax).toFixed(0)}%"></i></span>`);
     else parts.push(`<span class="pill${P.abCd <= 0 ? ' ready' : ''}" style="--c:${C.cor}"><kbd>${isTouch ? '' : 'E'}</kbd>${C.ativa}<b>${P.abCd > 0 ? Math.ceil(P.abCd) + 's' : 'pronta'}</b>${P.abCd > 0 ? `<i style="width:${(100 * (1 - P.abCd / C.cd)).toFixed(0)}%"></i>` : ''}</span>`);
     parts.push(`<span class="pill"><kbd>${isTouch ? '' : 'Q'}</kbd>Parede<b>${P.walls}</b></span>`);
@@ -1779,8 +1973,9 @@ function updateHUD() {
   } else if (hudCache.gear !== '') { hudCache.gear = ''; $('gear').innerHTML = ''; }
   { const on = P.alive && P.abT > 0, fx = $('abfx'); if (fx.classList.contains('on') !== on) fx.classList.toggle('on', on); if (on) fx.style.setProperty('--c', CLASSES[P.cls].cor); }
   $('tHeal').hidden = !(G.mode === 'br' || P.kit > 0);
-  const rb = $('reloadbar'); rb.hidden = !(P.reloadT > 0);
-  if (P.reloadT > 0) rb.firstChild.style.width = (100 * (1 - P.reloadT / (P.reloadMax || w.recarga))).toFixed(0) + '%';
+  const rb = $('reloadbar'), bowOn = P.cur === 'arco' && P.bowT >= 0; rb.hidden = !(P.reloadT > 0 || bowOn); rb.classList.toggle('bow', bowOn);
+  if (bowOn) rb.firstChild.style.width = (100 * bowCharge(P.bowT)).toFixed(0) + '%';
+  else if (P.reloadT > 0) rb.firstChild.style.width = (100 * (1 - P.reloadT / (P.reloadMax || w.recarga))).toFixed(0) + '%';
 }
 // crosshair spread em px
 function crossUpdate(spread) {
@@ -1914,6 +2109,7 @@ function fireWeapon(e, ox, oy, oz, fx, fy, fz, spread, muzzle) {
 function damage(v, amount, a, w, head, chest) {
   if (!v.alive) return false;
   if (G.mode === 'br' && G.brGrace > 0) return false;
+  if (v.isRemote && w === 'faca' && canKnifeCut(v, a) && v.hp - amount <= 0) { hitMarker(false, false); netSend({ t: 'exec', to: v.id }); startKnifeCut(v, P); return false; }
   if (v.isRemote) {
     // online: quem leva o tiro decide o dano (colete, morte) e avisa todo mundo
     if (a === P) {
@@ -1925,9 +2121,9 @@ function damage(v, amount, a, w, head, chest) {
     return false;
   }
   if (v.blindT > 0) { amount *= 0.4; if (v === P) tone(1700, 0.05, 0.12, 'square', 900); }
-  if (v.armor > 0 && !(a && a.apT > 0)) { const ab = amount * 0.42; v.armor = Math.max(0, v.armor - ab * 0.8); amount -= ab; }
+  if (v.armor > 0 && !(a && a.apT > 0) && !sangrando) { const ab = amount * 0.42; v.armor = Math.max(0, v.armor - ab * 0.8); amount -= ab; }
   // tiro no peito, de perto, com a arma principal, num inimigo que já está morrendo: vira a cena de finalização
-  if (w === 'faca' && canKnifeCut(v, a) && v.hp - amount <= 0) { hitMarker(false, false); startKnifeCut(v); return false; }
+  if (w === 'faca' && canKnifeCut(v, a) && v.hp - amount <= 0) { hitMarker(false, false); startKnifeCut(v, P); return false; }
   if (chest && canFinish(v, a, w) && v.hp - amount <= 0) { hitMarker(false, false); sfx.hit(); startFinisher(v, w); return false; }
   v.hp -= amount; v.hitFlash = 0.1;
   if (v === P) {
@@ -1946,7 +2142,7 @@ function damage(v, amount, a, w, head, chest) {
 }
 function kill(v, a, w, head, fin) {
   v.alive = false; v.hp = 0; v.deaths++; if (a !== v) a.kills++; if (head) a.hs = (a.hs || 0) + 1;
-  if (v === P && G.online) netSend({ t: 'kill', killer: a.id, victim: P.id, w, head });
+  if (v === P && G.online) netSend({ t: 'kill', killer: a.id, victim: P.id, w, head, fin: fin ? 1 : 0 });
   if (a.team !== v.team) a.money = Math.min(16000, a.money + WEAPONS[w].premio);
   addFeed(a, v, w, head);
   if (fin) { /* a cena de finalização já espalhou o sangue */ } else if (settings.sangue) bloodBurst(v, head); else poof(v);
@@ -2037,7 +2233,7 @@ function resetPose(m) {
   if (u.knife) u.knife.visible = false;
   u.head.visible = true; u.head.position.y = 1.73; u.mouth.position.y = -0.1;
   if (u.stains) { for (const o of u.stains) m.remove(o); u.stains.length = 0; }
-  if (cutKnife && cutKnife.parent === m) cutKnife.visible = false;
+  for (const o of [cutKnife, cutKatana, cutLanca]) if (o && o.parent === m) o.visible = false;
   if (m !== P.mesh) u.helm.visible = true;
   u.flash.visible = false; u.body.emissive.setHex(0);
   if (u.blob) u.blob.visible = true;
@@ -2046,8 +2242,10 @@ function resetPose(m) {
 /* ---------- Finalização: cena quando você acaba com um inimigo que já está morrendo ---------- */
 // só acontece com a arma principal (não a pistola), de perto, tiro no peito, e com o inimigo com pouca vida
 const FIN_DIST = 4.5, FIN_HP = 40, FIN_END = 5.3, FIN_SKIP = 3.9;
+// a finalização só acontece quando sobram duas pessoas vivas na partida (1 contra 1, ou o fim do Battle Royale)
+const soDois = () => ents.filter(e => e.alive).length === 2;
 function canFinish(v, a, w) {
-  return a === P && v.isBot && settings.finaliz && !G.online && !G.cut && P.alive && isCombat() && G.phase === 'live'
+  return a === P && v.isBot && settings.finaliz && !G.online && !G.cut && P.alive && isCombat() && G.phase === 'live' && soDois()
     && PRIM.includes(w) && v.hp <= FIN_HP && !(G.mode === 'br' && G.brGrace > 0)
     && Math.hypot(v.pos.x - P.pos.x, v.pos.z - P.pos.z) <= FIN_DIST && G.now - (G.lastCut ?? -99) > 6;
 }
@@ -2086,7 +2284,7 @@ function startFinisher(v, w) {
   G.lastCut = G.now;
   P.zoom = false; P.ads = false; P.adsT = 0; P.reloadT = 0; input.fire = false; input.fireEdge = false; input.aim = false;
   document.body.classList.add('cut'); $('cutfx').hidden = false; $('cutcap').classList.remove('on');
-  $('cutskip').textContent = isTouch ? 'Toque para pular' : 'Clique para pular';
+  $('cutskip').textContent = isTouch ? 'Toque para pular' : 'Aperte P para pular';
   for (const m of [P.mesh, v.mesh]) { resetPose(m); const u = m.userData; u.brL.visible = u.brR.visible = u.mouth.visible = true; u.blob.visible = false; }
   P.mesh.visible = true; v.mesh.visible = true;
   if (v.mesh.userData.marker) v.mesh.userData.marker.visible = false;
@@ -2195,24 +2393,28 @@ function cutCamera(dt) {
 function endFinisher() {
   const C = G.cut; if (!C) return;
   G.cut = null; document.body.classList.remove('cut'); $('cutfx').hidden = true; $('cutcap').classList.remove('on'); $('cutcap').textContent = 'FINALIZAÇÃO';
-  resetPose(P.mesh);
-  const v = C.v; v.finishing = false; v.mesh.userData.body.emissive.setHex(0);
+  const a = C.a || P, v = C.v;
+  resetPose(a.mesh); for (const o of [cutKnife, cutKatana, cutLanca]) if (o) o.visible = false;
+  v.finishing = false; v.mesh.userData.body.emissive.setHex(0);
   P.yaw = C.yaw0; P.pitch = C.pitch0;
+  input.fire = false; input.fireEdge = false;
+  if (v === P) { if (P.alive) kill(P, a, 'faca', false, true); return; } // você foi a vítima (online)
   if (C.kind === 'faca') { // você fica onde apareceu, atrás dele, olhando o corpo
     if (!anyOverlap(C.Pb.x, C.Pb.y + 0.01, C.Pb.z, P.r, 1.8)) P.pos.copy(C.Pb);
-    P.yaw = C.yawV; P.pitch = -0.3; P.vx = P.vz = 0;
+    P.yaw = C.endYaw ?? C.yawV; P.pitch = -0.3; P.vx = P.vz = 0;
   }
-  input.fire = false; input.fireEdge = false;
   const tit = C.kind === 'faca' ? 'Execução!' : 'Finalização!';
+  // online: quem decide a morte é a tela da vítima; se a mensagem da cena se perdeu, a facada mata do jeito normal
+  if (v.isRemote) { if (v.alive) netSend({ t: 'hit', to: v.id, d: 500, w: 'faca', head: false }); showMsg(tit, v.name + ' eliminado', 1.8); return; }
   if (v.alive) kill(v, P, C.w, C.kind !== 'faca', true);
   if (G.mode !== 'br') { P.money = Math.min(16000, P.money + 200); showMsg(tit, v.name + ' eliminado · +$200', 1.8); }
   else showMsg(tit, v.name + ' eliminado', 1.8);
 }
-/* ---------- Execução na faca: some, aparece atrás e corta o pescoço ---------- */
-const KNIFE_END = 5.5;
+/* ---------- Execução na faca: some, aparece atrás e acaba com ele (estilo Toji x Gojo) ---------- */
+const KNIFE_END = 12.7;
 function canKnifeCut(v, a) {
-  return a === P && v.isBot && settings.finaliz && !G.online && !G.cut && P.alive && isCombat() && G.phase === 'live'
-    && !(G.mode === 'br' && G.brGrace > 0) && G.now - (G.lastCut ?? -99) > 6;
+  return a === P && !sangrando && (v.isBot || (G.online && v.isRemote && v.team !== P.team)) && settings.finaliz && !G.cut && P.alive && isCombat() && G.phase === 'live'
+    && soDois() && !(G.mode === 'br' && G.brGrace > 0);
 }
 // faca de combate da cena (presa no boneco; a lâmina aponta pra frente, -z)
 let cutKnife = null;
@@ -2235,25 +2437,27 @@ function addStain(m, x, y, z, sx, sy) {
   const o = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, 0.012), M_.splat); o.position.set(x, y, z); m.add(o);
   (m.userData.stains = m.userData.stains || []).push(o);
 }
-function startKnifeCut(v) {
+function startKnifeCut(v, a = P) {
   const yawV = v.yaw, f = { x: -Math.sin(yawV), z: -Math.cos(yawV) }, y0 = v.pos.y, A = v.pos.clone();
   const sR = rayMap(A.x, y0 + 1.2, A.z, -f.z, 0, f.x, 4), sL = rayMap(A.x, y0 + 1.2, A.z, f.z, 0, -f.x, 4), sg = sR >= sL ? 1 : -1;
   const ahead = rayMap(A.x, y0 + 0.5, A.z, f.x, 0, f.z, 2.5), lx = Math.cos(yawV), lz = -Math.sin(yawV);
   const cR = rayMap(A.x, y0 + 0.5, A.z, lx, 0, lz, 2.5), cL = rayMap(A.x, y0 + 0.5, A.z, -lx, 0, -lz, 2.5);
   const fallSide = ahead < 2 && Math.max(cR, cL) > ahead ? (cR >= cL ? -1 : 1) : 0;
   v.hp = 1; v.finishing = true; v.vx = v.vz = 0;
-  G.cut = { kind: 'faca', v, w: 'faca', t: 0, f, r: { x: -f.z * sg, z: f.x * sg }, A, y0, vp: A.clone(), p0: P.pos.clone(), Pb: new THREE.Vector3(A.x - f.x * 0.5, y0, A.z - f.z * 0.5),
-    yawV, yawP0: P.yaw, yaw0: P.yaw, pitch0: P.pitch, fallSide, body: A.clone(), neck: new THREE.Vector3(), tip: new THREE.Vector3(), ev: {}, shake: 0, hideP: false,
-    skip: 2.55, skipEv: { some: 1, aparece: 1, estoca: 1, puxa: 1, pescoco: 1, coxa: 1 }, sprayT: 0, dripT: 0 };
+  G.cut = { kind: 'faca', v, a, w: 'faca', t: 0, f, sg, r: { x: -f.z * sg, z: f.x * sg }, A, y0, vp: A.clone(), p0: a.pos.clone(), Pb: new THREE.Vector3(A.x - f.x * 0.5, y0, A.z - f.z * 0.5),
+    yawV, yawP0: a.yaw, yaw0: P.yaw, pitch0: P.pitch, fallSide, body: A.clone(), neck: new THREE.Vector3(), tip: new THREE.Vector3(), ev: {}, shake: 0, hideP: false,
+    skip: KNIFE_SKIP, skipEv: Object.fromEntries(['some', 'aparece', 'coracao', 'katana', 'poca0', 'saca', 'coronhada', 'tiro0', 'tiro1', 'tiro2', 'chao', 'revida', 'moscas', 'lanca', 'avanca', 'garganta', 'rasga', 'rasgo', 'cai', 'perna0', 'perna1', 'perna2', 'perna3', 'poca1', 'faquinha', 'testa', 'poca2'].map(k => [k, 1])),
+    sprayT: 0, dripT: 0, flyT: 0, head: new THREE.Vector3(), belly: new THREE.Vector3(), leg: new THREE.Vector3(), brow: new THREE.Vector3(), pp: new THREE.Vector3(),
+    back: clamp(rayMap(A.x, y0 + 1, A.z, -f.x, 0, -f.z, 4) - 0.6, 1.6, 3.2) };
   G.lastCut = G.now;
   P.zoom = false; P.ads = false; P.adsT = 0; P.reloadT = 0; P.meleeT = 0; input.fire = false; input.fireEdge = false; input.aim = false;
   document.body.classList.add('cut'); $('cutfx').hidden = false; $('cutcap').classList.remove('on'); $('cutcap').textContent = 'EXECUÇÃO';
-  $('cutskip').textContent = isTouch ? 'Toque para pular' : 'Clique para pular';
-  for (const m of [P.mesh, v.mesh]) { resetPose(m); const u = m.userData; u.brL.visible = u.brR.visible = u.mouth.visible = true; u.blob.visible = false; }
-  const K = getCutKnife(); if (K.parent !== P.mesh) P.mesh.add(K); K.visible = true;
-  P.mesh.userData.knife.visible = false; P.mesh.userData.gun.visible = false;
-  for (const k of ['marker', 'emk']) if (v.mesh.userData[k]) v.mesh.userData[k].visible = false;
-  P.mesh.visible = true; v.mesh.visible = true;
+  $('cutskip').textContent = isTouch ? 'Toque para pular' : 'Aperte P para pular';
+  for (const m of [a.mesh, v.mesh]) { resetPose(m); const u = m.userData; u.brL.visible = u.brR.visible = u.mouth.visible = true; u.blob.visible = false; }
+  const K = getCutKnife(); if (K.parent !== a.mesh) a.mesh.add(K); K.visible = true;
+  a.mesh.userData.knife.visible = false; a.mesh.userData.gun.visible = false;
+  for (const m of [a.mesh, v.mesh]) for (const k of ['marker', 'emk']) if (m.userData[k]) m.userData[k].visible = false;
+  a.mesh.visible = true; v.mesh.visible = true;
   camera.fov = 46; camera.updateProjectionMatrix();
 }
 function smokePuff(x, y, z, n = 26) {
@@ -2263,138 +2467,279 @@ function gush(pos, dx, dy, dz, n, force = 1) {
   if (!settings.sangue) { sparks(pos.x, pos.y, pos.z, dx, dy, dz, Math.min(n, 8)); return; }
   for (let i = 0; i < n; i++) spawnPart(pos.x, pos.y, pos.z, dx * rand(1, 4) * force + rand(-1.3, 1.3), dy * rand(1, 3) * force + rand(0.5, 3), dz * rand(1, 4) * force + rand(-1.3, 1.3), rand(0.035, 0.1), rand(0.6, 1.3), pick(BLOOD), 14);
 }
-// você: [t, mão direita x,y,z, mão esquerda x,y,z] (frente = -z)
-const KK_P = [
-  [0, 0.3, 1.15, -0.3, -0.3, 1.0, -0.1], [0.45, 0.25, 1.1, -0.12, -0.3, 1.0, -0.1],
-  [0.56, 0.1, 1.16, -0.06, -0.2, 1.3, -0.2], [0.68, 0.03, 1.16, -0.33, -0.16, 1.44, -0.4],      // estocada pelas costas
-  [1.8, 0.03, 1.16, -0.33, -0.16, 1.44, -0.4], [1.94, 0.18, 1.22, 0.0, -0.16, 1.44, -0.4],     // puxa a faca
-  [2.04, -0.26, 1.5, -0.62, -0.1, 1.7, -0.42], [2.18, 0.36, 1.48, -0.55, -0.1, 1.7, -0.42],    // corte no pescoço
-  [2.3, 0.32, 0.8, -0.55, -0.3, 1.1, -0.2], [2.42, -0.2, 0.72, -0.6, -0.3, 1.1, -0.2],         // corte na coxa
-  [2.75, 0.06, 2.05, -0.22, -0.05, 2.02, -0.22], [2.9, 0.06, 2.05, -0.22, -0.05, 2.02, -0.22], // levanta com as duas mãos
-  [3.0, 0.03, 1.52, -0.42, -0.02, 1.52, -0.42], [3.45, 0.03, 1.5, -0.42, -0.02, 1.5, -0.42],   // crava na cabeça
-  [3.62, 0.2, 1.72, -0.25, -0.3, 1.0, -0.1], [3.9, 0.36, 1.25, -0.3, -0.3, 1.0, -0.1], [9, 0.36, 1.25, -0.3, -0.3, 1.0, -0.1]];
-// faca: [t, inclinação x, giro y, tamanho da lâmina]
-const KK_K = [[0, -0.04, 0, 1.35], [1.94, -0.04, 0, 1.35], [2.02, 0, 1.3, 0.85], [2.2, 0, 1.3, 0.85], [2.3, 0.9, 0.8, 0.85], [2.45, 0.9, 0.8, 0.85],
-  [2.68, -1.57, 0, 0.75], [3.5, -1.57, 0, 0.75], [3.75, -0.2, 0, 1], [9, -0.2, 0, 1]];
-// inimigo: [t, altura, pernas, inclinação, braços x, braços z, cabeça x, cabeça y]
-const KK_V = [
-  [0, 0, 0, 0, 0.12, 0, 0.08, 0], [0.5, 0, 0, 0, 0.12, 0, 0.1, 0],                       // parado, confiante, sem ver nada
-  [0.72, 0, 0, -0.14, 0.35, 1.05, -0.05, 0], [1.1, 0, 0, -0.1, 0.3, 0.95, -0.6, 0],         // leva a facada (braços abrem) e olha a lâmina no peito
-  [1.8, 0, 0, -0.08, 0.3, 0.9, -0.62, 0], [2.0, 0, 0, 0.05, 0.75, 0.5, -0.2, 0],
-  [2.2, 0, 0, 0.06, 0.95, 0.95, 0.35, 0], [2.45, -0.15, -0.4, 0.04, 0.95, 0.95, 0.2, 0],  // pescoço e coxa
-  [2.68, -0.5, -1.2, 0.05, 0.6, 0.4, 0.12, 0], [2.95, -0.5, -1.2, 0.05, 0.6, 0.4, 0.12, 0],
-  [3.05, -0.52, -1.2, 0.02, 0.4, 0.3, -0.15, 0], [3.55, -0.5, -1.2, 0.0, 0.3, 0.25, -0.2, 0],
-  [4.15, 0.12, 0, -1.45, 0.3, 0.3, -0.3, 0], [4.3, 0.12, 0, -1.3, 0.3, 0.3, -0.3, 0], [4.45, 0.12, 0, -1.45, 0.3, 0.3, -0.3, 0], [9, 0.12, 0, -1.45, 0.3, 0.3, -0.3, 0]];
-const KV = new THREE.Vector3();
+// Execução estilo Toji x Gojo, na ordem do anime:
+//  1. ele está relaxado; você aparece atrás e atravessa o peito dele com uma katana, pelas costas
+//  2. com a lâmina cravada, ele saca a arma, vira, te empurra com uma coronhada e atira; já está fraco
+//  3. uma nuvem de moscas cobre ele; você saca a Lança do Céu Invertida e avança: facada na garganta
+//  4. você puxa a lâmina pra baixo e rasga o peito dele; ele cai
+//  5. você perfura a perna direita várias vezes
+//  6. ele no chão sangrando: você pega uma faca menor e crava na testa
+const KNIFE_SKIP = 11.6;
+let cutKatana = null, cutLanca = null;
+function cutSteel() { return new THREE.MeshStandardMaterial({ color: 0xe6ebf0, metalness: 0.6, roughness: 0.2, emissive: 0x222222 }); }
+function getKatana() {
+  if (cutKatana) return cutKatana;
+  const g = new THREE.Group(), add = (sx, sy, sz, x, y, z, m) => { const o = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), m); o.position.set(x, y, z); o.castShadow = true; g.add(o); return o; };
+  const dark = new THREE.MeshLambertMaterial({ color: 0x15161a }), gold = new THREE.MeshStandardMaterial({ color: 0xc9a227, metalness: 0.8, roughness: 0.3 });
+  add(0.045, 0.05, 0.3, 0, 0, 0.14, dark);                         // cabo
+  for (let i = 0; i < 5; i++) add(0.05, 0.055, 0.012, 0, 0, 0.04 + i * 0.055, new THREE.MeshLambertMaterial({ color: 0xe9e2cf })); // amarração
+  add(0.13, 0.13, 0.02, 0, 0, -0.02, gold);                        // tsuba
+  const bl = add(0.016, 0.05, 1.3, 0, 0.004, -0.68, cutSteel());   // lâmina
+  add(0.017, 0.03, 0.12, 0, 0.012, -1.37, cutSteel()).rotation.x = 0.25; // ponta
+  g.userData.blade = bl; g.visible = false; cutKatana = g; return g;
+}
+function getLanca() {
+  if (cutLanca) return cutLanca;
+  const g = new THREE.Group(), add = (sx, sy, sz, x, y, z, m) => { const o = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), m); o.position.set(x, y, z); o.castShadow = true; g.add(o); return o; };
+  const purple = new THREE.MeshLambertMaterial({ color: 0x3b2350 }), st = cutSteel(), chain = new THREE.MeshStandardMaterial({ color: 0x8a8f99, metalness: 0.8, roughness: 0.35 });
+  add(0.045, 0.045, 0.2, 0, 0, 0.1, purple);                       // cabo
+  add(0.02, 0.06, 0.42, 0, 0, -0.2, st);                           // lâmina principal
+  add(0.02, 0.03, 0.08, 0, 0.005, -0.44, st).rotation.x = 0.3;     // ponta
+  const pL = add(0.016, 0.035, 0.16, 0.06, 0, -0.06, st); pL.rotation.y = 0.45;  // as duas pontas de lado (o "tridente")
+  const pR = add(0.016, 0.035, 0.16, -0.06, 0, -0.06, st); pR.rotation.y = -0.45;
+  for (let i = 0; i < 7; i++) add(0.025, 0.012, 0.04, 0, -0.02 - i * 0.035, 0.22 + i * 0.018, chain).rotation.x = i % 2 ? 0.6 : -0.3; // corrente pendurada
+  g.visible = false; cutLanca = g; return g;
+}
+const KV = new THREE.Vector3(), KW = new THREE.Vector3(), KH = new THREE.Vector3();
+// tempo em câmera lenta: [de, até, velocidade]
+const KNIFE_SLOW = [[1.5, 1.95, 0.25], [2.98, 3.32, 0.35], [5.36, 5.7, 0.3], [5.95, 6.35, 0.45], [10.05, 10.35, 0.3]];
+// você (corpo): [t, quanto abaixa, pernas dobradas]
+const KT_BODY = [[0, 0, 0], [6.9, 0, 0], [7.15, -0.55, -1.2], [8.55, -0.55, -1.2], [8.8, 0, 0], [9.3, 0, 0], [9.55, -0.55, -1.2], [10.9, -0.55, -1.2], [11.15, 0, 0], [99, 0, 0]];
+// sua mão (nas partes sem alvo no corpo dele): [t, direita x,y,z, esquerda x,y,z]
+const KT_HAND = [
+  [0, 0.3, 1.15, -0.3, -0.3, 1.0, -0.1], [1.2, 0.3, 1.15, -0.3, -0.3, 1.0, -0.1],
+  [1.45, 0.3, 1.22, 0.16, 0.1, 1.2, 0.14],                                         // katana puxada pra trás, com as duas mãos
+  [1.55, 0.06, 1.18, -0.36, -0.06, 1.18, -0.24], [2.85, 0.06, 1.18, -0.36, -0.06, 1.18, -0.24], // estocada
+  [3.2, 0.4, 1.3, -0.1, -0.35, 1.05, 0.05], [4.3, 0.4, 1.3, -0.1, -0.35, 1.05, 0.05],
+  [4.55, 0.06, 1.62, -0.12, -0.35, 1.05, 0.05], [4.75, 0.06, 1.62, -0.12, -0.35, 1.05, 0.05],  // tira a lança de dentro da roupa
+  [5.05, 0.36, 1.35, 0.02, -0.3, 1.1, -0.1], [99, 0.36, 1.35, 0.02, -0.3, 1.1, -0.1]];
+// ele: [t, altura, pernas, inclinação, braços x, braços z, cabeça x, virado pra você]
+const KT_V = [
+  [0, 0, 0, 0, 0.06, 0, 0.05, 0], [1.55, 0, 0, 0, 0.06, 0, 0.05, 0],                       // relaxado, sem ver nada
+  [1.65, 0, 0, -0.16, 0.4, 1.1, -0.1, 0], [2.3, 0, 0, -0.1, 0.35, 0.95, -0.62, 0], [2.85, 0, 0, -0.08, 0.35, 0.9, -0.6, 0], // a lâmina no peito
+  [2.92, 0, 0, -0.05, 0.9, 0.2, -0.1, 0.15],                                                // saca a arma
+  [3.02, 0, 0, -0.12, 1.75, 0.08, 0.05, 1], [3.1, 0, 0, 0.02, 1.3, 0.08, 0.0, 1],          // vira e dá a coronhada
+  [3.35, -0.03, 0, 0.1, 1.38, 0.08, 0.05, 1], [3.9, -0.08, -0.2, 0.08, 1.2, 0.15, 0.05, 1], // atira, já fraco
+  [4.25, -0.1, -0.25, 0.1, 0.8, 0.35, 0.15, 1],                                             // a arma vai baixando
+  [5.2, -0.1, -0.25, 0.08, 2.2, 0.7, 0.0, 1],                                               // espanta as moscas
+  [5.4, -0.08, -0.2, 0.0, 1.9, 0.35, 0.45, 1], [5.95, -0.08, -0.2, 0.0, 2.0, 0.3, 0.4, 1],   // garganta
+  [6.3, -0.1, -0.2, 0.25, 0.9, 0.7, 0.3, 1], [6.95, 0.12, 0, 1.45, 0.3, 0.45, 0.3, 1],      // rasgo no peito e cai de costas
+  [7.05, 0.12, 0, 1.38, 0.3, 0.45, 0.3, 1], [7.15, 0.12, 0, 1.45, 0.3, 0.45, 0.3, 1], [99, 0.12, 0, 1.45, 0.25, 0.45, 0.3, 1]];
+const LEG_STABS = [7.35, 7.7, 8.0, 8.3];
+function cutSub(txt) { const s = $('cutsub'); if (s) { s.textContent = txt || ''; s.classList.toggle('on', !!txt); } }
 function updateKnifeCut(dt) {
   const C = G.cut;
-  const slow = (C.t > 0.6 && C.t < 0.95) || (C.t > 2.9 && C.t < 3.15);
-  C.t += dt * (slow ? 0.3 : 1);
-  const t = C.t, { f, v, y0 } = C, Pm = P.mesh, pu = Pm.userData, Vm = v.mesh, vu = Vm.userData, K = getCutKnife();
+  const sl = KNIFE_SLOW.find(([a, b]) => C.t > a && C.t < b);
+  C.t += dt * (sl ? sl[2] : 1);
+  const t = C.t, { f, v, y0, A } = C, Pm = C.a.mesh, pu = Pm.userData, Vm = v.mesh, vu = Vm.userData;
+  const Kn = getCutKnife(), Ka = getKatana(), Ln = getLanca();
+  for (const o of [Kn, Ka, Ln]) if (o.parent !== Pm) Pm.add(o);
+  const W = (fw, sd, out = KW) => out.set(A.x + f.x * fw + C.r.x * sd, y0, A.z + f.z * fw + C.r.z * sd);
+  // ----- ele -----
+  const [drop, lX, tilt, vaX, vaZ, hX, turn] = keyAt(KT_V, t);
+  Vm.position.set(C.vp.x, y0 + drop, C.vp.z);
+  Vm.rotation.y = C.yawV - C.sg * Math.PI * turn; Vm.rotation.x = tilt; Vm.rotation.z = 0;
+  if (C.fallSide && t > 6.3) { Vm.rotation.x = 0; Vm.rotation.z = C.fallSide * -tilt; }
+  vu.legL.rotation.x = vu.legR.rotation.x = lX;
+  for (const T of LEG_STABS) if (t > T && t < T + 0.25) vu.legR.rotation.x += Math.sin((t - T) / 0.25 * Math.PI) * 0.35; // a perna treme a cada facada
+  const flies = t > 4.25 && t < 5.25 ? Math.sin(t * 24) * 0.5 : 0;
+  const tremor = (t > 1.6 && t < 2.85 ? 0.04 : t > 5.4 && t < 7.0 ? 0.07 : t > 7.0 && t < 10.1 ? 0.02 : 0) * Math.sin(t * 50);
+  vu.armL.rotation.set(vaX + tremor + flies, 0, Math.max(-0.35, vaZ)); vu.armR.rotation.set(vaX - tremor - flies, 0, -vaZ);
+  vu.head.rotation.set(hX, t < 1.4 ? Math.sin(t * 1.6) * 0.35 : 0, tremor * 0.5); // olhando em volta, tranquilo
+  vu.gun.visible = t > 2.88 && t < 5.4; // relaxado: arma guardada; saca pra revidar e larga na facada da garganta
+  if (C.flashT > 0) { C.flashT -= dt; vu.flash.visible = C.flashT > 0; }
+  const shock = sstep(1.55, 1.7, t), dead = t > 10.15;
+  vu.brL.rotation.z = dead ? 0 : 0.3 * shock; vu.brR.rotation.z = dead ? 0 : -0.3 * shock; vu.brL.position.y = vu.brR.position.y = 0.11 + (dead ? 0 : 0.025 * shock);
+  vu.eL.scale.set(1 + 0.25 * shock, dead ? 0.12 : t > 7 ? 0.45 : 1 + 0.55 * shock, 1); vu.eR.scale.copy(vu.eL.scale);
+  vu.mouth.scale.set(1 - 0.45 * shock, dead ? 1.2 : 1 + 1.4 * shock, 1);
+  vu.gore.visible = t > 5.4;
+  Vm.updateMatrixWorld(true);
+  vu.torso.getWorldPosition(C.body);
+  vu.head.getWorldPosition(C.head);
+  // pontos do corpo dele (no mundo): garganta, barriga, coxa direita, testa
+  KV.set(0, -0.2, -0.17); vu.head.localToWorld(C.neck.copy(KV));
+  vu.torso.localToWorld(C.belly.set(0, -0.28, -0.2));
+  vu.legR.localToWorld(C.leg.set(0, -0.22, -0.1));
+  vu.head.localToWorld(C.brow.set(0, 0.1, -0.2));
   // ----- você -----
-  C.hideP = t > 0.1 && t < 0.45;
-  if (t < 0.45) { Pm.position.copy(C.p0); Pm.rotation.set(0, C.yawP0, 0); }
-  else {
-    const k = sstep(3.55, 3.8, t) * (1 - sstep(4.55, 4.85, t)); // passo pro lado e vira pra câmera sorrindo
-    Pm.position.set(C.Pb.x + C.r.x * 0.36 * k, C.Pb.y, C.Pb.z + C.r.z * 0.36 * k);
-    const cx = C.Pb.x + f.x * 1.0 + C.r.x * 1.1, cz = C.Pb.z + f.z * 1.0 + C.r.z * 1.1;
-    Pm.rotation.set(0, C.yawV + angDiff(C.yawV, Math.atan2(-(cx - Pm.position.x), -(cz - Pm.position.z))) * k, 0);
+  C.hideP = t > 0.15 && t < 1.2;
+  if (C.a !== P) Pm.visible = !C.hideP; // o seu boneco o laço de desenho já cuida
+  // onde você fica: atrás dele; jogado longe; avança; ao lado da perna; ao lado da cabeça
+  if (t >= 6.9 && !C.legSpot) { // escolhe o lado da perna direita dele (agora ele está caído)
+    const s = (C.leg.x - A.x) * C.r.x + (C.leg.z - A.z) * C.r.z, fw = (C.leg.x - A.x) * f.x + (C.leg.z - A.z) * f.z;
+    C.side = s >= 0 ? 1 : -1; C.legSpot = { fw, sd: s + C.side * 0.62 };
+    const sh = (C.brow.x - A.x) * C.r.x + (C.brow.z - A.z) * C.r.z, fh = (C.brow.x - A.x) * f.x + (C.brow.z - A.z) * f.z;
+    C.headSpot = { fw: fh, sd: sh + C.side * 0.6 };
   }
-  pu.legL.rotation.x = pu.legR.rotation.x = 0;
-  const [rx, ry, rz, lx2, ly2, lz2] = keyAt(KK_P, t);
+  const LS = C.legSpot || { fw: 0.5, sd: 0.6 }, HS = C.headSpot || { fw: 1.6, sd: 0.6 };
+  const spots = [[0, -1.15, 0], [3.06, -1.15, 0], [3.4, -C.back, 0], [5.25, -C.back, 0], [5.38, -0.62, 0], [6.9, -0.62, 0], [7.1, LS.fw, LS.sd], [8.8, LS.fw, LS.sd], [9.35, HS.fw, HS.sd], [99, HS.fw, HS.sd]];
+  const [pfw, psd] = keyAt(spots, t), [bDrop, bLegs] = keyAt(KT_BODY, t);
+  if (t < 1.2) { Pm.position.copy(C.p0); Pm.rotation.set(0, C.yawP0, 0); }
+  else {
+    W(pfw, psd, KH); Pm.position.set(KH.x, y0 + bDrop, KH.z); C.pp.set(KH.x, y0, KH.z);
+    // olha pra ele (no corpo, na perna ou na cabeça, conforme a parte)
+    const L = t < 6.9 ? C.body : t < 8.8 ? C.leg : C.brow;
+    let yaw = Math.atan2(-(L.x - KH.x), -(L.z - KH.z));
+    if (t > 10.9) yaw += angDiff(yaw, Math.atan2(-(C.camX - KH.x), -(C.camZ - KH.z))) * sstep(10.9, 11.3, t); // no fim olha pra câmera
+    if (t < 3.06) yaw = C.yawV; // a estocada é reta, pelas costas
+    Pm.rotation.set(0, yaw, 0);
+  }
+  pu.legL.rotation.x = pu.legR.rotation.x = bLegs;
+  if (t > 3.08 && t < 3.4) { pu.legL.rotation.x = -0.6; pu.legR.rotation.x = 0.4; } // voando pra trás
+  if (t > 5.25 && t < 5.38) { pu.legL.rotation.x = -0.9; pu.legR.rotation.x = 0.9; } // o avanço
+  Pm.updateMatrixWorld(true);
+  // mão direita: quadros fixos ou presa num ponto do corpo dele
+  let [rx, ry, rz, lx2, ly2, lz2] = keyAt(KT_HAND, t);
+  const toLocal = (p) => Pm.worldToLocal(KV.copy(p));
+  let alvo = null, mira = null;
+  if (t > 5.3 && t < 5.95) { const k = sstep(5.3, 5.38, t); toLocal(C.neck); KV.z += 0.06; alvo = [KV.x, KV.y, KV.z, k]; mira = C.neck; }                         // garganta
+  else if (t >= 5.95 && t < 6.55) { KW.lerpVectors(C.neck, C.belly, sstep(6.0, 6.4, t)); toLocal(KW); alvo = [KV.x, KV.y, KV.z + 0.05, 1]; mira = C.body; } // rasga o peito
+  else if (t >= 6.55 && t < 6.9) { toLocal(C.belly); alvo = [KV.x, KV.y + 0.25, KV.z + 0.25, 1 - sstep(6.55, 6.9, t)]; }
+  else if (t >= 7.1 && t < 8.6) { // perfura a perna
+    let up = 0.32;
+    for (const T of LEG_STABS) if (t > T - 0.18 && t < T + 0.22) up = t < T ? 0.32 * (1 - sstep(T - 0.18, T - 0.02, t) * 0.4) + 0.12 * sstep(T - 0.18, T - 0.02, t) : 0.02 + 0.3 * sstep(T, T + 0.22, t);
+    toLocal(C.leg); alvo = [KV.x, KV.y + up + 0.2, KV.z, sstep(7.1, 7.3, t) * (1 - sstep(8.45, 8.6, t))];
+  }
+  else if (t >= 9.6 && t < 10.75) { // faca na testa: levanta e crava
+    toLocal(C.brow);
+    const ergue = sstep(9.6, 9.9, t), crava = sstep(10.0, 10.1, t);
+    alvo = [KV.x, KV.y + 0.62 * ergue * (1 - crava) + 0.08, KV.z, Math.min(1, ergue * 3) * (1 - sstep(10.5, 10.75, t))];
+  }
+  else if (t >= 8.8 && t < 9.4) { rx = 0.3; ry = 0.95; rz = 0.05; } // pega a faca menor na cintura
+  if (alvo) { const k = alvo[3]; rx += (alvo[0] - rx) * k; ry += (alvo[1] - ry) * k; rz += (alvo[2] - rz) * k; }
+  if (t > 9.6 && t < 10.75) { lx2 = rx - 0.06; ly2 = ry + 0.02; lz2 = rz + 0.02; } // as duas mãos na faca
+  if (t > 1.2 && t < 3.0) { lx2 = rx - 0.1; ly2 = ry; lz2 = rz + 0.12; }           // as duas mãos na katana
   pu.armR.position.set(0.38, 1.48, 0); pu.armL.position.set(-0.38, 1.48, 0);
   setArm(pu.armR, KV.set(rx, ry, rz)); setArm(pu.armL, KV.set(lx2, ly2, lz2));
-  const [kx, ky, ks] = keyAt(KK_K, t);
-  K.position.set(rx, ry, rz); K.rotation.set(kx, ky, 0); K.userData.blade.scale.z = ks; K.visible = true;
   pu.knife.visible = false; pu.gun.visible = false;
-  // rosto: frio e calmo; depois da facada na cabeça, o sorriso de psicopata
-  const grin = sstep(3.5, 3.75, t);
-  pu.brL.rotation.z = -0.3 * sstep(0.5, 0.8, t); pu.brR.rotation.z = 0.3 * sstep(0.5, 0.8, t) - 0.55 * grin; pu.brR.position.y = 0.11 + 0.02 * grin; pu.brL.position.y = 0.105;
-  pu.eL.scale.set(1 + 0.3 * grin, 1 + 0.45 * grin - 0.4 * (1 - grin) * sstep(0.5, 0.8, t), 1); pu.eR.scale.copy(pu.eL.scale);
-  pu.mouth.scale.set(1 + 0.55 * grin, 1 + 0.9 * grin, 1); pu.mouth.position.y = -0.1 - 0.01 * grin;
-  pu.teeth.visible = pu.smL.visible = pu.smR.visible = grin > 0.3;
-  pu.gore.visible = t > 3.0;
-  pu.head.rotation.set(-0.08 * grin, 0, grin * 0.12 * (t < 4.6 ? Math.sin(t * 6) : 0));
-  // ----- ele -----
-  const [drop, lX, tilt, vaX, vaZ, hX, hY] = keyAt(KK_V, t);
-  Vm.position.set(C.vp.x, y0 + drop, C.vp.z);
-  Vm.rotation.y = C.yawV; Vm.rotation.x = tilt; Vm.rotation.z = 0;
-  if (C.fallSide && t > 3.55) { Vm.rotation.x = 0; Vm.rotation.z = C.fallSide * -tilt; }
-  vu.legL.rotation.x = vu.legR.rotation.x = lX;
-  const tremor = t > 0.7 && t < 1.8 ? Math.sin(t * 50) * 0.04 : 0;
-  vu.armL.rotation.set(vaX + tremor, 0, Math.max(-0.35, vaZ)); vu.armR.rotation.set(vaX - tremor, 0, -vaZ);
-  vu.head.rotation.set(hX, hY, tremor * 0.5);
-  vu.gun.visible = t < 0.72;
-  const shock = sstep(0.68, 0.85, t), dead = t > 3.0;
-  vu.brL.rotation.z = dead ? 0 : 0.3 * shock; vu.brR.rotation.z = dead ? 0 : -0.3 * shock; vu.brL.position.y = vu.brR.position.y = 0.11 + (dead ? 0 : 0.025 * shock);
-  vu.eL.scale.set(1 + 0.25 * shock, dead ? 0.15 : 1 + 0.55 * shock, 1); vu.eR.scale.copy(vu.eL.scale);
-  vu.mouth.scale.set(1 - 0.45 * shock, dead ? 1.2 : 1 + 1.4 * shock, 1);
-  vu.gore.visible = t > 2.15;
-  Vm.updateMatrixWorld(true); Pm.updateMatrixWorld(true);
-  vu.torso.getWorldPosition(C.body);
-  vu.head.getWorldPosition(C.neck); C.neck.y -= 0.22; C.neck.x += f.x * 0.1; C.neck.z += f.z * 0.1;
-  K.localToWorld(C.tip.set(0, 0, -0.6 * ks));
+  // qual lâmina está na mão
+  Ka.visible = t > 1.2 && t < 4.4; Ln.visible = t >= 4.55 && t < 8.95; Kn.visible = t >= 9.05;
+  const held = Ka.visible ? Ka : Ln.visible ? Ln : Kn.visible ? Kn : null;
+  for (const o of [Ka, Ln, Kn]) if (o !== held) o.visible = false;
+  if (held) {
+    held.position.set(rx, ry, rz);
+    if (mira) { Pm.localToWorld(KH.set(rx, ry, rz)); held.lookAt(KW.copy(KH).multiplyScalar(2).sub(mira)); } // a ponta aponta pro alvo
+    else if ((t >= 7.1 && t < 8.6) || (t >= 9.6 && t < 10.75)) held.rotation.set(-Math.PI / 2, 0, 0); // pra baixo
+    else held.rotation.set(t > 3.1 && t < 4.4 ? 0.5 : -0.04, 0, 0);
+  }
+  if (Kn.userData.blade) Kn.userData.blade.scale.z = 1;
+  // seu rosto: frio, sem pressa. No fim, um meio sorriso
+  const grin = sstep(10.95, 11.25, t), cold = sstep(1.2, 1.5, t);
+  pu.brL.rotation.z = -0.3 * cold; pu.brR.rotation.z = 0.3 * cold - 0.4 * grin; pu.brL.position.y = pu.brR.position.y = 0.105;
+  pu.eL.scale.set(1, 1 - 0.45 * cold, 1); pu.eR.scale.copy(pu.eL.scale);
+  pu.mouth.scale.set(1 + 0.4 * grin, 1 + 0.4 * grin, 1); pu.mouth.rotation.z = 0.25 * grin;
+  pu.teeth.visible = pu.smL.visible = pu.smR.visible = false; pu.smR.visible = grin > 0.4;
+  pu.gore.visible = t > 5.4;
+  pu.head.rotation.set(t > 7.1 && t < 10.9 ? 0.45 : 0, 0, 0);
+  // ponta da lâmina (pro sangue pingar)
+  if (held) held.localToWorld(C.tip.set(0, 0, held === Ka ? -1.4 : held === Ln ? -0.45 : -0.6));
   // ----- eventos -----
   const ev = (k, T) => !C.ev[k] && t >= T && (C.ev[k] = 1);
-  if (ev('some', 0.1)) { smokePuff(C.p0.x, y0, C.p0.z, 10); noise(0.25, 900, 0.18, 0, 'bandpass', 0.8); }
-  if (ev('aparece', 0.45)) tone(70, 0.3, 0.2, 'sine', 50); // aparece sem barulho, só um grave
-  if (ev('estoca', 0.68)) {
-    noise(0.18, 400, 0.5, 0, 'lowpass', 0.8); tone(110, 0.25, 0.45, 'sine', 50); noise(0.1, 3500, 0.2, 0, 'bandpass', 2); C.shake = 0.5;
-    const ch = KV.set(C.vp.x + f.x * 0.2, y0 + 1.15, C.vp.z + f.z * 0.2); gush(ch, f.x, 0.2, f.z, 22, 0.8);
-    addStain(Vm, 0, 1.13, -0.205, 0.15, 0.17); addStain(Vm, 0, 1.13, 0.205, 0.12, 0.14);
+  if (ev('some', 0.15)) { smokePuff(C.p0.x, y0, C.p0.z, 10); noise(0.25, 900, 0.18, 0, 'bandpass', 0.8); }
+  if (ev('aparece', 1.2)) tone(55, 0.6, 0.22, 'sine', 40);
+  if (ev('coracao', 1.3)) { tone(55, 0.12, 0.38, 'sine', 40); tone(52, 0.12, 0.32, 'sine', 38, 0.16); }
+  if (ev('katana', 1.55)) {
+    noise(0.2, 380, 0.55, 0, 'lowpass', 0.8); tone(105, 0.3, 0.45, 'sine', 50); noise(0.12, 3800, 0.25, 0, 'bandpass', 2); C.shake = 0.55;
+    gush(KV.set(C.vp.x + f.x * 0.25, y0 + 1.15, C.vp.z + f.z * 0.25), f.x, 0.2, f.z, 26, 0.9);
+    addStain(Vm, 0, 1.13, -0.205, 0.16, 0.18); addStain(Vm, 0, 1.13, 0.205, 0.13, 0.15);
   }
-  // sangue pingando da ponta da faca enquanto ela atravessa o peito
-  if (t > 0.72 && t < 1.85 && settings.sangue) { C.dripT -= dt; if (C.dripT <= 0) { C.dripT = 0.07; spawnPart(C.tip.x, C.tip.y, C.tip.z, rand(-0.2, 0.2), -0.5, rand(-0.2, 0.2), rand(0.025, 0.045), 1.0, pick(BLOOD), 12); } }
-  if (ev('poca0', 1.2)) bloodPool(C.vp.x + f.x * 0.3, y0, C.vp.z + f.z * 0.3, 0.5);
-  if (ev('puxa', 1.94)) { gush(KV.set(C.vp.x - f.x * 0.2, y0 + 1.15, C.vp.z - f.z * 0.2), -f.x, 0.3, -f.z, 12, 0.6); noise(0.12, 600, 0.3); }
-  if (ev('pescoco', 2.12)) { noise(0.25, 4200, 0.4, 0, 'bandpass', 2); C.shake = 0.4; gush(C.neck, f.x, 1.2, f.z, 40, 1); addStain(Vm, 0, 1.47, -0.2, 0.3, 0.05); }
-  if (t > 2.15 && t < 3.3 && settings.sangue) { // chuva de sangue do pescoço
-    C.sprayT -= dt;
-    if (C.sprayT <= 0) { C.sprayT = 0.03; const k = 1 - (t - 2.15) / 1.15; for (let i = 0; i < 4; i++) spawnPart(C.neck.x, C.neck.y, C.neck.z, f.x * rand(0.5, 2.5) * k + rand(-1, 1), rand(2.5, 5.5) * k + 1, f.z * rand(0.5, 2.5) * k + rand(-1, 1), rand(0.035, 0.08), rand(0.8, 1.3), pick(BLOOD), 12); }
+  if (settings.sangue && ((t > 1.6 && t < 2.9) || (t > 10.4 && t < 11))) { C.dripT -= dt; if (C.dripT <= 0) { C.dripT = 0.07; spawnPart(C.tip.x, C.tip.y, C.tip.z, rand(-0.2, 0.2), -0.5, rand(-0.2, 0.2), rand(0.025, 0.045), 1.0, pick(BLOOD), 12); } }
+  if (ev('poca0', 2.4)) bloodPool(C.vp.x + f.x * 0.3, y0, C.vp.z + f.z * 0.3, 0.45);
+  if (ev('saca', 2.9)) noise(0.1, 1400, 0.2, 0, 'bandpass', 1.5);
+  if (ev('coronhada', 3.06)) { // vira e te empurra com a arma
+    noise(0.2, 300, 0.6, 0, 'lowpass', 0.8); tone(85, 0.35, 0.5, 'sine', 40); C.shake = 1;
+    sparks(C.pp.x + f.x * 0.25, y0 + 1.35, C.pp.z + f.z * 0.25, -f.x, 0.3, -f.z, 8);
+    gush(KV.set(C.vp.x - f.x * 0.25, y0 + 1.15, C.vp.z - f.z * 0.25), -f.x, 0.3, -f.z, 16, 0.8); // a katana sai pelas costas
   }
-  if (ev('coxa', 2.38)) { noise(0.2, 3800, 0.35, 0, 'bandpass', 2); const th = KV.set(C.vp.x + f.x * 0.15, y0 + 0.65, C.vp.z + f.z * 0.15); gush(th, f.x, 0.2, f.z, 16, 0.7); addStain(Vm, 0.15, 0.62, -0.14, 0.2, 0.12); tone(180, 0.3, 0.3, 'sawtooth', 90); }
-  if (ev('joelho', 2.66)) { noise(0.15, 250, 0.4); C.shake = 0.3; }
-  if (ev('cabeca', 2.98)) {
-    noise(0.3, 350, 0.6, 0, 'lowpass', 0.8); tone(80, 0.5, 0.55, 'sine', 40); noise(0.12, 2500, 0.3, 0, 'bandpass', 1.5); C.shake = 0.9;
-    vu.head.getWorldPosition(KV); KV.y += 0.2; gush(KV, 0, 1.4, 0, 45, 1.1); vu.helm.visible = false;
+  for (const [k, T] of [['tiro0', 3.18], ['tiro1', 3.3], ['tiro2', 3.5]]) if (ev(k, T)) { // atira enquanto você voa pra trás; a katana bloqueia
+    C.flashT = 0.06; vu.flash.material.rotation = Math.random() * 6; sfxShot('pistola'); C.shake = Math.max(C.shake, 0.4);
+    vu.gun.getWorldPosition(KV); const hx = C.pp.x + f.x * 0.3, hz = C.pp.z + f.z * 0.3, hy = y0 + rand(1.1, 1.5);
+    addTracer(KV.x, KV.y, KV.z, hx, hy, hz); sparks(hx, hy, hz, f.x, 0.3, f.z, 7); tone(2400, 0.06, 0.12, 'square', 1200);
   }
-  if (ev('tira', 3.47)) { vu.head.getWorldPosition(KV); KV.y += 0.2; gush(KV, 0, 1, 0, 14, 0.6); noise(0.12, 600, 0.3); }
-  if (ev('risada', 3.8)) { for (let i = 0; i < 5; i++) tone(260 - i * 18, 0.1, 0.22, 'sawtooth', 200 - i * 15, i * 0.17); noise(0.9, 700, 0.08, 0, 'bandpass', 3, 0.05); }
-  if (ev('cai', 4.15)) { noise(0.2, 250, 0.4); C.shake = 0.35; }
-  if (ev('poca2', 4.4)) { vu.head.getWorldPosition(KV); bloodPool(KV.x, y0, KV.z, 1.0); bloodPool(C.body.x, y0, C.body.z, 0.7); }
-  if (ev('cap', 4.6)) $('cutcap').classList.add('on');
-  if (t >= KNIFE_END) { K.visible = false; $('cutcap').textContent = 'FINALIZAÇÃO'; endFinisher(); }
+  if (ev('chao', 3.42)) { noise(0.2, 250, 0.4); smokePuff(C.pp.x, y0, C.pp.z, 6); }
+  if (ev('revida', 3.75)) { noise(0.15, 700, 0.2, 0, 'bandpass', 1); cutSub('...'); }
+  if (ev('moscas', 4.25)) { cutSub(''); noise(1.0, 210, 0.16, 0, 'bandpass', 9); noise(1.0, 260, 0.12, 0, 'bandpass', 9, 0.2); }
+  if (t > 4.25 && t < 5.3) { // nuvem de moscas girando em volta dele
+    C.flyT -= dt;
+    if (C.flyT <= 0) { C.flyT = 0.02; for (let i = 0; i < 5; i++) { const a = rand(0, 6.283), rr = rand(0.35, 0.9), h = rand(0.6, 2.0), w = rand(5, 9) * (i % 2 ? 1 : -1);
+      spawnPart(C.vp.x + Math.cos(a) * rr, y0 + h, C.vp.z + Math.sin(a) * rr, -Math.sin(a) * w * 0.4, rand(-0.6, 0.6), Math.cos(a) * w * 0.4, rand(0.025, 0.045), rand(0.35, 0.6), pick([0x0b0b0e, 0x1a1a20, 0x262016]), 0); } }
+  }
+  if (ev('lanca', 4.6)) { tone(70, 0.5, 0.3, 'sawtooth', 50); noise(0.3, 1200, 0.15, 0, 'bandpass', 3); for (let i = 0; i < 4; i++) tone(2200 + i * 300, 0.04, 0.05, 'square', 0, i * 0.05); } // corrente tilintando
+  if (t > 5.25 && t < 5.38) { for (let i = 0; i < 3; i++) spawnPart(C.pp.x + rand(-0.2, 0.2), y0 + rand(0.3, 1.8), C.pp.z + rand(-0.2, 0.2), 0, 0, 0, rand(0.08, 0.14), 0.25, 0x101014, 0); } // rastro do avanço
+  if (ev('avanca', 5.25)) { noise(0.15, 1600, 0.3, 0, 'bandpass', 1); tone(300, 0.12, 0.15, 'sine', 900); }
+  if (ev('garganta', 5.38)) {
+    noise(0.25, 4200, 0.4, 0, 'bandpass', 2); tone(95, 0.35, 0.4, 'sine', 45); C.shake = 0.6;
+    gush(C.neck, -f.x, 0.6, -f.z, 34, 0.9); addStain(Vm, 0, 1.47, -0.205, 0.12, 0.07);
+    noise(0.7, 180, 0.12, 0, 'lowpass', 2, 0.15); // ele tenta gritar e só sai um gorgolejo
+  }
+  if (t > 5.4 && t < 5.95 && settings.sangue) { C.sprayT -= dt; if (C.sprayT <= 0) { C.sprayT = 0.04; spawnPart(C.neck.x, C.neck.y, C.neck.z, -f.x * rand(0.5, 2) + rand(-0.6, 0.6), rand(0.5, 2.5), -f.z * rand(0.5, 2) + rand(-0.6, 0.6), rand(0.03, 0.06), rand(0.7, 1.1), pick(BLOOD), 12); } }
+  if (ev('rasga', 6.0)) { noise(0.5, 900, 0.4, 0, 'bandpass', 1.2); tone(160, 0.5, 0.35, 'sawtooth', 60); C.shake = 0.7; }
+  if (t > 6.0 && t < 6.45 && settings.sangue) { C.sprayT -= dt; if (C.sprayT <= 0) { C.sprayT = 0.02; for (let i = 0; i < 3; i++) spawnPart(C.tip.x, C.tip.y, C.tip.z, -f.x * rand(1, 3.5) + rand(-1, 1), rand(1, 3.5), -f.z * rand(1, 3.5) + rand(-1, 1), rand(0.035, 0.08), rand(0.7, 1.2), pick(BLOOD), 12); } }
+  if (ev('rasgo', 6.4)) { addStain(Vm, 0, 1.18, -0.212, 0.07, 0.5); addStain(Vm, 0.04, 1.2, -0.214, 0.03, 0.42); }
+  if (ev('cai', 6.95)) { noise(0.25, 220, 0.5); C.shake = 0.5; vu.head.getWorldPosition(KV); bloodPool(C.body.x, y0, C.body.z, 0.9); }
+  for (let i = 0; i < LEG_STABS.length; i++) if (ev('perna' + i, LEG_STABS[i])) {
+    noise(0.12, 350, 0.45, 0, 'lowpass', 0.8); noise(0.08, 3000, 0.2, 0, 'bandpass', 2); C.shake = 0.3;
+    gush(C.leg, 0, 1, 0, 14, 0.6); addStain(Vm, 0.15, 0.6 - i * 0.07, -0.135, 0.12, 0.08);
+  }
+  if (ev('poca1', 8.4)) bloodPool(C.leg.x, y0, C.leg.z, 0.6);
+  if (ev('faquinha', 9.0)) noise(0.1, 2600, 0.15, 0, 'bandpass', 2);
+  if (ev('testa', 10.08)) {
+    noise(0.3, 330, 0.65, 0, 'lowpass', 0.8); tone(75, 0.6, 0.55, 'sine', 35); noise(0.12, 2500, 0.3, 0, 'bandpass', 1.5); C.shake = 1;
+    gush(C.brow, 0, 1.4, 0, 45, 1.1); vu.helm.visible = false;
+  }
+  if (ev('poca2', 10.6)) { bloodPool(C.head.x, y0, C.head.z, 1.1); bloodPool(C.body.x, y0, C.body.z, 1.0); }
+  if (ev('cap', 11.3)) $('cutcap').classList.add('on');
+  if (t >= KNIFE_END) {
+    for (const o of [Kn, Ka, Ln]) o.visible = false;
+    cutSub(''); $('cutcap').textContent = 'FINALIZAÇÃO';
+    C.Pb.set(Pm.position.x, y0, Pm.position.z); C.endYaw = Pm.rotation.y; // você fica onde terminou a cena
+    endFinisher();
+  }
 }
-// planos de câmera da execução
+// planos de câmera: [de, até, câmera de, olha de, câmera até, olha até]
 function knifeShot(C, t) {
-  const { f, r, A, y0, Pb, p0, body } = C;
+  const { f, r, A, y0, body, head, leg } = C;
   const at = (o, fw, sd, h) => [o.x + f.x * fw + r.x * sd, y0 + h, o.z + f.z * fw + r.z * sd];
-  const M = { x: (p0.x + A.x) / 2, z: (p0.z + A.z) / 2 };
+  const pt = (p, dy = 0) => [p.x, p.y + dy, p.z];
+  const near = (p, fw, sd, h) => [p.x + f.x * fw + r.x * sd, y0 + h, p.z + f.z * fw + r.z * sd];
   let a, b, k;
-  if (t < 0.55) { k = sstep(0, 0.55, t); a = [at(A, 2.6, 1.3, 1.6), at(A, 0, 0, 1.35)]; b = [at(A, 2.3, 1.1, 1.55), at(A, 0, 0, 1.35)]; }        // ele de frente, sem ver nada
-  else if (t < 1.05) { k = sstep(0.55, 1.05, t); a = [at(A, 1.15, 0.95, 1.25), at(A, 0.25, 0, 1.15)]; b = [at(A, 0.95, 0.8, 1.22), at(A, 0.25, 0, 1.13)]; } // a ponta sai pelo peito
-  else if (t < 1.85) { k = sstep(1.05, 1.85, t); a = [at(A, 1.15, 0.35, 1.38), at(A, 0, 0, 1.5)]; b = [at(A, 0.98, 0.3, 1.38), at(A, 0, 0, 1.5)]; } // ele olha a lâmina
-  else if (t < 2.55) { k = sstep(1.85, 2.55, t); a = [at(A, 0.2, 2.5, 1.4), at(A, -0.2, 0, 1.15)]; b = [at(A, 0.5, 2.2, 1.3), at(A, -0.15, 0, 1.0)]; } // pescoço e coxa
-  else if (t < 3.55) { k = sstep(2.55, 3.55, t); a = [at(A, 1.3, 1.0, 0.55), at(A, -0.25, 0, 1.45)]; b = [at(A, 1.15, 0.9, 0.5), at(A, -0.25, 0, 1.35)]; } // de baixo: faca na cabeça
-  else if (t < 4.6) { k = sstep(3.55, 4.6, t); a = [at(Pb, 1.0, 1.1, 1.84), at(Pb, 0, 0.36, 1.74)]; b = [at(Pb, 0.82, 0.92, 1.8), at(Pb, 0, 0.36, 1.75)]; } // sorriso
-  else { k = sstep(4.6, KNIFE_END, t); a = [at(A, 0.6, 2.6, 1.3), at(A, 0, 0, 1.0)]; b = [at(body, -0.4, 1.4, 3.3), at(body, 0, 0, 0.2)]; }
+  const S = (t0, t1, ca, la, cb, lb) => { k = sstep(t0, t1, t); a = [ca, la]; b = [cb || ca, lb || la]; };
+  const sd = C.side || 1;
+  if (t < 1.2) S(0, 1.2, at(A, 2.5, 1.2, 1.6), at(A, 0, 0, 1.4), at(A, 1.9, 0.85, 1.55), at(A, 0, 0, 1.4));                        // ele, relaxado
+  else if (t < 1.55) S(1.2, 1.55, at(A, -2.6, 1.0, 1.75), at(A, 0, 0, 1.3), at(A, -2.3, 0.85, 1.65), at(A, 0, 0, 1.3));          // atrás de você: a katana
+  else if (t < 2.2) S(1.55, 2.2, at(A, 1.05, 0.85, 1.25), at(A, 0.35, 0, 1.15), at(A, 0.9, 0.72, 1.22), at(A, 0.35, 0, 1.13));   // a ponta sai pelo peito
+  else if (t < 2.85) S(2.2, 2.85, at(A, 1.0, 0.3, 1.42), at(A, 0, 0, 1.55), at(A, 0.88, 0.26, 1.42), at(A, 0, 0, 1.55));          // ele olha a lâmina
+  else if (t < 3.6) S(2.85, 3.6, at(A, -1.2, 3.8, 1.5), at(A, -1.3, 0, 1.1), at(A, -1.4, 4.3, 1.8), at(A, -1.6, 0, 1.0));        // a coronhada te joga longe e ele atira
+  else if (t < 4.25) S(3.6, 4.25, at(A, -C.back * 0.5, 2.6, 1.6), at(A, -C.back * 0.4, 0, 1.2), at(A, -C.back * 0.45, 2.3, 1.5), at(A, -C.back * 0.35, 0, 1.2)); // ele vira pra revidar
+  else if (t < 4.75) S(4.25, 4.75, at(A, -1.3, 1.3, 1.7), at(A, 0, 0, 1.45), at(A, -1.1, 1.1, 1.65), at(A, 0, 0, 1.45));          // as moscas
+  else if (t < 5.25) S(4.75, 5.25, at(A, -C.back + 1.3, 0.9, 1.7), at(A, -C.back, 0, 1.4), at(A, -C.back + 1.15, 0.8, 1.65), at(A, -C.back, 0, 1.45)); // você saca a lança
+  else if (t < 5.95) S(5.25, 5.95, at(A, -0.35, 2.3, 1.6), at(A, -0.3, 0, 1.4), at(A, -0.3, 1.7, 1.55), at(A, -0.2, 0, 1.42)); // garganta
+  else if (t < 6.55) S(5.95, 6.55, at(A, -0.3, 1.5, 1.15), at(A, -0.05, 0, 1.2), at(A, -0.35, 1.7, 1.05), at(A, 0, 0, 1.0));         // rasga o peito
+  else if (t < 7.1) S(6.55, 7.1, at(A, 0.4, 3.0, 1.9), at(A, 0.7, 0, 0.5), at(A, 0.5, 3.2, 2.1), at(A, 0.9, 0, 0.3));              // ele cai
+  else if (t < 8.6) S(7.1, 8.6, near(leg, -0.5, -sd * 1.5, 1.7), pt(leg, 0.2), near(leg, -0.4, -sd * 1.3, 1.55), pt(leg, 0.2));             // a perna
+  else if (t < 9.5) S(8.6, 9.5, at(A, 0.9, -sd * 3.0, 1.7), at(A, 0.9, 0, 0.7), at(A, 1.0, -sd * 2.7, 1.6), at(A, 1.0, 0, 0.7));  // pega a faca
+  else if (t < 10.75) S(9.5, 10.75, near(head, 0.9, -sd * 1.4, 1.6), pt(head, 0.25), near(head, 0.75, -sd * 1.2, 1.45), pt(head, 0.2)); // a testa
+  else if (t < 11.5) S(10.75, 11.5, near(head, 0.5, -sd * 0.6, 0.25), [C.pp.x, y0 + 1.7, C.pp.z], near(head, 0.45, -sd * 0.55, 0.3), [C.pp.x, y0 + 1.75, C.pp.z]); // você, de baixo
+  else S(11.5, KNIFE_END, at(A, 1.0, 2.8, 1.5), pt(body, -0.8), near(body, -0.4, 1.4, 4.2), pt(body, -1));                         // o corpo no chão
   const L = (i, j) => a[i][j] + (b[i][j] - a[i][j]) * k;
+  C.camX = L(0, 0); C.camZ = L(0, 2);
   return [L(0, 0), L(0, 1), L(0, 2), L(1, 0), L(1, 1), L(1, 2)];
 }
 // sair pro menu no meio da cena
 function abortCut() {
   if (!G.cut) return;
-  const v = G.cut.v; G.cut = null;
-  document.body.classList.remove('cut'); $('cutfx').hidden = true; $('cutcap').classList.remove('on');
-  resetPose(P.mesh); resetPose(v.mesh); v.finishing = false;
+  const v = G.cut.v, a = G.cut.a || P; G.cut = null;
+  document.body.classList.remove('cut'); $('cutfx').hidden = true; $('cutcap').classList.remove('on'); cutSub('');
+  resetPose(P.mesh); resetPose(a.mesh); resetPose(v.mesh); v.finishing = false;
+  for (const o of [cutKnife, cutKatana, cutLanca]) if (o) o.visible = false;
 }
-// clique, toque, Espaço ou Enter pulam direto pro tiro final
+// P pula direto pro final (no celular, tocar na tela)
 function skipCut(e) {
   if (!G.cut || G.paused) return;
-  if (e.type === 'keydown' && !['Space', 'Enter'].includes(e.code)) return;
+  if (e.type === 'keydown' ? e.code !== 'KeyP' : !isTouch) return;
   e.preventDefault(); e.stopPropagation();
   const sk = G.cut.skip ?? FIN_SKIP;
-  if (G.cut.t < sk) { G.cut.t = sk; Object.assign(G.cut.ev, G.cut.skipEv || { tiro1: 1, arma: 1, joelho: 1, coronhada: 1 }); }
+  if (G.cut.t < sk) { G.cut.t = sk; Object.assign(G.cut.ev, G.cut.skipEv || { tiro1: 1, arma: 1, joelho: 1, coronhada: 1 }); cutSub(''); }
 }
 window.addEventListener('keydown', skipCut, true);
 window.addEventListener('pointerdown', skipCut, true);
@@ -2407,7 +2752,9 @@ function equip(w) {
   if (P.healT > 0 && P.healKind === 'kit') return; // não troca no meio do curativo
   P.prev = P.cur; P.cur = w; P.reloadT = 0; P.zoom = false; P.switchT = w === 'faca' ? 0.2 : 0.35; P.cool = Math.max(P.cool, 0.25); P.shotIdx = 0; sfx.swap();
   for (const k of ALLW) VM[k].visible = k === w;
+  VM.hands.visible = w !== 'faca' && w !== 'arco'; // faca e arco têm as próprias mãos
   VM.hands.children[1].visible = GUNS.includes(w); // mão esquerda só segura arma de fogo
+  P.bowT = -1;
   if (w === 'faca') { P.drawT = 0.45; noise(0.22, 3200, 0.12, 0, 'bandpass', 2); tone(2400, 0.12, 0.05, 'sine', 3000, 0.15); }
   P.inspT = 0;
 }
@@ -2453,6 +2800,7 @@ let camK = 0; // 1 = câmera em 3ª pessoa, 0 = 1ª pessoa
 function playerFire() {
   const w = WEAPONS[P.cur];
   if (w.melee) { if (input.fireEdge) meleeAttack(false); return; }
+  if (w.bow) return; // o arco puxa e solta em updateBow
   if (w.thrown) { if (input.fireEdge) { input.fireEdge = false; throwGrenade(); } return; }
   if (w.item) { if (input.fireEdge) { input.fireEdge = false; useItem('kit'); } return; }
   if (P.reloadT > 0 || P.cool > 0 || P.switchT > 0 || P.healT > 0 && P.healKind === 'kit') return;
@@ -2484,7 +2832,7 @@ function playerFire() {
   const rk = (P.crouch ? 0.7 : 1) * (P.att && P.att.coronha ? 0.65 : 1) * (P.rajadaT > 0 ? 0.4 : 1);
   P.shotIdx++;
   P.recoilP += w.recuo * rk;
-  if (P.cur === 'fuzil' || P.cur === 'sub') P.recoilY += Math.sin(P.shotIdx * 0.7) * w.recuo * (P.shotIdx > 4 ? 0.7 : 0.15) * rk;
+  if (P.cur === 'fuzil' || P.cur === 'sub' || P.cur === 'ak' || P.cur === 'lmg' || P.cur === 'glock') P.recoilY += Math.sin(P.shotIdx * 0.7) * w.recuo * (P.shotIdx > 4 ? 0.7 : 0.15) * rk;
   P.recoilSpread = Math.min(0.06, P.recoilSpread + w.recuo * 0.45 * rk);
   vmKick = 1; vmRoll = rand(-1, 1) * (0.015 + w.recuo * 0.6); vmSlide = 1; vmShotAt = G.now; vmShotW = P.cur; if (P.cur === 'revolver') vmCylT += Math.PI / 3;
   vmFlash.visible = camK <= 0.05; vmFlashT = 0.05;
@@ -2495,6 +2843,7 @@ let vmKick = 0, vmFlashT = 0, vmSwayX = 0, vmSwayY = 0, vmRoll = 0, vmSlide = 0,
 // onde ficam a mão direita (x,y,z) e a esquerda (x,y,z), em relação à pegada padrão
 const VM_HOLD = {
   pistola: [0, -0.015, -0.02, -0.02, -0.07, 0.26], revolver: [0, 0, 0.04, -0.02, -0.06, 0.33], deagle: [0, -0.025, -0.015, -0.025, -0.08, 0.27],
+  glock: [0, -0.015, -0.02, -0.02, -0.07, 0.26], ak: [0, 0, 0.01, 0.02, -0.04, -0.14], lmg: [0, 0, 0.02, 0.03, -0.03, -0.16], arco: [0, 0, 0, 0, 0, 0],
   sub: [0, 0, -0.02, 0.02, -0.01, -0.01], fuzil: [0, 0, 0.01, 0.02, -0.04, -0.12], escopeta: [0, 0.03, -0.04, 0.02, 0.005, -0.12], sniper: [0, 0, 0.01, 0.02, -0.005, 0.02],
   faca: [0, 0, 0, 0, 0, 0], granada: [0, 0, 0, 0, 0, 0], kit: [0, 0, 0, 0, 0, 0]
 };
@@ -2571,11 +2920,205 @@ function meleeAttack(heavy) {
     tone(140, 0.08, 0.3, 'square', 70); P.hits++;
     if (back && best.hp <= dmg) toast('Facada pelas costas!');
     damage(best, dmg, P, 'faca', false, false);
+    if (!heavy && best.alive) bleed(best, P); // o corte perfura: sangra 5 por segundo durante 5 s
+    // impacto: a lâmina trava no corpo um instante, a mão sente o tranco e a faca sai suja de sangue
+    P.kHitT = P.kHitDur = heavy ? 0.5 : 0.3; P.kHitHeavy = heavy; P.hitStop = heavy ? 0.09 : 0.06; P.kBloodT = 7;
+    camShake = Math.max(camShake, heavy ? 0.55 : 0.3); noise(0.09, 700, 0.35, 0, 'lowpass', 1, 0.01);
   } else {
     const t = rayMap(P.pos.x, ey, P.pos.z, fx, fy, fz, 1.6);
     if (t < 1.6) { sparks(P.pos.x + fx * t, ey + fy * t, P.pos.z + fz * t, -fx, -fy, -fz, 4); tone(900, 0.04, 0.12, 'square'); }
   }
 }
+/* ---------- Sangramento: corte e faca arremessada = 5 por segundo durante 5 s; flecha = 3 por segundo durante 3 s ---------- */
+const BLEED_DMG = 5, BLEED_DUR = 5;
+let sangrando = false; // dano que vem do sangramento: não vira execução e não é reduzido pelo colete
+function bleed(e, a, dmg = BLEED_DMG, dur = BLEED_DUR, wpn = 'faca') {
+  if (!e.alive || e === a) return;
+  if (!(e.bleedT > 0)) { e.bleedTick = 1; e.bleedDmg = 0; }
+  if (dmg >= e.bleedDmg) { e.bleedDmg = dmg; e.bleedW = wpn; e.bleedT = dur; } else e.bleedT = Math.max(e.bleedT, dur); // um sangramento mais forte não é trocado por um mais fraco
+  e.bleedBy = a; e.bleedDrip = 0;
+  if (a === P) toast(e.name + ' está sangrando');
+}
+function updateBleed(dt) {
+  for (const e of ents) {
+    if (!(e.bleedT > 0)) continue;
+    if (!e.alive) { e.bleedT = 0; continue; }
+    e.bleedT -= dt; e.bleedTick -= dt; e.bleedDrip -= dt;
+    if (settings.sangue && e.bleedDrip <= 0) { e.bleedDrip = 0.12; spawnPart(e.pos.x + rand(-0.15, 0.15), chestY(e) + rand(-0.2, 0.1), e.pos.z + rand(-0.15, 0.15), rand(-0.3, 0.3), rand(-0.5, 0.3), rand(-0.3, 0.3), rand(0.03, 0.06), 0.9, pick(BLOOD), 12); }
+    if (e.bleedTick <= 0) {
+      e.bleedTick += 1;
+      if (e.bleedBy && (e.bleedBy.alive || e.bleedBy === P)) { sangrando = true; damage(e, e.bleedDmg || BLEED_DMG, e.bleedBy, e.bleedW || 'faca', false, false); sangrando = false; }
+      if (e === P) tone(90, 0.1, 0.2, 'sine', 60);
+    }
+  }
+}
+function clearBleed() { for (const e of ents) e.bleedT = 0; }
+// R com a faca na mão: arremessa a faca no inimigo. Ela volta pra mão depois de KNIFE_CD segundos
+const KNIVES = [], KNIFE_CD = 6, KNIFE_SPEED = 26, KNIFE_DMG = 25;
+function makeThrownKnife() {
+  const g = new THREE.Group();
+  const steel = new THREE.MeshStandardMaterial({ color: 0xe6ebf0, metalness: 0.6, roughness: 0.2, emissive: 0x222222 });
+  const bl = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.05, 0.3), steel); bl.position.z = -0.12;
+  const hd = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.05, 0.12), new THREE.MeshLambertMaterial({ color: 0x1c1c1f })); hd.position.z = 0.08;
+  const gd = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.02, 0.025), new THREE.MeshLambertMaterial({ color: 0x6c727c }));
+  g.add(bl, hd, gd); return g;
+}
+function throwKnife() {
+  if (!P.alive || P.switchT > 0 || (isCombat() && (G.phase === 'buy' || G.phase === 'post'))) return;
+  if (P.knifeCd > 0) { sfx.deny(); toast(`A faca volta em ${Math.ceil(P.knifeCd)} s`); return; }
+  P.knifeCd = KNIFE_CD; P.cool = Math.max(P.cool, 0.35); P.meleeT = P.meleeDur = 0.3; P.meleeHeavy = false; P.slashDir = 1; P.inspT = 0;
+  const cp = Math.cos(P.pitch), fx = -Math.sin(P.yaw) * cp, fy = Math.sin(P.pitch), fz = -Math.cos(P.yaw) * cp;
+  const m = makeThrownKnife(); scene.add(m);
+  const pos = new THREE.Vector3(P.pos.x + fx * 0.4, P.pos.y + P.eye - 0.1 + fy * 0.4, P.pos.z + fz * 0.4);
+  KNIVES.push({ owner: P, pos, vel: new THREE.Vector3(fx * KNIFE_SPEED, fy * KNIFE_SPEED + 1.2, fz * KNIFE_SPEED), m, t: 0, yaw: P.yaw });
+  noise(0.22, 2200, 0.25, 0, 'bandpass', 1.2); tone(600, 0.15, 0.08, 'sine', 1200);
+  P.shots++;
+}
+function updateKnives(dt) {
+  for (let i = KNIVES.length - 1; i >= 0; i--) {
+    const k = KNIVES[i]; let done = false;
+    k.t += dt;
+    const n = 3, h = dt / n;
+    for (let s = 0; s < n && !done; s++) {
+      k.vel.y -= 9 * h;
+      const nx = k.pos.x + k.vel.x * h, ny = k.pos.y + k.vel.y * h, nz = k.pos.z + k.vel.z * h;
+      // acertou alguém?
+      for (const e of ents) {
+        if (e === k.owner || !e.alive || e.team === k.owner.team || G.mode === 'treino') continue;
+        if (Math.hypot(nx - e.pos.x, nz - e.pos.z) > 0.45 || ny < e.pos.y || ny > e.pos.y + (e.crouch ? 1.35 : 1.95)) continue;
+        const head = ny > headY(e) - 0.18;
+        if (k.owner === P) { P.hits++; hitMarker(false, head); }
+        tone(150, 0.1, 0.35, 'square', 70); noise(0.1, 1500, 0.3, 0, 'bandpass', 1.5);
+        bloodSpray(nx, ny, nz, k.vel.x / KNIFE_SPEED, 0.2, k.vel.z / KNIFE_SPEED, 10);
+        damage(e, head ? KNIFE_DMG * 2 : KNIFE_DMG, k.owner, 'faca', head, !head);
+        if (e.alive) bleed(e, k.owner);
+        done = true; break;
+      }
+      if (done) break;
+      // bateu na parede ou no chão: fica cravada um tempinho
+      if (gHit(nx, ny, nz) || ny < 0.05) { sparks(k.pos.x, k.pos.y, k.pos.z, -k.vel.x, -k.vel.y, -k.vel.z, 4); tone(1100, 0.05, 0.15, 'square'); k.vel.set(0, 0, 0); k.stuck = 1.2; break; }
+      k.pos.set(nx, ny, nz);
+    }
+    if (k.stuck > 0) { k.stuck -= dt; if (k.stuck <= 0) done = true; }
+    else { k.m.position.copy(k.pos); k.m.rotation.set(-k.t * 22, k.yaw, 0, 'YXZ'); }
+    if (done || k.t > 3) { scene.remove(k.m); KNIVES.splice(i, 1); }
+  }
+}
+function clearKnives() { for (const k of KNIVES) scene.remove(k.m); KNIVES.length = 0; }
+/* ---------- Arco e flecha: segura pra puxar (até 6 s = 90 de dano), solta pra disparar ---------- */
+// R: flecha tripla (a cada 30 s). Cada flecha tem metade do dano; no mesmo alvo: 1 = 40, 2 = 80, 3 = morte (com o arco todo puxado)
+const BOW_MAX = 6, BOW_SKILL_CD = 30, ARROW_BLEED = 3, ARROW_BLEED_DUR = 3, TRIPLE_DMG = [0, 40, 80, 100], ARROWS = [];
+const bowCharge = t => clamp(t / BOW_MAX, 0, 1);
+const bowDamage = k => Math.round(15 + 75 * k);
+let arrowMeshes = null;
+function makeArrow() {
+  if (!arrowMeshes) arrowMeshes = {
+    shaft: new THREE.BoxGeometry(0.018, 0.018, 0.8).translate(0, 0, -0.4), head: new THREE.ConeGeometry(0.03, 0.1, 6).rotateX(Math.PI / 2).translate(0, 0, 0.05),
+    fl: new THREE.BoxGeometry(0.004, 0.06, 0.14).translate(0, 0.03, -0.72),
+    mShaft: new THREE.MeshLambertMaterial({ color: 0x7a5432 }), mHead: new THREE.MeshStandardMaterial({ color: 0xc9ced6, metalness: 0.8, roughness: 0.3 }), mFl: new THREE.MeshLambertMaterial({ color: 0xd8423a, side: THREE.DoubleSide })
+  };
+  const A = arrowMeshes, g = new THREE.Group();
+  g.add(new THREE.Mesh(A.shaft, A.mShaft), new THREE.Mesh(A.head, A.mHead));
+  for (let i = 0; i < 3; i++) { const f = new THREE.Mesh(A.fl, A.mFl); f.rotation.z = i * Math.PI * 2 / 3; g.add(f); }
+  return g;
+}
+// vis = só aparência (flecha de outro jogador online: quem atirou é quem decide o dano)
+function spawnArrow(owner, x, y, z, vx, vy, vz, dmg, vol, vis) {
+  const m = makeArrow(); m.position.set(x, y, z); scene.add(m);
+  ARROWS.push({ owner, pos: new THREE.Vector3(x, y, z), vel: new THREE.Vector3(vx, vy, vz), m, t: 0, dmg, vol, vis });
+}
+function bowSkill() {
+  if (!P.alive || P.cur !== 'arco') return;
+  if (P.tripla) { toast('Flecha tripla já está armada'); return; }
+  if (P.bowCd > 0) { sfx.deny(); toast(`Flecha tripla volta em ${Math.ceil(P.bowCd)} s`); return; }
+  P.tripla = true; toast('Flecha tripla armada: puxe e solte');
+  noise(0.12, 2600, 0.12, 0, 'bandpass', 2); tone(880, 0.08, 0.1, 'triangle'); tone(1320, 0.1, 0.1, 'triangle', 0, 0.07);
+}
+function updateBow(dt) {
+  if (P.cur !== 'arco' || !P.alive || G.cut) { P.bowT = -1; return; }
+  if (!(P.bowT >= 0)) {
+    P.bowT = -1;
+    const can = !(P.cool > 0) && !(P.switchT > 0) && (G.phase !== 'buy' || G.mode === 'treino') && !G.buyOpen;
+    if (!input.fire || !can) return;
+    if (P.ammo.arco <= 0 && G.mode !== 'treino') { if (input.fireEdge) { sfx.deny(); toast('Sem flechas'); } input.fireEdge = false; return; }
+    P.bowT = 0; P.creakT = 0; P.bowFull = false; input.fireEdge = false;
+    noise(0.35, 500, 0.1, 0, 'bandpass', 3); tone(160, 0.35, 0.05, 'sawtooth', 120);
+    return;
+  }
+  P.bowT += dt; P.sprintBlock = Math.max(P.sprintBlock || 0, 0.2);
+  // a corda range de vez em quando enquanto segura
+  if ((P.creakT -= dt) <= 0) { P.creakT = 0.9; if (P.bowT > 0.6) noise(0.2, 380 + bowCharge(P.bowT) * 300, 0.04 + bowCharge(P.bowT) * 0.05, 0, 'bandpass', 4); }
+  if (P.bowT >= BOW_MAX && !P.bowFull) { P.bowFull = true; tone(1250, 0.07, 0.08, 'triangle'); } // carga máxima: um clique avisa; segura o quanto quiser
+  if (!input.fire) shootBow();
+}
+function shootBow() {
+  const k = bowCharge(P.bowT), drawn = sstep(0, 0.55, P.bowT); P.bowT = -1;
+  if (G.mode !== 'treino') P.ammo.arco = Math.max(0, P.ammo.arco - 1);
+  P.cool = WEAPONS.arco.cad; P.bowRel = 0.3; P.shots++; if (G.training) G.training.shots++;
+  const tri = !!P.tripla; if (tri) { P.tripla = false; P.bowCd = BOW_SKILL_CD; }
+  const yw = P.yaw + P.recoilY, pt = P.pitch + P.recoilP;
+  let ox = P.pos.x, oy = P.pos.y + P.eye + (P.eyeOff || 0), oz = P.pos.z;
+  if (camK > 0.05) { // 3ª pessoa: sai da linha da câmera (o que está na mira é o que leva a flecha)
+    const cp = Math.cos(pt), dx = -Math.sin(yw) * cp, dy = Math.sin(pt), dz = -Math.cos(yw) * cp, c = camera.position;
+    const t0 = Math.max(0, (ox - c.x) * dx + (oy - c.y) * dy + (oz - c.z) * dz); ox = c.x + dx * t0; oy = c.y + dy * t0; oz = c.z + dz * t0;
+  }
+  // arco mal puxado ou andando: a flecha sai torta
+  const spr = 0.003 + (1 - drawn) * 0.035 + Math.min(1, Math.hypot(P.vx, P.vz) / 6) * 0.015 + (P.onGround ? 0 : 0.03);
+  const speed = 30 + 50 * k, vol = tri ? { hits: new Map(), k } : null;
+  for (const off of tri ? [-0.022, 0, 0.022] : [0]) {
+    const a = yw + off + rand(-spr, spr), b = pt + rand(-spr, spr) * 0.7, cb = Math.cos(b);
+    const dx = -Math.sin(a) * cb, dy = Math.sin(b), dz = -Math.cos(a) * cb;
+    const x = ox + dx * 0.5, y = oy - 0.05 + dy * 0.5, z = oz + dz * 0.5;
+    spawnArrow(P, x, y, z, dx * speed, dy * speed, dz * speed, tri ? 0 : bowDamage(k), vol, false);
+    if (G.online) netSend({ t: 'arrow', p: [+x.toFixed(2), +y.toFixed(2), +z.toFixed(2)], v: [+(dx * speed).toFixed(2), +(dy * speed).toFixed(2), +(dz * speed).toFixed(2)] });
+  }
+  tone(210 + k * 120, 0.28, 0.28, 'triangle', 80); noise(0.16, 1400, 0.3, 0, 'bandpass', 1.2); tone(95, 0.2, 0.18, 'sine', 50, 0.02);
+  vmKick = 0.5; camShake = Math.max(camShake, 0.08 + k * 0.12);
+  if (!(P.ammo.arco > 0) && G.mode !== 'treino') setTimeout(() => { if (P.cur === 'arco' && !(P.ammo.arco > 0)) toast('Acabaram as flechas'); }, 300);
+}
+function arrowHit(r, e, head, x, y, z) {
+  const o = r.owner;
+  if (o === P) { P.hits++; }
+  tone(130, 0.1, 0.35, 'square', 60); noise(0.1, 1200, 0.3, 0, 'bandpass', 1.5);
+  bloodSpray(x, y, z, r.vel.x / 40, 0.2, r.vel.z / 40, head ? 12 : 8);
+  if (r.vis) return;
+  if (r.vol) { // flecha tripla: o dano soma no mesmo alvo e a 3ª mata
+    const n = Math.min(3, (r.vol.hits.get(e) || 0) + 1); r.vol.hits.set(e, n);
+    const mul = 0.35 + 0.65 * r.vol.k, d = n === 3 && r.vol.k >= 0.999 ? 1000 : (TRIPLE_DMG[n] - TRIPLE_DMG[n - 1]) * mul;
+    if (o === P && n === 3) toast(r.vol.k >= 0.999 ? 'Três flechas: abate na hora!' : 'Três flechas!');
+    damage(e, d, o, 'arco', head, !head);
+  } else damage(e, r.dmg * (head ? WEAPONS.arco.cabeca : 1) * dmgMul(o, 'arco'), o, 'arco', head, !head);
+  if (e.alive) bleed(e, o, ARROW_BLEED, ARROW_BLEED_DUR, 'arco'); // a flecha fica no corpo: sangra 3 por segundo durante 3 s
+}
+function updateArrows(dt) {
+  for (let i = ARROWS.length - 1; i >= 0; i--) {
+    const r = ARROWS[i]; let done = false;
+    r.t += dt;
+    if (r.stuck > 0) { r.stuck -= dt; if (r.stuck <= 0) { scene.remove(r.m); ARROWS.splice(i, 1); } continue; }
+    const n = Math.max(2, Math.ceil(r.vel.length() * dt / 0.25)), h = dt / n;
+    for (let s = 0; s < n && !done; s++) {
+      r.vel.y -= 7 * h;
+      const nx = r.pos.x + r.vel.x * h, ny = r.pos.y + r.vel.y * h, nz = r.pos.z + r.vel.z * h;
+      if (G.mode === 'treino' && r.owner === P) {
+        const L = Math.hypot(nx - r.pos.x, ny - r.pos.y, nz - r.pos.z) || 1e-4;
+        if (hitTarget(r.pos.x, r.pos.y, r.pos.z, (nx - r.pos.x) / L, (ny - r.pos.y) / L, (nz - r.pos.z) / L, L)) { P.hits++; done = true; break; }
+      }
+      for (const e of ents) {
+        if (e === r.owner || !e.alive || e.team === r.owner.team || G.mode === 'treino') continue;
+        if (Math.hypot(nx - e.pos.x, nz - e.pos.z) > 0.42 || ny < e.pos.y || ny > e.pos.y + (e.crouch ? 1.35 : 1.95)) continue;
+        arrowHit(r, e, ny > headY(e) - 0.18, nx, ny, nz); done = true; break;
+      }
+      if (done) break;
+      // parede ou chão: a flecha fica cravada e balançando um pouco
+      if (gHit(nx, ny, nz) || ny < 0.03) { sparks(r.pos.x, r.pos.y, r.pos.z, -r.vel.x, -r.vel.y, -r.vel.z, 3); tone(700, 0.05, 0.12, 'square', 300); r.stuck = 5; r.wob = 1; break; }
+      r.pos.set(nx, ny, nz);
+    }
+    r.m.position.copy(r.pos);
+    if (!r.stuck) r.m.lookAt(r.pos.x + r.vel.x, r.pos.y + r.vel.y, r.pos.z + r.vel.z);
+    if (done || r.t > 4) { scene.remove(r.m); ARROWS.splice(i, 1); }
+  }
+}
+function clearArrows() { for (const r of ARROWS) scene.remove(r.m); ARROWS.length = 0; P.bowT = -1; P.tripla = false; }
 /* ---------- Granada ---------- */
 const GRENS = [];
 const grenGeo = new THREE.SphereGeometry(0.09, 10, 8), grenMat = new THREE.MeshLambertMaterial({ color: 0x4a5a3a });
@@ -2584,9 +3127,22 @@ function spawnGrenade(owner, x, y, z, vx, vy, vz) {
   const m = new THREE.Mesh(grenGeo, grenMat); m.castShadow = true; m.position.set(x, y, z); scene.add(m);
   GRENS.push({ owner, pos: new THREE.Vector3(x, y, z), vel: new THREE.Vector3(vx, vy, vz), fuse: 2.0, m, warned: false, bounceT: 0 });
 }
-function clearGrenades() { for (const g of GRENS) scene.remove(g.m); GRENS.length = 0; }
+function clearGrenades() { for (const g of GRENS) scene.remove(g.m); GRENS.length = 0; P.grenT = 0; }
+const GREN_PREP = 0.6; // tempo pra puxar o pino antes de jogar
 function throwGrenade() {
-  if (P.cool > 0 || P.switchT > 0 || !(P.gren > 0) || (isCombat() && G.phase === 'buy')) return;
+  if (P.cool > 0 || P.switchT > 0 || P.grenT > 0 || !(P.gren > 0) || (isCombat() && G.phase === 'buy')) return;
+  P.grenT = GREN_PREP; P.grenPin = false; P.cool = GREN_PREP + 0.1; P.sprintBlock = GREN_PREP + 0.3;
+  noise(0.08, 900, 0.08, 0, 'bandpass', 2);
+}
+function updateGrenPrep(dt) {
+  if (!(P.grenT > 0)) return;
+  if (P.cur !== 'granada' || !P.alive) { P.grenT = 0; return; } // trocou de arma: guarda a granada sem jogar
+  P.grenT -= dt;
+  if (!P.grenPin && P.grenT < GREN_PREP * 0.5) { P.grenPin = true; tone(2600, 0.05, 0.12, 'square', 1800); noise(0.06, 5000, 0.1, 0, 'bandpass', 3); tone(3400, 0.25, 0.04, 'sine', 3300, 0.04); } // plim do pino
+  if (P.grenT <= 0) { P.grenT = 0; releaseGrenade(); }
+}
+function releaseGrenade() {
+  if (!(P.gren > 0)) return;
   P.gren--; P.cool = WEAPONS.granada.cad; P.throwT = 0.35; P.sprintBlock = 0.3;
   const pt = P.pitch + 0.12, cp = Math.cos(pt), dx = -Math.sin(P.yaw) * cp, dy = Math.sin(pt), dz = -Math.cos(P.yaw) * cp;
   let ox = P.pos.x + dx * 0.5, oy = P.pos.y + P.eye - 0.1, oz = P.pos.z + dz * 0.5;
@@ -2700,16 +3256,18 @@ function useItem(kind) {
   if (kind === 'placa') { if (P.armor >= 100) { sfx.deny(); return; } P.placa--; P.armor = Math.min(100, P.armor + 50); sfx.buy(); return; }
   if (P.hp >= 100) { sfx.deny(); return; }
   P[kind]--; P.healKind = kind;
-  if (kind === 'kit') { P.healT = 3; P.healRate = 22; if (P.cur !== 'kit') { P.kitPrev = P.cur; P.cur = 'kit'; for (const k of ALLW) VM[k].visible = k === 'kit'; VM.hands.children[1].visible = false; } } else { P.healT = 1; P.healRate = 28; P.boostT = Math.max(P.boostT, 1.5); }
+  if (kind === 'kit') { P.healT = 3; P.healRate = 22; if (P.cur !== 'kit') { P.kitPrev = P.cur; P.cur = 'kit'; for (const k of ALLW) VM[k].visible = k === 'kit'; VM.hands.visible = true; VM.hands.children[1].visible = false; P.bowT = -1; } } else { P.healT = 1; P.healRate = 28; P.boostT = Math.max(P.boostT, 1.5); }
   tone(600, 0.2, 0.15, 'sine', 900);
 }
 function updatePlayer(dt) {
   const w = WEAPONS[P.cur];
   // timers de habilidade, cura e deslize
-  for (const k of ['abCd', 'boostT', 'rajadaT', 'slideCd', 'sprintBlock', 'furiaT', 'sombraT', 'blindT', 'meleeT', 'throwT', 'abT', 'apT', 'novaT', 'drawT', 'inspT']) if (P[k] > 0) P[k] -= dt;
+  for (const k of ['abCd', 'boostT', 'rajadaT', 'slideCd', 'sprintBlock', 'furiaT', 'sombraT', 'blindT', 'meleeT', 'throwT', 'abT', 'apT', 'novaT', 'drawT', 'inspT', 'knifeCd', 'kHitT', 'kBloodT', 'bowRel', 'bowCd']) if (P[k] > 0) P[k] -= dt;
+  if (P.hitStop > 0) { P.hitStop -= dt; P.meleeT += dt; } // a faca trava um instante no corpo
+  updateGrenPrep(dt);
   { const was = P.abReady; P.abReady = P.abCd <= 0; if (P.abReady && was === false && P.alive) { tone(1320, 0.08, 0.12, 'triangle'); tone(1760, 0.1, 0.1, 'triangle', 0, 0.08); toast(CLASSES[P.cls].ativa + ' pronta (E)'); } }
   // acabou a granada: volta pra arma. Depois do curativo, volta pro que estava na mão
-  if (P.cur === 'granada' && !(P.gren > 0) && !(P.throwT > 0.05)) equip(bestGun(P));
+  if (P.cur === 'granada' && !(P.gren > 0) && !(P.throwT > 0.05) && !(P.grenT > 0)) equip(bestGun(P));
   if (P.cur === 'kit' && !(P.healT > 0) && (P.kitPrev || !(P.kit > 0))) { const b = P.kitPrev && owns(P, P.kitPrev) ? P.kitPrev : bestGun(P); P.kitPrev = null; equip(b); }
   if (P.healT > 0) { P.healT -= dt; P.hp = Math.min(100, P.hp + P.healRate * dt); if (P.healT <= 0) P.healKind = ''; }
   else if (P.cls === 'nova' && P.hp < 100 && G.now - (P.lastHurt ?? -99) > 3) P.hp = Math.min(100, P.hp + 5 * dt);
@@ -2744,7 +3302,7 @@ function updatePlayer(dt) {
   P.adsT += ((P.ads ? 1 : 0) - P.adsT) * Math.min(1, dt * 14);
   // correr (Shift) só pra frente, sem mirar e sem ter acabado de atirar
   P.sprinting = (input.sprint || (isTouch && len > 0.95)) && f > 0.4 && !P.crouch && P.adsT < 0.3 && P.sprintBlock <= 0;
-  let max = 6 * w.vel * (P.crouch ? 0.45 : 1) * (1 - P.adsT * 0.35) * (P.sprinting ? 1.35 : 1) * (P.boostT > 0 ? (P.cls === 'corredor' && P.abT > 0 ? 1.6 : 1.45) : 1) * (P.furiaT > 0 || P.sombraT > 0 || P.novaT > 0 ? 1.2 : 1) * (P.healT > 0 && P.healKind === 'kit' ? 0.6 : 1);
+  let max = 6 * w.vel * (P.crouch ? 0.45 : 1) * (1 - P.adsT * 0.35) * (P.sprinting ? 1.35 : 1) * (P.boostT > 0 ? (P.cls === 'corredor' && P.abT > 0 ? 1.6 : 1.45) : 1) * (P.furiaT > 0 || P.sombraT > 0 || P.novaT > 0 ? 1.2 : 1) * (P.healT > 0 && P.healKind === 'kit' ? 0.6 : 1) * (P.bowT > 0 ? 0.6 : 1);
   let tx = (fx * f + rx * s) * max, tz = (fz * f + rz * s) * max;
   let k = P.onGround ? 1 - Math.exp(-dt * 14) : 1 - Math.exp(-dt * 2.5);
   if (P.slideT > 0) { const v = 3.5 + 6.5 * (P.slideT / P.slideMax); tx = P.slideDx * v + rx * s * 1.5; tz = P.slideDz * v + rz * s * 1.5; k = 1 - Math.exp(-dt * 20); }
@@ -2768,6 +3326,7 @@ function updatePlayer(dt) {
   if (P.switchT > 0) P.switchT -= dt;
   if (P.reloadT > 0) { P.reloadT -= dt; if (P.reloadT <= 0) { P.reloadT = 0; finishReload(P); } }
   if ((input.fire || input.fireEdge) && (G.phase !== 'buy' || G.mode === 'treino')) playerFire();
+  updateBow(dt);
   if (!input.fire) input.fireEdge = false;
   P.recoilP *= Math.exp(-dt * (input.fire ? 4 : 9));
   P.recoilY *= Math.exp(-dt * 6);
@@ -2983,6 +3542,7 @@ const HOLD3 = {
   rifle:   { gun: [0.13, 1.37, -0.45], r: [0.14, 1.3, -0.34], l: [0.11, 1.34, -0.62], ls: [-0.33, 1.47, -0.06], aimL: true },
   pistola: { gun: [0.06, 1.42, -0.6], r: [0.07, 1.36, -0.5], l: [0.02, 1.35, -0.48], ls: [-0.33, 1.47, -0.06], aimL: true },
   faca:    { gun: [0.14, 1.36, -0.55], r: [0.3, 1.12, -0.38], l: [-0.22, 1.15, -0.3], ls: [-0.38, 1.48, 0], aimL: false },
+  arco:    { gun: [-0.02, 1.42, -0.66], r: [0.02, 1.43, -0.56], l: [-0.02, 1.4, -0.66], ls: [-0.33, 1.47, -0.06], aimL: true },
   item:    { gun: [0.14, 1.36, -0.55], r: [0.3, 1.25, -0.42], l: [-0.32, 0.98, -0.1], ls: [-0.38, 1.48, 0], aimL: false }
 };
 const AV = new THREE.Vector3(), TV = new THREE.Vector3(), AD = new THREE.Vector3();
@@ -2994,7 +3554,7 @@ function setArm(arm, tgt) {
   arm.rotation.set(Math.atan2(-AD.z, -AD.y), 0, Math.asin(clamp(AD.x / len, -1, 1)));
   arm.scale.y = clamp(len / 0.54, 0.6, 1.4);
 }
-const GSCALE = { pistola: 0.55, revolver: 0.6, deagle: 0.62, sniper: 1.35, faca: 0.3, granada: 0.2, kit: 0.3 };
+const GSCALE = { glock: 0.55, lmg: 1.15, pistola: 0.55, revolver: 0.6, deagle: 0.62, sniper: 1.35, faca: 0.3, granada: 0.2, kit: 0.3 };
 function animBot(b, dt) {
   const m = b.mesh, u = m.userData;
   m.position.copy(b.pos); m.rotation.y = b.yaw;
@@ -3005,7 +3565,7 @@ function animBot(b, dt) {
   u.legL.rotation.x = sw; u.legR.rotation.x = -sw;
   m.scale.y = b.crouch ? 0.76 : 1;
   const ap = clamp(b.pitch, -0.6, 0.6), cur = b.cur;
-  const kind = cur === 'faca' ? 'faca' : cur === 'granada' || cur === 'kit' ? 'item' : SEC.includes(cur) ? 'pistola' : 'rifle', H = HOLD3[kind];
+  const kind = cur === 'faca' ? 'faca' : cur === 'arco' ? 'arco' : cur === 'granada' || cur === 'kit' ? 'item' : SEC.includes(cur) ? 'pistola' : 'rifle', H = HOLD3[kind];
   const rl = b.reloadT > 0 ? Math.sin(Math.PI * clamp(1 - b.reloadT / (b.reloadMax || WEAPONS[cur].recarga || 2), 0, 1)) : 0, kick = b.flashT > 0 ? 0.05 : 0;
   // a arma acompanha a mira; as mãos vão no cabo e na frente da arma
   aimRot(H.gun, ap, AV); u.gun.position.set(AV.x, AV.y - rl * 0.06, AV.z + kick); u.gun.rotation.set(ap - rl * 0.3, 0, rl * 0.45);
@@ -3014,6 +3574,16 @@ function animBot(b, dt) {
   u.armL.position.set(...H.ls); u.armR.position.set(0.38, 1.48, 0);
   aimRot(H.r, ap, AV); AV.z += kick; setArm(u.armR, AV);
   if (H.aimL) { aimRot(H.l, ap, AV); if (rl) { AV.lerp(TV.set(0.12, 1.08 + AV.y * 0 - 0.0, -0.32), rl); } setArm(u.armL, AV); } else setArm(u.armL, TV.set(...H.l));
+  if (u.bow) {
+    u.bow.visible = kind === 'arco';
+    if (kind === 'arco') { // o arco fica na mão esquerda; a direita puxa a corda até o rosto
+      const dr = b === P && P.bowT >= 0 ? sstep(0, 0.55, P.bowT) : 0;
+      aimRot(H.gun, ap, AV); u.bow.position.copy(AV); u.bow.rotation.set(ap, 0, 0.15);
+      u.bow.userData.str.position.z = 0.07 + dr * 0.14; u.bow.userData.str.scale.y = 1.04 - dr * 0.05;
+      TV.set(H.r[0] + dr * 0.08, H.r[1] + dr * 0.04, H.r[2] + dr * 0.42); aimRot([TV.x, TV.y, TV.z], ap, AV); setArm(u.armR, AV);
+      aimRot(H.l, ap, AV); setArm(u.armL, AV);
+    }
+  }
   if (b === P && P.meleeT > 0) { const k = Math.sin(Math.PI * (1 - P.meleeT / P.meleeDur)); u.armR.rotation.x += P.meleeHeavy ? -k * 0.5 : k * 0.9; u.armR.rotation.z -= k * (P.meleeHeavy ? 0 : 0.9); }
   const radar = b.team !== P.team && (b.radarUntil || 0) > G.now;
   if (u.emk) u.emk.visible = radar;
@@ -3062,7 +3632,8 @@ function botBuy(b) {
   let w = null;
   if (PRIM.some(k => b.inv[k])) { /* mantém */ }
   else if (m >= 4650 && Math.random() < 0.18) w = 'sniper';
-  else if (m >= 3350) w = 'fuzil';
+  else if (m >= 3800 && Math.random() < 0.15) w = 'lmg';
+  else if (m >= 3350) w = Math.random() < 0.4 ? 'ak' : 'fuzil';
   else if (m >= 1250 && Math.random() < 0.7) w = Math.random() < 0.25 ? 'escopeta' : 'sub';
   if (w) { giveGun(b, w); b.money -= WEAPONS[w].preco; }
   if (b.armor < 50 && b.money >= VEST + (w ? 0 : 1000) && Math.random() < 0.85) { b.armor = 100; b.money -= VEST; }
@@ -3101,7 +3672,7 @@ function startRound(netRound) {
   if (P.cls === 'armeiro') P.gren = Math.max(P.gren || 0, 1);
   P.abCd = 0; P.abT = 0; P.rajadaT = P.boostT = P.furiaT = P.sombraT = P.blindT = P.apT = P.novaT = 0;
   for (const k of ALLW) VM[k].visible = k === P.cur;
-  P.zoom = false; clearHoles(); clearGrenades(); P.ads = false; P.adsT = 0; P.recoilP = P.recoilY = P.recoilSpread = 0;
+  P.zoom = false; clearHoles(); clearGrenades(); clearKnives(); clearArrows(); clearBleed(); P.ads = false; P.adsT = 0; P.recoilP = P.recoilY = P.recoilSpread = 0;
   G.spec = null;
   let title = `Rodada ${G.round}`, sub;
   if (G.mode === 'tdm') { sub = G.defenders === 'A' ? 'Vocês defendem — segurem até o tempo acabar' : 'Vocês atacam — eliminem o time laranja'; if (G.round === 4) title = 'Troca de papéis!'; }
@@ -3242,6 +3813,7 @@ const ZONES = [{ wait: 50, shrink: 30, r: 72, dps: 1.5 }, { wait: 40, shrink: 25
 const LOOT_DEF = {
   revolver: { nome: 'Revólver .44', col: 0x3a8fe0, w: 4 }, deagle: { nome: 'Desert Eagle', col: 0x3a8fe0, w: 3 }, granada: { nome: 'Granada', col: 0x6b8a4a, w: 8 },
   sub: { nome: 'Submetralhadora', col: 0x3a8fe0, w: 10 }, fuzil: { nome: 'Fuzil', col: 0x3a8fe0, w: 7 }, escopeta: { nome: 'Escopeta', col: 0x3a8fe0, w: 6 }, sniper: { nome: 'Sniper', col: 0x3a8fe0, w: 3 },
+  glock: { nome: 'Glock automática', col: 0x3a8fe0, w: 5 }, ak: { nome: 'AK-47', col: 0x3a8fe0, w: 5 }, lmg: { nome: 'Metralhadora', col: 0x3a8fe0, w: 2 },
   municao: { nome: 'Munição', col: 0xc8b04a, w: 12 }, colete: { nome: 'Colete', col: 0x4a4f5a, w: 6 },
   kit: { nome: 'Kit médico', col: 0xff5a5a, w: 10 }, inal: { nome: 'Inalador', col: 0xff9ad0, w: 8 }, placa: { nome: 'Placa de colete', col: 0x9aa3ad, w: 8 }, gel: { nome: '+2 Paredes de gel', col: 0x8fd6ff, w: 7 },
   red: { nome: 'Mira red dot', col: 0xc8f13a, w: 4 }, '2x': { nome: 'Mira 2x', col: 0xc8f13a, w: 3 }, '4x': { nome: 'Mira 4x', col: 0xc8f13a, w: 2 },
@@ -3279,7 +3851,7 @@ function spreadLoot() {
 function updateLoot(dt) {
   for (const l of LOOT) { l.ph += dt * 2; l.m.rotation.y = l.ph; l.m.position.y = Math.sin(l.ph * 1.3) * 0.08; }
 }
-const RANK = { fuzil: 4, sniper: 3, sub: 2, escopeta: 2, deagle: 3, revolver: 2, pistola: 1 };
+const RANK = { ak: 4, lmg: 4, glock: 2, arco: 1, fuzil: 4, sniper: 3, sub: 2, escopeta: 2, deagle: 3, revolver: 2, pistola: 1 };
 // tenta pegar o item; devolve true se pegou. Arma num espaço ocupado: você troca com F, o bot troca se for melhor
 function takeLoot(e, l, force) {
   const k = l.k, W = GUNS.includes(k) ? WEAPONS[k] : null, me = e === P;
@@ -3429,7 +4001,7 @@ function startBR() {
     if (e.isBot) { e.mesh.visible = true; resetPose(e.mesh); e.state = 'idle'; e.path = []; e.target = null; e.visible = false; e.lastKnown = null; e.lastKnownT = -99; e.triedCover = false; e.goalUntil = 0; e.role = 'br'; }
   }
   for (const k of ALLW) VM[k].visible = k === P.cur;
-  clearHoles(); clearGrenades(); clearPools(); if (P.cls === 'bulldog') P.armor = 40; if (P.cls === 'armeiro') P.gren = 1;
+  clearHoles(); clearGrenades(); clearKnives(); clearArrows(); clearBleed(); clearPools(); if (P.cls === 'bulldog') P.armor = 40; if (P.cls === 'armeiro') P.gren = 1;
   spreadLoot();
   G.phase = 'live'; G.round = 1; G.brPlace = 0; G.defenders = null; G.brGrace = BR_GRACE;
   zoneInit();
@@ -3570,18 +4142,18 @@ function toMenu() {
 /* ---------- Comprar ---------- */
 // a loja vai por etapas: principal, secundária, apoio e proteção. Na 1ª rodada (de pistola) só a secundária
 const BUY_STEPS = [
-  { nome: 'Principal', items: ['sub', 'fuzil', 'escopeta', 'sniper'] },
-  { nome: 'Secundária', items: ['pistola', 'revolver', 'deagle'] },
+  { nome: 'Principal', items: ['sub', 'fuzil', 'ak', 'lmg', 'escopeta', 'sniper', 'arco'] },
+  { nome: 'Secundária', items: ['pistola', 'glock', 'revolver', 'deagle'] },
   { nome: 'Apoio', items: ['granada', 'kit'] },
   { nome: 'Proteção', items: ['colete'] }
 ];
 const pistolRound = () => G.round <= 1;
-const buySteps = () => pistolRound() ? [{ nome: 'Rodada de pistola', items: ['pistola', 'revolver', 'deagle'] }] : BUY_STEPS;
+const buySteps = () => pistolRound() ? [{ nome: 'Rodada de pistola', items: ['pistola', 'glock', 'revolver', 'deagle'] }] : BUY_STEPS;
 const buyAllowed = k => buySteps().some(st => st.items.includes(k));
 function buildBuy() {
   const st = buySteps(); G.buyStep = clamp(G.buyStep || 0, 0, st.length - 1); const S = st[G.buyStep];
   $('buySteps').innerHTML = st.map((x, i) => `<button type="button" class="${i === G.buyStep ? 'on' : i < G.buyStep ? 'done' : ''}" data-step="${i}">${st.length > 1 ? i + 1 + '. ' : ''}${x.nome}</button>`).join('');
-  $('buyNote').textContent = pistolRound() ? 'Primeira rodada: só arma secundária (pistola, revólver ou Desert Eagle).' : '';
+  $('buyNote').textContent = pistolRound() ? 'Primeira rodada: só arma secundária (pistola, Glock, revólver ou Desert Eagle).' : '';
   $('buyGrid').innerHTML = S.items.map((k, i) => {
     const isV = k === 'colete', w = WEAPONS[k];
     const nome = isV ? 'Colete' : w.nome, preco = isV ? VEST : w.preco, desc = isV ? 'Absorve parte do dano. 100 de proteção.' : w.desc;
@@ -3798,7 +4370,7 @@ window.addEventListener('keydown', e => {
     case 'ShiftLeft': case 'ShiftRight': input.sprint = true; break;
     case 'ControlLeft': case 'ControlRight': input.crouch = true; break;
     case 'KeyC': input.slide = true; break;
-    case 'KeyR': if (P.alive) startReload(P); break;
+    case 'KeyR': if (P.alive) { if (P.cur === 'faca') throwKnife(); else if (P.cur === 'arco') bowSkill(); else startReload(P); } break;
     case 'KeyB': openBuy(); break;
     case 'KeyQ': if (P.alive && isCombat() && G.phase !== 'buy' && !deployWall(P)) sfx.deny(); break;
     case 'KeyE': useAbility(); break;
@@ -3872,7 +4444,7 @@ if (isTouch) {
   fire.addEventListener('pointerup', fup); fire.addEventListener('pointercancel', fup);
   const tap = (id, fn) => $(id).addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); audioInit(); fn(); });
   tap('tJump', () => { input.jump = true; });
-  tap('tReload', () => { if (P.alive) startReload(P); });
+  tap('tReload', () => { if (P.alive) { if (P.cur === 'faca') throwKnife(); else if (P.cur === 'arco') bowSkill(); else startReload(P); } });
   tap('tSwitch', () => cycleWeapon(1));
   tap('tZoom', toggleZoom);
   tap('tWall', () => { if (P.alive && isCombat() && G.phase !== 'buy' && !deployWall(P)) sfx.deny(); });
@@ -3917,7 +4489,7 @@ function updateCamera(dt) {
   }
   if (G.cut) { cutCamera(dt); return; }
   const wA = WEAPONS[P.cur];
-  const targetFov = !P.alive ? baseFov : wA.zoom ? (P.zoom ? 22 : baseFov) : baseFov * (1 - P.adsT * (1 - adsFovK(P))) + (P.sprinting || P.boostT > 0 ? 6 : 0);
+  const targetFov = !P.alive ? baseFov : wA.zoom ? (P.zoom ? 22 : baseFov) : baseFov * (1 - P.adsT * (1 - adsFovK(P))) + (P.sprinting || P.boostT > 0 ? 6 : 0) - (P.cur === 'arco' && P.bowT > 0 ? sstep(0, 0.6, P.bowT) * 8 + bowCharge(P.bowT) * 4 : 0);
   if (Math.abs(camera.fov - targetFov) > 0.01) { camera.fov += (targetFov - camera.fov) * Math.min(1, dt * 18); camera.updateProjectionMatrix(); }
   if (P.alive || G.mode === 'treino') {
     const bob = Math.sin(P.bob) * 0.03 * Math.min(1, Math.hypot(P.vx, P.vz) / 6) * (P.onGround ? 1 : 0);
@@ -3959,7 +4531,7 @@ function updateCamera(dt) {
   if (camShake > 0.002) { const k = camShake * 0.07; camera.position.x += rand(-k, k); camera.position.y += rand(-k, k); camera.position.z += rand(-k, k); camShake *= Math.exp(-dt * 6); }
 }
 function updateViewmodel(dt) {
-  if (G.cut) { vmRoot.visible = false; P.mesh.visible = !G.cut.hideP; crossEl.hidden = true; $('scope').classList.remove('on'); return; }
+  if (G.cut) { vmRoot.visible = false; P.mesh.visible = !(G.cut.hideP && (G.cut.a || P) === P); crossEl.hidden = true; $('scope').classList.remove('on'); return; }
   const show = G.screen === 'play' && P.alive && !(P.zoom && P.cur === 'sniper' && camera.fov < 40) && camK < 0.35;
   vmRoot.visible = show;
   // boneco do jogador na 3ª pessoa
@@ -4015,6 +4587,75 @@ function updateViewmodel(dt) {
       }
     }
   }
+  // faca acertou: trava no corpo, tranco na mão; na apunhalada ela gira e é arrancada
+  if (P.cur === 'faca' && P.kHitT > 0) {
+    const m = 1 - P.kHitT / P.kHitDur, sh = Math.sin(m * 46) * (1 - m);
+    if (P.kHitHeavy) {
+      const tw = sstep(0.12, 0.4, m) * (1 - sstep(0.62, 0.9, m)), rip = bump(0.55, 0.95, m);
+      kn.rotation.z += tw * 1.1; vmRoot.position.z -= 0.05 * (1 - sstep(0.5, 0.75, m)) - rip * 0.07; vmRoot.rotation.x += rip * 0.25 - tw * 0.08;
+      vmRoot.position.x += sh * 0.008; vmRoot.rotation.z += sh * 0.03;
+    } else {
+      const imp = Math.exp(-m * 7);
+      vmRoot.position.z += imp * 0.05; vmRoot.rotation.x -= imp * 0.14; vmRoot.position.x += sh * 0.012; vmRoot.rotation.z += sh * 0.05; kn.rotation.x -= imp * 0.25;
+    }
+  }
+  if (VM.kBlood) VM.kBlood.opacity = P.kBloodT > 0 ? Math.min(0.92, P.kBloodT / 2.5) : 0;
+  // arco: parado fica baixo e de lado (dá pra ver a curva); ao puxar sobe pra mira, a mão direita leva a corda até o rosto
+  // e as lâminas dobram. Segura o quanto quiser: o tremor cresce até a carga máxima e fica num nível leve
+  if (P.cur === 'arco') {
+    const U = VM.arco.userData.bw, drawing = P.bowT >= 0, d = drawing ? sstep(0, 0.55, P.bowT) : 0;
+    const rel = P.bowRel > 0 ? P.bowRel / 0.3 : 0;
+    U.aim += ((drawing || rel > 0 ? 1 : 0) - U.aim) * Math.min(1, dt * (drawing ? 11 : 3.5));
+    const am = sstep(0, 1, U.aim), L = (x, y) => x + (y - x) * am;
+    const hold = drawing ? clamp((P.bowT - 0.8) / (BOW_MAX - 0.8), 0, 1) : 0, tr = hold * hold * 0.8 + (P.bowFull ? 0.2 : 0);
+    const tx = (Math.sin(t * 27) * 0.5 + Math.sin(t * 15.3) * 0.5) * tr + Math.sin(t * 1.3) * am * 0.4, ty_ = (Math.cos(t * 21) * 0.5 + Math.sin(t * 11.7) * 0.5) * tr + Math.sin(t * 1.9) * am * 0.3;
+    // pose no espaço da câmera, descontando o deslocamento do vmRoot (assim mirar com o botão direito não empurra o arco)
+    // mirando: o arco fica à esquerda, girado de leve, e a linha da flecha cruza o centro da tela (aponta pra mira)
+    const ax = L(-0.13, -0.15) + tx * 0.004, ay = L(-0.21, -0.105) + ty_ * 0.004, az = L(-0.72, -0.7) + rel * 0.03;
+    const dX = -ax, dY = -(ay + 0.04), dZ = -4 - az;
+    U.bw.position.set(ax - bx, ay - by, az - bz);
+    U.bw.rotation.set(L(0.14, Math.asin(dY / Math.hypot(dX, dY, dZ))) - rel * 0.1, L(-0.55, Math.atan2(-dX, -dZ)), L(0.5, 0.36) - d * 0.03, 'YXZ');
+    U.bw.updateMatrix();
+    const a = d * 0.17 + Math.sin(rel * 40) * rel * 0.035;
+    U.limbs[0].rotation.x = a; U.limbs[1].rotation.x = -a;
+    const tY = U.L0 + U.TIP[0] * Math.cos(a) - U.TIP[1] * Math.sin(a), tZ = 0.008 + U.TIP[0] * Math.sin(a) + U.TIP[1] * Math.cos(a);
+    const nx = 0.012, ny = 0.04, nz = 0.135 + d * 0.46 + Math.sin(rel * 55) * rel * 0.014;
+    vmSpan(U.sU, 0, tY, tZ, nx, ny, nz); vmSpan(U.sL, 0, -tY, tZ, nx, ny, nz);
+    U.pufs[0].position.set(nx * 0.2, tY + (ny - tY) * 0.2, tZ + (nz - tZ) * 0.2); U.pufs[1].position.set(nx * 0.2, -tY + (ny + tY) * 0.2, tZ + (nz - tZ) * 0.2);
+    U.serv.position.set(nx, ny - 0.004, nz);
+    const ready = drawing || (!(P.bowRel > 0) && !(P.cool > 0.08) && (P.ammo.arco > 0 || G.mode === 'treino'));
+    U.ars.forEach((ar, i) => {
+      const side = i === 0 ? 0 : i === 1 ? -1 : 1;
+      ar.visible = ready && (i === 0 || P.tripla);
+      ar.position.set(nx + side * 0.005, ny + side * 0.016, nz); ar.rotation.set(-side * 0.01, side * 0.03, 0);
+    });
+    // mão que puxa: sobe de baixo, pega a corda e acompanha até o rosto; depois do disparo abre pra trás
+    const grab = drawing ? sstep(0, 0.2, P.bowT) : rel > 0 ? sstep(0.25, 1, rel) : 0;
+    const hx = nx + 0.01 + (1 - grab) * 0.12 + (!drawing && rel > 0 ? (1 - rel) * 0.05 : 0), hy = ny - 0.012 - (1 - grab) * 0.3, hz = nz + 0.035 + (1 - grab) * 0.15;
+    U.rf.position.set(hx, hy, hz); U.rf.rotation.set(Math.PI / 2, 0, 0.35);
+    U.rf.visible = grab > 0.01; U.rArm.visible = grab > 0.01 && grab < 0.6; // puxado, o antebraço fica fora da vista (atrás do rosto)
+    const v = _vmV.set(hx + 0.004, hy - 0.01, hz + 0.045).applyMatrix4(U.bw.matrix);
+    { // antebraço curto na direção do cotovelo (que fica pra direita e pra trás, fora da tela)
+      const ex = 0.12 - bx - v.x, ey = -0.06 - by - (1 - grab) * 0.2 - v.y, ez = 0.3 - bz - v.z, el = 0.2 / Math.hypot(ex, ey, ez);
+      vmSpan(U.rArm, v.x, v.y, v.z, v.x + ex * el, v.y + ey * el, v.z + ez * el); }
+    _vmV.set(-0.002, -0.034, 0.07).applyMatrix4(U.bw.matrix);
+    vmSpan(U.lArm, _vmV.x, _vmV.y, _vmV.z, L(-0.26, -0.4) - bx, -0.46 - by, 0.12 - bz);
+    vmRoot.rotation.x -= rel * 0.04;
+  }
+  { const gU = VM.granada.userData, pin = gU.pin, hand = gU.hand;
+    if (P.grenT > 0) {
+      const m = 1 - P.grenT / GREN_PREP, reach = sstep(0, 0.32, m), pull = sstep(0.38, 0.62, m), drop = sstep(0.7, 1, m);
+      hand.visible = true;
+      hand.position.set(-0.26 + 0.2 * reach - 0.2 * pull - 0.1 * drop, -0.16 + 0.19 * reach + 0.07 * pull - 0.3 * drop, 0.08 - 0.1 * reach + 0.12 * pull);
+      hand.rotation.set(0.3 * pull, 0.4 - 0.3 * reach, -0.3 * pull);
+      pin.position.set(-0.035 - 0.2 * pull - 0.1 * drop, 0.035 + 0.07 * pull - 0.3 * drop, -0.03 + 0.12 * pull);
+      pin.rotation.set(pull * 2.5, pull * 1.2, 0); pin.visible = drop < 0.95;
+      // levanta a granada, olha a argola e arma o braço pra trás
+      vmRoot.position.y += 0.03 * reach - 0.02 * drop; vmRoot.position.x -= 0.03 * reach * (1 - drop);
+      vmRoot.rotation.z += 0.25 * reach * (1 - drop); vmRoot.position.z += 0.14 * drop; vmRoot.rotation.x += 0.45 * drop;
+    } else if (P.throwT > 0) { hand.visible = false; pin.visible = false; }
+    else { hand.visible = false; pin.visible = true; pin.position.set(-0.035, 0.035, -0.03); pin.rotation.set(0, 0, 0); }
+  }
   if (P.throwT > 0) { const m = 1 - P.throwT / 0.35; vmRoot.position.z += m < 0.4 ? m * 0.3 : 0.12 - (m - 0.4) * 0.6; vmRoot.position.y += Math.sin(Math.PI * m) * 0.06; vmRoot.rotation.x += m < 0.4 ? m * 1.2 : 0.48 - (m - 0.4) * 1.6; }
   VM.granada.visible = P.cur === 'granada' && (P.gren > 0 || P.throwT > 0.18);
   if (P.cur === 'kit' && P.healT > 0) { vmRoot.position.y += Math.sin(G.now * 9) * 0.01 - 0.03; vmRoot.rotation.z += 0.3; }
@@ -4033,7 +4674,7 @@ function tick(dt) {
     for (const b of bots) updateBot(b, h);
   }
   if (G.online) { updateRemotes(dt); netTick(dt); }
-  updateWalls(dt); updateGrenades(dt);
+  updateWalls(dt); updateGrenades(dt); updateKnives(dt); updateArrows(dt); updateBleed(dt);
   if (G.mode === 'br') updateBR(dt); else if (isCombat()) updateRound(dt); else updateTraining(dt);
   // jogador avista inimigos
   if (isCombat() && P.alive && (G.now * 5 | 0) !== (((G.now - dt) * 5) | 0)) {
@@ -4079,7 +4720,7 @@ function render() {
 /* ---------- Online: navegador com navegador (PeerJS). O anfitrião cuida das rodadas e repassa as mensagens ---------- */
 const NET = { peer: null, host: false, conns: new Map(), hostConn: null, myId: '', code: '', roster: [], started: false, sendT: 0, timeT: 0 };
 const ROOM_PREFIX = 'karmacs-v1-', MAX_PLAYERS = 8;
-const RELAY = ['st', 'shot', 'hit', 'kill', 'wall', 'wd', 'gren']; // o que um convidado pode mandar (o resto só o anfitrião manda)
+const RELAY = ['st', 'shot', 'arrow', 'hit', 'kill', 'wall', 'wd', 'gren', 'exec']; // o que um convidado pode mandar (o resto só o anfitrião manda)
 let peerLib = null;
 function loadPeer() {
   if (window.Peer) return Promise.resolve(window.Peer);
@@ -4228,7 +4869,19 @@ function handleNet(m) {
       }
       break;
     }
+    case 'arrow': { // flecha de outro jogador: só a aparência (o dano vem pelo 'hit' de quem atirou)
+      const e = entById(m.from); if (!e || e === P || !G.online || !Array.isArray(m.p) || !Array.isArray(m.v)) break;
+      spawnArrow(e, +m.p[0] || 0, +m.p[1] || 0, +m.p[2] || 0, +m.v[0] || 0, +m.v[1] || 0, +m.v[2] || 0, 0, null, true);
+      const c = camPan(e.pos.x, e.pos.z); if (c.d < 40) tone(240, 0.2, 0.2 / (1 + c.d / 9), 'triangle', 90, 0, c.pan);
+      break;
+    }
+    case 'exec': { // alguém te pegou na faca: você vê a execução do outro lado
+      const a = entById(m.from);
+      if (m.to === NET.myId && G.online && P.alive && G.phase === 'live' && !G.cut && a && a !== P && a.alive && a.team !== P.team) startKnifeCut(P, a);
+      break;
+    }
     case 'hit':
+      if (G.cut && G.cut.v === P) break; // no meio da própria execução: quem decide a morte é o fim da cena
       if (m.to === NET.myId && G.online && P.alive && G.phase === 'live') { const a = entById(m.from); if (a && a !== P && a.team !== P.team && WEAPONS[m.w]) damage(P, clamp(+m.d || 0, 0, 500), a, m.w, !!m.head); }
       break;
     case 'gren': {
@@ -4239,7 +4892,7 @@ function handleNet(m) {
     }
     case 'wall': { const e = entById(m.from); if (G.online && e && e !== P && !WALLS.some(W => W.id === m.id)) placeWall(+m.x || 0, +m.y || 0, +m.z || 0, +m.yaw || 0, String(m.id), e); break; }
     case 'wd': { const W = WALLS.find(W => W.id === m.id); if (W) { W.hp -= clamp(+m.d || 0, 0, 300); if (W.hp <= 0) breakWall(W); } break; }
-    case 'kill': { const k = entById(m.killer), v = entById(m.victim); if (G.online && k && v && v !== P && v.alive && WEAPONS[m.w]) kill(v, k, m.w, !!m.head); break; }
+    case 'kill': { const k = entById(m.killer), v = entById(m.victim); if (G.online && k && v && v !== P && v.alive && WEAPONS[m.w]) kill(v, k, m.w, !!m.head, !!m.fin); break; }
   }
 }
 function makeRemote(p, idx) {

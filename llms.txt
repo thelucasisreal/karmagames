@@ -1,0 +1,61 @@
+# Karma Games
+
+> Site brasileiro de jogos grátis para jogar direto no navegador, em português, sem download e sem cadastro. 28 jogos feitos pela própria Karma Games, que funcionam no computador e no celular.
+
+Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma página com regras, controles, dicas e perguntas frequentes. Os recordes ficam salvos no aparelho de quem joga.
+
+## Jogos de Ação
+
+- [Não Confia](https://karmagames.com.br/jogar/nao-confia/): Jogue Não Confia grátis no navegador: plataforma troll com 100 fases em 10 mundos, sem download. Funciona no PC e no celular.
+- [CrossStrike 3D](https://karmagames.com.br/jogar/crossstrike/): Jogue CrossStrike 3D grátis no navegador: tiro em equipe 5x5, 1x1, Battle Royale e online com amigos. Sem download, no PC e no celular.
+- [Desvia dos Meteoros](https://karmagames.com.br/jogar/meteoros/): Jogue Desvia dos Meteoros grátis no navegador, sem download. Pilote a nave, fuja das pedras, pegue estrelas e aguente o máximo que conseguir.
+
+## Jogos de Simulação
+
+- [Behind The Grid](https://karmagames.com.br/jogar/behind-the-grid/): Jogue Behind The Grid grátis no navegador: simulador de influencer em que você posta, fecha publis e lida com o hate. Sem download.
+
+## Jogos Clássicos
+
+- [Paciência](https://karmagames.com.br/jogar/paciencia/): Jogue Paciência grátis no navegador: o clássico Klondike de cartas, virando 1 ou 3 cartas, com dica e desfazer. Sem download.
+- [Forca](https://karmagames.com.br/jogar/forca/): Jogue Forca grátis no navegador: adivinhe a palavra, 1 ou 2 jogadores, 3 níveis e várias categorias em português. Sem download.
+- [Pedra, Papel e Tesoura](https://karmagames.com.br/jogar/pedra-papel-tesoura/): Jogue Pedra, Papel e Tesoura grátis no navegador, sem download. Melhor de 5 contra o computador, com teclado, mouse ou toque no celular.
+- [Genius](https://karmagames.com.br/jogar/genius/): Jogue Genius grátis no navegador, sem download. Repita a sequência de cores e sons que só cresce, com teclado, mouse ou toque no celular.
+- [Cobrinha](https://karmagames.com.br/jogar/cobrinha/): Jogue Cobrinha online grátis, sem download: coma, cresça e não bata nas paredes nem no próprio rabo. Use setas, WASD ou deslize no celular.
+- [Pong](https://karmagames.com.br/jogar/pong/): Jogue Pong online grátis contra o computador, sem download. Quem fizer 7 pontos primeiro vence. Controle com mouse, setas ou o dedo no celular.
+- [Jogo da Velha](https://karmagames.com.br/jogar/jogo-da-velha/): Jogue Jogo da Velha grátis no navegador: contra o computador (fácil ou difícil) ou com um amigo no mesmo aparelho. Sem download, com placar.
+
+## Jogos Arcade
+
+- [Blocos Caindo](https://karmagames.com.br/jogar/blocos/): Jogue Blocos Caindo grátis no navegador: encaixe as peças, limpe linhas e bata seu recorde. Funciona no PC e no celular, sem download.
+- [Torre de Blocos](https://karmagames.com.br/jogar/torre/): Jogue Torre de Blocos grátis no navegador, sem download. Solte os blocos na hora certa, empilhe o mais alto que puder e busque o acerto perfeito.
+- [Acerta a Toupeira](https://karmagames.com.br/jogar/toupeira/): Jogue Acerta a Toupeira grátis no navegador, sem download. Você tem 30 segundos para martelar as toupeiras e fugir das bombas.
+- [Corre Galinha](https://karmagames.com.br/jogar/galinha/): Jogue Corre Galinha grátis no navegador, sem download: pule cercas e baldes na fazenda e bata seu recorde de distância no PC ou no celular.
+- [Voo Livre](https://karmagames.com.br/jogar/voo-livre/): Jogue Voo Livre grátis no navegador: bata as asas, passe entre as colunas sem encostar e tente bater seu recorde. Sem download, no PC e no celular.
+- [Quebra-Blocos](https://karmagames.com.br/jogar/quebra-blocos/): Jogue Quebra-Blocos grátis no navegador: rebata a bola, derrube todos os blocos e avance de fase. Sem download, com mouse, teclado ou toque.
+
+## Jogos de Quebra-cabeça
+
+- [Sudoku](https://karmagames.com.br/jogar/sudoku/): Jogue Sudoku grátis no navegador: puzzles novos com 3 níveis, anotações, dicas e recorde de tempo. Sem download, no PC e no celular.
+- [2048](https://karmagames.com.br/jogar/2048/): Jogue 2048 grátis no navegador, sem download: junte números iguais até chegar ao 2048. Use setas, WASD ou deslize no celular. Tem botão de desfazer.
+- [Campo Minado](https://karmagames.com.br/jogar/campo-minado/): Jogue Campo Minado online grátis, sem download: três níveis, bandeiras, cronômetro e recorde de tempo. Funciona com mouse e no celular.
+- [Jogo da Memória](https://karmagames.com.br/jogar/memoria/): Jogue Jogo da Memória grátis no navegador: vire as cartas, ache os pares e bata seu recorde de tempo e jogadas. Três níveis, sem download.
+
+## Jogos de Tabuleiro
+
+- [Xadrez](https://karmagames.com.br/jogar/xadrez/): Jogue Xadrez grátis no navegador contra o computador ou com um amigo, em 4 níveis de dificuldade. Sem download, no PC e no celular.
+- [Dama](https://karmagames.com.br/jogar/dama/): Jogue Dama grátis no navegador, na regra brasileira: contra o computador em 4 níveis ou com um amigo. Sem download, no PC e no celular.
+- [Ligue 4](https://karmagames.com.br/jogar/ligue-4/): Jogue Ligue 4 grátis no navegador: alinhe quatro fichas contra o computador ou com um amigo. Sem download, no PC e no celular.
+- [Reversi](https://karmagames.com.br/jogar/reversi/): Jogue Reversi grátis no navegador, sem download. Enfrente o computador (fácil ou difícil) ou chame um amigo para o modo 2 jogadores.
+
+## Jogos Casuais
+
+- [Biscoito Gigante](https://karmagames.com.br/jogar/biscoito/): Jogue Biscoito Gigante grátis no navegador, sem download. Clique no biscoito, contrate vovós, compre fornos e fábricas e veja a produção explodir.
+- [Pescaria](https://karmagames.com.br/jogar/pescaria/): Jogue Pescaria grátis no navegador, sem download. Ajude o gatinho a pescar o máximo em 60 segundos e fuja de botas velhas e águas-vivas.
+- [Estoura Balão](https://karmagames.com.br/jogar/balao/): Jogue Estoura Balão grátis no navegador, sem download. Estoure os balões antes que fujam, pegue os dourados que valem 5 e cuide das suas 5 vidas.
+
+## Sobre o site
+
+- [Sobre a Karma Games](https://karmagames.com.br/sobre/): Quem faz a Karma Games, como os jogos são feitos e por que todos são grátis, sem download e sem cadastro.
+- [Contato](https://karmagames.com.br/contato/): Fale com a Karma Games: sugestões de jogos, erros encontrados, privacidade e parcerias.
+- [Política de Privacidade](https://karmagames.com.br/privacidade/): Como a Karma Games trata dados, cookies e anúncios, de acordo com a LGPD.
+- [Termos de Uso](https://karmagames.com.br/termos/): Regras de uso da Karma Games: jogos grátis, conteúdo, anúncios e responsabilidades.

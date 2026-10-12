@@ -18,7 +18,7 @@ body{background:var(--bg);color:var(--text);font:400 15px/1.4 "Geist",system-ui,
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;touch-action:manipulation}
 button:disabled{cursor:default;opacity:.45}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--raised);border:1px solid var(--line);font-weight:600;font-size:14px;transition:background-color .2s var(--ease),transform .2s var(--ease),color .2s}
 .btn:not(:disabled):hover{background:#292d38}
 .btn:not(:disabled):active{transform:translateY(1px)}
 .btn.primary,.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
@@ -82,6 +82,21 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
 @keyframes rise{from{opacity:0;transform:translateY(12px) scale(.97)}}
 @media (max-width:420px){.btn{padding:0 12px;font-size:13px}.stat .val{font-size:18px}}
 @media (max-height:720px){.stat{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:4px 10px}.stat .val{font-size:16px}.app{gap:8px}}
+/*deitado no celular: controles numa coluna à esquerda, mesa à direita*/
+@media (max-height:500px) and (orientation:landscape){
+  body{padding-top:max(8px,env(safe-area-inset-top));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  .app{width:100%;max-width:980px;display:grid;grid-template-columns:clamp(170px,26vw,230px) 1fr;grid-template-rows:auto auto auto 1fr;gap:6px 14px}
+  .top,.bar,.score,.status{grid-column:1}
+  .wrap{grid-column:2;grid-row:1/5}
+  h1{font-size:18px}
+  .top .btn{padding:0 6px;white-space:nowrap}
+  .bar{flex-direction:column;gap:6px}
+  .seg{flex-wrap:nowrap}.seg .btn{flex:1;padding:0 6px}
+  .score{grid-template-columns:1fr;gap:4px}
+  .stat{padding:2px 10px;justify-content:space-between}
+  .stat .val{font-size:15px}
+  .status{font-size:12px;text-align:left}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important;transition-delay:0s!important}}
 </style>
 </head>
@@ -202,6 +217,7 @@ function validState(s){
 
 var $=function(id){return document.getElementById(id)};
 var board=$("board"),wrap=$("wrap"),statusEl=$("status"),ov=$("ov");
+var TOQUE=!!(window.matchMedia&&matchMedia("(pointer: coarse)").matches);
 var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var PATHS=[document.querySelector("#n0 path"),document.querySelector("#n1 path"),document.querySelector("#n2 path"),document.querySelector("#n3 path")].map(function(p){return p.getAttribute("d")});
 var KEYS=["s","w","f0","f1","f2","f3","t0","t1","t2","t3","t4","t5","t6"];
@@ -302,7 +318,7 @@ function paint(){
   $("undo").disabled=!hist.length||busy||won;$("dica").disabled=busy||won;
   document.querySelectorAll("[data-draw]").forEach(function(b){b.setAttribute("aria-pressed",+b.dataset.draw===S.draw)});
 }
-function idleText(){return stats.jogos?"Vitórias: "+stats.vitorias+" de "+stats.jogos+" jogo"+(stats.jogos>1?"s":"")+(stats.melhor?" · melhor tempo "+fmtT(stats.melhor):""):"Monte sequências alternando cores e leve tudo para as fundações."}
+function idleText(){return stats.jogos?"Vitórias: "+stats.vitorias+" de "+stats.jogos+" jogo"+(stats.jogos>1?"s":"")+(stats.melhor?" · melhor tempo "+fmtT(stats.melhor):""):TOQUE?"Toque numa carta para mandá-la a um lugar válido, ou arraste.":"Monte sequências alternando cores e leve tudo para as fundações."}
 function flash(t){clearTimeout(msgTimer);statusEl.textContent=t;statusEl.classList.add("msg");msgTimer=setTimeout(idle,2800)}
 function idle(){statusEl.classList.remove("msg");statusEl.textContent=idleText()}
 
@@ -335,13 +351,14 @@ function undo(){
   var o=JSON.parse(hist.pop());for(var k in o)S[k]=o[k];
   render(true);save();flash("Jogada desfeita.");
 }
-function autoSend(k,i){
+function autoSend(k,i,quieto){
   if(!movable(k,i))return false;
   var p=pile(S,k),j;
   if(i===p.length-1)for(j=0;j<4;j++)if(canMove(S,k,i,"f"+j)){doMove(k,i,"f"+j);return true}
   var empty=null;
   for(j=0;j<7;j++){var d="t"+j;if(!canMove(S,k,i,d))continue;if(S.t[j].length){doMove(k,i,d);return true}if(empty==null&&!(k.charAt(0)==="t"&&i===0))empty=d}
   if(empty){doMove(k,i,empty);return true}
+  if(quieto)return false;
   var el=cardsEl[p[i]];el.classList.remove("nope");el.offsetWidth;el.classList.add("nope");
   return false;
 }
@@ -353,6 +370,7 @@ function tap(info){
     lastTap={id:info.id,t:now};
   }
   if(sel&&info.k!==sel.k&&canMove(S,sel.k,sel.i,info.k)){var v=sel;doMove(v.k,v.i,info.k);return}
+  if(TOQUE&&info.id!=null&&autoSend(info.k,info.i,true)){lastTap={id:-1,t:0};return}
   if(info.id!=null&&movable(info.k,info.i)){if(sel&&sel.k===info.k&&sel.i===info.i)clearSel();else setSel(info.k,info.i);return}
   clearSel();
 }

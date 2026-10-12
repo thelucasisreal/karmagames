@@ -543,6 +543,49 @@ body.has-dock .app{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
 @media (min-width:700px){.flip{width:min(100%,290px)}}
 @media (max-height:620px){.hud-in{padding:8px 10px;gap:6px}.hud .av{width:32px;height:32px;font-size:18px}.hn b{font-size:16px}.flip{width:min(100%,250px)}.view{gap:12px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+/* ---------- toque e celular deitado ---------- */
+html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+.so-tq{display:none}
+@media (hover:none){.so-pc{display:none}.so-tq{display:inline}}
+.nbar{position:sticky;bottom:0;z-index:4;margin:0 -14px -20px;padding:10px 14px max(14px,env(safe-area-inset-bottom));background:linear-gradient(rgba(13,14,18,0),var(--bg) 35%)}
+.ndet{min-height:0}
+@media (pointer:coarse){.btn.sm{min-height:44px;min-width:44px}.menu-b{width:44px;height:44px}.sug button{min-height:38px}.cols button{width:38px;height:38px}.lv-mic button{min-height:38px}.link{display:inline-block;min-height:32px}}
+@media (orientation:landscape) and (max-height:520px){
+  .app{width:min(100%,660px)}
+  /* dock vira trilho na esquerda pra sobrar altura */
+  body.has-dock .scroll{padding-left:calc(66px + env(safe-area-inset-left))}
+  body.has-dock .app{padding-bottom:max(20px,env(safe-area-inset-bottom))}
+  .dock{left:0;right:auto;top:0;bottom:0;transform:none;width:calc(66px + env(safe-area-inset-left));grid-template-columns:1fr;grid-template-rows:repeat(6,minmax(0,1fr));gap:2px;padding:max(6px,env(safe-area-inset-top)) 5px max(6px,env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left));border:0;border-right:1px solid var(--line);border-radius:0;box-shadow:8px 0 24px rgba(0,0,0,.35)}
+  .dk{min-height:0;justify-content:center;gap:2px;padding:2px 0;font-size:10px}
+  .dk i{font-size:19px}
+  .dk .badge{top:2px;right:4px}
+  /* HUD em duas linhas */
+  .hud{padding:6px 14px 8px}
+  .hud-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:6px 14px;padding:7px 10px}
+  .hud .av{width:32px;height:32px;font-size:18px}
+  .hnums{gap:6px}.hn b{font-size:16px}.en{font-size:16px}
+  .bars{grid-column:1/-1;grid-template-columns:repeat(6,minmax(0,1fr))}
+  .flip{width:min(100%,220px)}
+  .ngrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+  .ngrid .nc:last-child{grid-column:auto;width:100%}
+  .nc .nlab{font-size:12px;padding:16px 7px 7px}
+  .nc .nlab small{font-size:10.5px}
+  /* título: card de um lado, botões do outro */
+  .title{display:grid;grid-template-columns:auto minmax(0,340px);grid-template-rows:auto auto auto auto;column-gap:30px;row-gap:10px;align-content:center;justify-content:center;padding:12px 0}
+  .title>.flip{grid-column:1;grid-row:1/4;align-self:center;justify-self:center;width:min(190px,calc((100dvh - 70px)*.7))}
+  .title>.fhint{grid-column:1;grid-row:4}
+  .title>.logo,.title>.tag,.title>.tbtns{grid-column:2;justify-self:center}
+  .title>.logo{grid-row:1;font-size:clamp(26px,9dvh,40px)}
+  .title>.tag{grid-row:2;font-size:14px;max-width:34ch}
+  .title>.tbtns{grid-row:3/5;display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;align-self:start}
+  .tbtns>.btn{padding:0 10px}
+  .tbtns>.btn:nth-last-child(n+3){grid-column:1/-1}
+  /* live: palco e chat lado a lado */
+  .lv-main{flex-direction:row}.lv-stage{flex:1 1 auto;min-height:0}.lv-chat{flex:0 0 40%;min-height:0}.lvw.playing .lv-chat{flex:0 0 30%;min-height:0}
+  .lb{min-height:44px}
+}
+@media (orientation:landscape) and (max-height:360px){.ed canvas{height:140px}.ed{gap:7px}}
 </style>
 </head>
 <body>
@@ -2825,9 +2868,12 @@ VIEWS.niche=function(){
   return '<div><h2>Escolha seu foco</h2><p class="muted small" style="margin-top:4px">Toque num card pra virar e ver o quarto de verdade.</p></div><div class="ngrid">'+NICHO_IDS.map(function(id){var n=NICHOS[id];
     return '<div class="flip nc'+(sel===id?" sel on":"")+'" data-niche="'+id+'" id="nc-'+id+'" tabindex="0" role="button" aria-pressed="'+(sel===id)+'" aria-label="'+esc(n.nome)+'"><div class="flip-in"><div class="face front">'+scene(n.front.bg,n.front.sc,"feed")+'<div class="nlab">'+n.e+' '+esc(n.nome)+'<small>o que vai pro feed</small></div></div>'+
       '<div class="face back">'+scene(n.room.bg,n.room.sc,"")+'<div class="nlab">📸 o quarto real<small>'+esc(n.nome)+'</small></div></div></div></div>'}).join("")+'</div>'+
-    '<div class="panel ndet" id="ndet">'+(sel?nicheDet(sel):'<p class="muted">Cada foco muda seus posts, trends, eventos e bônus. Toque num card.</p>')+'</div>';
+    '<div class="panel ndet" id="ndet">'+(sel?nicheDet(sel):'<p class="muted">Cada foco muda seus posts, trends, eventos e bônus. Toque num card.</p>')+'</div>'+
+    '<div class="nbar" id="nbar"'+(sel?"":" hidden")+'>'+(sel?nicheGo(sel):"")+'</div>';
 };
-function nicheDet(id){var n=NICHOS[id];return '<h3>'+n.e+' '+esc(n.nome)+'</h3><p class="small" style="margin:6px 0">'+esc(n.real)+'</p><div class="chips" style="margin-bottom:12px"><span class="chip" style="white-space:normal">'+esc(n.bonus)+'</span></div><button class="btn primary wide" type="button" data-act="startNiche" data-id="'+id+'">Começar com '+esc(n.nome)+' →</button>'}
+function nicheDet(id){var n=NICHOS[id];return '<h3>'+n.e+' '+esc(n.nome)+'</h3><p class="small" style="margin:6px 0">'+esc(n.real)+'</p><div class="chips"><span class="chip" style="white-space:normal">'+esc(n.bonus)+'</span></div>'}
+// botão de começar fica num rodapé grudado: no celular o painel de detalhes fica fora da tela
+function nicheGo(id){return '<button class="btn primary wide" type="button" data-act="startNiche" data-id="'+id+'">Começar com '+esc(NICHOS[id].nome)+' →</button>'}
 
 VIEWS.mes=function(){
   var tg=trendById(S.trends.g.id),tn=trendById(S.trends.n.id);
@@ -3084,7 +3130,7 @@ VIEWS.zap=function(){
    '<div class="zl">'+list.map(function(c){var C=S.zap.c[c.id],last=C.th[C.th.length-1];
      return '<button class="zi" type="button" data-act="zc" data-id="'+c.id+'" data-cid="'+c.id+'">'+avHTML({e:c.e,c:c.c})+'<div class="grow" style="min-width:0"><b>'+esc(zapName(c.id))+(c.id==="mae"?" 💗":"")+(c.id===S.crushFav?" ⭐":"")+'</b><small>'+(last?(last.me?"Você: ":"")+esc(last.t):"sem mensagens")+'</small></div>'+
        '<div class="zr">'+(C.un?'<span class="ur" aria-label="'+C.un+' não lidas">'+C.un+'</span>':(C.pend?'<span>responder</span>':'<span>'+esc(relLabel(c.id))+'</span>'))+'<span class="afe" title="Afeto '+relOf(c.id)+'"><i style="width:'+relOf(c.id)+'%"></i></span></div></button>'}).join("")+'</div>'+
-   '<p class="rm-note">⭐ Clique com o <b>botão direito</b> (ou segure o dedo) em qualquer pessoa para marcar como seu crush. 💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
+   '<p class="rm-note">⭐ <span class="so-pc">Clique com o <b>botão direito</b> (ou segure o dedo)</span><span class="so-tq"><b>Segure o dedo</b></span> em qualquer pessoa para marcar como seu crush. 💗 afetuoso · 💼 profissional · 😏 debochado, ou escreva o que quiser: mensagem boa dá bom, mensagem pesada dá ruim. Visualizar e não responder no mês: Afeto −10. A cada 5 não lidas: 🧠 −1.</p>';
 };
 function zapConv(id){
   var d=zcDef(id),C=S.zap.c[id];
@@ -3132,7 +3178,7 @@ VIEWS.live=function(){
    (billLate("net")>=1&&!cut("net")?'<p class="small" style="color:var(--coral);margin-top:8px">🐢 Internet atrasada: a live vai travar (−30% de viewers).</p>':"")+
    (fband()>=2?'<p class="small" style="color:var(--coral);margin-top:8px">😵 Você está fraco(a): a mira vai tremer. Come alguma coisa antes!</p>':nutr()<30?'<p class="small" style="color:#ffd27a;margin-top:8px">🍔 Fome e sede baixas: live gasta o dobro. Risco de desmaio ao vivo.</p>':"")+'</div>'+
    '<h3>Microfone</h3><div class="micbox"><button class="sw" type="button" role="switch" aria-checked="'+MIC.on+'" data-act="micSw"'+(MIC.busy?' disabled aria-busy="true"':"")+'><span>🎙️ Usar meu microfone<small>'+(MIC.busy?"Ligando… aceite o pedido do navegador.":"Falar com o chat segura o público e rende bônus. A live é gravada só neste aparelho, nada é enviado.")+'</small></span><i></i></button>'+
-   (MIC.on?'<div class="microw"><span>Nível</span><div class="micm"><i data-micm></i></div><b id="micSt">silêncio</b></div><p class="small muted">Fala alguma coisa pra testar 👂 · durante a live, a tecla M liga e desliga.</p>':"")+
+   (MIC.on?'<div class="microw"><span>Nível</span><div class="micm"><i data-micm></i></div><b id="micSt">silêncio</b></div><p class="small muted">Fala alguma coisa pra testar 👂 <span class="so-pc">· durante a live, a tecla M liga e desliga.</span></p>':"")+
    (!MIC.on&&UI.d.micTried&&MIC.err?'<p class="micerr" role="alert">'+esc(MIC.err)+'</p>':"")+'</div>'+
    (why?'<p class="err" style="color:var(--coral)">'+esc(why)+'</p>':S.en<h?'<p class="err" style="color:var(--coral)">Energia insuficiente.</p>':"")+
    '<button class="btn primary wide adv" type="button" data-act="goLive"'+(why||S.en<h?" disabled":"")+'>🔴 Entrar ao vivo · '+h+' h</button>';
@@ -3691,8 +3737,8 @@ function openEdit(name,cb){
     '<p class="small muted">'+esc(name)+'</p>'+
     '<div class="chips">'+(tools.pro?'<span class="chip up">🧲 Ímã do Editor Pro</span>':'<span class="chip warn">Sem Editor Pro: sem ímã e com marca d’água</span>')+(tools.musica?'<span class="chip up">🎵 Batida marcada</span>':"")+(tools.filtros?'<span class="chip up">✨ Filtros Pro +5%</span>':"")+(weak?'<span class="chip down">😵 Com fome: ritmo acelerado</span>':"")+'</div>'+
     '<div class="ed-cv"><canvas id="edC" role="img" tabindex="0" aria-label="Linha do tempo do vídeo. A agulha fica no centro. Corte nos pontos brilhantes, deslize os blocos vermelhos para cima e não corte os dourados."></canvas></div>'+
-    '<div id="edBody"><div class="legend"><div><i style="background:#fff;border-radius:50%"></i><span>Ponto brilhando chegando na agulha: <b>corte</b> (Espaço, toque ou botão)</span></div>'+
-    '<div><i style="background:#ff4d3d"></i><span>Bloco vermelho (tosse, “ééé”, vizinho): <b>deslize pra cima</b> ou ↑</span></div>'+
+    '<div id="edBody"><div class="legend"><div><i style="background:#fff;border-radius:50%"></i><span>Ponto brilhando chegando na agulha: <b>corte</b> <span class="so-pc">(Espaço, toque ou botão)</span><span class="so-tq">(toque na linha ou no botão)</span></span></div>'+
+    '<div><i style="background:#ff4d3d"></i><span>Bloco vermelho (tosse, “ééé”, vizinho): <b>deslize pra cima</b><span class="so-pc"> ou ↑</span></span></div>'+
     '<div><i style="background:#ffc23a"></i><span>Bloco dourado (piada boa, momento fofo): <b>não corte</b></span></div></div>'+
     '<div class="row wrap" style="margin-top:10px"><button class="btn primary grow" type="button" data-ed="start">▶️ Começar a editar</button>'+(hire?'<button class="btn grow" type="button" data-ed="hire">🧑‍💻 Deixar com o editor (nota B)</button>':"")+'</div></div>'+
     '</div></div>';
@@ -3708,6 +3754,8 @@ function edSetup(st){
   var cv=document.getElementById("edC");st.cv=cv;st.ctx=cv.getContext("2d");
   function size(){var r=cv.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);st.W=r.width;st.H=r.height;cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);st.ctx.setTransform(d,0,0,d,0,0)}
   size();st.size=size;
+  var onR=function(){if(!document.body.contains(cv)){removeEventListener("resize",onR);return}size();if(!st.run){var n=st.now;if(!st.ended)st.now=2.2;edDraw(st,0);st.now=n}};
+  addEventListener("resize",onR);
   st.DUR=30;st.speed=(Math.max(140,st.W*.32))*(st.weak?1.25:1);
   var beatGap=st.tools.musica?1.2:1.15,blocks=[],t=3;
   var RED=["tosse","ééé","silêncio","vizinho","espirro","celular tocou"],GOLD=["piada boa","momento fofo","risada","plot twist"];
@@ -3808,7 +3856,7 @@ function bindView(v){
   if(v==="photogram")bindPg();
   if(v==="niche")app.querySelectorAll(".nc").forEach(function(el){el.addEventListener("click",function(){var id=el.dataset.niche;UI.d.sel=id;
     app.querySelectorAll(".nc").forEach(function(o){var s=o===el;o.classList.toggle("sel",s);if(!s){o.classList.remove("on");o.setAttribute("aria-pressed","false")}});
-    $("ndet").innerHTML=nicheDet(id)},true)});
+    $("ndet").innerHTML=nicheDet(id);var nb=$("nbar");nb.innerHTML=nicheGo(id);nb.hidden=false},true)});
 }
 function bindSignup(){
   var F=FORM;

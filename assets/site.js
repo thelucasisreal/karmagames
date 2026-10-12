@@ -7,7 +7,8 @@
   const ICONES = "assets/icones.svg";
   const CHAVE_RECENTES = "karma:recentes";
   const DIAS_NOVO = 30;
-  const PAGINA_JOGO = document.body.dataset.pagina === "jogar";
+  const PAGINA = document.body.dataset.pagina;
+  const PAGINA_JOGO = PAGINA === "jogar";
 
   // Ícone e cor de cada categoria. Categoria nova sem entrada usa o controle e o verde da marca.
   const CATEGORIA = {
@@ -29,8 +30,13 @@
   const plural = (n) => `${n} ${n === 1 ? "jogo" : "jogos"}`;
 
   const capaDe = (j) => j.capa || `assets/capas/${j.slug}.webp`;
-  const urlDoJogo = (j) => j.url || `jogos/${j.slug}/`;
-  const linkDoJogo = (j) => `jogar.html?j=${encodeURIComponent(j.slug)}`;
+  // A versão (?v=) muda quando qualquer jogo muda: o navegador não fica preso num jogo velho no cache.
+  const VERSAO = (document.currentScript && new URL(document.currentScript.src).searchParams.get("v")) || "";
+  const urlDoJogo = (j) => j.url || `jogos/${j.slug}/${VERSAO ? `?v=${VERSAO}` : ""}`;
+  // Páginas fora da raiz têm <base href="/">, então os caminhos relativos valem para todas.
+  const linkDoJogo = (j) => `jogar/${encodeURIComponent(j.slug)}/`;
+  const slugify = (s) => normalizar(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const linkDaCategoria = (c) => `categoria/${slugify(c)}/`;
   // Selo "Novo" só faz sentido se nem todo mundo for novo.
   const recemChegado = (j) => {
     if (!j.adicionado) return false;
@@ -101,9 +107,8 @@
 
   // ---------- lateral: marca, busca e "Todos os jogos" com filtros ----------
   function lateral(atual) {
-    const base = PAGINA_JOGO ? "./" : "";
     const filtro = (rota, nome, ic, cor, num, ativo) => `
-      <a class="filtro" href="${base}${rota || "./"}" style="--cor:${cor}"${ativo ? ' aria-current="page"' : ""}>
+      <a class="filtro" href="${rota || "./"}" style="--cor:${cor}"${ativo ? ' aria-current="page"' : ""}>
         <span class="filtro-icone">${icone(ic)}</span><span>${esc(nome)}</span><span class="num">${num}</span>
       </a>`;
     $("#lateral").innerHTML = `
@@ -115,21 +120,24 @@
       </button>
       <h2>Todos os jogos</h2>
       <nav class="filtros" aria-label="Categorias">
-        ${filtro("", "Todos", "grid", "#c8f13a", JOGOS.length, !atual && !PAGINA_JOGO)}
+        ${filtro("", "Todos", "grid", "#c8f13a", JOGOS.length, !atual && PAGINA === "inicio")}
         ${categorias.map((c) => {
           const info = CATEGORIA[c] || { icone: "game-controller", cor: "#c8f13a" };
-          return filtro(`#c=${encodeURIComponent(c)}`, c, info.icone, info.cor, JOGOS.filter((j) => j.categoria === c).length, c === atual);
+          return filtro(linkDaCategoria(c), c, info.icone, info.cor, JOGOS.filter((j) => j.categoria === c).length, c === atual);
         }).join("")}
       </nav>
       <button class="lateral-sorte" type="button" id="btn-aleatorio">${icone("dice")} Jogo aleatório</button>
-      <p class="lateral-rodape">Todos grátis, direto no navegador. Sem download, sem cadastro.</p>`;
+      <p class="lateral-rodape">Todos grátis, direto no navegador. Sem download, sem cadastro.</p>
+      <nav class="lateral-links" aria-label="Institucional">
+        <a href="sobre/">Sobre</a><a href="contato/">Contato</a><a href="privacidade/">Privacidade</a><a href="termos/">Termos</a>
+      </nav>`;
     ligarLogo();
   }
 
   // ---------- botões do logo e busca ----------
   function ligarLogo() {
     $("#btn-aleatorio").addEventListener("click", () => {
-      const atual = new URLSearchParams(location.search).get("j");
+      const atual = document.body.dataset.slug;
       const opcoes = JOGOS.filter((j) => j.slug !== atual);
       if (opcoes.length) location.href = linkDoJogo(opcoes[Math.floor(Math.random() * opcoes.length)]);
     });
@@ -170,19 +178,23 @@
   function paginaInicial() {
     const mural = $("#mural");
 
+    // Endereço antigo de categoria (./#c=Ação) vira a página da categoria.
+    const antiga = decodeURIComponent(location.hash);
+    if (antiga.startsWith("#c=") && categorias.includes(antiga.slice(3))) {
+      location.replace(linkDaCategoria(antiga.slice(3)));
+      return;
+    }
+
     function desenhar() {
-      const rota = decodeURIComponent(location.hash);
+      const c = document.body.dataset.categoria;
       let html = "";
 
-      if (rota.startsWith("#c=")) {
-        const c = rota.slice(3);
+      if (c) {
         const daqui = JOGOS.filter((j) => j.categoria === c);
-        document.title = `Jogos de ${c} · Karma Games`;
-        html += tileTitulo(c, plural(daqui.length));
+        html += tileTitulo(document.body.dataset.titulo || c, plural(daqui.length));
         html += ordenados(daqui).map((j) => tile(j, TAM)).join("");
         lateral(c);
       } else {
-        document.title = "Karma Games · Jogos grátis no navegador";
         html += ordenados(JOGOS).map((j, i) => tile(j, TAM)).join("");
         html += EM_BREVE.map(tileEmBreve).join("");
         lateral(null);
@@ -191,7 +203,6 @@
       mural.innerHTML = html;
     }
 
-    window.addEventListener("hashchange", () => { desenhar(); window.scrollTo({ top: 0 }); });
     desenhar();
 
     // Busca vinda de outro lugar (./?q=...)
@@ -201,7 +212,7 @@
 
   // ---------- página do jogo ----------
   function paginaJogo() {
-    const slug = new URLSearchParams(location.search).get("j");
+    const slug = document.body.dataset.slug;
     const jogo = JOGOS.find((j) => j.slug === slug);
     const mural = $("#mural");
 
@@ -217,9 +228,6 @@
       return;
     }
 
-    document.title = `${jogo.titulo} · Karma Games`;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta && jogo.descricao) meta.content = `${jogo.descricao} Jogue grátis na Karma Games.`;
     $("#jogo-nome").textContent = jogo.titulo;
     $("#jogo-categoria").textContent = jogo.categoria || "";
     $("#jogo-acoes").hidden = false;
@@ -307,7 +315,7 @@
       else if (palco.webkitRequestFullscreen) palco.webkitRequestFullscreen();
     });
 
-    $("#jogo-info").innerHTML = `
+    if ($("#jogo-info")) $("#jogo-info").innerHTML = `
       <h2>${esc(jogo.titulo)}</h2>
       <p>${esc(jogo.descricao || "")}</p>
       ${jogo.controles ? `<div class="controles">${icone("game-controller")}<span>${esc(jogo.controles)}</span></div>` : ""}`;
@@ -315,5 +323,6 @@
   }
 
   if (PAGINA_JOGO) paginaJogo();
-  else paginaInicial();
+  else if (PAGINA === "inicio") paginaInicial();
+  else lateral(null);
 })();

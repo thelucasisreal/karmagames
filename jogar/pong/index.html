@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pong: jogue grátis online | Karma Games</title>
+  <meta name="description" content="Jogue Pong online grátis contra o computador, sem download. Quem fizer 7 pontos primeiro vence. Controle com mouse, setas ou o dedo no celular.">
+  <base href="/">
+  <link rel="canonical" href="https://karmagames.com.br/jogar/pong/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#62d9cf">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icone-180.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta property="og:site_name" content="Karma Games">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pong: jogue grátis online | Karma Games">
+  <meta property="og:description" content="Jogue Pong online grátis contra o computador, sem download. Quem fizer 7 pontos primeiro vence. Controle com mouse, setas ou o dedo no celular.">
+  <meta property="og:url" content="https://karmagames.com.br/jogar/pong/">
+  <meta property="og:image" content="https://karmagames.com.br/assets/og/pong.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/fonts/unbounded-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css?v=a8458945">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://karmagames.com.br/#org","name":"Karma Games","url":"https://karmagames.com.br/","logo":{"@type":"ImageObject","url":"https://karmagames.com.br/assets/icone-512.png"}},{"@type":"WebSite","@id":"https://karmagames.com.br/#site","name":"Karma Games","url":"https://karmagames.com.br/","inLanguage":"pt-BR","publisher":{"@id":"https://karmagames.com.br/#org"}},{"@type":["VideoGame","WebApplication"],"@id":"https://karmagames.com.br/jogar/pong/#jogo","name":"Pong","url":"https://karmagames.com.br/jogar/pong/","description":"Pong é um dos jogos de videogame mais antigos. Aqui você enfrenta o computador numa partida de tênis simplificado: cada um tem uma raquete, e você tenta mandar a bola além da raquete do adversário. Quem chegar a 7 pontos primeiro vence.","image":"https://karmagames.com.br/assets/og/pong.jpg","inLanguage":"pt-BR","genre":"Clássicos","applicationCategory":"GameApplication","operatingSystem":"Qualquer navegador moderno","gamePlatform":["Navegador","Computador","Celular"],"browserRequirements":"Requer HTML5 e JavaScript","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL","availability":"https://schema.org/InStock"},"author":{"@id":"https://karmagames.com.br/#org"},"publisher":{"@id":"https://karmagames.com.br/#org"},"datePublished":"2026-10-03","gameTip":"Mouse, setas ou arraste o dedo"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://karmagames.com.br/"},{"@type":"ListItem","position":2,"name":"Jogos Clássicos","item":"https://karmagames.com.br/categoria/classicos/"},{"@type":"ListItem","position":3,"name":"Pong","item":"https://karmagames.com.br/jogar/pong/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quantos pontos são necessários para ganhar no Pong?","acceptedAnswer":{"@type":"Answer","text":"São 7 pontos. Quem chegar primeiro a 7 vence a partida."}},{"@type":"Question","name":"Dá para jogar Pong contra um amigo?","acceptedAnswer":{"@type":"Answer","text":"Nesta versão, não. O Pong aqui é você contra o computador."}},{"@type":"Question","name":"Dá para jogar Pong no celular?","acceptedAnswer":{"@type":"Answer","text":"Dá. Arraste o dedo na tela para mover a raquete. Funciona direto no navegador, grátis e sem download."}}]}]}</script>
+</head>
+<body data-pagina="jogar" data-slug="pong" data-categoria="Clássicos">
+  <div class="pagina">
+    <aside class="lateral" id="lateral" aria-label="Categorias">
+      <a class="marca" href="./" aria-label="Karma Games, página inicial"><img class="marca-simbolo" src="assets/marca.svg" alt="" width="38" height="38"><span>karma<b>games</b></span></a>
+      <h2>Todos os jogos</h2>
+      <nav class="filtros" aria-label="Categorias">
+        <a class="filtro" href="./"><span>Todos</span><span class="num">28</span></a>
+        <a class="filtro" href="categoria/acao/"><span>Ação</span><span class="num">3</span></a>
+        <a class="filtro" href="categoria/simulacao/"><span>Simulação</span><span class="num">1</span></a>
+        <a class="filtro" href="categoria/classicos/" aria-current="page"><span>Clássicos</span><span class="num">7</span></a>
+        <a class="filtro" href="categoria/arcade/"><span>Arcade</span><span class="num">6</span></a>
+        <a class="filtro" href="categoria/quebra-cabeca/"><span>Quebra-cabeça</span><span class="num">4</span></a>
+        <a class="filtro" href="categoria/tabuleiro/"><span>Tabuleiro</span><span class="num">4</span></a>
+        <a class="filtro" href="categoria/casual/"><span>Casual</span><span class="num">3</span></a>
+      </nav>
+    </aside>
+  <main id="conteudo">
+    <div class="mural" id="mural">
+      <section class="palco-celula" id="palco-celula">
+        <div class="palco" id="palco">
+          <div class="palco-carregando" id="carregando"><img class="marca-simbolo" src="assets/marca.svg" alt="Carregando jogo"></div>
+        </div>
+        <div class="jogo-barra">
+          <div class="jogo-titulo">
+            <h1 id="jogo-nome">Pong</h1>
+            <span id="jogo-categoria">Clássicos</span>
+          </div>
+          <div class="jogo-acoes" id="jogo-acoes" hidden>
+            <button class="btn-redondo" id="btn-reiniciar" type="button" aria-label="Recomeçar o jogo" title="Recomeçar"><svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrow-clockwise"/></svg></button>
+            <button class="btn-redondo" id="btn-sair" type="button" aria-label="Sair do jogo" title="Sair"><svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-x"/></svg></button>
+            <button class="btn-redondo" id="btn-tela-cheia" type="button" aria-label="Tela cheia" title="Tela cheia"><svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-arrows-out"/></svg></button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <article class="texto">
+      <nav class="migalhas" aria-label="Você está em"><ol><li><a href="./">Início</a></li><li><a href="categoria/classicos/">Jogos Clássicos</a></li><li aria-current="page">Pong</li></ol></nav>
+      <h2>Sobre o jogo Pong</h2>
+      <p>Pong é um dos jogos de videogame mais antigos. Aqui você enfrenta o computador numa partida de tênis simplificado: cada um tem uma raquete, e você tenta mandar a bola além da raquete do adversário. Quem chegar a 7 pontos primeiro vence.</p>
+      <p>A bola acelera a cada rebatida, então os pontos ficam mais rápidos e mais tensos. O computador também se adapta: ele se move um pouco mais rápido conforme o placar avança. O ângulo da bola depende do ponto da raquete em que ela bate.</p>
+      <p>O jogo conta suas vitórias seguidas e guarda a maior sequência no navegador. Dá para jogar com o mouse, as setas do teclado ou arrastando o dedo no celular. É grátis e não precisa de download.</p>
+      <h2>Como jogar</h2>
+      <ol><li>No computador, mova o mouse para levar a raquete, ou use as setas e as teclas W, A, S, D.</li><li>No celular, arraste o dedo na tela. A raquete acompanha o movimento do dedo, sem ficar escondida embaixo dele.</li><li>Aperte Espaço ou toque na tela para começar a partida.</li><li>Rebata a bola para o lado do computador. Se ela passar por você, o computador marca um ponto.</li><li>Quem chegar a 7 pontos primeiro vence. Aperte P ou Esc para pausar.</li></ol>
+      <h2>Controles</h2>
+      <p class="controles"><svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-game-controller"/></svg><span>Mouse, setas ou arraste o dedo</span></p>
+      <h2>Dicas</h2>
+      <ul><li>Rebata com as pontas da raquete para mandar a bola em ângulos mais difíceis para o computador.</li><li>Volte para o meio da quadra depois de cada rebatida. Assim você cobre os dois lados.</li><li>Acompanhe a bola desde que ela sai da raquete do computador e comece a se mover antes de ela chegar.</li><li>A bola fica mais rápida a cada rebatida. Em trocas longas, evite movimentos grandes e prefira ajustes pequenos.</li><li>Depois de abrir vantagem no placar, mantenha o ritmo. O computador também acelera nos pontos finais.</li></ul>
+      <h2>Perguntas frequentes</h2>
+      <div class="faq">
+          <details><summary>Quantos pontos são necessários para ganhar no Pong?</summary><p>São 7 pontos. Quem chegar primeiro a 7 vence a partida.</p></details>
+          <details><summary>Dá para jogar Pong contra um amigo?</summary><p>Nesta versão, não. O Pong aqui é você contra o computador.</p></details>
+          <details><summary>Dá para jogar Pong no celular?</summary><p>Dá. Arraste o dedo na tela para mover a raquete. Funciona direto no navegador, grátis e sem download.</p></details>
+      </div>
+      <h2>Mais jogos de Clássicos</h2>
+      <ul class="links-jogos"><li><a href="jogar/paciencia/">Paciência</a></li><li><a href="jogar/forca/">Forca</a></li><li><a href="jogar/pedra-papel-tesoura/">Pedra, Papel e Tesoura</a></li><li><a href="jogar/genius/">Genius</a></li><li><a href="jogar/cobrinha/">Cobrinha</a></li><li><a href="jogar/jogo-da-velha/">Jogo da Velha</a></li><li><a href="jogar/nao-confia/">Não Confia</a></li><li><a href="jogar/crossstrike/">CrossStrike 3D</a></li></ul class="links-jogos">
+    </article>
+  </main>
+  </div>
+
+  <div class="busca-painel" id="busca-painel" hidden>
+    <div class="busca-topo">
+      <label class="busca">
+        <span class="sr-only">Buscar jogo</span>
+        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-magnifying-glass"/></svg>
+        <input id="busca" type="search" placeholder="O que você quer jogar?" autocomplete="off" enterkeyhint="search">
+      </label>
+      <button class="btn-redondo" id="busca-fechar" type="button" aria-label="Fechar busca">
+        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-x"/></svg>
+      </button>
+    </div>
+    <div class="mural" id="busca-resultados"></div>
+  </div>
+
+  <footer class="rodape">
+    <a class="marca" href="./"><img class="marca-simbolo" src="assets/marca.svg" alt="" width="22" height="22"><span>karma<b>games</b></span></a>
+    <nav class="rodape-links" aria-label="Institucional">
+      <a href="sobre/">Sobre</a>
+      <a href="contato/">Contato</a>
+      <a href="privacidade/">Privacidade</a>
+      <a href="termos/">Termos</a>
+    </nav>
+    <span>© 2026 Karma Games. Todos os jogos são grátis. Sem download, sem cadastro.</span>
+  </footer>
+
+  <script src="jogos.js?v=a8458945"></script>
+  <script src="assets/site.js?v=a8458945"></script>
+</body>
+</html>

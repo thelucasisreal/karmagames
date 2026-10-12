@@ -205,7 +205,7 @@ function tone(freq, dur, type, vol, slideTo, delay) {
 }
 let toastMsg = '', toastT = 0;
 function toast(m, dur) { toastMsg = m; toastT = dur || 1.8; }
-function toggleMute() { muted = !muted; toast(muted ? 'Som desligado (M)' : 'Som ligado (M)', 1.2); if (!muted) tone(660, 0.08, 'triangle', 0.1); }
+function toggleMute() { muted = !muted; toast(muted ? 'Som desligado' + (coarse ? '' : ' (M)') : 'Som ligado' + (coarse ? '' : ' (M)'), 1.2); if (!muted) tone(660, 0.08, 'triangle', 0.1); }
 function drawToast() {
   if (toastT <= 0 || !toastMsg) return;
   const a = clamp(toastT / 0.3, 0, 1);

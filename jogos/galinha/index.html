@@ -179,7 +179,7 @@ function circle(x, y, r, color) { ctx.fillStyle = color; ctx.beginPath(); ctx.ar
 
 /* Botão de pausa (toque) */
 const pauseBtn = {x: 0, y: 0, s: 40};
-function layoutPauseBtn() { pauseBtn.s = 40; pauseBtn.x = W - pauseBtn.s - 12; pauseBtn.y = 10; }
+function layoutPauseBtn() { pauseBtn.s = 44; pauseBtn.x = W - pauseBtn.s - 10; pauseBtn.y = 8; }
 function hitPause(x, y) { const b = pauseBtn; return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
 function drawPauseBtn() {
   const b = pauseBtn;
@@ -188,6 +188,21 @@ function drawPauseBtn() {
   ctx.fillStyle = COL.text;
   rrect(b.x + b.s * 0.33, b.y + b.s * 0.28, b.s * 0.12, b.s * 0.44, 2); ctx.fill();
   rrect(b.x + b.s * 0.55, b.y + b.s * 0.28, b.s * 0.12, b.s * 0.44, 2); ctx.fill();
+}
+
+/* Botão de som (aparece na pausa, para quem joga no toque) */
+function somBtn() { return {x: pauseBtn.x, y: H - pauseBtn.s - 12, s: pauseBtn.s}; }
+function hitSom(x, y) { const b = somBtn(); return x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawSomBtn() {
+  const b = somBtn(), s = b.s;
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, s, s, 12); ctx.fill();
+  ctx.fillStyle = COL.text; ctx.strokeStyle = COL.text; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(b.x + s * 0.2, b.y + s * 0.4); ctx.lineTo(b.x + s * 0.32, b.y + s * 0.4); ctx.lineTo(b.x + s * 0.5, b.y + s * 0.24);
+  ctx.lineTo(b.x + s * 0.5, b.y + s * 0.76); ctx.lineTo(b.x + s * 0.32, b.y + s * 0.6); ctx.lineTo(b.x + s * 0.2, b.y + s * 0.6); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  if (muted) { ctx.moveTo(b.x + s * 0.62, b.y + s * 0.38); ctx.lineTo(b.x + s * 0.82, b.y + s * 0.62); ctx.moveTo(b.x + s * 0.82, b.y + s * 0.38); ctx.lineTo(b.x + s * 0.62, b.y + s * 0.62); }
+  else { ctx.arc(b.x + s * 0.52, b.y + s * 0.5, s * 0.14, -0.9, 0.9); ctx.moveTo(b.x + s * 0.52 + s * 0.26 * Math.cos(-0.9), b.y + s * 0.5 + s * 0.26 * Math.sin(-0.9)); ctx.arc(b.x + s * 0.52, b.y + s * 0.5, s * 0.26, -0.9, 0.9); }
+  ctx.stroke(); ctx.lineCap = 'butt'; ctx.lineWidth = 1;
 }
 
 /* Cartão de tela (início / pausa / fim) */
@@ -250,7 +265,7 @@ function drawCard(o) {
 
 /* HUD: rótulo pequeno + valor (com contorno, legível em fundo colorido) */
 function hudStat(label, value, x, y, align, color) {
-  otxt(label.toUpperCase(), x, y, FT(11), COL.hud, COL.hudShadow, 4, align, 'top');
+  otxt(label.toUpperCase(), x, y, FT(12), COL.hud, COL.hudShadow, 4, align, 'top');
   otxt(String(value), x, y + 16, FT(24), color || COL.hud, COL.text, 6, align, 'top');
 }
 function drawMuteNote() {
@@ -572,7 +587,7 @@ cv.addEventListener('pointerdown', e => {
   try { cv.focus({preventScroll: true}); } catch (err) {}
   try { cv.setPointerCapture(e.pointerId); } catch (err) {}
   const [x, y] = ptr(e);
-  if (state === 'paused') { resume(); return; }
+  if (state === 'paused') { if (hitSom(x, y)) toggleMute(); else resume(); return; }
   if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
   if (state === 'over') { if (stateT > 0.6) GAME.start(x, y); return; }
   if (state === 'play' && hitPause(x, y)) { pause(); return; }
@@ -613,7 +628,7 @@ function frame(t) {
   if (fontsReady) {
     GAME.drawUI();
     if (state === 'play' || state === 'paused') drawPauseBtn();
-    if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma · M liga ou desliga o som'});
+    if (state === 'paused') { drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? 'Alto-falante no canto liga ou desliga o som' : 'P ou Esc pausa e retoma · M liga ou desliga o som'}); drawSomBtn(); }
     drawMuteNote();
   }
 }

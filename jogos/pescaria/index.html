@@ -139,6 +139,28 @@ function drawPauseBtn() {
   ctx.fillRect(b.x + b.s * 0.54, b.y + b.s * 0.3, b.s * 0.1, b.s * 0.4);
 }
 
+/* Botão de som (toque): aparece no menu, na pausa e no fim */
+const muteBtn = {x: 12, y: 10, s: 44};
+function showMute() { return state === 'menu' || state === 'over' || state === 'paused'; }
+function hitMute(x, y) { const b = muteBtn; return showMute() && x >= b.x - 6 && x <= b.x + b.s + 6 && y >= b.y - 6 && y <= b.y + b.s + 6; }
+function drawMuteBtn() {
+  const b = muteBtn, cx = b.x + b.s / 2, cy = b.y + b.s / 2, u = b.s / 40;
+  ctx.fillStyle = COL.shadow; rrect(b.x + 2, b.y + 3, b.s, b.s, 12); ctx.fill();
+  ctx.fillStyle = COL.surf; rrect(b.x, b.y, b.s, b.s, 12); ctx.fill();
+  ctx.fillStyle = COL.text; ctx.strokeStyle = COL.text; ctx.lineCap = 'round'; ctx.lineWidth = 2.6 * u;
+  ctx.beginPath();
+  ctx.moveTo(cx - 11 * u, cy - 4 * u); ctx.lineTo(cx - 6 * u, cy - 4 * u); ctx.lineTo(cx + 1 * u, cy - 10 * u);
+  ctx.lineTo(cx + 1 * u, cy + 10 * u); ctx.lineTo(cx - 6 * u, cy + 4 * u); ctx.lineTo(cx - 11 * u, cy + 4 * u); ctx.closePath(); ctx.fill();
+  if (muted) {
+    ctx.strokeStyle = COL.coral;
+    ctx.beginPath(); ctx.moveTo(cx + 5 * u, cy - 5 * u); ctx.lineTo(cx + 12 * u, cy + 5 * u); ctx.moveTo(cx + 12 * u, cy - 5 * u); ctx.lineTo(cx + 5 * u, cy + 5 * u); ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.arc(cx + 2 * u, cy, 6 * u, -0.8, 0.8); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx + 2 * u, cy, 11 * u, -0.8, 0.8); ctx.stroke();
+  }
+  ctx.lineCap = 'butt';
+}
+
 /* Cartão de tela (início / pausa / fim) */
 function drawCard(o) {
   ctx.fillStyle = 'rgba(' + (COL.dimRGB || '13,14,18') + ',' + (o.dim == null ? 0.6 : o.dim) + ')';
@@ -238,7 +260,7 @@ function beep(freq, dur, type, vol, slide) {
 function drawMuteToast() {
   if (muteToast <= 0) return;
   ctx.globalAlpha = clamp(muteToast, 0, 1);
-  const s = muted ? 'Som desligado (M)' : 'Som ligado (M)';
+  const s = muted ? 'Som desligado' + (coarse ? '' : ' (M)') : 'Som ligado' + (coarse ? '' : ' (M)');
   ctx.font = FS(14); const w = ctx.measureText(s).width + 28;
   ctx.fillStyle = COL.surf; rrect((W - w) / 2, H - 52, w, 34, 17); ctx.fill();
   txt(s, W / 2, H - 35, FS(14), COL.text);
@@ -265,8 +287,10 @@ let score = 0, timeLeft = DURACAO, caught = 0, spawnT = 0, catSquash = 0, catHap
 let menuHold = 0;
 
 function layout() {
-  u = clamp(Math.min(W / 820, H / 620), 0.5, 1.5);
-  y0 = Math.round(H * (H < 560 ? 0.3 : 0.32));
+  // em pé o celular é estreito: bichos maiores para dar de ver e de mirar
+  u = clamp(Math.min(W / (W < H ? 620 : 820), H / 620), 0.5, 1.5);
+  // linha d'água abaixo do placar, para o gato não ficar por baixo dele
+  y0 = Math.round(Math.max(H * (H < 560 ? 0.3 : 0.32), 66 + 86 * u));
   yb = H - 26 * u;
   if (!boatX) boatX = W / 2;
   boatX = clamp(boatX, 70 * u, W - 110 * u);
@@ -525,7 +549,7 @@ const GAME = {
   },
   drawUI() {
     if (state === 'menu') {
-      drawCard({dim: 0.15, kicker: 'Karma Games', title: 'Pescaria', lines: ['Pesque o máximo em 60 segundos.', 'Fuja das botas e das águas-vivas!'], cta: coarse ? 'Toque para começar' : 'Aperte Espaço para começar', hint: coarse ? 'Segure o dedo para descer o anzol e solte para puxar' : 'Segure Espaço ou o mouse para descer · Setas movem o barco'});
+      drawCard({dim: 0.15, kicker: 'Karma Games', title: 'Pescaria', lines: ['Pesque o máximo em 60 segundos.', 'Fuja das botas e das águas-vivas!'], cta: coarse ? 'Toque para começar' : 'Aperte Espaço para começar', hint: coarse ? 'Segure o dedo para descer o anzol · arraste para mover o barco' : 'Segure Espaço ou o mouse para descer · Setas movem o barco'});
       return;
     }
     hudStat('Pontos', score, 24, 16, 'left', COL.acc);
@@ -735,6 +759,7 @@ cv.addEventListener('pointerdown', e => {
   try { cv.setPointerCapture(e.pointerId); } catch (err) {}
   unlockAudio();
   const [x, y] = ptr(e);
+  if (fontsReady && hitMute(x, y)) { toggleMute(); return; }
   if (state === 'paused') { resume(); return; }
   if (state === 'menu') { if (fontsReady) GAME.start(x, y); return; }
   if (state === 'over') { if (stateT > 0.5) GAME.start(x, y); return; }
@@ -775,6 +800,7 @@ function frame(t) {
     if (state === 'play' || state === 'paused') drawPauseBtn();
     drawMuteToast();
     if (state === 'paused') drawCard({title: 'Pausado', lines: [coarse ? 'Toque para continuar' : 'Aperte qualquer tecla para continuar'], hint: coarse ? '' : 'P ou Esc pausa e retoma'});
+    if (showMute()) drawMuteBtn();
   }
 }
 resize();
