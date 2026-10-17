@@ -20,6 +20,7 @@ vai direto ao servidor certo. Em cada VM: código em `/opt/karma-realtime`, serv
 `karma-realtime` (porta 4810 local), e o Caddy publica o domínio com HTTPS automático.
 
 `GET https://rt1.karmagames.com.br/saude` mostra salas, jogadores e memória.
+`GET https://rt1.karmagames.com.br/salas?jogo=<slug>` lista as salas abertas com vaga (é o que o lobby mostra).
 
 ## Rodar no computador
 
@@ -36,8 +37,13 @@ Depois abra o jogo com `?rt=` apontando para ele, nas duas abas:
 Veja `jogos/ligue-4/index.html` (procure `/* ---- online ---- */`). O caminho é sempre o mesmo:
 
 1. `<script src="../../assets/karma-net.js"></script>` e um botão `data-mode="online"`.
-2. `KarmaNet.lobby({ jogo: "<slug>", titulo: "<Nome>" })` abre a tela de criar/entrar e resolve com a
-   `sala` quando os dois estão na mesa. `sala.lugar` 0 é quem criou.
+2. `KarmaNet.lobby({ jogo: "<slug>", titulo: "<Nome>" })` abre o lobby e resolve com a `sala`. Com
+   `max: 2` (padrão) resolve quando os dois estão na mesa; com mais lugares, assim que a pessoa entra.
+   `sala.lugar` 0 é quem criou. O lobby tem:
+   - **Jogo rápido**: entra na sala aberta mais antiga com vaga, ou cria uma aberta e espera. Se duas
+     pessoas tocam juntas, quem criou depois muda para a sala da outra.
+   - **Salas abertas**: lista dos dois servidores, atualizada a cada 3 s.
+   - **Criar sala com código** (não aparece na lista) e **entrar com código**.
 3. Na sua vez: `sala.enviar({ ...jogada, rodada })` e aplica a jogada. Quando chega
    `sala.on("msg", d => ...)`: confere se é a vez do outro e se a jogada é válida, e chama a **mesma
    função do clique**.
@@ -54,7 +60,7 @@ Um objeto JSON por mensagem.
 
 | de → para | mensagem |
 |---|---|
-| cliente → servidor | `{t:"criar", jogo, nome, max}` · `{t:"entrar", codigo, jogo, nome, chave?}` · `{t:"msg", dados, para?}` · `{t:"estado", dados}` · `{t:"sair"}` |
+| cliente → servidor | `{t:"criar", jogo, nome, max, aberta?}` · `{t:"entrar", codigo, jogo, nome, chave?}` · `{t:"msg", dados, para?}` · `{t:"estado", dados}` · `{t:"abrir", aberta}` (só o dono: menor lugar presente) · `{t:"sair"}` |
 | servidor → cliente | `{t:"sala", codigo, lugar, chave, jogadores, estado}` · `{t:"msg", de, dados}` · `{t:"entrou"}` · `{t:"caiu"}` · `{t:"voltou"}` · `{t:"saiu"}` · `{t:"erro", motivo}` |
 
 Limites: 8 jogadores por sala, 8 KB por mensagem, 40 mensagens/s por conexão, só origens do

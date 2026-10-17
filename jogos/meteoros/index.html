@@ -266,7 +266,7 @@ let perfNow = 0;
 let u = 1, shipX = 0, shipVX = 0, shipY = 0, targetX = null, keyL = false, keyR = false;
 let rocks = [], stars = [], hearts = [], bgStars = [], pops = [], trail = [];
 let score = 0, lives = 3, elapsed = 0, inv = 0, spawnR = 0, spawnS = 0, spawnH = 0, got = 0, deadT = 0, hitFlash = 0, squash = 0, timeAcc = 0;
-let menuDir = 1;
+let menuDir = 1, lastW = 0, lastH = 0;
 
 function layout() {
   u = clamp(Math.min(W / 760, H / 620), 0.55, 1.5);
@@ -300,7 +300,16 @@ function hit() {
 }
 
 const GAME = {
-  resize() { layout(); if (state === 'menu' && !rocks.length && !elapsed) reset(); },
+  resize() {
+    const oW = lastW, oH = lastH; lastW = W; lastH = H;
+    if (oW && (oW !== W || oH !== H)) {
+      // girou o celular: meteoros, estrelas, corações e nave ficam na mesma posição relativa
+      const kx = W / oW, ky = H / oH;
+      for (const a of [rocks, stars, hearts]) for (const o of a) { o.x *= kx; o.y *= ky; }
+      shipX *= kx; if (targetX != null) targetX *= kx;
+    }
+    layout(); if (state === 'menu' && !rocks.length && !elapsed) reset();
+  },
   start() { reset(); setState('play'); },
   key(e, down) {
     const k = e.key;

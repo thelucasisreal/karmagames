@@ -284,7 +284,7 @@ let boatX = 0, boatVX = 0, targetX = null, keyL = false, keyR = false, holdKey =
 let depth = 0, hooked = null, stun = 0, splashT = 0;
 let things = [], pops = [], bubbles = [];
 let score = 0, timeLeft = DURACAO, caught = 0, spawnT = 0, catSquash = 0, catHappy = 0, catSad = 0, tick = 0, overT = 0;
-let menuHold = 0;
+let menuHold = 0, lastW = 0;
 
 function layout() {
   // em pé o celular é estreito: bichos maiores para dar de ver e de mirar
@@ -368,7 +368,19 @@ function zap(t) {
 }
 
 const GAME = {
-  resize() { const ob = boatX; layout(); if (state === 'menu' && !things.length) reset(); boatX = clamp(ob || W / 2, 70 * u, W - 110 * u); },
+  resize() {
+    const ob = boatX, oW = lastW, oy0 = y0, oyb = yb, ou = u;
+    layout(); lastW = W;
+    if (state === 'menu' && !things.length) reset();
+    else if (oW && oyb > oy0) {
+      // girou o celular: leva bichos, barco e anzol para a nova água na mesma proporção
+      const kx = W / oW, ky = (yb - y0) / (oyb - oy0), kv = (0.7 + u * 0.3) / (0.7 + ou * 0.3);
+      for (const t of things) { t.x *= kx; t.by = y0 + (t.by - oy0) * ky; t.s = TIPOS[t.tipo].tam * u; t.v *= kv; }
+      depth = clamp(depth * ky, 0, maxDepth());
+      boatX = ob * kx;
+    }
+    boatX = clamp(boatX || W / 2, 70 * u, W - 110 * u);
+  },
   start() { reset(); setState('play'); holdPtr = false; holdKey = false; },
   key(e, down) {
     const k = e.key;

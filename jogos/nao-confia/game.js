@@ -19,6 +19,20 @@ const FASES = [];             // preenchida pelos arquivos fases/mundoNN.js
 
 const tela = document.getElementById('tela');
 const ctx = tela.getContext('2d');
+// Resolucao interna acompanha o tamanho na tela x DPR (nitido em pe e deitado);
+// o desenho continua em W x H logicos, escalado por ESCALA a cada quadro.
+let ESCALA = 1;
+function ajustarTela() {
+  const r = tela.getBoundingClientRect();
+  const k = Math.min(4, Math.max(1, (r.width || W) * (window.devicePixelRatio || 1) / W));
+  if (Math.abs(k - ESCALA) < 0.01 && tela.width === Math.round(W * k)) return;
+  ESCALA = k;
+  tela.width = Math.round(W * k);
+  tela.height = Math.round(H * k);
+}
+addEventListener('resize', ajustarTela);
+addEventListener('orientationchange', ajustarTela);
+if (window.visualViewport) visualViewport.addEventListener('resize', ajustarTela);
 const sombraCanvas = document.createElement('canvas');
 sombraCanvas.width = W;
 sombraCanvas.height = H;
@@ -1729,7 +1743,7 @@ function desenharGlitch() {
   if (!L.glitch) return;
   for (let i = 0; i < 8; i++) {
     const y = Math.random() * H, h = 6 + Math.random() * 30;
-    ctx.drawImage(tela, 0, y, W, h, (Math.random() - 0.5) * 60, y, W, h);
+    ctx.drawImage(tela, 0, y * ESCALA, W * ESCALA, h * ESCALA, (Math.random() - 0.5) * 60, y, W, h);
   }
   ctx.fillStyle = `rgba(${Math.random() > 0.5 ? '255,0,80' : '0,255,220'},0.15)`;
   ctx.fillRect(0, 0, W, H);
@@ -2027,6 +2041,8 @@ function atualizar() {
 }
 
 function laco(agora) {
+  ajustarTela();
+  ctx.setTransform(ESCALA, 0, 0, ESCALA, 0, 0);
   acumulado += Math.min(100, agora - anterior);
   anterior = agora;
   while (acumulado >= PASSO_MS) {

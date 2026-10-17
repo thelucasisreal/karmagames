@@ -116,12 +116,12 @@ body.touch #slots i{font-size:10px;padding:0 5px}
 #tz{position:absolute;inset:0;touch-action:none}
 .tb{position:absolute;pointer-events:auto;touch-action:none;border-radius:50%;background:rgba(13,14,18,.5);border:2px solid rgba(255,255,255,.35);color:#fff;font-weight:600;font-size:12px;display:grid;place-items:center;text-align:center;line-height:1.1;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .tb.on{background:rgba(200,241,58,.45);border-color:var(--accent)}
-#tFire{width:84px;height:84px;right:calc(max(14px,env(safe-area-inset-right)) + 0px);bottom:calc(max(80px,env(safe-area-inset-bottom) + 80px));font-size:14px;background:rgba(255,107,90,.42);border-color:rgba(255,160,150,.8)}
-#tJump{width:58px;height:58px;right:calc(max(14px,env(safe-area-inset-right)) + 96px);bottom:calc(max(70px,env(safe-area-inset-bottom) + 70px))}
-#tCrouch{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 100px);bottom:calc(max(140px,env(safe-area-inset-bottom) + 140px))}
-#tReload{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 18px);bottom:calc(max(176px,env(safe-area-inset-bottom) + 176px))}
-#tSwitch{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 76px);bottom:calc(max(200px,env(safe-area-inset-bottom) + 200px))}
-#tZoom{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 134px);bottom:calc(max(210px,env(safe-area-inset-bottom) + 210px))}
+#tFire{width:84px;height:84px;right:calc(max(14px,env(safe-area-inset-right)) + 0px);bottom:calc(max(80px,env(safe-area-inset-bottom) + 80px) + var(--up,0px));font-size:14px;background:rgba(255,107,90,.42);border-color:rgba(255,160,150,.8)}
+#tJump{width:58px;height:58px;right:calc(max(14px,env(safe-area-inset-right)) + 96px);bottom:calc(max(70px,env(safe-area-inset-bottom) + 70px) + var(--up,0px))}
+#tCrouch{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 100px);bottom:calc(max(140px,env(safe-area-inset-bottom) + 140px) + var(--up,0px))}
+#tReload{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 18px);bottom:calc(max(176px,env(safe-area-inset-bottom) + 176px) + var(--up,0px))}
+#tSwitch{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 76px);bottom:calc(max(200px,env(safe-area-inset-bottom) + 200px) + var(--up,0px))}
+#tZoom{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 134px);bottom:calc(max(210px,env(safe-area-inset-bottom) + 210px) + var(--up,0px))}
 #tBuy{width:54px;height:54px;left:calc(max(14px,env(safe-area-inset-left)) + 118px);top:calc(max(8px,env(safe-area-inset-top)) + 70px);background:rgba(200,241,58,.35);border-color:var(--accent)}
 #tPause{width:40px;height:40px;right:calc(max(8px,env(safe-area-inset-right)));top:calc(max(8px,env(safe-area-inset-top)) + 0px);border-radius:10px;font-size:15px}
 #tBoard{width:40px;height:40px;right:calc(max(8px,env(safe-area-inset-right)));top:calc(max(8px,env(safe-area-inset-top)) + 48px);border-radius:10px;font-size:15px}
@@ -252,11 +252,17 @@ body.br #mini{width:150px;height:150px}
 body.br #money{display:none}
 body.touch.br #mini{width:96px;height:96px}
 body.touch #gear{bottom:auto;top:calc(max(8px,env(safe-area-inset-top)) + 54px);right:max(56px,env(safe-area-inset-right))}
+/* celular em pé: os botões da direita e o joystick sobem acima do painel da arma, e o aviso da habilidade desce pra não cobrir o da loja */
+@media (orientation:portrait){
+  body.touch #touch{--up:96px}
+  body.touch #gear{top:calc(max(8px,env(safe-area-inset-top)) + 134px)}
+  body.touch #feed{top:calc(max(8px,env(safe-area-inset-top)) + 172px)}
+}
 .cls{font-size:13px;margin-top:8px;color:var(--muted);min-height:36px}
 .cls b{color:var(--text)}
-#tWall{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 160px);bottom:calc(max(140px,env(safe-area-inset-bottom) + 140px))}
-#tAbil{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 190px);bottom:calc(max(200px,env(safe-area-inset-bottom) + 200px))}
-#tHeal{width:50px;height:50px;left:calc(max(14px,env(safe-area-inset-left)) + 60px);bottom:calc(max(200px,env(safe-area-inset-bottom) + 200px))}
+#tWall{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 160px);bottom:calc(max(140px,env(safe-area-inset-bottom) + 140px) + var(--up,0px))}
+#tAbil{width:50px;height:50px;right:calc(max(14px,env(safe-area-inset-right)) + 190px);bottom:calc(max(200px,env(safe-area-inset-bottom) + 200px) + var(--up,0px))}
+#tHeal{width:50px;height:50px;left:calc(max(14px,env(safe-area-inset-left)) + 60px);bottom:calc(max(200px,env(safe-area-inset-bottom) + 200px) + var(--up,0px) * 1.7)}
 #tHeal[hidden]{display:none}
 #cutfx{position:absolute;inset:0;pointer-events:none;z-index:6}
 #cutfx[hidden]{display:none}
@@ -375,16 +381,13 @@ body.cut #hud,body.cut #touch{visibility:hidden}
       </div>
     </div>
     <div id="onlineWrap" hidden>
-      <span class="lbl">Seu nome</span>
-      <div class="field"><input id="netName" maxlength="14" autocomplete="off" spellcheck="false" aria-label="Seu nome"></div>
       <div id="netStart">
-        <div class="row"><button class="btn primary" type="button" id="netCreate">Criar sala</button></div>
-        <span class="lbl">Ou entre com o código</span>
-        <div class="field"><input id="netCode" maxlength="5" autocomplete="off" spellcheck="false" placeholder="ABCDE" aria-label="Código da sala" style="text-transform:uppercase;letter-spacing:.15em"><button class="btn" type="button" id="netJoin">Entrar</button></div>
+        <div class="row"><button class="btn primary" type="button" id="netOpen">Jogar online</button></div>
       </div>
       <div id="lobby" hidden>
         <span class="lbl">Código da sala</span>
         <div id="roomCode">-----</div>
+        <div class="row"><button class="btn" type="button" id="netShare">Copiar link do convite</button></div>
         <ul class="plist" id="plist"></ul>
         <div class="row"><button class="btn" type="button" id="netTeam">Trocar de time</button><button class="btn ghost" type="button" id="netLeave">Sair da sala</button></div>
       </div>
@@ -534,6 +537,7 @@ body.cut #hud,body.cut #touch{visibility:hidden}
 </div>
 </div>
 
+<script src="../../assets/karma-net.js"></script>
 <script type="module">
 import * as THREE from './three.module.js';
 
@@ -4321,7 +4325,7 @@ function paintMenu() {
     tdm: `Você e ${settings.size - 1} bots aliados contra ${settings.size} bots, melhor de 7 rodadas (quem fizer 4 leva). Compre armas no começo de cada rodada. Elimine o outro time — ou, defendendo, segure até o tempo (1:45) acabar.`,
     br: `Todo mundo contra todo mundo numa zona industrial: ${settings.brN} jogadores, armas, acessórios e cura espalhados pelo chão, e um gás que fecha o mapa. Último de pé vence (uns 5 a 7 minutos).`,
     x1: 'Duelo: só você contra um bot, sem aliados. Quem vencer 5 rodadas leva. Se o tempo acabar, ganha quem tiver mais vida.',
-    online: 'Jogue com amigos pela internet: crie uma sala e mande o código, ou entre com o código de alguém. De 2 a 8 jogadores, 1 contra 1 ou em times.',
+    online: 'Jogue pela internet com até 8 pessoas: Jogo rápido te coloca numa sala aberta, ou crie uma sala e mande o link pros amigos. 1 contra 1 ou em times; quem chega no meio entra na próxima rodada.',
     treino: '60 segundos de alvos surgindo pela arena. Acerte rápido e no centro para somar mais pontos.'
   }[m];
   const r = recordes(), t = store.get('treino', { melhor: 0, precisao: 0 }) || {};
@@ -4340,7 +4344,7 @@ document.querySelectorAll('[data-size]').forEach(b => b.addEventListener('click'
 document.querySelectorAll('[data-brn]').forEach(b => b.addEventListener('click', () => { settings.brN = +b.dataset.brn; store.set('brJogadores', settings.brN); paintMenu(); }));
 document.querySelectorAll('[data-cls]').forEach(b => b.addEventListener('click', () => { settings.cls = b.dataset.cls; store.set('personagem', settings.cls); paintMenu(); }));
 document.querySelectorAll('[data-cam]').forEach(b => b.addEventListener('click', () => { settings.cam = b.dataset.cam; store.set('camera', settings.cam); paintSettings(); }));
-$('play').addEventListener('click', () => { if (settings.mode === 'online') netStartMatch(); else startMatch(); });
+$('play').addEventListener('click', () => { if (settings.mode !== 'online') startMatch(); else if (!NET.sala) netOpenLobby(); else netStartMatch(); });
 $('again').addEventListener('click', () => { if (settings.mode === 'online') netStartMatch(); else startMatch(); });
 $('toMenu').addEventListener('click', toMenu);
 function setupMenuScene() {
@@ -4418,7 +4422,7 @@ function toggleZoom() { if (!P.alive) return; input.aim = !input.aim; if (WEAPON
 if (isTouch) {
   const tz = $('tz'), joy = $('joy'), knob = joy.firstChild;
   let joyId = null, jx0 = 0, jy0 = 0, lookId = null, lx = 0, ly = 0;
-  const resetJoy = () => { joy.style.left = 'calc(max(14px, env(safe-area-inset-left)) + 80px)'; joy.style.top = 'calc(100% - max(100px, env(safe-area-inset-bottom) + 100px) - 60px)'; knob.style.transform = ''; joy.classList.remove('on'); };
+  const resetJoy = () => { joy.style.left = 'calc(max(14px, env(safe-area-inset-left)) + 80px)'; joy.style.top = 'calc(100% - max(100px, env(safe-area-inset-bottom) + 100px) - 60px - var(--up, 0px))'; knob.style.transform = ''; joy.classList.remove('on'); };
   resetJoy();
   tz.addEventListener('pointerdown', e => {
     if (G.screen !== 'play' || G.paused) return;
@@ -4717,146 +4721,249 @@ function render() {
   if (vmRoot.visible && G.screen === 'play') { renderer.clearDepth(); renderer.render(vmScene, vmCam); }
 }
 
-/* ---------- Online: navegador com navegador (PeerJS). O anfitrião cuida das rodadas e repassa as mensagens ---------- */
-const NET = { peer: null, host: false, conns: new Map(), hostConn: null, myId: '', code: '', roster: [], started: false, sendT: 0, timeT: 0 };
-const ROOM_PREFIX = 'karmacs-v1-', MAX_PLAYERS = 8;
-const RELAY = ['st', 'shot', 'arrow', 'hit', 'kill', 'wall', 'wd', 'gren', 'exec']; // o que um convidado pode mandar (o resto só o anfitrião manda)
-let peerLib = null;
-function loadPeer() {
-  if (window.Peer) return Promise.resolve(window.Peer);
-  if (!peerLib) peerLib = new Promise((res, rej) => {
-    const sc = document.createElement('script'); sc.src = 'peerjs.min.js';
-    sc.onload = () => window.Peer ? res(window.Peer) : rej(new Error('peerjs'));
-    sc.onerror = () => { peerLib = null; rej(new Error('peerjs')); };
-    document.head.appendChild(sc);
-  });
-  return peerLib;
+/* ---------- Online: salas do Karma Games (assets/karma-net.js + realtime/). O servidor difunde as mensagens pra sala toda;
+   o anfitrião é o menor lugar conectado: cuida dos times, das rodadas e do tempo. Se ele sai ou cai, o próximo assume ---------- */
+const NET = { sala: null, conectado: false, myId: -1, code: '', roster: [], started: false, sendT: 0, timeT: 0, hostL: -1, prevHost: -1, syncWait: 0, waitTimer: 0, waitTries: 0, win: { t0: 0, n: 0 } };
+const MAX_PLAYERS = 8, SYNC_WAIT_MS = 1500;
+const CTRL = ['roster', 'start', 'sync', 'round', 'time', 'match']; // só o anfitrião manda
+// o servidor corta acima de 40 mensagens/s: posição e o efeito do tiro cedem lugar pro que muda o jogo (dano, morte, rodada)
+const BUDGET = { st: 24, shot: 32 }, BUDGET_MAX = 38;
+// menor lugar conectado; o "dono" do servidor também conta quem caiu, mas aqui a rodada não pode ficar parada 90 s
+function hostLugar() {
+  const s = NET.sala; if (!s) return -1;
+  let h = Infinity;
+  for (const j of s.jogadores) if (j.on && j.lugar < h) h = j.lugar;
+  return h === Infinity ? NET.myId : h;
 }
+// o próximo da fila: é quem passa o estado pra um anfitrião que acabou de chegar ou recarregou a página
+function viceLugar() {
+  const s = NET.sala, h = hostLugar(); if (!s) return -1;
+  let v = Infinity;
+  for (const j of s.jogadores) if (j.on && j.lugar !== h && j.lugar < v) v = j.lugar;
+  return v === Infinity ? -1 : v;
+}
+Object.defineProperty(NET, 'host', { get: () => !!NET.sala && NET.conectado && performance.now() >= NET.syncWait && hostLugar() === NET.myId });
 function netMsg(t, err) { const el = $('netMsg'); el.textContent = t || ''; el.classList.toggle('err', !!err); }
-function myName() { const n = ($('netName').value || '').replace(/\s+/g, ' ').trim().slice(0, 14); return n || 'Jogador'; }
-function genCode() { const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 5; i++) c += A[Math.floor(Math.random() * A.length)]; return c; }
-function netSend(m) {
-  if (!NET.peer) return;
-  m.from = NET.myId;
-  if (NET.host) { for (const c of NET.conns.values()) if (c.open) c.send(m); }
-  else if (NET.hostConn && NET.hostConn.open) NET.hostConn.send(m);
+function nomeDe(l) { return String(NET.sala ? NET.sala.nomeDe(l) : 'Jogador').replace(/\s+/g, ' ').trim().slice(0, 14) || 'Jogador'; }
+function myName() { return nomeDe(NET.myId); }
+function netSend(m, to) {
+  const s = NET.sala; if (!s || !NET.conectado) return false;
+  const now = performance.now(), w = NET.win;
+  if (now - w.t0 >= 1000) { w.t0 = now; w.n = 0; }
+  if (w.n >= (BUDGET[m.t] || BUDGET_MAX)) return false;
+  if (!s.enviar(m, to)) return false;
+  w.n++; return true;
 }
-function netRoster() { netSend({ t: 'roster', list: NET.roster, started: NET.started }); paintLobby(); }
-function netError(err, peer) {
-  if (NET.peer !== peer) return;
-  const type = err && err.type;
-  if (type === 'unavailable-id' && NET.host) { netCreate(); return; }
-  if (type === 'peer-unavailable') netMsg('Não achei essa sala. Confira o código.', true);
-  else if (type === 'network' || type === 'server-error' || type === 'socket-error' || type === 'socket-closed') netMsg('Sem conexão com o servidor do online. Confira sua internet.', true);
-  else if (type === 'browser-incompatible') netMsg('Este navegador não suporta o modo online.', true);
-  else netMsg('Deu um erro na conexão (' + (type || 'desconhecido') + '). Tente de novo.', true);
-  if (G.online && G.screen === 'play') toMenu();
-  netLeave(true, true);
+function cleanRoster(list) {
+  const out = [];
+  if (Array.isArray(list)) for (const p of list) {
+    if (!p || !Number.isInteger(p.id) || p.id < 0 || p.id >= MAX_PLAYERS || out.some(q => q.id === p.id)) continue;
+    out.push({ id: p.id, name: String(p.name || 'Jogador').slice(0, 14), team: p.team === 'B' ? 'B' : 'A' });
+  }
+  return out.slice(0, MAX_PLAYERS);
 }
-async function netCreate() {
-  netLeave(true);
-  netMsg('Criando sala…');
-  let Peer; try { Peer = await loadPeer(); } catch (e) { netMsg('Não deu pra carregar o modo online. Confira sua internet.', true); return; }
-  const code = genCode(), peer = new Peer(ROOM_PREFIX + code, { debug: 0 });
-  Object.assign(NET, { peer, host: true, code, started: false });
-  peer.on('open', id => { if (NET.peer !== peer) return; NET.myId = id; NET.roster = [{ id, name: myName(), team: 'A' }]; netMsg('Mande o código pro seu amigo entrar.'); paintLobby(); });
-  peer.on('connection', conn => { if (NET.peer === peer) hostAccept(conn); });
-  peer.on('error', err => netError(err, peer));
-  peer.on('disconnected', () => { if (NET.peer === peer && !peer.destroyed) try { peer.reconnect(); } catch (e) { /* sem servidor; as conexões já abertas seguem */ } });
+function nextTeam() { const nA = NET.roster.filter(p => p.team === 'A').length, nB = NET.roster.length - nA; return !NET.roster.length ? 'A' : nB < nA ? 'B' : nA < nB ? 'A' : 'B'; }
+function netRoster(force) {
+  if (NET.host || force) { netSend({ t: 'roster', list: NET.roster, started: NET.started }); NET.sala.publicar({ list: NET.roster, started: NET.started }); }
+  syncEnts(); paintLobby();
 }
-function hostAccept(conn) {
-  conn.on('open', () => {
-    if (NET.started || NET.roster.length >= MAX_PLAYERS) { conn.send({ t: 'deny', why: NET.started ? 'A partida já começou. Espere ela acabar e tente de novo.' : 'A sala está cheia.' }); setTimeout(() => conn.close(), 500); return; }
-    NET.conns.set(conn.peer, conn);
-  });
-  conn.on('data', m => onNet(m, conn));
-  conn.on('close', () => dropPlayer(conn.peer));
-  conn.on('error', () => dropPlayer(conn.peer));
+function addPlayer(l) {
+  if (!NET.host || NET.roster.some(p => p.id === l) || NET.roster.length >= MAX_PLAYERS) return;
+  if (!NET.sala.jogadores.some(j => j.lugar === l)) return;
+  NET.roster.push({ id: l, name: nomeDe(l), team: nextTeam() });
+  netRoster();
 }
-async function netJoin() {
-  const code = ($('netCode').value || '').trim().toUpperCase();
-  if (!/^[A-Z0-9]{5}$/.test(code)) { netMsg('O código tem 5 letras ou números.', true); return; }
-  netLeave(true);
-  netMsg('Entrando…');
-  let Peer; try { Peer = await loadPeer(); } catch (e) { netMsg('Não deu pra carregar o modo online. Confira sua internet.', true); return; }
-  const peer = new Peer({ debug: 0 });
-  Object.assign(NET, { peer, host: false, code, started: false });
-  peer.on('open', id => {
-    if (NET.peer !== peer) return;
-    NET.myId = id;
-    const conn = peer.connect(ROOM_PREFIX + code, { reliable: true, serialization: 'json' });
-    NET.hostConn = conn;
-    const to = setTimeout(() => { if (NET.peer === peer && !conn.open) { netMsg('A sala não respondeu. Confira o código ou tente de novo.', true); netLeave(true, true); } }, 15000);
-    conn.on('open', () => { clearTimeout(to); conn.send({ t: 'hello', name: myName(), from: id }); });
-    conn.on('data', m => onNet(m, conn));
-    conn.on('close', () => { if (NET.peer === peer) hostGone(); });
-  });
-  peer.on('error', err => netError(err, peer));
+// anfitrião confere a lista de times com quem está na sala (assumiu agora, ou voltou de uma queda)
+function reconcileRoster() {
+  const here = new Set(NET.sala.jogadores.map(j => j.lugar));
+  NET.roster = NET.roster.filter(p => here.has(p.id));
+  for (const j of NET.sala.jogadores) if (!NET.roster.some(p => p.id === j.lugar) && NET.roster.length < MAX_PLAYERS) NET.roster.push({ id: j.lugar, name: nomeDe(j.lugar), team: nextTeam() });
+}
+function takeOver() {
+  if (!NET.host) return;
+  reconcileRoster(); netRoster();
+  // a partida aceita quem chega no meio (entra na próxima rodada), então a sala fica na lista enquanto tiver vaga
+  if (!NET.sala.cheia) NET.sala.abrir(true);
+  NET.timeT = 0;
+}
+function hostCheck() {
+  const h = hostLugar();
+  if (h !== NET.hostL) {
+    NET.prevHost = NET.hostL; NET.hostL = h;
+    if (NET.host) { takeOver(); if (NET.prevHost >= 0 && G.online && G.screen === 'play') toast('Agora você comanda as rodadas'); }
+  }
+  paintLobby();
+}
+// voltei (queda ou página recarregada): por um instante quem segurou a sala manda o estado antes de eu assumir
+function startWait() { NET.waitTries = 0; waitMore(); }
+function waitMore() { NET.syncWait = performance.now() + SYNC_WAIT_MS; clearTimeout(NET.waitTimer); NET.waitTimer = setTimeout(endWait, SYNC_WAIT_MS + 50); }
+function endWait() {
+  clearTimeout(NET.waitTimer); NET.syncWait = 0;
+  if (!NET.host) return;
+  if (NET.started && !(G.online && G.screen === 'play')) {
+    // tem gente na sala e o estado não veio: pede de novo algumas vezes antes de desistir
+    if (NET.sala.jogadores.some(j => j.on && j.lugar !== NET.myId) && NET.waitTries++ < 3) { waitMore(); netSend({ t: 'hello' }); return; }
+    // ninguém me passou a partida em andamento: recomeça do lobby em vez de inventar o placar
+    NET.started = false; netSend({ t: 'match', score: G.score });
+  }
+  takeOver();
+}
+function sendSync(to, force) {
+  if (!NET.host && !force) return;
+  const play = G.online && G.screen === 'play', e = play && ents.find(x => x.isRemote && x.id === to), r = v => Math.round(v * 100) / 100;
+  // como eu via quem está voltando: se estava vivo, volta vivo no mesmo lugar (recarregou no meio da rodada)
+  const you = e && e.alive && e.gotSt ? { p: [r(e.tgt.x), r(e.tgt.y), r(e.tgt.z)], yaw: r(e.tgtYaw), hp: Math.round(e.hp) } : null;
+  netSend({ t: 'sync', list: NET.roster, started: NET.started, round: play ? G.round : 0, phase: play ? G.phase : '', T: Math.round(G.phaseT * 10) / 10, score: G.score, you }, to);
+}
+function attachSala(s) {
+  if (NET.sala && NET.sala !== s) NET.sala.sair();
+  const est = s.estado && typeof s.estado === 'object' ? s.estado : {};
+  Object.assign(NET, { sala: s, conectado: true, myId: s.lugar, code: s.codigo, roster: cleanRoster(est.list), started: !!est.started, hostL: -1, prevHost: -1, syncWait: 0 });
+  const mine = fn => (...a) => { if (NET.sala === s) fn(...a); };
+  s.on('msg', mine((d, de) => onNet(d, de)));
+  s.on('entrou', mine(j => { if (NET.host) addPlayer(j.lugar); hostCheck(); })); // quem entra pode pegar um lugar menor (o de quem saiu) e virar anfitrião
+  s.on('caiu', mine(() => hostCheck()));
+  s.on('voltou', mine(l => { if (NET.host) sendSync(l); hostCheck(); })); // quem segurava a sala passa o estado antes de devolver o comando
+  s.on('saiu', mine(l => {
+    if (l < 0) return netGone();
+    // a lib tira da lista logo depois do evento
+    queueMicrotask(() => {
+      if (NET.sala !== s) return;
+      NET.roster = NET.roster.filter(p => p.id !== l);
+      removeRemote(l);
+      hostCheck();
+      if (NET.host) { netRoster(); checkTeams(); } else { syncEnts(); paintLobby(); }
+    });
+  }));
+  s.on('conexao', mine(ok => {
+    NET.conectado = ok;
+    if (ok) { startWait(); netSend({ t: 'hello' }); }
+    hostCheck();
+  }));
+  settings.mode = 'online';
+  // recarregou a página com gente na sala: espera o estado de quem ficou antes de mandar em alguma coisa
+  if (s.jogadores.length > 1 || NET.started) startWait();
+  hostCheck();
+  netSend({ t: 'hello' });
+  netMsg(s.jogadores.length > 1 ? '' : 'Chame mais gente: mande o link do convite ou espere alguém do Jogo rápido.');
+  paintMenu();
+}
+let lobbyOpen = false;
+function seedName() { try { const n = store.get('nome', ''); if (n && !localStorage.getItem('karma:net:nome')) localStorage.setItem('karma:net:nome', n); } catch (e) { /* sem armazenamento */ } }
+function netOpenLobby() {
+  if (lobbyOpen || NET.sala) return;
+  if (!window.KarmaNet) { netMsg('Não deu pra carregar o modo online. Confira sua internet.', true); return; }
+  audioInit(); seedName(); netMsg(''); lobbyOpen = true;
+  KarmaNet.lobby({ jogo: 'crossstrike', titulo: 'CrossStrike', max: MAX_PLAYERS }).then(s => { lobbyOpen = false; if (s) attachSala(s); else paintLobby(); });
 }
 function netLeave(silent, keepMsg) {
-  const peer = NET.peer;
-  NET.peer = null;
-  if (peer) { try { peer.destroy(); } catch (e) { /* já fechado */ } }
-  Object.assign(NET, { host: false, hostConn: null, myId: '', code: '', roster: [], started: false });
-  NET.conns = new Map();
+  const s = NET.sala;
+  NET.sala = null; clearTimeout(NET.waitTimer);
+  if (s) s.sair();
+  Object.assign(NET, { conectado: false, myId: -1, code: '', roster: [], started: false, hostL: -1, prevHost: -1, syncWait: 0 });
   if (!keepMsg) netMsg(silent ? '' : 'Você saiu da sala.');
   paintLobby();
 }
-function hostGone() {
+// a sala sumiu do servidor (ficamos fora tempo demais)
+function netGone() {
   const wasPlaying = G.online && G.screen !== 'menu';
   netLeave(true, true);
-  netMsg('O anfitrião fechou a sala.', true);
-  if (wasPlaying) { toMenu(); showMsg('O anfitrião saiu', '', 2); }
+  netMsg('A sala fechou. Entre em outra pelo Jogar online.', true);
+  if (wasPlaying) { toMenu(); showMsg('A sala fechou', '', 2); }
 }
-function dropPlayer(id) {
-  if (!NET.host) return;
-  const had = NET.roster.some(p => p.id === id);
-  NET.conns.delete(id);
-  NET.roster = NET.roster.filter(p => p.id !== id);
-  if (!had) return;
-  netSend({ t: 'left', id });
-  removeRemote(id);
-  netRoster();
-  if (G.online && G.screen === 'play' && (!ents.some(e => e.team === 'A') || !ents.some(e => e.team === 'B'))) {
+function checkTeams() {
+  if (NET.host && G.online && G.screen === 'play' && NET.started && (!ents.some(e => e.team === 'A') || !ents.some(e => e.team === 'B'))) {
     netSend({ t: 'match', score: G.score }); endMatch();
   }
 }
-function onNet(m, conn) {
-  if (!m || typeof m !== 'object' || typeof m.t !== 'string') return;
-  if (NET.host) {
-    m.from = conn.peer; // não confia no que o convidado diz ser
-    if (m.t === 'hello') {
-      if (!NET.conns.has(conn.peer) || NET.roster.some(p => p.id === conn.peer)) return;
-      const nA = NET.roster.filter(p => p.team === 'A').length, nB = NET.roster.length - nA;
-      NET.roster.push({ id: conn.peer, name: String(m.name || 'Jogador').slice(0, 14), team: nB < nA ? 'B' : nA < nB ? 'A' : 'B' });
-      netRoster(); return;
+// quem entrou no meio ou saiu: acerta os bonecos da partida com a lista da sala (mesma ordem em todo mundo)
+function syncEnts() {
+  if (!G.online || G.screen !== 'play') return;
+  const ids = new Set(NET.roster.map(p => p.id));
+  for (const e of ents.filter(x => x.isRemote && !ids.has(x.id))) removeRemote(e.id);
+  for (const p of NET.roster) {
+    if (p.id === NET.myId || ents.some(e => e.isRemote && e.id === p.id)) continue;
+    const e = makeRemote(p, ents.filter(x => x.team === p.team).length);
+    e.mesh.visible = false; ents.push(e);
+    showMsg(p.name + ' entrou', 'Joga a partir da próxima rodada', 2);
+  }
+}
+function onNet(m, de) {
+  if (!m || typeof m !== 'object' || typeof m.t !== 'string' || !Number.isInteger(de) || de === NET.myId) return;
+  m.from = de; // quem mandou é o servidor que diz, não a mensagem
+  if (m.t === 'hello') {
+    if (NET.host) { addPlayer(de); sendSync(de); }
+    else if (de === hostLugar() && NET.myId === viceLugar()) {
+      // quem chegou (ou recarregou) já é o menor lugar, mas está sem o estado: o próximo da fila passa
+      if (!NET.roster.some(p => p.id === de) && NET.roster.length < MAX_PLAYERS) { NET.roster.push({ id: de, name: nomeDe(de), team: nextTeam() }); netRoster(true); }
+      sendSync(de, true);
     }
-    if (m.t === 'team') { if (!NET.started) { const p = NET.roster.find(q => q.id === conn.peer); if (p) { p.team = other(p.team); netRoster(); } } return; }
-    if (!RELAY.includes(m.t) || !NET.roster.some(p => p.id === conn.peer)) return;
-    for (const [id, c] of NET.conns) if (id !== conn.peer && c.open) c.send(m);
-  } else if (!RELAY.includes(m.t) && m.from !== ROOM_PREFIX + NET.code && conn !== NET.hostConn) return;
+    return;
+  }
+  if (m.t === 'team') { if (NET.host && !NET.started) { const p = NET.roster.find(q => q.id === de); if (p) { p.team = other(p.team); netRoster(); } } return; }
+  if (CTRL.includes(m.t) && m.t !== 'sync' && de !== hostLugar() && de !== NET.prevHost && de !== viceLugar()) return;
   handleNet(m);
+}
+// chegou o estado da sala (entrei no meio, recarreguei ou voltei de uma queda)
+function applySync(m) {
+  NET.roster = cleanRoster(m.list); NET.started = !!m.started;
+  let late = false;
+  if (NET.started && m.phase && NET.roster.some(p => p.id === NET.myId) && !(G.online && G.screen === 'play')) { settings.mode = 'online'; startMatch(); late = true; }
+  if (G.online && G.screen === 'play') { syncEnts(); if (NET.started) applyRound(m, late); }
+  endWait();
+  paintLobby();
+}
+function applyRound(m, late) {
+  const round = Math.floor(+m.round || 0);
+  if (!['buy', 'live', 'post'].includes(m.phase) || round < 1) return;
+  if (m.score && typeof m.score === 'object') G.score = { A: +m.score.A || 0, B: +m.score.B || 0 };
+  if (round !== G.round || G.phase === 'wait') {
+    startRound(round);
+    if (m.phase !== 'buy') {
+      G.phase = m.phase; closeBuy();
+      const y = m.you;
+      if (late && y && Array.isArray(y.p) && m.phase !== 'post') { // recarregou vivo: volta onde os outros te viam
+        P.pos.set(clamp(+y.p[0] || 0, -200, 200), clamp(+y.p[1] || 0, -5, 40), clamp(+y.p[2] || 0, -200, 200)); P.yaw = +y.yaw || 0; P.hp = clamp(+y.hp || 100, 1, 100); P.vx = P.vz = P.vy = 0;
+      } else if (late && m.phase === 'live') { // chegou com a rodada valendo: assiste e joga a próxima
+        P.alive = false; P.hp = 0; P.mesh.visible = false;
+        showMsg('Rodada em andamento', 'Você joga a partir da próxima', 3);
+        setTimeout(() => { if (!P.alive && G.screen === 'play') nextSpec(); }, 300);
+      }
+    }
+  } else if (m.phase !== G.phase) {
+    if (m.phase === 'live' && G.phase === 'buy') goLive();
+    else if (m.phase === 'post') { G.phase = 'post'; closeBuy(); }
+  }
+  G.phaseT = clamp(+m.T || 0, 0, 600);
 }
 function entById(id) { return id === NET.myId ? P : ents.find(e => e.isRemote && e.id === id); }
 function handleNet(m) {
   const H = !NET.host;
   switch (m.t) {
-    case 'roster': if (H) { NET.roster = Array.isArray(m.list) ? m.list : []; NET.started = !!m.started; if (!G.online) netMsg(NET.roster.length > 1 ? 'Esperando o anfitrião começar.' : 'Esperando mais gente entrar.'); paintLobby(); } break;
-    case 'deny': if (H) { netLeave(true, true); netMsg(m.why || 'Não deu pra entrar.', true); } break;
-    case 'start': if (H) { NET.roster = m.list; NET.started = true; settings.mode = 'online'; startMatch(); } break;
+    case 'roster': if (H) { NET.roster = cleanRoster(m.list); NET.started = !!m.started; if (!G.online) netMsg(NET.roster.length > 1 ? 'Esperando o anfitrião começar.' : 'Esperando mais gente entrar.'); syncEnts(); paintLobby(); } break;
+    case 'sync': if (H) applySync(m); break;
+    case 'start': if (H) { NET.roster = cleanRoster(m.list); NET.started = true; settings.mode = 'online'; startMatch(); } break;
     case 'round':
       if (!H || !G.online) break;
       if (m.ev === 'start') startRound(m.round);
       else if (m.ev === 'live') goLive();
       else if (m.ev === 'end') endRound(m.winner, m.why, m.score);
       break;
-    case 'time': if (H && G.online && G.phase === m.phase) G.phaseT = +m.T || 0; break;
-    case 'match': if (H && G.online && G.screen === 'play') { G.score = m.score; endMatch(); } break;
-    case 'left': if (H) removeRemote(m.id); break;
+    case 'time':
+      if (!H || !G.online || G.screen !== 'play') break;
+      if ((m.round == null || m.round === G.round) && G.phase === m.phase) G.phaseT = +m.T || 0;
+      else if (m.round != null && NET.started) applyRound(m, false); // perdeu algum aviso de rodada: acerta pelo relógio do anfitrião
+      break;
+    case 'match': if (H && G.online && G.screen === 'play') { if (m.score) G.score = m.score; endMatch(); } break;
     case 'st': {
       const e = entById(m.from); if (!e || e === P) break;
       e.tgt.set(+m.x || 0, +m.y || 0, +m.z || 0); e.tgtYaw = +m.yaw || 0; e.tgtPitch = +m.p || 0; e.crouch = !!m.c;
       if (WEAPONS[m.w]) e.cur = m.w; if (e.alive) e.hp = +m.hp || 0; e.gotSt = true;
+      // vivo ou morto do lado de lá, na mesma rodada: conserta quem entrou no meio ou perdeu a mensagem de morte
+      if (G.online && m.r === G.round && (G.phase === 'buy' || G.phase === 'live' || G.phase === 'post')) {
+        if (m.a === 0 && e.alive && !e.finishing) { e.alive = false; e.hp = 0; if (e.mesh) e.mesh.visible = false; }
+        else if (m.a === 1 && !e.alive && G.phase !== 'post') { e.alive = true; e.hp = clamp(+m.hp || 100, 1, 100); e.pos.copy(e.tgt); if (e.mesh) { e.mesh.visible = true; resetPose(e.mesh); } }
+      }
       break;
     }
     case 'shot': {
@@ -4892,7 +4999,7 @@ function handleNet(m) {
     }
     case 'wall': { const e = entById(m.from); if (G.online && e && e !== P && !WALLS.some(W => W.id === m.id)) placeWall(+m.x || 0, +m.y || 0, +m.z || 0, +m.yaw || 0, String(m.id), e); break; }
     case 'wd': { const W = WALLS.find(W => W.id === m.id); if (W) { W.hp -= clamp(+m.d || 0, 0, 300); if (W.hp <= 0) breakWall(W); } break; }
-    case 'kill': { const k = entById(m.killer), v = entById(m.victim); if (G.online && k && v && v !== P && v.alive && WEAPONS[m.w]) kill(v, k, m.w, !!m.head, !!m.fin); break; }
+    case 'kill': { const k = entById(m.killer), v = entById(m.victim); if (G.online && k && v && v !== P && v.id === m.from && v.alive && WEAPONS[m.w]) kill(v, k, m.w, !!m.head, !!m.fin); break; }
   }
 }
 function makeRemote(p, idx) {
@@ -4922,14 +5029,14 @@ function updateRemotes(dt) {
   }
 }
 function netTick(dt) {
-  if (!NET.peer || !G.online) return;
+  if (!NET.sala || !G.online) return;
   NET.sendT -= dt;
   if (NET.sendT <= 0) {
     NET.sendT = 0.05;
     const r = v => Math.round(v * 1000) / 1000;
-    netSend({ t: 'st', x: r(P.pos.x), y: r(P.pos.y), z: r(P.pos.z), yaw: r(P.yaw + P.recoilY), p: r(P.pitch + P.recoilP), c: P.crouch ? 1 : 0, w: P.cur, hp: Math.max(0, Math.round(P.hp)) });
+    netSend({ t: 'st', x: r(P.pos.x), y: r(P.pos.y), z: r(P.pos.z), yaw: r(P.yaw + P.recoilY), p: r(P.pitch + P.recoilP), c: P.crouch ? 1 : 0, w: P.cur, hp: Math.max(0, Math.round(P.hp)), a: P.alive ? 1 : 0, r: G.round });
   }
-  if (NET.host) { NET.timeT -= dt; if (NET.timeT <= 0) { NET.timeT = 1; netSend({ t: 'time', phase: G.phase, T: Math.round(G.phaseT * 10) / 10 }); } }
+  if (NET.host) { NET.timeT -= dt; if (NET.timeT <= 0) { NET.timeT = 1; netSend({ t: 'time', phase: G.phase, T: Math.round(G.phaseT * 10) / 10, round: G.round, score: G.score }); } }
 }
 // com a aba escondida o navegador para o requestAnimationFrame; isso mantém rodada e posição andando
 let bgLast = performance.now();
@@ -4941,7 +5048,8 @@ setInterval(() => {
   updateRemotes(dt); netTick(dt);
 }, 200);
 function netStartMatch() {
-  if (!NET.host || !NET.peer) { netMsg(NET.peer ? 'Só quem criou a sala pode começar.' : 'Crie uma sala ou entre com um código.', true); return; }
+  if (!NET.sala) { netOpenLobby(); return; }
+  if (!NET.host) { netMsg('Só o anfitrião pode começar.', true); return; }
   if (NET.roster.length < 2) { netMsg('Precisa de pelo menos 2 jogadores.', true); return; }
   if (!NET.roster.some(p => p.team === 'A') || !NET.roster.some(p => p.team === 'B')) { netMsg('Cada time precisa de pelo menos 1 jogador.', true); return; }
   NET.started = true;
@@ -4950,34 +5058,42 @@ function netStartMatch() {
   settings.mode = 'online';
   startMatch();
 }
+const canShare = !!navigator.share && isTouch;
 function paintLobby() {
-  const inRoom = !!(NET.peer && NET.myId && NET.roster.length);
-  $('netStart').hidden = inRoom || !!NET.peer;
+  const inRoom = !!NET.sala;
+  $('netStart').hidden = inRoom;
   $('lobby').hidden = !inRoom;
   if (inRoom) {
     $('roomCode').textContent = NET.code;
+    const h = hostLugar(), on = new Map(NET.sala.jogadores.map(j => [j.lugar, j.on]));
     const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-    $('plist').innerHTML = NET.roster.map((p, i) => `<li class="${p.team}${p.id === NET.myId ? ' me' : ''}">${esc(p.name)}<span class="h">${i === 0 ? 'anfitrião' : ''}${p.id === NET.myId ? (i === 0 ? ' · ' : '') + 'você' : ''}</span></li>`).join('');
+    $('plist').innerHTML = NET.roster.map(p => {
+      const tags = [p.id === h ? 'anfitrião' : '', p.id === NET.myId ? 'você' : '', on.get(p.id) === false ? 'caiu' : ''].filter(Boolean).join(' · ');
+      return `<li class="${p.team}${p.id === NET.myId ? ' me' : ''}" data-id="${p.id}">${esc(p.name)}<span class="h">${tags}</span></li>`;
+    }).join('');
     $('netTeam').disabled = NET.started;
+    $('netShare').textContent = canShare ? 'Compartilhar convite' : 'Copiar link do convite';
   }
   const play = $('play');
   if (settings.mode === 'online') {
-    play.textContent = NET.host ? 'Começar partida' : 'Jogar';
-    play.disabled = !(NET.host && NET.roster.length >= 2) ;
-    if (inRoom && !NET.host) play.textContent = 'Esperando o anfitrião';
+    if (!inRoom) { play.textContent = 'Jogar online'; play.disabled = lobbyOpen; }
+    else if (NET.host) { play.textContent = 'Começar partida'; play.disabled = NET.roster.length < 2; }
+    else { play.textContent = NET.started ? 'Entrando na partida…' : 'Esperando o anfitrião'; play.disabled = true; }
   } else { play.textContent = 'Jogar'; play.disabled = false; }
 }
-$('netName').value = store.get('nome', '') || '';
-$('netName').addEventListener('change', () => { store.set('nome', myName()); const me = NET.roster.find(p => p.id === NET.myId); if (me && NET.host && !NET.started) { me.name = myName(); netRoster(); } });
-$('netCreate').addEventListener('click', () => { store.set('nome', myName()); audioInit(); netCreate(); });
-$('netJoin').addEventListener('click', () => { store.set('nome', myName()); audioInit(); netJoin(); });
-$('netCode').addEventListener('keydown', e => { if (e.key === 'Enter') $('netJoin').click(); });
+$('netOpen').addEventListener('click', netOpenLobby);
+$('netShare').addEventListener('click', async () => {
+  const s = NET.sala; if (!s) return;
+  try {
+    if (canShare) await navigator.share({ title: 'CrossStrike', text: `Bora jogar CrossStrike? Código ${s.codigo}`, url: s.link });
+    else { await navigator.clipboard.writeText(s.link); netMsg('Link copiado: ' + s.link); }
+  } catch (e) { if (!canShare) netMsg('Convite: ' + s.link); }
+});
 $('netLeave').addEventListener('click', () => netLeave(false));
 $('netTeam').addEventListener('click', () => {
   if (NET.host) { const me = NET.roster.find(p => p.id === NET.myId); if (me && !NET.started) { me.team = other(me.team); netRoster(); } }
   else netSend({ t: 'team' });
 });
-window.addEventListener('pagehide', () => { if (NET.peer) try { NET.peer.destroy(); } catch (e) { /* saindo */ } });
 
 /* ---------- Início ---------- */
 paintSettings();
@@ -4985,6 +5101,11 @@ applyQuality();
 setupMenuScene();
 paintMenu();
 requestAnimationFrame(t => { lastT = t; frame(t); });
+// convite (?sala=) abre o online e entra direto; recarregar a página no meio da partida volta pra mesma sala e lugar
+if (window.KarmaNet) {
+  if (KarmaNet.convite) { settings.mode = 'online'; paintMenu(); netOpenLobby(); }
+  else KarmaNet.retomar('crossstrike').then(s => { if (s && !NET.sala) attachSala(s); });
+}
 
 // gancho de depuração/testes
 window.__cs = { G, P, NET, input, renderer, get bots() { return bots; }, get ents() { return ents; }, hitboxes, trace, fireWeapon, camera, NODES, BOXES, settings, startMatch, toMenu, pause, sim(sec) { for (let t = 0; t < sec && G.screen === 'play'; t += 1 / 30) tick(1 / 30); }, resume, buy, openBuy, closeBuy, equip, look };

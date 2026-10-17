@@ -79,6 +79,30 @@ test("cria, entra, repassa jogada e guarda estado", async () => {
   for (const x of [a, b2, c, d]) x.ws.close();
 });
 
+test("sala aberta aparece na lista até encher; fechada não aparece", async () => {
+  const lista = async () => (await (await fetch(`http://127.0.0.1:${PORTA}/salas?jogo=xadrez`)).json()).salas;
+  const a = cliente(); await a.aberto;
+  a.manda({ t: "criar", jogo: "xadrez", nome: "Ana", max: 2, aberta: true });
+  const sala = await a.espera("sala");
+  const f = cliente(); await f.aberto;
+  f.manda({ t: "criar", jogo: "xadrez", nome: "Fechada", max: 2 });
+  await f.espera("sala");
+  let l = await lista();
+  assert.deepEqual(l.map((s) => [s.codigo, s.dono, s.jogadores]), [[sala.codigo, "Ana", 1]]);
+
+  // quem criou fecha e abre de novo
+  a.manda({ t: "abrir", aberta: false }); await new Promise((r) => setTimeout(r, 50));
+  assert.equal((await lista()).length, 0);
+  a.manda({ t: "abrir", aberta: true }); await new Promise((r) => setTimeout(r, 50));
+  assert.equal((await lista()).length, 1);
+
+  const b = cliente(); await b.aberto;
+  b.manda({ t: "entrar", codigo: sala.codigo, jogo: "xadrez", nome: "Bia" });
+  await b.espera("sala");
+  assert.equal((await lista()).length, 0, "cheia sai da lista");
+  for (const x of [a, b, f]) x.ws.close();
+});
+
 test("origem de fora é recusada", async () => {
   const ws = new WebSocket(`ws://127.0.0.1:${PORTA}`, { origin: "https://site-qualquer.com" });
   await assert.rejects(new Promise((ok, falha) => { ws.on("open", ok); ws.on("error", falha); }));

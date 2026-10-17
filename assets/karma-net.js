@@ -6,11 +6,15 @@
  * Uso num jogo (ver jogos/ligue-4):
  *   <script src="../../assets/karma-net.js"></script>
  *   const sala = await KarmaNet.lobby({ jogo: "ligue-4", titulo: "Ligue 4" });  // null se cancelou
+ *     lobby: Jogo rápido (entra numa sala aberta ou cria uma), lista de salas abertas, sala com amigo
+ *     (código/convite) e entrar com código. Com max 2 resolve quando os dois estão na mesa; com mais
+ *     lugares (crossstrike) resolve assim que entra, e o jogo cuida da espera.
  *   sala.lugar            // 0 = quem criou, 1 = quem entrou
  *   sala.enviar({ c: 3 }) // jogada
  *   sala.on("msg", (dados, de) => ...)
  *   sala.on("saiu", (lugar) => ...)   // também: entrou, caiu, voltou, conexao(true|false)
  *   sala.publicar(estado) // snapshot guardado no servidor: quem recarrega a página recebe em sala.estado
+ *   sala.abrir(false)     // tira a sala da lista do lobby (ex.: a partida começou)
  *   sala.sair()
  *
  * Convite: jogar/<slug>/?sala=CODIGO. O site repassa o ?sala ao iframe, e o lobby entra direto.
@@ -78,6 +82,8 @@
       this.lugar = info.lugar;
       this.chave = info.chave;
       this.max = info.max;
+      this.aberta = !!info.aberta;
+      this.criada = info.criada;
       this.jogadores = info.jogadores;
       this.estado = info.estado;
       gravarSessao(RETOMA_KEY(this.jogo), { codigo: this.codigo, chave: this.chave });
@@ -155,15 +161,16 @@
       if (this.ws) { this.ws.onclose = null; this.ws.close(); }
     }
     sair() { this.envia({ t: "sair" }); this.encerra(); }
+    abrir(aberta) { this.aberta = !!aberta; return this.envia({ t: "abrir", aberta: !!aberta }); }
   }
 
-  async function criar({ jogo, max = 2, nome }) {
+  async function criar({ jogo, max = 2, nome, aberta = false }) {
     let ultimo;
     for (const prefixo of params.get("rt") ? [ORDEM[0]] : ORDEM) {
       const url = urlDe(prefixo);
       try {
         const ws = await abre(url);
-        return new Sala(ws, await pede(ws, { t: "criar", jogo, max, nome }), url);
+        return new Sala(ws, await pede(ws, { t: "criar", jogo, max, nome, aberta }), url);
       } catch (e) { ultimo = e; }
     }
     throw ultimo;
@@ -177,6 +184,19 @@
     return new Sala(ws, await pede(ws, { t: "entrar", jogo, codigo, nome, chave }), url);
   }
 
+  // salas abertas de todos os servidores, mais antigas primeiro. Servidor fora do ar só some da lista
+  const httpDe = (ws) => ws.replace(/^ws/, "http");
+  async function listar(jogo) {
+    const urls = params.get("rt") ? [params.get("rt")] : ORDEM.map((p) => SERVIDORES[p]);
+    const listas = await Promise.all(urls.map(async (u) => {
+      try {
+        const r = await fetch(`${httpDe(u)}/salas?jogo=${encodeURIComponent(jogo)}`, { signal: AbortSignal.timeout(4000), cache: "no-store" });
+        return (await r.json()).salas || [];
+      } catch { return []; }
+    }));
+    return listas.flat().sort((a, b) => a.criada - b.criada);
+  }
+
   // recarregou a página no meio da partida: volta pra mesma sala e lugar
   async function retomar(jogo) {
     const r = lerSessao(RETOMA_KEY(jogo));
@@ -188,7 +208,7 @@
 
   const CSS = `
 .kn-ov{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(13,14,18,.82);font:400 15px/1.4 "Geist",system-ui,sans-serif;color:var(--text,#f2f3f5);animation:kn-fade .2s ease}
-.kn-dlg{width:min(100%,340px);background:var(--surface,#171920);border:1px solid var(--line,#262a33);border-radius:var(--r,12px);padding:24px 22px 20px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.kn-dlg{width:min(100%,360px);max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain;background:var(--surface,#171920);border:1px solid var(--line,#262a33);border-radius:var(--r,12px);padding:24px 22px 20px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.5)}
 .kn-dlg h2{font:800 22px/1.15 var(--display,system-ui);margin:0 0 6px}
 .kn-dlg p{color:var(--muted,#9aa0ab);margin:0 0 14px}
 .kn-col{display:flex;flex-direction:column;gap:10px}
@@ -200,6 +220,16 @@
 .kn-in{width:100%;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line,#262a33);background:var(--bg,#0d0e12);color:inherit;font:600 16px/1 inherit;text-align:center;user-select:text;-webkit-user-select:text}
 .kn-in.kn-cod{font:800 24px/1 var(--display,monospace);letter-spacing:.18em;text-transform:uppercase}
 .kn-code{font:800 34px/1 var(--display,monospace);letter-spacing:.16em;color:var(--accent,#c8f13a);margin:6px 0 14px;user-select:text;-webkit-user-select:text}
+.kn-sub{font:600 12px/1 inherit;color:var(--muted,#9aa0ab);text-transform:uppercase;letter-spacing:.08em;text-align:left;margin:8px 2px 0}
+.kn-lista{display:flex;flex-direction:column;gap:6px;max-height:190px;overflow-y:auto;text-align:left}
+.kn-item{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 6px 6px 14px;border-radius:10px;background:var(--bg,#0d0e12);border:1px solid var(--line,#262a33);color:inherit;font:inherit;cursor:pointer;width:100%;text-align:left}
+.kn-item:hover{border-color:var(--accent,#c8f13a)}
+.kn-item b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.kn-item small{color:var(--muted,#9aa0ab);font-variant-numeric:tabular-nums}
+.kn-item span{padding:8px 12px;border-radius:999px;background:var(--raised,#1f222b);font-weight:600;font-size:13px}
+.kn-vazio{color:var(--muted,#9aa0ab);font-size:14px;padding:10px 4px;text-align:center}
+.kn-linha{display:flex;align-items:center;gap:10px;color:var(--muted,#9aa0ab);font-size:12px;margin:4px 0}
+.kn-linha::before,.kn-linha::after{content:"";flex:1;height:1px;background:var(--line,#262a33)}
 .kn-erro{color:var(--coral,#ff6b5a);font-weight:600;min-height:1.4em;margin-top:8px}
 .kn-esp{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent,#c8f13a);margin-right:8px;animation:kn-pulse 1s ease infinite}
 .kn-toast{position:fixed;left:50%;top:max(10px,env(safe-area-inset-top));transform:translateX(-50%);z-index:70;padding:8px 14px;border-radius:999px;background:var(--raised,#1f222b);border:1px solid var(--line,#262a33);color:var(--text,#f2f3f5);font:600 13px/1.2 "Geist",system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:kn-fade .2s ease;pointer-events:none}
@@ -230,23 +260,34 @@
   const el = (html) => { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-  // Abre a sala: criar ou entrar com código (ou direto pelo ?sala= do convite). Resolve com a Sala
-  // quando ela está cheia (os dois na mesa), ou null se a pessoa cancelou.
+  // Abre a sala. Resolve com a Sala (com max 2, quando os dois estão na mesa) ou null se cancelou.
   function lobby({ jogo, titulo = "Jogar online", max = 2 }) {
     estilo();
+    const esperaCheia = max <= 2;
     return new Promise((resolve) => {
       const ov = el(`<div class="kn-ov"><div class="kn-dlg" role="dialog" aria-modal="true" aria-label="${esc(titulo)}"></div></div>`);
       const dlg = ov.firstChild;
       document.body.appendChild(ov);
-      let sala = null;
-      const fecha = (r) => { ov.remove(); resolve(r); };
+      let sala = null, timer = null, vivo = true;
+      const para = () => { clearInterval(timer); timer = null; };
+      const fecha = (r) => { vivo = false; para(); ov.remove(); resolve(r); };
       const cancela = () => { if (sala) sala.sair(); fecha(null); };
       ov.addEventListener("keydown", (e) => { if (e.key === "Escape") cancela(); });
+      const nome = () => { const i = dlg.querySelector("#kn-nome"); const n = i ? i.value.trim() : ler(NOME_KEY, ""); gravar(NOME_KEY, n); return n; };
 
-      const pronta = (s) => {
+      // sala criada esperando gente. Na aberta, se aparecer outra aberta mais antiga (duas pessoas
+      // tocaram em Jogo rápido juntas), muda pra ela: a mais antiga fica, e os dois se encontram
+      const esperando = (s) => {
         sala = s;
-        if (s.cheia) return fecha(s);
-        dlg.innerHTML = `
+        if (!esperaCheia || s.cheia) return fecha(s);
+        para();
+        dlg.innerHTML = s.aberta ? `
+          <h2>Procurando adversário</h2>
+          <p><span class="kn-esp"></span>Sua sala está na lista. Quem tocar em Jogo rápido cai aqui.</p>
+          <div class="kn-col">
+            <button class="kn-btn" data-a="link">Chamar um amigo (${esc(s.codigo)})</button>
+            <button class="kn-btn kn-ghost" data-a="cancelar">Cancelar</button>
+          </div>` : `
           <h2>Sala criada</h2>
           <p>Passe o código ou o link pra quem vai jogar com você.</p>
           <div class="kn-code">${esc(s.codigo)}</div>
@@ -262,47 +303,81 @@
           } catch { /* fechou o compartilhar */ }
         };
         dlg.querySelector('[data-a="cancelar"]').onclick = cancela;
-        s.on("entrou", () => { if (s.cheia && ov.isConnected) fecha(s); });
+        s.on("entrou", () => { if (s.cheia && vivo && sala === s) fecha(s); });
+        if (s.aberta) timer = setInterval(async () => {
+          const outra = (await listar(jogo)).find((x) => x.codigo !== s.codigo && x.criada < s.criada);
+          if (!outra || !vivo || sala !== s || s.cheia) return;
+          try {
+            const nova = await entrar({ jogo, codigo: outra.codigo, nome: nome() });
+            s.sair();
+            esperando(nova);
+          } catch { /* encheu antes: segue esperando na própria */ }
+        }, 3000);
       };
 
       const tenta = async (botao, acao) => {
         const erro = dlg.querySelector(".kn-erro");
-        botao.disabled = true;
-        erro.textContent = "";
-        try { pronta(await acao()); } catch (e) { erro.textContent = e.message; botao.disabled = false; }
+        if (botao) botao.disabled = true;
+        if (erro) erro.textContent = "";
+        try { esperando(await acao()); } catch (e) { if (erro) erro.textContent = e.message; if (botao) botao.disabled = false; }
+      };
+
+      // Jogo rápido: a sala aberta mais antiga com vaga; se nenhuma, cria uma aberta e espera nela
+      const rapido = async () => {
+        for (const x of await listar(jogo)) {
+          try { return await entrar({ jogo, codigo: x.codigo, nome: nome() }); } catch { /* encheu: tenta a próxima */ }
+        }
+        return criar({ jogo, max, nome: nome(), aberta: true });
+      };
+
+      const pintaLista = (lista) => {
+        const box = dlg.querySelector(".kn-lista");
+        if (!box) return;
+        box.innerHTML = lista.length ? lista.map((x) => `
+          <button class="kn-item" data-cod="${esc(x.codigo)}"><b>Sala de ${esc(x.dono)}</b><small>${x.jogadores}/${x.max}</small><span>Entrar</span></button>`).join("")
+          : `<div class="kn-vazio">Nenhuma sala aberta agora. Toque em Jogo rápido e a sua aparece aqui.</div>`;
+        box.querySelectorAll(".kn-item").forEach((b) => {
+          b.onclick = () => tenta(b, () => entrar({ jogo, codigo: b.dataset.cod, nome: nome() }));
+        });
       };
 
       const inicio = () => {
         dlg.innerHTML = `
           <h2>${esc(titulo)} online</h2>
-          <p>Jogue com alguém em outro aparelho.</p>
           <div class="kn-col">
             <input class="kn-in" id="kn-nome" maxlength="20" placeholder="Seu nome" autocomplete="nickname" value="${esc(ler(NOME_KEY, ""))}">
-            <button class="kn-btn kn-pri" data-a="criar">Criar sala</button>
+            <button class="kn-btn kn-pri" data-a="rapido">Jogo rápido</button>
+            <div class="kn-sub">Salas abertas</div>
+            <div class="kn-lista" aria-live="polite"><div class="kn-vazio">Procurando salas…</div></div>
+            <div class="kn-linha">ou jogue com um amigo</div>
+            <button class="kn-btn" data-a="criar">Criar sala com código</button>
             <div class="kn-row"><input class="kn-in kn-cod" id="kn-cod" maxlength="5" placeholder="CÓDIGO" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="kn-btn" data-a="entrar">Entrar</button></div>
             <button class="kn-btn kn-ghost" data-a="cancelar">Voltar</button>
           </div>
           <div class="kn-erro" role="alert"></div>`;
-        const nome = () => { const n = dlg.querySelector("#kn-nome").value.trim(); gravar(NOME_KEY, n); return n; };
         const cod = dlg.querySelector("#kn-cod");
+        dlg.querySelector('[data-a="rapido"]').onclick = (e) => tenta(e.target, rapido);
         dlg.querySelector('[data-a="criar"]').onclick = (e) => tenta(e.target, () => criar({ jogo, max, nome: nome() }));
         const entra = () => tenta(dlg.querySelector('[data-a="entrar"]'), () => entrar({ jogo, codigo: cod.value, nome: nome() }));
         dlg.querySelector('[data-a="entrar"]').onclick = entra;
         cod.addEventListener("keydown", (e) => { if (e.key === "Enter") entra(); });
         dlg.querySelector('[data-a="cancelar"]').onclick = cancela;
+        const atualiza = async () => { const l = await listar(jogo); if (vivo && !sala) pintaLista(l); };
+        atualiza();
+        timer = setInterval(atualiza, 3000);
       };
 
       // convite: entra direto, pedindo só o nome se ainda não tem
       const convite = params.get("sala");
+      inicio();
       if (convite && !lobby.usouConvite) {
         lobby.usouConvite = true;
-        inicio();
         dlg.querySelector("#kn-cod").value = convite.toUpperCase();
         if (ler(NOME_KEY, "")) dlg.querySelector('[data-a="entrar"]').click();
-      } else inicio();
+      }
       setTimeout(() => dlg.querySelector("input,button")?.focus(), 50);
     });
   }
 
-  window.KarmaNet = { lobby, criar, entrar, retomar, aviso, convite: params.get("sala") };
+  window.KarmaNet = { lobby, criar, entrar, listar, retomar, aviso, convite: params.get("sala") };
 })();

@@ -532,6 +532,8 @@ setInterval(function(){
 window.addEventListener("pagehide",save);
 document.addEventListener("visibilitychange",function(){if(document.hidden)save()});
 window.addEventListener("resize",function(){if(drag){drag.cards&&drag.cards.forEach(function(c){cardsEl[c].classList.remove("drag")});drag=null}fit()});
+/*a área da mesa também muda sem "resize" (texto de status quebrando linha, fonte carregando): refaz o encaixe*/
+if(window.ResizeObserver){var ultWH="";new ResizeObserver(function(){var k=wrap.clientWidth+"x"+wrap.clientHeight;if(k===ultWH||drag)return;ultWH=k;fit()}).observe(wrap)}
 start();
 })();
 </script>

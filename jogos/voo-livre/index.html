@@ -248,7 +248,17 @@ function circleRect(cx, cy, r, x, y, w, h) {
 }
 
 const GAME = {
-  resize() { if (state === 'menu' || state === 'over') { computeLW(); if (state === 'menu') reset(); } fit(); },
+  resize() {
+    if (state === 'menu' || state === 'over') { computeLW(); if (state === 'menu') reset(); }
+    else {
+      // girou no meio do voo: o campo ganha/perde largura e tudo anda junto com
+      // o pássaro, mantendo as distâncias até os pilares (nada de colisão do nada)
+      computeLW();
+      const dx = playerX() - pl.x;
+      pl.x += dx; for (const p of pillars) p.x += dx; for (const s of scarf) s[0] += dx;
+    }
+    fit();
+  },
   start(x, y) { reset(); setState('play'); flap(); },
   key(e, down) {
     if (!down || e.repeat) return;
