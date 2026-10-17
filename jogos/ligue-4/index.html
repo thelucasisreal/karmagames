@@ -103,6 +103,7 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
     <div class="seg" role="group" aria-label="Modo de jogo">
       <button class="btn" type="button" data-mode="cpu">Contra o computador</button>
       <button class="btn" type="button" data-mode="2p">2 jogadores</button>
+      <button class="btn" type="button" data-mode="online">Online</button>
     </div>
     <div class="seg" id="diffs" role="group" aria-label="Dificuldade">
       <button class="btn" type="button" data-diff="facil">Fácil</button>
@@ -135,6 +136,7 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
     <div class="row"><button class="btn primary" type="button" id="again">Jogar de novo</button></div>
   </div>
 </div>
+<script src="../../assets/karma-net.js"></script>
 <script>
 (function(){
 "use strict";
@@ -214,6 +216,8 @@ var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").mat
 var mode=store.get("modo","cpu");if(mode!=="cpu"&&mode!=="2p")mode="cpu";
 var diff=store.get("dificuldade","facil");if(diff!=="facil"&&diff!=="dificil")diff="facil";
 var st,turn,starter=1,over=false,busy=false,score,aiTimer=null,animTimer=null,sel=3,hover=false,kbd=false,colBtns=[];
+/* online: sala do KarmaNet; eu = minha cor (1 = quem criou a sala), rodada evita reiniciar duas vezes, hist refaz a partida */
+var sala=null,eu=1,rodada=0,hist=[],rede=true,modoAntes="cpu";
 
 (function(){
   var holes="",rims="";
@@ -231,14 +235,16 @@ for(var i=0;i<COLS;i++){(function(c){
 })(i)}
 colsEl.addEventListener("pointerleave",function(){hover=false;paintGhost()});
 
-function key(){return mode==="2p"?"2p":"cpu-"+diff}
+function key(){return mode==="2p"||mode==="online"?mode:"cpu-"+diff}
 function loadScore(){var s=store.get("placar:"+key(),null);score=s&&typeof s==="object"?{a:+s.a||0,b:+s.b||0,d:+s.d||0}:{a:0,b:0,d:0};paintScore()}
 function paintScore(){$("va").textContent=score.a;$("vb").textContent=score.b;$("vd").textContent=score.d}
-function nameOf(p){return mode==="2p"?"Jogador "+p:(p===1?"Você":"Computador")}
-function humanTurn(){return !over&&!busy&&(mode==="2p"||turn===1)}
+function rival(){return sala?sala.nomeDe(eu===1?1:0):"Adversário"}
+function nameOf(p){return mode==="online"?(p===eu?"Você":rival()):mode==="2p"?"Jogador "+p:(p===1?"Você":"Computador")}
+function humanTurn(){return !over&&!busy&&(mode==="2p"||(mode==="online"?sala&&rede&&sala.cheia&&turn===eu:turn===1))}
 function setStatus(){
   $("sa").classList.toggle("turn",!over&&turn===1);$("sb").classList.toggle("turn",!over&&turn===2);
   if(over)return;
+  if(mode==="online"){statusEl.textContent=!sala?"":!sala.cheia?"Esperando adversário…":turn===eu?"Sua vez":"Vez de "+rival();return}
   statusEl.textContent=mode==="2p"?"Vez do Jogador "+turn:(turn===1?"Sua vez":"Computador pensando…");
 }
 function colLabel(c){colBtns[c].setAttribute("aria-label","Coluna "+(c+1)+(canPlay(st,c)?"":", cheia"));colBtns[c].disabled=over}
@@ -249,7 +255,7 @@ function paintGhost(){
 }
 function newRound(){
   clearTimeout(aiTimer);clearTimeout(animTimer);ov.hidden=true;
-  st=newState();over=false;busy=false;turn=starter;
+  st=newState();over=false;busy=false;turn=starter;rodada++;hist=[];
   grid.innerHTML="";var ln=boardEl.querySelector(".line");if(ln)ln.remove();
   for(var c=0;c<COLS;c++)colLabel(c);
   setStatus();paintGhost();
@@ -259,20 +265,26 @@ function applyUi(){
   document.querySelectorAll("[data-mode]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.mode===mode)});
   document.querySelectorAll("[data-diff]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.diff===diff)});
   $("diffs").hidden=mode!=="cpu";
-  $("la").textContent=mode==="2p"?"Jogador 1":"Você";$("lb").textContent=mode==="2p"?"Jogador 2":"Computador";
+  $("la").textContent=mode==="cpu"?"Você":mode==="2p"?"Jogador 1":nameOf(1);$("lb").textContent=mode==="cpu"?"Computador":mode==="2p"?"Jogador 2":nameOf(2);
   loadScore();
 }
 function drop(c,p){
-  var r=st.h[c],row=ROWS-1-r;put(st,c,p);
+  var r=st.h[c],row=ROWS-1-r;put(st,c,p);hist.push(c);
+  // refazendo a partida não publica: o estado da sala já é este, e uma versão parcial apagaria um lance novo do outro
+  if(sala&&!drop.instante)sala.publicar({rodada:rodada,starter:starter,hist:hist});
   var el=document.createElement("div");el.className="disc p"+p;el.style.left=(c*100/COLS)+"%";el.style.top=(row*100/ROWS)+"%";el.innerHTML="<i></i>";
   el.dataset.c=c;el.dataset.r=r;grid.appendChild(el);
-  var dur=reduce?0:Math.round(240+row*55);
+  var dur=reduce||drop.instante?0:Math.round(240+row*55);
   if(dur&&el.animate)el.animate([
     {transform:"translateY(-"+((row+1.14)*100).toFixed(1)+"%)",easing:"cubic-bezier(.5,0,1,.7)"},
     {transform:"translateY(0)",offset:.72,easing:"cubic-bezier(0,.4,.4,1)"},
     {transform:"translateY(-10%)",offset:.86,easing:"cubic-bezier(.6,0,1,.6)"},
     {transform:"translateY(0)"}],{duration:dur});
-  busy=true;colLabel(c);paintGhost();
+  colLabel(c);
+  // refazendo a partida (voltou pra sala): cada jogada fecha antes da próxima, senão a vitória seria
+  // conferida no tabuleiro já completo
+  if(drop.instante){landed(c,r,p);return}
+  busy=true;paintGhost();
   animTimer=setTimeout(function(){busy=false;landed(c,r,p)},dur);
 }
 function landed(c,r,p){
@@ -284,6 +296,7 @@ function landed(c,r,p){
 }
 function human(c){
   if(!humanTurn()||!canPlay(st,c))return;
+  if(mode==="online"&&!sala.enviar({c:c,rodada:rodada}))return;
   setSel(c);drop(c,turn);
 }
 function aiTurn(){
@@ -297,16 +310,20 @@ function aiTurn(){
 function finish(p,run){
   over=true;for(var c=0;c<COLS;c++)colLabel(c);
   var title,text;
-  if(!p){score.d++;title="Empate!";text="O tabuleiro encheu e ninguém ligou quatro.";statusEl.textContent="Empate."}
+  // no online a mesma partida pode terminar de novo ao refazê-la (recarregou depois do fim): conta uma vez só
+  var conta=true;
+  if(mode==="online"&&sala){var id=sala.codigo+":"+rodada,ja=store.get("contadas",[]);if(ja.indexOf(id)>=0)conta=false;else store.set("contadas",ja.concat(id).slice(-50))}
+  if(!p){if(conta)score.d++;title="Empate!";text="O tabuleiro encheu e ninguém ligou quatro.";statusEl.textContent="Empate."}
   else{
-    if(p===1)score.a++;else score.b++;
+    if(conta){if(p===1)score.a++;else score.b++}
     var keys=run.map(function(x){return x[0]+","+x[1]});
     grid.querySelectorAll(".disc").forEach(function(d){d.classList.add(keys.indexOf(d.dataset.c+","+d.dataset.r)<0?"dim":"win")});
     drawLine(run);
-    if(mode==="2p"){title="Jogador "+p+" venceu!";text="Boa partida. O placar foi atualizado."}
+    if(mode==="online"){title=p===eu?"Você venceu!":rival()+" venceu";text=p===eu?"Boa! Quem perdeu começa a próxima.":"Bora a revanche?"}
+    else if(mode==="2p"){title="Jogador "+p+" venceu!";text="Boa partida. O placar foi atualizado."}
     else if(p===1){title="Você venceu!";text=diff==="dificil"?"Impressionante — no Difícil isso é raro.":"Mandou bem. Tente o modo Difícil."}
     else{title="O computador venceu";text="Não foi dessa vez. Bora a revanche?"}
-    statusEl.textContent=nameOf(p)+(mode==="cpu"&&p===1?" venceu!":" venceu.");
+    statusEl.textContent=nameOf(p)+((mode==="cpu"&&p===1)||(mode==="online"&&p===eu)?" venceu!":" venceu.");
   }
   store.set("placar:"+key(),score);paintScore();setStatus();paintGhost();
   starter=starter===1?2:1;
@@ -321,10 +338,56 @@ function drawLine(run){
   boardEl.appendChild(s);
 }
 function fit(){var s=Math.min(wrap.clientWidth,wrap.clientHeight,500);stage.style.setProperty("--c",Math.max(30,Math.floor(s/7.28))+"px")}
-document.querySelectorAll("[data-mode]").forEach(function(x){x.addEventListener("click",function(){if(mode===x.dataset.mode)return;mode=x.dataset.mode;store.set("modo",mode);starter=1;applyUi();newRound()})});
+/* ---- online ---- */
+function saiDaSala(){if(sala){sala.sair();sala=null}}
+function abreOnline(){
+  if(mode!=="online")modoAntes=mode;
+  saiDaSala();
+  KarmaNet.lobby({jogo:"ligue-4",titulo:"Ligue 4"}).then(function(s){
+    if(!s){if(mode==="online"){mode=modoAntes;applyUi();newRound()}else applyUi();return}
+    entraNaSala(s);
+  });
+}
+function entraNaSala(s){
+  sala=s;eu=s.lugar===0?1:2;rede=true;mode="online";starter=1;rodada=0;
+  s.on("msg",function(d){
+    if(d.novo!=null){if(d.novo>rodada){starter=d.starter;rodada=d.novo-1;newRound()}return}
+    if(d.c==null||d.rodada!==rodada||over||busy||turn===eu||!canPlay(st,d.c))return;
+    setSel(d.c);drop(d.c,turn);
+  });
+  // alguém novo no lugar de quem saiu: os dois começam juntos, na mesma rodada
+  s.on("entrou",function(){applyUi();newRound();s.enviar({novo:rodada,starter:starter});s.publicar({rodada:rodada,starter:starter,hist:[]})});
+  // voltei de uma queda: a jogada que o outro fez enquanto eu estava fora está no estado da sala
+  s.on("conexao",function(ok){rede=ok;if(ok)sincroniza(s.estado);setStatus();paintGhost()});
+  s.on("voltou",function(){setStatus()});
+  s.on("saiu",function(){
+    if(sala!==s)return;
+    over=true;for(var c=0;c<COLS;c++)colLabel(c);
+    statusEl.textContent=rival()+" saiu da sala.";
+    $("ovt").textContent="Adversário saiu";$("ovp").textContent="A sala acabou. Crie outra para jogar de novo.";$("again").textContent="Nova sala";
+    ov.hidden=false;
+  });
+  applyUi();
+  if(!sincroniza(s.estado))newRound();
+}
+// refaz a partida do estado da sala, sem animação, quando ele está à frente do que a tela mostra
+function sincroniza(e){
+  if(!e||!e.hist||e.rodada<rodada||(e.rodada===rodada&&e.hist.length<=hist.length))return false;
+  starter=e.starter;newRound();rodada=e.rodada;
+  drop.instante=true;var p=starter;e.hist.forEach(function(c){drop(c,p);p=3-p});drop.instante=false;
+  return true;
+}
+document.querySelectorAll("[data-mode]").forEach(function(x){x.addEventListener("click",function(){
+  if(x.dataset.mode==="online"){abreOnline();return}
+  if(mode===x.dataset.mode)return;saiDaSala();mode=x.dataset.mode;store.set("modo",mode);starter=1;applyUi();newRound()})});
 document.querySelectorAll("[data-diff]").forEach(function(x){x.addEventListener("click",function(){if(diff===x.dataset.diff)return;diff=x.dataset.diff;store.set("dificuldade",diff);starter=1;applyUi();newRound()})});
 $("reset").addEventListener("click",function(){score={a:0,b:0,d:0};store.set("placar:"+key(),score);paintScore()});
-$("again").addEventListener("click",function(){newRound();colBtns[sel].focus()});
+$("again").addEventListener("click",function(){
+  if(mode==="online"){
+    if(!sala||!sala.cheia){$("again").textContent="Jogar de novo";ov.hidden=true;abreOnline();return}
+    newRound();sala.enviar({novo:rodada,starter:starter});sala.publicar({rodada:rodada,starter:starter,hist:[]});colBtns[sel].focus();return;
+  }
+  newRound();colBtns[sel].focus()});
 document.addEventListener("keydown",function(e){
   if(!ov.hidden){if(e.key==="Escape")ov.hidden=true;return}
   if(e.altKey||e.ctrlKey||e.metaKey)return;
@@ -339,6 +402,9 @@ document.addEventListener("keydown",function(e){
 });
 window.addEventListener("resize",fit);
 applyUi();fit();newRound();
+// convite (?sala=) abre o online direto; recarregar a página no meio da partida volta pra ela
+if(KarmaNet.convite)abreOnline();
+else KarmaNet.retomar("ligue-4").then(function(s){if(s)entraNaSala(s)});
 })();
 </script>
 </body>

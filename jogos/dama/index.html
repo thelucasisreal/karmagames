@@ -103,6 +103,7 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
     <div class="seg" role="group" aria-label="Modo de jogo">
       <button class="btn" type="button" data-mode="cpu">Contra o computador</button>
       <button class="btn" type="button" data-mode="2p">2 jogadores</button>
+      <button class="btn" type="button" data-mode="online">Online</button>
     </div>
     <div class="seg" id="diffs" role="group" aria-label="Dificuldade">
       <button class="btn" type="button" data-diff="easy">Easy</button>
@@ -127,6 +128,7 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
     <div class="row"><button class="btn primary" type="button" id="again">Jogar de novo</button></div>
   </div>
 </div>
+<script src="../../assets/karma-net.js"></script>
 <script>
 (function(){
 "use strict";
@@ -247,6 +249,10 @@ var bd,turn,legal=[],sel=-1,prefix=[],over=false,busy=false,last=null,quiet=0,sc
 var cells=[],pcs=[],REDUCE=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches,STEP=REDUCE?40:220;
 var CROWN='<svg viewBox="0 0 24 24" aria-hidden="true"><path stroke-width="1.6" stroke-linejoin="round" d="M3 18 2 7l5.5 4.5L12 4l4.5 7.5L22 7l-1 11z"/></svg>';
 var COLS="abcdefgh";
+/* online: sala do KarmaNet; eu = minha cor; starter = lugar (0 criou, 1 entrou) que joga de brancas na rodada,
+   e as brancas sempre começam: trocar de cor a cada revanche alterna quem abre. rodada evita reiniciar duas vezes,
+   hist (lances serializados) refaz a partida. flip deixa minha cor embaixo. */
+var sala=null,eu=1,starter=0,rodada=0,hist=[],rede=true,modoAntes="cpu",flip=false,pendente=null;
 
 for(var i=0;i<64;i++){(function(i){
   var r=i>>3,c=i&7,el;
@@ -255,6 +261,8 @@ for(var i=0;i<64;i++){(function(i){
     el.addEventListener("click",function(){if(noClick)return;focusSq=i;tap(i)});
     el.addEventListener("keydown",function(e){
       var k=e.key,nr=r,nc=c;
+      // tabuleiro virado: as setas seguem o que se vê
+      if(flip)k={ArrowUp:"ArrowDown",ArrowDown:"ArrowUp",ArrowLeft:"ArrowRight",ArrowRight:"ArrowLeft"}[k]||k;
       if(k==="Escape"){cancel();return}
       if(k==="ArrowUp"){nr=r-1;nc=c+1<8?c+1:c-1}else if(k==="ArrowDown"){nr=r+1;nc=c-1>=0?c-1:c+1}
       else if(k==="ArrowLeft"){nc=c-2}else if(k==="ArrowRight"){nc=c+2}else return;
@@ -263,19 +271,36 @@ for(var i=0;i<64;i++){(function(i){
   }else{el=document.createElement("div");el.className="cell l"}
   cells.push(el);boardEl.insertBefore(el,pcsEl);
 })(i)}
+// casa como aparece na tela (virada quando jogo de pretas no online)
+function vis(sq){return flip?63-sq:sq}
+function setFlip(f){flip=f;boardEl.classList.toggle("flip",f);cells.forEach(function(el,i){el.style.order=f?63-i:""})}
 function moveFocus(j){cells[focusSq].tabIndex=-1;focusSq=j;cells[j].tabIndex=0;cells[j].focus()}
 
-function key(){return mode==="2p"?"2p":"cpu-"+diff}
+function key(){return mode==="2p"||mode==="online"?mode:"cpu-"+diff}
 function loadScore(){var s=store.get("placar:"+key(),null);score=s&&typeof s==="object"?{w:+s.w||0,b:+s.b||0,d:+s.d||0}:{w:0,b:0,d:0};paintScore()}
 function paintScore(){$("vw").textContent=score.w;$("vb").textContent=score.b;$("vd").textContent=score.d}
-function humanTurn(){return mode==="2p"||turn===1}
-function place(el,sq){el.style.transform="translate("+(sq&7)*100+"%,"+(sq>>3)*100+"%)"}
+function humanTurn(){return mode==="2p"||(mode==="online"?!!(sala&&rede&&sala.cheia&&turn===eu):turn===1)}
+// guarda o último nome visto: no "saiu" a lib já tirou o jogador da lista
+var nomeRival="";
+function rival(){if(!sala)return "Adversário";var n=sala.nomeDe(1-sala.lugar);if(n!=="Adversário")nomeRival=n;return nomeRival||n}
+function cor(c){return c===1?"brancas":"pretas"}
+function place(el,sq){var v=vis(sq);el.style.transform="translate("+(v&7)*100+"%,"+(v>>3)*100+"%)"}
+// lance como texto (de onde sai + casas onde para): identifica o lance, inclusive qual captura múltipla
+function ser(m){return [m.from].concat(m.path).join("-")}
 function cand(){return sel<0?[]:legal.filter(function(m){if(m.from!==sel||m.path.length<=prefix.length)return false;for(var k=0;k<prefix.length;k++)if(m.path[k]!==prefix[k])return false;return true})}
 function name(p){return p===1?"pedra branca":p===2?"dama branca":p===-1?"pedra preta":p===-2?"dama preta":"vazia"}
 
 function setStatus(){
-  $("sw").classList.toggle("turn",!over&&turn===1);$("sb").classList.toggle("turn",!over&&turn===-1);
+  // no online o placar da esquerda é sempre o meu, qualquer que seja a cor
+  var meu=mode==="online"?eu:1;
+  $("sw").classList.toggle("turn",!over&&turn===meu);$("sb").classList.toggle("turn",!over&&turn===-meu);
   if(over)return;
+  if(mode==="online"){
+    var c0=legal.length&&legal[0].caps.length;
+    statusEl.textContent=!sala?"":!sala.cheia?"Esperando adversário…":turn!==eu?"Vez de "+rival():
+      prefix.length?"Continue a captura…":"Sua vez"+(c0>1?" · capture "+c0+" peças":c0?" · captura obrigatória":quiet>=10?" · empate em "+(20-quiet)+" lances":"");
+    return;
+  }
   var t,cap=legal.length&&legal[0].caps.length;
   if(mode==="cpu"&&turn===-1)t="Computador pensando…";
   else{
@@ -315,13 +340,17 @@ function buildPieces(){
 function newRound(){
   clearTimeout(aiTimer);clearTimeout(animTimer);ov.hidden=true;
   bd=initial();turn=1;sel=-1;prefix=[];over=false;busy=false;last=null;quiet=0;
+  rodada++;hist=[];pendente=null;
+  eu=mode==="online"&&sala?(sala.lugar===starter?1:-1):1;setFlip(eu===-1);
+  if(mode==="online")applyUi();
   legal=genMoves(bd,turn);buildPieces();paint();
 }
 function applyUi(){
   document.querySelectorAll("[data-mode]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.mode===mode)});
   document.querySelectorAll("[data-diff]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.diff===diff)});
   $("diffs").hidden=mode!=="cpu";
-  $("lw").textContent=mode==="2p"?"Brancas":"Você (brancas)";$("lb").textContent=mode==="2p"?"Pretas":"Computador (pretas)";
+  if(mode==="online"){$("lw").textContent="Você ("+cor(eu)+")";$("lb").textContent=rival()+" ("+cor(-eu)+")"}
+  else{$("lw").textContent=mode==="2p"?"Brancas":"Você (brancas)";$("lb").textContent=mode==="2p"?"Pretas":"Computador (pretas)"}
   loadScore();
 }
 function cancel(){
@@ -335,15 +364,15 @@ function tap(i){
   if(sel>=0){
     var step=c.filter(function(m){return m.path[prefix.length]===i});
     if(step.length){
-      if(step.length===1&&step[0].path.length===prefix.length+1){commit(step[0],prefix.length);return}
+      if(step.length===1&&step[0].path.length===prefix.length+1){joga(step[0],prefix.length);return}
       var el=pcs[sel],cap=step[0].caps[prefix.length];
       place(el,i);if(cap!=null&&pcs[cap])pcs[cap].classList.add("taken");
       prefix.push(i);
-      var left=cand();if(left.length===1&&left[0].path.length===prefix.length){commit(left[0],prefix.length);return}
+      var left=cand();if(left.length===1&&left[0].path.length===prefix.length){joga(left[0],prefix.length);return}
       paint();return;
     }
     var fin=c.filter(function(m){return m.to===i});
-    if(fin.length===1){commit(fin[0],prefix.length);return}
+    if(fin.length===1){joga(fin[0],prefix.length);return}
   }
   var mine=legal.some(function(m){return m.from===i});
   if(mine&&i!==sel){cancel();sel=i;paint();return}
@@ -353,7 +382,7 @@ function tap(i){
 var drag=null,noClick=false;
 function sqAt(x,y){
   var r=boardEl.getBoundingClientRect(),c=Math.floor((x-r.left)/r.width*8),w=Math.floor((y-r.top)/r.height*8);
-  return c<0||c>7||w<0||w>7?-1:w*8+c;
+  return c<0||c>7||w<0||w>7?-1:vis(w*8+c);
 }
 boardEl.addEventListener("contextmenu",function(e){e.preventDefault()});
 boardEl.addEventListener("pointerdown",function(e){
@@ -362,17 +391,19 @@ boardEl.addEventListener("pointerdown",function(e){
   var i=sqAt(e.clientX,e.clientY);
   if(i<0||!pcs[i]||!legal.some(function(m){return m.from===i}))return;
   drag={s:i,id:e.pointerId,x:e.clientX,y:e.clientY,on:false,el:pcs[i]};
-  try{boardEl.setPointerCapture(e.pointerId)}catch(_){}
 });
 boardEl.addEventListener("pointermove",function(e){
   if(!drag||e.pointerId!==drag.id)return;
   var dx=e.clientX-drag.x,dy=e.clientY-drag.y;
   if(!drag.on){
     if(Math.hypot(dx,dy)<6)return;
+    // captura só quando vira arrasto: com captura desde o pointerdown, o Chrome manda o click pro
+    // tabuleiro em vez da casa e o toque simples não seleciona
+    try{boardEl.setPointerCapture(e.pointerId)}catch(_){}
     drag.on=true;if(sel!==drag.s){cancel();sel=drag.s;paint()}
     drag.el.classList.add("drag");
   }
-  drag.el.style.transform="translate(calc("+(drag.s&7)*100+"% + "+dx+"px),calc("+(drag.s>>3)*100+"% + "+dy+"px))";
+  var v=vis(drag.s);drag.el.style.transform="translate(calc("+(v&7)*100+"% + "+dx+"px),calc("+(v>>3)*100+"% + "+dy+"px))";
 });
 function endDrag(e,canc){
   if(!drag||e.pointerId!==drag.id)return;
@@ -385,8 +416,18 @@ function endDrag(e,canc){
 }
 boardEl.addEventListener("pointerup",function(e){endDrag(e,false)});
 boardEl.addEventListener("pointercancel",function(e){endDrag(e,true)});
+// lance do clique: no online só vale se saiu pra rede (senão o outro lado nunca vê)
+function joga(m,k){
+  if(mode==="online"&&!sala.enviar({m:ser(m),rodada:rodada})){cancel();return}
+  commit(m,k);
+}
 function commit(m,k){
-  busy=true;sel=-1;prefix=[];
+  hist.push(ser(m));
+  if(sala&&!commit.instante)sala.publicar({rodada:rodada,starter:starter,hist:hist});
+  sel=-1;prefix=[];
+  // refazendo a partida (voltou pra sala): cada lance fecha antes do próximo
+  if(commit.instante){done(m);return}
+  busy=true;
   var el=pcs[m.from];el.style.zIndex=2;paint();
   (function step(){
     if(k<m.path.length){
@@ -406,6 +447,8 @@ function done(m){
   if(quiet>=20){finish(0);return}
   paint();
   if(mode==="cpu"&&turn===-1)aiTurn();
+  // lance do outro que chegou durante a animação do meu
+  if(pendente){var d=pendente;pendente=null;remoto(d)}
 }
 function aiTurn(){
   busy=true;paint();
@@ -432,7 +475,18 @@ function finish(w){
   over=true;var title,text,reason;
   var pieces=bd.some(function(p){return sgn(p)===-w});
   reason=pieces?"ficaram sem jogadas possíveis":"ficaram sem peças";
-  if(w===0){score.d++;title="Empate!";text="20 lances seguidos só com damas, sem capturas.";statusEl.textContent="Empate."}
+  // online: partida refeita depois de recarregar já foi contada; guarda sala+rodada (últimas 50) pra não contar de novo
+  var conta=true;
+  if(mode==="online"&&sala){
+    var ch=sala.codigo+":"+rodada,ids=store.get("contadas",[]);if(!Array.isArray(ids))ids=[];
+    conta=ids.indexOf(ch)<0;if(conta){ids.push(ch);store.set("contadas",ids.slice(-50))}
+  }
+  if(w===0){if(conta)score.d++;title="Empate!";text="20 lances seguidos só com damas, sem capturas.";statusEl.textContent="Empate."}
+  else if(mode==="online"){
+    if(conta){if(w===eu)score.w++;else score.b++}
+    title=w===eu?"Você venceu!":rival()+" venceu";text=(w===eu?"Boa! ":"Bora a revanche? ")+"Na próxima vocês trocam de cor.";
+    statusEl.textContent=w===eu?"Você venceu!":rival()+" venceu.";
+  }
   else{
     if(w===1)score.w++;else score.b++;
     if(mode==="2p"){title=w===1?"As brancas venceram!":"As pretas venceram!";text="As "+(w===1?"pretas ":"brancas ")+reason+"."}
@@ -445,14 +499,78 @@ function finish(w){
   setTimeout(function(){if(over){ov.hidden=false;$("again").focus()}},800);
 }
 function fit(){var s=Math.min(wrap.clientWidth,wrap.clientHeight,560);s=Math.max(200,Math.floor(s/8)*8);boardEl.style.setProperty("--s",s+"px")}
-document.querySelectorAll("[data-mode]").forEach(function(x){x.addEventListener("click",function(){if(mode===x.dataset.mode)return;mode=x.dataset.mode;store.set("modo",mode);applyUi();newRound()})});
+/* ---- online ---- */
+function saiDaSala(){if(sala){sala.sair();sala=null}}
+function abreOnline(){
+  if(mode!=="online")modoAntes=mode;
+  saiDaSala();
+  KarmaNet.lobby({jogo:"dama",titulo:"Dama"}).then(function(s){
+    if(!s){if(mode==="online"){mode=modoAntes;applyUi();newRound()}else applyUi();return}
+    entraNaSala(s);
+  });
+}
+// lance que veio da rede: só na vez dele e na mesma rodada, e tem que ser um lance legal daqui
+function remoto(d){
+  if(d.rodada!==rodada||over||turn===eu)return;
+  if(busy){pendente=d;return}
+  var m=legal.filter(function(x){return ser(x)===d.m})[0];
+  if(!m)return;
+  cancel();commit(m,0);
+}
+function entraNaSala(s){
+  sala=s;rede=true;mode="online";starter=0;rodada=0;nomeRival="";
+  s.on("msg",function(d){
+    if(sala!==s||!d)return;
+    if(d.novo!=null){if(d.novo>rodada){starter=d.starter;rodada=d.novo-1;newRound()}return}
+    if(d.m!=null)remoto(d);
+  });
+  // alguém entrou no lugar de quem saiu: reinicia e avisa a rodada, senão cada lado fica numa rodada
+  s.on("entrou",function(){applyUi();newRound();s.enviar({novo:rodada,starter:starter});s.publicar({rodada:rodada,starter:starter,hist:[]})});
+  // voltei de uma queda: o lance que o outro fez enquanto eu estava fora está no estado da sala
+  s.on("conexao",function(ok){rede=ok;if(ok)sincroniza(s.estado);paint()});
+  s.on("voltou",function(){setStatus()});
+  s.on("saiu",function(){
+    if(sala!==s)return;
+    clearTimeout(animTimer);over=true;busy=false;paint();
+    statusEl.textContent=rival()+" saiu da sala.";
+    $("ovt").textContent="Adversário saiu";$("ovp").textContent="A sala acabou. Crie outra para jogar de novo.";$("again").textContent="Nova sala";
+    ov.hidden=false;
+  });
+  applyUi();
+  if(!sincroniza(s.estado))newRound();
+}
+// refaz a partida do estado da sala, sem animação, quando ele está à frente do que a tela mostra
+function sincroniza(e){
+  if(!e||!e.hist||e.rodada<rodada||(e.rodada===rodada&&e.hist.length<=hist.length))return false;
+  starter=e.starter;newRound();rodada=e.rodada;
+  commit.instante=true;
+  for(var i=0;i<e.hist.length&&!over;i++){
+    var m=legal.filter(function(x){return ser(x)===e.hist[i]})[0];
+    if(!m)break;commit(m,0);
+  }
+  commit.instante=false;
+  buildPieces();paint();
+  return true;
+}
+document.querySelectorAll("[data-mode]").forEach(function(x){x.addEventListener("click",function(){
+  if(x.dataset.mode==="online"){abreOnline();return}
+  if(mode===x.dataset.mode)return;saiDaSala();mode=x.dataset.mode;store.set("modo",mode);applyUi();newRound()})});
 document.querySelectorAll("[data-diff]").forEach(function(x){x.addEventListener("click",function(){if(diff===x.dataset.diff)return;diff=x.dataset.diff;store.set("dificuldade",diff);applyUi();newRound()})});
 $("reset").addEventListener("click",function(){score={w:0,b:0,d:0};store.set("placar:"+key(),score);paintScore()});
-$("again").addEventListener("click",function(){newRound();moveFocus(focusSq)});
+$("again").addEventListener("click",function(){
+  if(mode==="online"){
+    if(!sala||!sala.cheia){$("again").textContent="Jogar de novo";ov.hidden=true;abreOnline();return}
+    // revanche: trocam de cor, então quem jogou de pretas abre
+    starter=1-starter;newRound();sala.enviar({novo:rodada,starter:starter});sala.publicar({rodada:rodada,starter:starter,hist:[]});moveFocus(focusSq);return;
+  }
+  newRound();moveFocus(focusSq)});
 document.addEventListener("keydown",function(e){if(!ov.hidden&&e.key==="Escape")ov.hidden=true});
 window.addEventListener("resize",fit);
 cells[focusSq].tabIndex=0;
 applyUi();fit();newRound();
+// convite (?sala=) abre o online direto; recarregar a página no meio da partida volta pra ela
+if(KarmaNet.convite)abreOnline();
+else KarmaNet.retomar("dama").then(function(s){if(s)entraNaSala(s)});
 })();
 </script>
 </body>
