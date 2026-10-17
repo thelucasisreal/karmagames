@@ -240,6 +240,17 @@ function reset() {
   score = 0; stepAcc = 0; interval = 0.135; pops = []; parts.length = 0;
   placeFood();
 }
+// gira a partida 90°: mesma cobra, mesma comida, mesma direção relativa.
+// Horário ao deitar e anti-horário ao voltar em pé, para a volta dar no mesmo tabuleiro.
+function rotateGrid(cw) {
+  const R = rows, C = cols;
+  const rot = cw ? p => ({x: R - 1 - p.y, y: p.x}) : p => ({x: p.y, y: C - 1 - p.x});
+  const rd = cw ? d => ({x: -d.y, y: d.x}) : d => ({x: d.y, y: -d.x});
+  body = body.map(rot); prev = prev.map(rot); food = rot(food);
+  dir = rd(dir); queue = queue.map(rd);
+  const c = cols; cols = rows; rows = c;
+  parts.length = 0; pops = [];
+}
 function speedFor(s) { return Math.max(0.062, 0.135 - s * 0.0026); }
 function turn(dx, dy) {
   const lastD = queue.length ? queue[queue.length - 1] : dir;
@@ -280,7 +291,11 @@ const GAME = {
   resize() {
     if (state === 'menu' || state === 'over') { if (state === 'menu') reset(); else fitGrid(); }
     else {
-      // mantém a grade, só reescala; partículas em pixels ficam como estão
+      // mantém a grade, só reescala; partículas em pixels ficam como estão.
+      // Se o aparelho girou (tela deitada e grade em pé, ou o contrário), gira a grade junto
+      // para continuar ocupando a tela, e pausa para o jogador se achar de novo.
+      const aw = W - 24, ah = H - HUD - 14;
+      if (cols !== rows && (aw > ah) !== (cols > rows)) { rotateGrid(aw > ah); if (state === 'play') pause(); }
       fitGrid();
     }
   },

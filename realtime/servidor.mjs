@@ -4,13 +4,15 @@
 //
 // Protocolo (JSON, um objeto por mensagem; ver assets/karma-net.js):
 //   cliente → servidor
-//     {t:"criar", jogo, nome, max}            → {t:"sala", ...}
+//     {t:"criar", jogo, nome, max, aberta?}   → {t:"sala", ...}  (aberta: aparece na lista do lobby)
 //     {t:"entrar", codigo, jogo, nome, chave?} → {t:"sala", ...} ou {t:"erro", motivo}
 //     {t:"msg", dados, para?}                 repassa a todos (ou só ao lugar `para`)
 //     {t:"estado", dados}                     guarda o snapshot da sala (qualquer jogador)
+//     {t:"abrir", aberta}                     quem criou tira/põe a sala na lista (ex.: partida começou)
 //     {t:"sair"}
+//   GET /salas?jogo=<slug>  salas abertas com vaga, mais antigas primeiro (o lobby lista e o "Jogo rápido" usa)
 //   servidor → cliente
-//     {t:"sala", codigo, jogo, lugar, chave, max, jogadores:[{lugar,nome,on}], estado}
+//     {t:"sala", codigo, jogo, lugar, chave, max, aberta, criada, jogadores:[{lugar,nome,on}], estado}
 //     {t:"msg", de, dados}  {t:"entrou", jogador}  {t:"caiu", lugar}  {t:"voltou", lugar}
 //     {t:"saiu", lugar}  {t:"erro", motivo}
 import { createServer } from "node:http";
@@ -68,8 +70,30 @@ function difunde(sala, obj, menos) {
 function descreveSala(sala, j) {
   return {
     t: "sala", codigo: sala.codigo, jogo: sala.jogo, lugar: j.lugar, chave: j.chave,
-    max: sala.max, jogadores: jogadoresDe(sala), estado: sala.estado,
+    max: sala.max, aberta: sala.aberta, criada: sala.criada, jogadores: jogadoresDe(sala), estado: sala.estado,
   };
+}
+
+// quem manda na sala é o menor lugar presente (conectado, se `conectado`): se quem criou sai ou cai,
+// o próximo assume — é a mesma regra que o crossstrike usa para escolher o anfitrião
+function donoDe(sala, conectado = false) {
+  const lugares = [...sala.jogadores.values()].filter((j) => !conectado || j.ws).map((j) => j.lugar);
+  return lugares.length ? Math.min(...lugares) : -1;
+}
+
+// sala que aparece no lobby: aberta, com vaga e com alguém conectado esperando
+function salasAbertas(jogo) {
+  const lista = [];
+  for (const s of salas.values()) {
+    if (s.jogo !== jogo || !s.aberta || s.jogadores.size >= s.max) continue;
+    const on = [...s.jogadores.values()].filter((j) => j.ws);
+    if (!on.length) continue;
+    lista.push({
+      codigo: s.codigo, dono: s.jogadores.get(donoDe(s)).nome, jogadores: s.jogadores.size,
+      max: s.max, criada: s.criada,
+    });
+  }
+  return lista.sort((a, b) => a.criada - b.criada).slice(0, 50);
 }
 
 function primeiroLugarLivre(sala) {
@@ -113,7 +137,7 @@ function trata(ws, msg) {
       const jogo = limpaJogo(msg.jogo);
       if (!jogo) return envia(ws, { t: "erro", motivo: "jogo inválido" });
       const max = Math.min(Math.max(Number(msg.max) || 2, 2), MAX_JOGADORES);
-      const nova = { codigo: novoCodigo(), jogo, max, jogadores: new Map(), estado: null, criada: Date.now() };
+      const nova = { codigo: novoCodigo(), jogo, max, aberta: !!msg.aberta, jogadores: new Map(), estado: null, criada: Date.now() };
       salas.set(nova.codigo, nova);
       const j = { lugar: 0, nome: limpaNome(msg.nome), chave: randomBytes(12).toString("base64url"), ws: null };
       nova.jogadores.set(0, j);
@@ -152,6 +176,9 @@ function trata(ws, msg) {
     case "estado":
       if (sala) sala.estado = msg.dados ?? null;
       return;
+    case "abrir":
+      if (sala && ws.lugar === donoDe(sala, true)) sala.aberta = !!msg.aberta;
+      return;
     case "sair":
       if (sala) { ws.sala = null; removeJogador(sala, ws.lugar); }
       return;
@@ -175,7 +202,12 @@ function caiu(ws) {
 }
 
 const http = createServer((req, res) => {
-  if (req.url === "/saude") {
+  const url = new URL(req.url, "http://x");
+  if (url.pathname === "/salas") {
+    res.writeHead(200, { "content-type": "application/json", "access-control-allow-origin": "*", "cache-control": "no-store" });
+    return res.end(JSON.stringify({ prefixo: PREFIXO, salas: salasAbertas(limpaJogo(url.searchParams.get("jogo"))) }));
+  }
+  if (url.pathname === "/saude") {
     const jogadores = [...salas.values()].reduce((n, s) => n + s.jogadores.size, 0);
     const porJogo = {};
     for (const s of salas.values()) porJogo[s.jogo] = (porJogo[s.jogo] || 0) + 1;

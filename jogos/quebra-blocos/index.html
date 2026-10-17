@@ -327,6 +327,18 @@ let paddleBounce = 0;
 const GAME = {
   resize() {
     if (state === 'menu' || state === 'over') { computeLW(); if (state === 'menu') newGame(); }
+    else {
+      // girou no meio da partida: estica o campo só na horizontal (mesma altura LH)
+      // em vez de encolher tudo numa faixa; blocos, raquete e bola acompanham
+      const oLW = LW; LW = clamp(Math.round(LH * W / H), 480, 1120);
+      const k = LW / oLW;
+      if (k !== 1) {
+        for (const b of bricks) { b.x *= k; b.w *= k; }
+        paddle.x = clamp(paddle.x * k, paddle.w / 2, LW - paddle.w / 2); paddle.target = null;
+        ball.x = clamp(ball.x * k, BR, LW - BR);
+        for (const t of trail) t[0] *= k;
+      }
+    }
     fit();
   },
   start() { newGame(); setState('play'); launchArmed = false; lostT = 0; },
@@ -382,6 +394,8 @@ const GAME = {
     if (!bricks.some(b => !b.dead)) {
       score += 100 * level;
       level++;
+      // fase nova já nasce na proporção atual da tela (pode ter girado)
+      computeLW(); fit(); paddle.x = clamp(paddle.x, paddle.w / 2, LW - paddle.w / 2);
       buildLevel(); attach();
       banner = 1.4; bannerText = 'Fase ' + level;
       shake(5, 0.2);

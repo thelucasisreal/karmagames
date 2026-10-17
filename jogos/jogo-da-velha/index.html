@@ -39,7 +39,8 @@ h1{font:800 clamp(22px,6vw,32px)/1.05 var(--display);letter-spacing:-.02em}
 .stat.x.turn{border-color:var(--accent)}.stat.o.turn{border-color:var(--sky)}
 .status{text-align:center;font-weight:600;min-height:1.4em}
 .wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.board{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:var(--s);height:var(--s)}
+/* linhas fixas também: sem isso a altura das casas segue o conteúdo e fica desigual */
+.board{position:relative;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:10px;width:var(--s);height:var(--s)}
 .sq{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 4px 12px rgba(0,0,0,.3);display:grid;place-items:center;transition:background-color .2s var(--ease)}
 .sq:not(:disabled):hover{background:var(--raised)}
 .sq:disabled{cursor:default}

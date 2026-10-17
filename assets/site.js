@@ -271,7 +271,9 @@
 
     // No celular o jogo ocupa a tela inteira (como no Poki), com uma barrinha e o botão de sair.
     const celula = $("#palco-celula");
-    const ehCelular = () => matchMedia("(pointer: coarse) and (max-width: 1024px), (max-width: 760px)").matches;
+    // Olha o lado menor da tela: tablet que começa deitado (1180 de largura) também é aparelho de toque,
+    // e vai girar; sem isso ele ficava no palco pequeno do desktop.
+    const ehCelular = () => matchMedia("(pointer: coarse) and (max-width: 1024px), (pointer: coarse) and (max-height: 1024px), (max-width: 760px)").matches;
     function entrarImersivo() {
       if (document.body.classList.contains("imersivo")) return;
       document.body.classList.add("imersivo");
