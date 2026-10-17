@@ -1,0 +1,4 @@
+node_modules/
+# o .gitignore da raiz ignora package.json e lockfiles; o servidor precisa dos dois (npm ci)
+!package.json
+!package-lock.json

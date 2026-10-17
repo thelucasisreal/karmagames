@@ -292,10 +292,12 @@
     "sobre": [
       "Xadrez é o clássico jogo de estratégia para duas pessoas. O objetivo é dar xeque-mate: atacar o rei do adversário de um jeito que ele não tenha como escapar.",
       "Aqui você joga contra o computador ou contra um amigo no mesmo aparelho, no modo 2 jogadores. Contra o computador, escolha entre quatro níveis: Easy, Medium, Hard e Impossible. O jogo segue as regras oficiais, com roque, en passant, promoção do peão e empates por afogamento, repetição e 50 lances. Ele guarda o placar no navegador.",
+      "No modo Online, você joga Xadrez com um amigo em outro aparelho: um cria a sala e manda o código ou o link de convite, e o outro entra direto. Se a conexão cair ou a página recarregar, a partida continua de onde parou.",
       "É grátis, roda direto no navegador e funciona com mouse ou toque. Serve para quem está aprendendo e para quem quer treinar contra um adversário mais forte."
     ],
     "comoJogar": [
       "Escolha o modo: Contra o computador ou 2 jogadores. Contra o computador, escolha o nível. Você joga com as brancas e começa.",
+      "Para jogar com alguém à distância, escolha Online, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.",
       "Clique na peça para ver os lances possíveis e depois clique na casa de destino. Também dá para arrastar a peça.",
       "No celular, toque na peça e depois no destino.",
       "Quando um peão chegar ao final do tabuleiro, escolha a peça para a promoção.",
@@ -314,6 +316,10 @@
         "r": "Dá. Você escolhe entre Easy, Medium, Hard e Impossible. O computador joga com as pretas."
       },
       {
+        "p": "Dá para jogar Xadrez online com um amigo?",
+        "r": "Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada."
+      },
+      {
         "p": "Dá para jogar Xadrez com um amigo?",
         "r": "Dá, no modo 2 jogadores, revezando no mesmo aparelho. Não é um jogo online."
       },
@@ -328,10 +334,12 @@
     "sobre": [
       "Dama é o jogo de tabuleiro em que cada jogador tenta capturar todas as peças do adversário ou deixá-lo sem jogadas. Aqui as regras são as brasileiras, no tabuleiro 8x8.",
       "A captura é obrigatória, vale a lei da maioria (você deve capturar o maior número possível de peças) e a dama é voadora, ou seja, anda quantas casas quiser na diagonal. Você pode jogar contra o computador, em quatro níveis (Easy, Medium, Hard e Impossible), ou no modo de 2 jogadores, no mesmo aparelho. O placar fica salvo no navegador.",
+      "No modo Online, você joga Dama com um amigo em outro aparelho: um cria a sala e manda o código ou o link de convite, e o outro entra direto. Se a conexão cair ou a página recarregar, a partida continua de onde parou.",
       "É grátis, roda no navegador e funciona com mouse ou toque. Serve para quem quer aprender a Dama ou treinar contra um adversário mais forte."
     ],
     "comoJogar": [
       "Escolha Contra o computador (e o nível) ou 2 jogadores. Você joga com as brancas.",
+      "Para jogar com alguém à distância, escolha Online, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.",
       "Clique na peça e depois na casa de destino. As jogadas possíveis aparecem destacadas.",
       "Se houver captura disponível, você é obrigado a capturar, e deve escolher o caminho que captura mais peças.",
       "Ao chegar na última fileira, a pedra vira dama e passa a andar várias casas na diagonal.",
@@ -350,6 +358,10 @@
         "r": "O tabuleiro é 8x8, a captura é obrigatória, vale a lei da maioria e a dama é voadora. Você deve sempre escolher o caminho que captura mais peças."
       },
       {
+        "p": "Dá para jogar Dama online com um amigo?",
+        "r": "Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada."
+      },
+      {
         "p": "Dá para jogar Dama contra o computador?",
         "r": "Dá. Escolha entre Easy, Medium, Hard e Impossible. Também dá para jogar com um amigo no modo 2 jogadores, no mesmo aparelho."
       },
@@ -364,10 +376,12 @@
     "sobre": [
       "Ligue 4 é um jogo de tabuleiro para duas pessoas. Cada jogador solta fichas de uma cor nas colunas, e a ficha cai até a posição mais baixa livre. Quem alinhar quatro fichas primeiro, na horizontal, na vertical ou na diagonal, vence.",
       "Aqui você joga contra o computador, com os níveis Fácil e Difícil, ou no modo de 2 jogadores, no mesmo aparelho. O placar de vitórias, empates e derrotas fica salvo no navegador, separado por modo e dificuldade, e quem começa alterna a cada partida.",
+      "No modo Online, você joga Ligue 4 com um amigo em outro aparelho: um cria a sala e manda o código ou o link de convite, e o outro entra direto. Se a conexão cair ou a página recarregar, a partida continua de onde parou.",
       "É grátis, roda no navegador e funciona no teclado, com mouse ou no toque. Serve para partidas rápidas com amigos e para treinar estratégia."
     ],
     "comoJogar": [
       "Escolha Contra o computador (Fácil ou Difícil) ou 2 jogadores.",
+      "Para jogar com alguém à distância, escolha Online, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.",
       "No computador, clique na coluna onde quer soltar a ficha. Você também pode usar as setas e Enter, ou as teclas de 1 a 7.",
       "No celular, toque na coluna escolhida.",
       "Alinhe quatro fichas da sua cor em linha reta, em qualquer direção, antes do adversário.",
@@ -386,6 +400,10 @@
         "r": "Alinhe quatro fichas da sua cor, na horizontal, na vertical ou na diagonal, antes do adversário. Criar duas ameaças ao mesmo tempo é a melhor forma de vencer."
       },
       {
+        "p": "Dá para jogar Ligue 4 online com um amigo?",
+        "r": "Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada."
+      },
+      {
         "p": "Dá para jogar Ligue 4 contra o computador?",
         "r": "Dá. O computador tem dois níveis, Fácil e Difícil. Também dá para jogar com um amigo no modo 2 jogadores, no mesmo aparelho."
       },
@@ -400,10 +418,12 @@
     "sobre": [
       "Reversi é um jogo de tabuleiro clássico para dois jogadores. O tabuleiro tem 8 por 8 casas e as peças são pretas de um lado e brancas do outro. Quando você cerca uma fila de peças do adversário, todas elas viram para a sua cor.",
       "Aqui você joga com as pretas e começa. Dá para escolher entre jogar contra o computador ou em 2 jogadores, no mesmo aparelho. Contra o computador há dois níveis: Fácil, que erra de vez em quando, e Difícil, que calcula vários lances à frente e não perdoa descuido.",
+      "No modo Online, você joga Reversi com um amigo em outro aparelho: um cria a sala e manda o código ou o link de convite, e o outro entra direto. Se a conexão cair ou a página recarregar, a partida continua de onde parou.",
       "O jogo marca as casas onde você pode jogar, passa a vez sozinho quando alguém não tem jogada e guarda um placar de vitórias, derrotas e empates para cada modo. Serve para quem quer aprender as regras com calma e para quem já curte uma partida de estratégia rápida."
     ],
     "comoJogar": [
       "Escolha o modo no topo: Contra o computador ou 2 jogadores. Contra o computador, escolha também Fácil ou Difícil.",
+      "Para jogar com alguém à distância, escolha Online, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.",
       "As pretas começam. Clique ou toque numa casa marcada para colocar sua peça. Só valem as casas marcadas.",
       "Uma jogada é válida quando cerca uma ou mais peças do adversário entre a nova peça e outra sua, em linha reta ou na diagonal. Essas peças viram para a sua cor.",
       "Se um jogador não tiver nenhuma jogada, a vez passa automaticamente para o outro.",
@@ -421,6 +441,10 @@
       {
         "p": "Quais são as regras do Reversi?",
         "r": "Cada jogador coloca uma peça por vez, sempre cercando peças do adversário para virá-las. Se não houver jogada, passa a vez. Quando ninguém puder jogar, vence quem tiver mais peças."
+      },
+      {
+        "p": "Dá para jogar Reversi online com um amigo?",
+        "r": "Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada."
       },
       {
         "p": "Dá para jogar Reversi contra o computador?",
@@ -976,10 +1000,12 @@
     "sobre": [
       "O Jogo da Velha é o clássico de X e O em um tabuleiro de 3 por 3. Dois lados se alternam marcando uma casa, e vence quem fizer uma linha de três na horizontal, na vertical ou na diagonal. Se o tabuleiro encher sem vencedor, dá velha.",
       "Aqui você escolhe entre dois modos. Contra o computador, você joga de X e pode escolher entre Fácil e Difícil. No modo 2 jogadores, vocês revezam o mesmo aparelho. O primeiro a jogar alterna a cada rodada, e o placar de vitórias, derrotas e empates fica salvo no navegador, separado por modo.",
+      "No modo Online, você joga Jogo da Velha com um amigo em outro aparelho: um cria a sala e manda o código ou o link de convite, e o outro entra direto. Se a conexão cair ou a página recarregar, a partida continua de onde parou.",
       "É rápido, não exige cadastro e funciona no computador e no celular. Serve tanto para uma partida solo quanto para passar o tempo com alguém ao lado."
     ],
     "comoJogar": [
       "Escolha o modo no alto: Contra o computador ou 2 jogadores. No primeiro, defina também Fácil ou Difícil.",
+      "Para jogar com alguém à distância, escolha Online, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.",
       "Clique ou toque numa casa vazia para marcar. Contra o computador, você é o X.",
       "Faça uma linha de três símbolos iguais, na horizontal, vertical ou diagonal, para vencer.",
       "Se as nove casas forem preenchidas sem linha, a rodada termina empatada.",
@@ -996,6 +1022,10 @@
       {
         "p": "Dá para jogar Jogo da Velha com um amigo?",
         "r": "Dá. Escolha o modo 2 jogadores e revezem o mesmo celular ou computador. Não é partida online."
+      },
+      {
+        "p": "Dá para jogar Jogo da Velha online com um amigo?",
+        "r": "Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada."
       },
       {
         "p": "Dá para ganhar do computador no Jogo da Velha?",

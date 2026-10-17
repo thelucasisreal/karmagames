@@ -35,6 +35,12 @@ Depois abra http://localhost:8080
 5. Gere as páginas: `node scripts/seo.mjs` (e `node scripts/imagens.mjs` para a imagem de prévia do jogo, depois `node scripts/seo.mjs` de novo).
 6. `git add . && git commit -m "Novo jogo: Meu Jogo" && git push`. Em um ou dois minutos está no ar.
 
+## Multiplayer online
+
+Xadrez, dama, ligue 4, reversi e jogo da velha têm o modo **Online**: um cria a sala, passa o código ou o
+link de convite, e o outro joga do próprio aparelho. A lib comum é `assets/karma-net.js` e o servidor de
+salas fica em [`realtime/`](realtime/README.md), que explica como plugar outro jogo.
+
 ## Páginas geradas (SEO)
 
 `index.html`, `jogar/<slug>/`, `categoria/<slug>/`, `sobre/`, `contato/`, `privacidade/`, `termos/`, `404.html`, `jogar.html`, `sitemap.xml`, `robots.txt`, `llms.txt`, `site.webmanifest` e `ads.txt` são **gerados** por `node scripts/seo.mjs`. Não edite esses arquivos à mão: mude `jogos.js`, `scripts/conteudo.json`, `scripts/paginas.mjs` ou `scripts/site.json` e rode o script de novo.

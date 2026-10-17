@@ -1,0 +1,13 @@
+{
+  "name": "karma-realtime",
+  "private": true,
+  "type": "module",
+  "description": "Servidor de salas (WebSocket) do multiplayer online do Karma Games",
+  "scripts": {
+    "start": "node servidor.mjs",
+    "test": "node --test teste.mjs"
+  },
+  "dependencies": {
+    "ws": "8.18.3"
+  }
+}

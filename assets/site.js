@@ -32,7 +32,16 @@
   const capaDe = (j) => j.capa || `assets/capas/${j.slug}.webp`;
   // A versão (?v=) muda quando qualquer jogo muda: o navegador não fica preso num jogo velho no cache.
   const VERSAO = (document.currentScript && new URL(document.currentScript.src).searchParams.get("v")) || "";
-  const urlDoJogo = (j) => j.url || `jogos/${j.slug}/${VERSAO ? `?v=${VERSAO}` : ""}`;
+  // Convite do multiplayer online (jogar/<slug>/?sala=CODIGO): o código segue para o jogo no iframe.
+  const SALA = (new URLSearchParams(location.search).get("sala") || "").replace(/[^A-Za-z0-9]/g, "").slice(0, 8);
+  const urlDoJogo = (j) => {
+    if (j.url) return j.url;
+    const q = new URLSearchParams();
+    if (VERSAO) q.set("v", VERSAO);
+    if (SALA) q.set("sala", SALA);
+    const qs = q.toString();
+    return `jogos/${j.slug}/${qs ? `?${qs}` : ""}`;
+  };
   // Páginas fora da raiz têm <base href="/">, então os caminhos relativos valem para todas.
   const linkDoJogo = (j) => `jogar/${encodeURIComponent(j.slug)}/`;
   const slugify = (s) => normalizar(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -302,6 +311,8 @@
     }
     const botaoJogar = lobby.querySelector(".lobby-jogar");
     botaoJogar.addEventListener("click", comecar);
+    // quem chega por convite já cai no jogo, que abre a sala sozinho
+    if (SALA && !jogo.url) comecar();
 
     $("#btn-reiniciar").addEventListener("click", () => {
       if (!frame) return comecar();
