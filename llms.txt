@@ -2,7 +2,9 @@
 
 > Site brasileiro de jogos grátis para jogar direto no navegador, em português, sem download e sem cadastro. 28 jogos feitos pela própria Karma Games, que funcionam no computador e no celular.
 
-Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma página com regras, controles, dicas e perguntas frequentes. Os recordes ficam salvos no aparelho de quem joga.
+Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma página com regras, controles, dicas e perguntas frequentes. Os recordes ficam salvos no aparelho de quem joga. CrossStrike 3D, Xadrez, Dama, Ligue 4, Reversi e Jogo da Velha também têm modo Online, para jogar com outra pessoa pela internet (Jogo rápido ou sala com código), sem cadastro.
+
+O texto completo de todas as páginas (regras, como jogar, dicas e perguntas frequentes de cada jogo) está em [llms-full.txt](https://karmagames.com.br/llms-full.txt).
 
 ## Jogos de Ação
 
@@ -22,7 +24,7 @@ Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma
 - [Genius](https://karmagames.com.br/jogar/genius/): Jogue Genius grátis no navegador, sem download. Repita a sequência de cores e sons que só cresce, com teclado, mouse ou toque no celular.
 - [Cobrinha](https://karmagames.com.br/jogar/cobrinha/): Jogue Cobrinha online grátis, sem download: coma, cresça e não bata nas paredes nem no próprio rabo. Use setas, WASD ou deslize no celular.
 - [Pong](https://karmagames.com.br/jogar/pong/): Jogue Pong online grátis contra o computador, sem download. Quem fizer 7 pontos primeiro vence. Controle com mouse, setas ou o dedo no celular.
-- [Jogo da Velha](https://karmagames.com.br/jogar/jogo-da-velha/): Jogue Jogo da Velha grátis no navegador: contra o computador (fácil ou difícil) ou com um amigo no mesmo aparelho. Sem download, com placar.
+- [Jogo da Velha](https://karmagames.com.br/jogar/jogo-da-velha/): Jogue Jogo da Velha online grátis: contra o computador (fácil ou difícil), com um amigo pela internet ou no mesmo aparelho. Sem download, com placar.
 
 ## Jogos Arcade
 
@@ -42,10 +44,10 @@ Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma
 
 ## Jogos de Tabuleiro
 
-- [Xadrez](https://karmagames.com.br/jogar/xadrez/): Jogue Xadrez grátis no navegador contra o computador ou com um amigo, em 4 níveis de dificuldade. Sem download, no PC e no celular.
-- [Dama](https://karmagames.com.br/jogar/dama/): Jogue Dama grátis no navegador, na regra brasileira: contra o computador em 4 níveis ou com um amigo. Sem download, no PC e no celular.
-- [Ligue 4](https://karmagames.com.br/jogar/ligue-4/): Jogue Ligue 4 grátis no navegador: alinhe quatro fichas contra o computador ou com um amigo. Sem download, no PC e no celular.
-- [Reversi](https://karmagames.com.br/jogar/reversi/): Jogue Reversi grátis no navegador, sem download. Enfrente o computador (fácil ou difícil) ou chame um amigo para o modo 2 jogadores.
+- [Xadrez](https://karmagames.com.br/jogar/xadrez/): Jogue Xadrez online grátis no navegador: contra o computador em 4 níveis, com um amigo pela internet ou no mesmo aparelho. Sem download e sem cadastro.
+- [Dama](https://karmagames.com.br/jogar/dama/): Jogue Dama online grátis, na regra brasileira: contra o computador em 4 níveis, com um amigo pela internet ou no mesmo aparelho. Sem download.
+- [Ligue 4](https://karmagames.com.br/jogar/ligue-4/): Jogue Ligue 4 online grátis: alinhe quatro fichas contra o computador, com um amigo pela internet ou no mesmo aparelho. Sem download, no PC e no celular.
+- [Reversi](https://karmagames.com.br/jogar/reversi/): Jogue Reversi online grátis, sem download: contra o computador (fácil ou difícil), com um amigo pela internet ou no modo 2 jogadores no mesmo aparelho.
 
 ## Jogos Casuais
 

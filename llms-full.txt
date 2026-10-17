@@ -1,0 +1,1270 @@
+# Karma Games: texto completo
+
+> Site brasileiro de jogos grátis no navegador (https://karmagames.com.br/), em português, sem download e sem cadastro. 28 jogos.
+
+**Os jogos da Karma Games são grátis?**
+Sim. Todos os jogos são grátis e continuam grátis. O site se mantém com anúncios.
+
+**Precisa baixar ou instalar alguma coisa?**
+Não. Os jogos abrem direto no navegador, em HTML5. É só clicar em Jogar.
+
+**Precisa criar conta?**
+Não. Não tem cadastro. Os recordes e o progresso ficam salvos no seu próprio aparelho.
+
+**Dá para jogar no celular?**
+Sim. Os jogos funcionam no celular e no tablet, com controles de toque, e também no computador com teclado e mouse.
+
+**Dá para jogar online com amigos?**
+Dá. CrossStrike 3D, Xadrez, Dama, Ligue 4, Reversi e Jogo da Velha têm modo Online: use Jogo rápido para enfrentar quem estiver esperando ou crie uma sala e mande o link para um amigo. Cada um joga no seu aparelho, sem cadastro.
+
+**Quais jogos tem na Karma Games?**
+São 28 jogos, como Não Confia, CrossStrike 3D, Behind The Grid, Paciência, Blocos Caindo, Sudoku, Forca, Xadrez e outros, divididos em ação, simulação, clássicos, arcade, quebra-cabeça, tabuleiro, casual.
+
+# Jogos de Ação
+
+## Não Confia
+
+- Endereço: https://karmagames.com.br/jogar/nao-confia/
+- Categoria: Ação
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Não Confia é um jogo de plataforma troll. Você anda, pula e tenta chegar até a porta, mas nada é o que parece. O chão desaba, a porta muda de lugar, os controles invertem e até uma florzinha inocente pode te matar.
+São 100 fases divididas em 10 mundos, da Grama Inocente até O Fim (Mentira). Cada fase tem uma pegadinha nova, e o cenário muda um pouco a cada morte. O jogo conta quantas vezes você morreu e salva seu progresso no navegador, então dá para continuar de onde parou.
+É grátis, roda direto no navegador e tem botões na tela para o celular. Serve para quem gosta de desafio, de rir da própria derrota e de jogar com paciência.
+
+### Como jogar
+
+1. No computador, ande com as setas ou A e D. Pule com Espaço, seta para cima, W ou Z. Segure o botão de pulo para saltar mais alto.
+2. No celular, use os botões na tela: setas para os lados e o botão PULA.
+3. Chegue até a porta de cada fase para avançar. Se morrer, a fase recomeça na hora, e algumas guardam um checkpoint.
+4. Aperte R para reiniciar a fase, Esc ou P para pausar e M para ligar ou desligar o som.
+5. No menu, aperte N para começar uma nova jogada ou use as teclas de 1 a 0 para voltar a um mundo que você já alcançou.
+
+### Controles
+
+← → anda · espaço pula (segurar pula mais alto) · R reinicia a fase · Esc pausa · M som · no celular: botões na tela
+
+### Dicas
+
+- Desconfie de tudo: chão liso demais, placa com seta e espaço vazio logo à frente costumam ser armadilha.
+- Morrer faz parte. Cada tentativa mostra um pedaço da pegadinha, então observe o que aconteceu antes de tentar de novo.
+- Pule com calma. O salto longo, segurando o botão, ajuda nos buracos grandes, mas atrapalha em teto baixo.
+- Se algo estranho acontecer com os controles, pare um instante e teste com cuidado antes de correr.
+- Em mundos como o do gelo e o do espaço a física muda. Ajuste o ritmo em vez de repetir o que funcionou antes.
+
+### Perguntas frequentes
+
+**Dá para jogar Não Confia no celular?**
+Dá. Em telas de toque aparecem botões para andar e pular. O jogo roda no navegador, sem instalar nada.
+
+**Quantas fases tem o Não Confia?**
+São 100 fases, organizadas em 10 mundos de 10 fases cada. Seu progresso e a contagem de mortes ficam salvos no navegador.
+
+**Precisa baixar ou criar conta para jogar?**
+Não. O jogo é grátis e abre direto na página, sem download e sem cadastro.
+
+## CrossStrike 3D
+
+- Endereço: https://karmagames.com.br/jogar/crossstrike/
+- Categoria: Ação
+- Modos: um jogador e online (multiplayer pela internet)
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+CrossStrike 3D é um jogo de tiro em primeira ou terceira pessoa, com bonecos de bloco, que roda direto no navegador. Você compra armas a cada rodada, usa habilidades e pode ver uma cena de finalização quando derruba um inimigo já quase morto.
+Tem cinco modos: Equipe 5x5 (ou 4x4) contra bots, duelo 1 contra 1, Battle Royale com 16, 24 ou 32 jogadores, Online com amigos e um Treino de mira de 60 segundos. Os bots têm três níveis de dificuldade: Fácil, Médio e Difícil.
+Você escolhe entre 8 personagens, cada um com uma habilidade ativa e uma passiva: Faísca, Corredor, Rastreador, Armeiro, Viper, Ghost, Nova e Bulldog. É grátis, sem download, e serve tanto para quem quer treinar a mira sozinho quanto para quem quer jogar com amigos.
+
+### Como jogar
+
+1. No computador, clique na tela para travar o mouse. Ande com W A S D, mire com o mouse, atire com o clique e segure o botão direito para fazer mira.
+2. Troque de arma com as teclas 1 a 4 (principal, secundária, faca e apoio) ou com a rodinha. Recarregue com R, jogue granada com G, pule com Espaço e agache com Ctrl.
+3. No começo de cada rodada, aperte B para comprar armas e equipamentos. Aperte E para usar a habilidade do seu personagem e Tab para ver o placar.
+4. No celular, use o joystick à esquerda para andar, arraste à direita para mirar e toque nos botões de atirar, pular, agachar e recarregar. Gire o aparelho para a horizontal.
+5. Para jogar online, toque em Jogar online e use Jogo rápido para cair numa sala com gente, escolha uma das salas abertas da lista, ou crie a sua e mande o link de convite para os amigos.
+
+### Controles
+
+WASD anda · mouse mira · clique atira · botão direito (segurar) mira · 1 a 4 troca (principal, secundária, faca, apoio) · G granada · R com a faca arremessa · R recarrega · B compra · P pula a execução · no celular: joystick e botões
+
+### Dicas
+
+- Treine primeiro no modo Treino de mira. Acertar rápido e no centro rende mais pontos.
+- Mire na cabeça: as armas de fogo dão mais dano ali. A sniper derruba com um tiro bem colocado.
+- Gaste o dinheiro com cabeça. Armas caras como o fuzil e a sniper valem mais quando você já tem colete.
+- Escolha o personagem pelo seu estilo: Nova cura aliados, Rastreador mostra inimigos através das paredes e Bulldog aguenta mais dano.
+- No Battle Royale, fique atento ao gás que fecha o mapa e procure armas e cura espalhadas pelo chão.
+
+### Perguntas frequentes
+
+**Dá para jogar CrossStrike 3D com amigos online?**
+Dá. Em Jogar online você entra numa sala aberta com o Jogo rápido, escolhe uma da lista ou cria a sua e manda o link para os amigos. Jogam de 2 a 8 pessoas, em 1 contra 1 ou em times, e dá para entrar com a partida em andamento.
+
+**Dá para jogar CrossStrike 3D no celular?**
+Dá. O jogo tem joystick e botões na tela. Funciona melhor com o celular na horizontal.
+
+**Precisa baixar alguma coisa para jogar?**
+Não. O jogo roda direto no navegador, é grátis e não pede instalação.
+
+## Desvia dos Meteoros
+
+- Endereço: https://karmagames.com.br/jogar/meteoros/
+- Categoria: Ação
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Em Desvia dos Meteoros, você pilota uma navezinha no fundo da tela enquanto pedras caem do espaço. A nave só anda para os lados, então tudo é questão de achar o vão certo entre os meteoros.
+Você começa com 3 vidas. Cada batida tira uma, mas a nave fica piscando e protegida por um instante. Estrelas valem 10 pontos, e você também ganha 1 ponto por segundo vivo. De vez em quando aparece um coração que devolve uma vida, se você tiver perdido alguma.
+Quanto mais tempo passa, mais rápido e mais frequente é o chuveiro de pedras, até chegar ao ritmo máximo por volta de 90 segundos de jogo. Serve para quem gosta de partidas curtas com recorde para bater.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar.
+2. Mova a nave para os lados com as setas esquerda e direita ou com A e D. Com o mouse, a nave segue o ponteiro.
+3. No celular, arraste o dedo na tela. A nave acompanha o movimento do dedo.
+4. Desvie das pedras e passe sobre as estrelas para ganhar 10 pontos cada. Também vale 1 ponto por segundo sobrevivido.
+5. Se uma pedra bater, você perde uma vida. Coletando um coração, recupera uma. Sem vidas, a partida acaba.
+
+### Controles
+
+Setas ou A/D, mouse ou arrastar o dedo
+
+### Dicas
+
+- Olhe para o alto da tela, e não para a nave. Assim você enxerga os meteoros com tempo para decidir.
+- Não arrisque a vida por uma estrela se houver pedra muito perto. O ponto por segundo também soma.
+- Depois de uma batida, a nave fica piscando e protegida por um instante. Aproveite para atravessar uma área mais cheia.
+- Corações só aparecem quando você já perdeu alguma vida. Vale ir buscá-los.
+- Prefira movimentos curtos. Correr de um canto ao outro é arriscado quando as pedras aceleram.
+
+### Perguntas frequentes
+
+**Quantas vidas tem Desvia dos Meteoros?**
+São 3 vidas. Você perde uma a cada batida e pode recuperar pegando corações, que aparecem de vez em quando se faltar vida.
+
+**Dá para jogar no celular?**
+Dá. Arraste o dedo na tela para mover a nave. No computador, use as setas, A e D ou o mouse.
+
+**Como faço mais pontos?**
+Pegue estrelas (10 pontos cada) e sobreviva o máximo possível, já que cada segundo vivo vale 1 ponto.
+
+
+# Jogos de Simulação
+
+## Behind The Grid
+
+- Endereço: https://karmagames.com.br/jogar/behind-the-grid/
+- Categoria: Simulação
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Behind The Grid é um simulador de carreira de influencer. Você cria sua conta, escolhe um nicho e tenta crescer no feed sem perder a paz, a reputação nem o dinheiro. O jogo mostra o que vai para o post e, do outro lado do card, o que acontece de verdade nos bastidores.
+A carreira anda por meses. Em cada mês você tem energia para gravar e postar, fechar publis e contratos pela caixa de e-mail, comprar melhorias de setup, moradia e estilo, ou descansar na vida pessoal. Eventos surpresa trazem escolhas difíceis, e o que você decide muda o seu final.
+Há 5 nichos (Gamer, Vlogger, Lifestyle, Tech e Comida), vários finais para descobrir e conquistas. O progresso fica salvo no navegador. É grátis, em português, e serve para quem gosta de jogo de escolhas com humor.
+
+### Como jogar
+
+1. Toque em Criar conta, preencha os dados do perfil e escolha o seu nicho.
+2. Em cada mês, escolha entre gravar e postar, ver publis e contratos, comprar upgrades ou cuidar da vida pessoal. Cada ação gasta energia.
+3. Ao postar, escolha o formato (Rápido, Produzido ou Clickbait) e um assunto. Aproveite as trends do mês.
+4. Depois de postar, toque ou deslize o card para ver os bastidores do que aconteceu.
+5. Quando acabar a energia, toque em Avançar o Mês. Do mês 25 em diante você pode se aposentar e ver o seu final.
+
+### Controles
+
+Clique ou toque nas ações · deslize o card para ver os bastidores
+
+### Dicas
+
+- Olhe as barras de Paz, Reputação, Hate e Fãs. Crescer rápido demais derruba a paz e atrai hate.
+- Use as trends do mês: o assunto do momento no seu nicho rende mais seguidores.
+- Nem toda publi vale a pena. Pesquise antes de aceitar e desconfie de ofertas tóxicas, porque elas custam reputação.
+- Descansar também é estratégia. Gaste energia na vida pessoal quando a paz estiver baixa.
+- Experimente outro nicho e outras escolhas em uma nova carreira para descobrir mais finais e conquistas.
+
+### Perguntas frequentes
+
+**O Behind The Grid salva o progresso?**
+Salva. O jogo guarda sua carreira no navegador e mostra o botão Continuar carreira na tela inicial. Se você limpar os dados do navegador, perde o progresso.
+
+**Dá para jogar Behind The Grid no celular?**
+Dá. O jogo foi feito para toque: você usa os botões e desliza o card para ver os bastidores.
+
+**Quanto tempo dura uma carreira?**
+A aposentadoria é liberada a partir do mês 25. Cada mês tem um número limitado de ações, e o final depende das suas escolhas.
+
+
+# Jogos Clássicos
+
+## Paciência
+
+- Endereço: https://karmagames.com.br/jogar/paciencia/
+- Categoria: Clássicos
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Paciência é o clássico jogo de cartas para uma pessoa só. O objetivo é levar todas as cartas para as quatro pilhas das fundações, separadas por naipe, do Ás ao Rei. Para isso, você organiza as cartas em sete colunas e usa o monte para buscar novas.
+Aqui você escolhe entre Virar 1 carta, mais fácil, ou Virar 3 cartas, mais difícil. O jogo mostra pontos, movimentos e tempo, tem botão de Dica e de Desfazer e guarda no navegador quantas vitórias você fez e o seu melhor tempo.
+É grátis, roda no navegador e funciona com mouse ou toque. Serve para uma pausa rápida ou para treinar o raciocínio.
+
+### Como jogar
+
+1. Monte sequências decrescentes nas colunas, alternando cor: por exemplo, um 6 preto sobre um 7 vermelho.
+2. Mande as cartas para as fundações em ordem crescente, começando pelo Ás de cada naipe.
+3. Clique no monte para virar cartas. Escolha antes entre Virar 1 ou Virar 3.
+4. No computador, arraste as cartas ou dê dois cliques para mandar uma para a fundação. No celular, toque na carta para ela ir para um lugar válido.
+5. Use Dica quando travar e Desfazer para voltar uma jogada. Você vence quando as quatro fundações chegam ao Rei.
+
+### Controles
+
+Arraste as cartas · toque para selecionar · dois cliques manda pra fundação
+
+### Dicas
+
+- Abra primeiro as colunas com mais cartas viradas para baixo. Revelar cartas novas é o que destrava o jogo.
+- Só leve uma carta para a fundação se ela não for mais útil nas colunas. Um 2 preto pode ser necessário para receber um Ás de outra cor.
+- Esvazie uma coluna só quando tiver um Rei para colocar lá.
+- Antes de virar uma carta do monte, veja se algum movimento nas colunas já resolve.
+- Virar 3 é mais difícil. Treine no Virar 1 e depois suba de nível.
+
+### Perguntas frequentes
+
+**Quais são as regras da Paciência?**
+Você forma sequências decrescentes de cores alternadas nas sete colunas e leva as cartas, do Ás ao Rei, para as quatro fundações por naipe. Vence quem completar todas as fundações.
+
+**Qual a diferença entre virar 1 e virar 3 cartas?**
+Virar 1 revela uma carta por vez do monte, o que deixa o jogo mais fácil. Virar 3 revela três de uma vez, e só a de cima fica disponível.
+
+**Dá para jogar Paciência no celular?**
+Dá. É só tocar numa carta para o jogo mandá-la a um lugar válido. É grátis e abre direto no navegador.
+
+## Forca
+
+- Endereço: https://karmagames.com.br/jogar/forca/
+- Categoria: Clássicos
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Forca é o jogo clássico de adivinhar uma palavra letra por letra. A cada letra errada, uma parte do bonequinho aparece. Se ele ficar completo antes de você acertar a palavra, você perde.
+Aqui as palavras são em português e vêm de categorias como Animais, Frutas, Comidas, Países, Profissões, Esportes, Cores e Cidades do Brasil. Você escolhe entre Fácil, Médio e Difícil, que mudam o tamanho das palavras e quantos erros você pode cometer. O jogo guarda vitórias, derrotas e sequência no navegador.
+Tem também o modo de 2 jogadores: um digita uma palavra secreta (com dica opcional) e o outro tenta adivinhar. É grátis, roda no navegador e serve para crianças e adultos.
+
+### Como jogar
+
+1. Escolha entre 1 jogador e 2 jogadores. No modo de 1 jogador, escolha também o nível: Fácil, Médio ou Difícil.
+2. Veja a dica da categoria e os traços que mostram quantas letras tem a palavra.
+3. Clique nas letras na tela ou use o teclado do computador. Letras certas aparecem na palavra e as erradas desenham uma parte do boneco.
+4. No modo de 2 jogadores, o Jogador 1 digita a palavra secreta sem o outro ver, e o Jogador 2 tenta adivinhar.
+5. Acerte todas as letras antes de acabarem os erros para vencer.
+
+### Controles
+
+Clique nas letras ou use o teclado
+
+### Dicas
+
+- Comece pelas vogais mais comuns em português: A, E e O.
+- Depois teste consoantes frequentes, como R, S, T, N e L.
+- Use a categoria como pista. Se for Frutas ou Países, pense em nomes conhecidos.
+- Observe o tamanho da palavra. Palavras curtas pedem menos letras diferentes.
+- No modo de 2 jogadores, escolha uma palavra com letras pouco comuns para dificultar.
+
+### Perguntas frequentes
+
+**Como jogar Forca com um amigo?**
+Escolha 2 jogadores. Um digita a palavra secreta, com dica opcional, sem o outro olhar, e o outro tenta adivinhar.
+
+**A Forca tem palavras em português?**
+Tem. As palavras são em português e organizadas em categorias, e acentos não atrapalham: você digita a letra normal.
+
+**Dá para jogar Forca no celular?**
+Dá. Você toca nas letras na tela. É grátis e funciona direto no navegador.
+
+## Pedra, Papel e Tesoura
+
+- Endereço: https://karmagames.com.br/jogar/pedra-papel-tesoura/
+- Categoria: Clássicos
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Pedra, Papel e Tesoura é aquele jogo de mão que todo mundo conhece, agora contra o computador. Você escolhe uma jogada, o computador escolhe outra e as duas mãos aparecem ao mesmo tempo. A pedra quebra a tesoura, a tesoura corta o papel e o papel embrulha a pedra.
+Cada partida é uma melhor de 5: quem fizer 3 pontos primeiro leva. Se as duas jogadas forem iguais, é empate e a rodada se repete. O jogo conta quantas partidas você ganha em sequência e guarda o seu recorde de vitórias seguidas.
+É rápido, simples e serve para decidir quem lava a louça ou só para passar o tempo. Funciona bem no celular e no computador.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar a partida.
+2. Em cada rodada, escolha Pedra, Papel ou Tesoura. No teclado, use as teclas 1, 2 e 3. Com mouse ou no celular, clique ou toque nos botões.
+3. As duas mãos balançam e depois mostram a jogada. Pedra vence tesoura, tesoura vence papel e papel vence pedra.
+4. Quem chegar a 3 pontos primeiro ganha a partida. Jogadas iguais dão empate e ninguém pontua.
+5. Ganhou a partida? Continue para aumentar sua sequência de vitórias. Perdeu, a sequência volta a zero.
+
+### Controles
+
+Teclas 1, 2 e 3 · clique ou toque nos botões
+
+### Dicas
+
+- O computador escolhe sua jogada de forma aleatória, então não existe padrão para descobrir. Cada rodada é sorte pura.
+- Não adianta tentar enganar o computador. Escolha à vontade e foque em aumentar a sequência de partidas ganhas.
+- Em jogo contra pessoas, muita gente começa com pedra. Aqui, isso não faz diferença, já que a máquina não segue padrão.
+- Quer desafio? Tente bater seu próprio recorde de vitórias seguidas, que fica guardado no aparelho.
+
+### Perguntas frequentes
+
+**Quais são as regras de Pedra, Papel e Tesoura?**
+Pedra ganha da tesoura, tesoura ganha do papel e papel ganha da pedra. Se os dois escolherem a mesma, empata. Aqui a partida é melhor de 5, ou seja, quem fizer 3 pontos primeiro vence.
+
+**Dá para jogar Pedra, Papel e Tesoura no celular?**
+Dá. É só tocar nos botões de Pedra, Papel e Tesoura na tela. No computador também dá para usar as teclas 1, 2 e 3.
+
+**Dá para jogar contra um amigo?**
+Não. Esta versão é só contra o computador. Para jogar online com alguém, o Jogo da Velha, o Ligue 4, o Reversi, a Dama e o Xadrez têm modo Online.
+
+## Genius
+
+- Endereço: https://karmagames.com.br/jogar/genius/
+- Categoria: Clássicos
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Genius é o jogo de memória das quatro cores: verde, vermelho, amarelo e azul. Cada cor tem um som. O jogo acende uma sequência e você precisa repeti-la na mesma ordem.
+A cada acerto, a sequência ganha uma cor nova no final e fica mais rápida. Não há limite de tempo para responder, mas basta errar uma cor para a partida acabar. Sua pontuação é o tamanho da maior sequência que você repetiu certo, e o recorde fica salvo no aparelho.
+É um jogo individual, ótimo para treinar a memória e a atenção. Funciona no computador e no celular, com sons que ajudam a decorar a sequência.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar. O jogo mostra a primeira cor.
+2. Observe e escute a sequência. Quando aparecer 'sua vez!', repita as cores na mesma ordem.
+3. No computador, clique nas cores ou use as teclas: Q (verde), W (vermelho), A (amarelo) e S (azul). As setas também funcionam: cima, direita, esquerda e baixo, na mesma ordem.
+4. No celular, toque diretamente nas cores.
+5. A cada rodada completa, entra uma cor nova. Errou uma cor, a partida termina.
+
+### Controles
+
+Q W A S ou setas · clique ou toque nas cores
+
+### Dicas
+
+- Preste atenção no som além da cor. Cada cor tem uma nota diferente, o que ajuda a memorizar.
+- Divida a sequência em pedaços de três ou quatro cores, como se fosse um número de telefone.
+- Repita a sequência mentalmente enquanto ela toca, em vez de esperar o fim.
+- Se for jogar no teclado, decore as teclas antes: Q e W em cima, A e S embaixo, como as cores na tela.
+- Ficou difícil? Faça uma pausa curta. Memória cansada erra mais.
+
+### Perguntas frequentes
+
+**Como jogar Genius?**
+O jogo mostra uma sequência de cores e sons e você repete na mesma ordem. A cada acerto, a sequência cresce em uma cor. Se errar, a partida acaba.
+
+**Dá para jogar Genius no celular?**
+Dá. É só tocar nas quatro cores. No computador, também dá para clicar, usar as teclas Q, W, A e S ou as setas.
+
+**Precisa baixar ou criar conta?**
+Não. O Genius roda direto no navegador e o seu recorde fica guardado no próprio aparelho.
+
+## Cobrinha
+
+- Endereço: https://karmagames.com.br/jogar/cobrinha/
+- Categoria: Clássicos
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Cobrinha é o clássico em que você guia uma cobra por um tabuleiro, come a comida que aparece e vai ficando maior. A cobra anda sozinha, e você só escolhe a direção. Bater nas paredes ou no próprio corpo encerra a partida.
+Cada comida vale um ponto e deixa a cobra mais rápida, até um limite. No começo é tranquilo, mas quando o corpo já ocupa boa parte do campo, planejar o caminho é o que separa uma partida boa de uma ótima.
+O recorde fica salvo no navegador. Dá para jogar no computador com o teclado ou no celular, deslizando o dedo. É grátis e não precisa instalar nada.
+
+### Como jogar
+
+1. No computador, use as setas ou W, A, S, D para virar a cobra. Aperte Espaço para começar.
+2. No celular, deslize o dedo na direção em que quer virar. Um toque simples também vira a cobra na direção do ponto tocado.
+3. Coma a comida que aparece no campo. Cada uma soma um ponto e aumenta o tamanho da cobra.
+4. Não bata nas paredes nem no próprio corpo. A cobra não atravessa as bordas.
+5. Aperte P ou Esc para pausar.
+
+### Controles
+
+Setas ou WASD · deslize no celular
+
+### Dicas
+
+- Ande perto das bordas e deixe o miolo livre para manobrar quando a cobra estiver grande.
+- Faça curvas em U largas em vez de curvas bruscas. Isso evita que você se prenda.
+- Pense dois passos à frente. Antes de pegar a comida, veja por onde vai sair depois.
+- O jogo aceita alguns comandos em sequência, então dá para planejar duas curvas seguidas com antecedência.
+- A cobra não vira para trás na hora. Para inverter o sentido, faça duas curvas.
+
+### Perguntas frequentes
+
+**Dá para jogar Cobrinha no celular?**
+Dá. Deslize o dedo para a direção desejada. Também é possível tocar na tela para virar a cobra para o lado do toque.
+
+**Quais são as regras da Cobrinha?**
+Guie a cobra até a comida para crescer e ganhar pontos. Se ela bater em uma parede ou no próprio corpo, a partida termina. A cobra fica mais rápida conforme você pontua.
+
+**A Cobrinha é grátis e precisa de download?**
+É grátis, roda no navegador e não precisa de download nem de cadastro.
+
+## Pong
+
+- Endereço: https://karmagames.com.br/jogar/pong/
+- Categoria: Clássicos
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Pong é um dos jogos de videogame mais antigos. Aqui você enfrenta o computador numa partida de tênis simplificado: cada um tem uma raquete, e você tenta mandar a bola além da raquete do adversário. Quem chegar a 7 pontos primeiro vence.
+A bola acelera a cada rebatida, então os pontos ficam mais rápidos e mais tensos. O computador também se adapta: ele se move um pouco mais rápido conforme o placar avança. O ângulo da bola depende do ponto da raquete em que ela bate.
+O jogo conta suas vitórias seguidas e guarda a maior sequência no navegador. Dá para jogar com o mouse, as setas do teclado ou arrastando o dedo no celular. É grátis e não precisa de download.
+
+### Como jogar
+
+1. No computador, mova o mouse para levar a raquete, ou use as setas e as teclas W, A, S, D.
+2. No celular, arraste o dedo na tela. A raquete acompanha o movimento do dedo, sem ficar escondida embaixo dele.
+3. Aperte Espaço ou toque na tela para começar a partida.
+4. Rebata a bola para o lado do computador. Se ela passar por você, o computador marca um ponto.
+5. Quem chegar a 7 pontos primeiro vence. Aperte P ou Esc para pausar.
+
+### Controles
+
+Mouse, setas ou arraste o dedo
+
+### Dicas
+
+- Rebata com as pontas da raquete para mandar a bola em ângulos mais difíceis para o computador.
+- Volte para o meio da quadra depois de cada rebatida. Assim você cobre os dois lados.
+- Acompanhe a bola desde que ela sai da raquete do computador e comece a se mover antes de ela chegar.
+- A bola fica mais rápida a cada rebatida. Em trocas longas, evite movimentos grandes e prefira ajustes pequenos.
+- Depois de abrir vantagem no placar, mantenha o ritmo. O computador também acelera nos pontos finais.
+
+### Perguntas frequentes
+
+**Quantos pontos são necessários para ganhar no Pong?**
+São 7 pontos. Quem chegar primeiro a 7 vence a partida.
+
+**Dá para jogar Pong contra um amigo?**
+Nesta versão, não. O Pong aqui é você contra o computador.
+
+**Dá para jogar Pong no celular?**
+Dá. Arraste o dedo na tela para mover a raquete. Funciona direto no navegador, grátis e sem download.
+
+## Jogo da Velha
+
+- Endereço: https://karmagames.com.br/jogar/jogo-da-velha/
+- Categoria: Clássicos
+- Modos: um jogador e online (multiplayer pela internet)
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+O Jogo da Velha é o clássico de X e O em um tabuleiro de 3 por 3. Dois lados se alternam marcando uma casa, e vence quem fizer uma linha de três na horizontal, na vertical ou na diagonal. Se o tabuleiro encher sem vencedor, dá velha.
+Aqui você escolhe entre dois modos. Contra o computador, você joga de X e pode escolher entre Fácil e Difícil. No modo 2 jogadores, vocês revezam o mesmo aparelho. O primeiro a jogar alterna a cada rodada, e o placar de vitórias, derrotas e empates fica salvo no navegador, separado por modo.
+No modo Online, você joga Jogo da Velha pela internet, cada um no seu aparelho: use Jogo rápido para enfrentar quem estiver esperando, entre numa das salas abertas ou crie uma sala e mande o código ou o link de convite para um amigo. Se a conexão cair ou a página recarregar, a partida continua de onde parou.
+É rápido, não exige cadastro e funciona no computador e no celular. Serve tanto para uma partida solo quanto para passar o tempo com alguém ao lado.
+
+### Como jogar
+
+1. Escolha o modo no alto: Contra o computador ou 2 jogadores. No primeiro, defina também Fácil ou Difícil.
+2. Para jogar com alguém à distância, escolha Online. Jogo rápido coloca você na primeira sala com vaga; para jogar com um amigo, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.
+3. Clique ou toque numa casa vazia para marcar. Contra o computador, você é o X.
+4. Faça uma linha de três símbolos iguais, na horizontal, vertical ou diagonal, para vencer.
+5. Se as nove casas forem preenchidas sem linha, a rodada termina empatada.
+6. O placar fica salvo no navegador. Use Zerar placar para recomeçar a contagem.
+
+### Controles
+
+Clique ou toque na casa
+
+### Dicas
+
+- Se começar, jogue no centro ou num canto. São as casas que abrem mais linhas.
+- Sempre verifique se o adversário está a uma casa de fechar uma linha e bloqueie.
+- Tente criar duas ameaças de uma vez. Assim o adversário só consegue bloquear uma.
+- No modo Difícil o computador não erra, então o melhor resultado possível é empatar.
+- Treine no Fácil para pegar o jeito e passe para o Difícil quando quiser um desafio de verdade.
+
+### Perguntas frequentes
+
+**Dá para jogar Jogo da Velha com um amigo no mesmo aparelho?**
+Dá. No modo 2 jogadores vocês revezam o mesmo celular ou computador. Para jogar cada um no seu aparelho, use o modo Online.
+
+**Dá para jogar Jogo da Velha online com um amigo?**
+Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada.
+
+**Dá para ganhar do computador no Jogo da Velha?**
+No Fácil, sim, porque o computador erra de vez em quando. No Difícil ele joga sem erros, então o melhor que você consegue é empatar.
+
+**Quais são as regras do Jogo da Velha?**
+Cada jogador marca uma casa por vez, X ou O. Vence quem completar três símbolos em linha. Se as casas acabarem sem vencedor, dá velha.
+
+
+# Jogos Arcade
+
+## Blocos Caindo
+
+- Endereço: https://karmagames.com.br/jogar/blocos/
+- Categoria: Arcade
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Blocos Caindo é um jogo de encaixar peças que descem pela tela. Você gira e move cada peça para formar linhas completas, que somem e dão pontos. Se a pilha chegar ao topo, o jogo termina.
+Aqui o jogo fica mais rápido conforme você avança: a cada 10 linhas limpas sobe um nível. Você pode guardar uma peça para usar depois, ver as próximas e fazer combos limpando linhas em jogadas seguidas. O recorde fica salvo no navegador.
+É grátis, roda no navegador e funciona no teclado ou no celular, com botões e gestos na tela. Serve para partidas curtas e para quem gosta de bater a própria marca.
+
+### Como jogar
+
+1. No computador, mova a peça com as setas para a esquerda e para a direita. A seta para cima gira e a seta para baixo desce mais rápido.
+2. Aperte Espaço para derrubar a peça de uma vez. Aperte C para guardar a peça e usar depois.
+3. Complete linhas horizontais sem buracos para limpá-las e ganhar pontos.
+4. No celular, use os botões na tela ou os gestos no campo de jogo.
+5. Aperte P para pausar. O jogo acaba quando as peças chegam ao topo.
+
+### Controles
+
+Setas movem · ↑ gira · Espaço derruba · C guarda · no celular: botões e gestos
+
+### Dicas
+
+- Mantenha a pilha baixa e plana, evitando buracos fechados por cima.
+- Use Guardar para reservar a peça comprida para quando abrir um espaço fundo.
+- Limpar várias linhas de uma vez rende bem mais pontos do que limpar uma a uma.
+- Olhe as próximas peças e planeje onde cada uma vai antes de ela chegar.
+- Encadeie limpezas em jogadas seguidas para fazer combos.
+
+### Perguntas frequentes
+
+**Dá para jogar Blocos Caindo no celular?**
+Dá. Aparecem botões na tela e o campo aceita gestos. Funciona direto no navegador.
+
+**O recorde fica salvo?**
+Fica. O melhor placar é guardado no navegador do aparelho em que você jogou.
+
+**Como funciona a pontuação?**
+Limpar linhas dá pontos, e limpar mais linhas de uma vez dá mais. Descer a peça mais rápido também soma pontos, e os combos rendem um bônus extra.
+
+## Torre de Blocos
+
+- Endereço: https://karmagames.com.br/jogar/torre/
+- Categoria: Arcade
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Torre de Blocos é um jogo de reflexo e precisão. Um bloco desliza de um lado para o outro no alto da tela, e você escolhe a hora de soltá-lo sobre a torre. O que ficar para fora da borda é cortado e cai.
+Como o bloco só perde o que sobra, a torre vai ficando mais estreita a cada erro. Se você acertar em cheio, o bloco mantém o tamanho e ainda rende pontos extras. Com três acertos perfeitos seguidos, ele até cresce um pouco. Se errar o bloco todo, a torre cai e a partida acaba.
+O céu muda de cor conforme a torre sobe, e o bloco anda mais rápido a cada andar. Cada partida é curta, então dá para tentar bater o recorde várias vezes seguidas, no computador ou no celular.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar.
+2. Um bloco vai e volta no alto. Aperte Espaço, Enter, a seta para baixo ou a tecla S para soltá-lo. Com o mouse ou no celular, clique ou toque na tela.
+3. O pedaço que ficar fora da torre é cortado. O bloco seguinte terá só a largura do que ficou apoiado.
+4. Acertar em cheio vale pontos extras e cresce com a sequência de acertos. Os acertos perfeitos aparecem na tela.
+5. Se o bloco não encostar na torre, ela cai e a partida termina. Seu recorde fica salvo.
+
+### Controles
+
+Espaço, clique ou toque para soltar o bloco
+
+### Dicas
+
+- Mire no centro do bloco de baixo e solte quando os dois estiverem alinhados. Não dá para corrigir depois que cai.
+- Mire no centro: o acerto perfeito mantém a largura do bloco e dá bônus de pontos.
+- Três acertos perfeitos seguidos devolvem um pouco de largura, então vale insistir na precisão.
+- O bloco acelera conforme a torre sobe. Acompanhe o ritmo e solte sempre no mesmo tempo.
+- Quando a torre estiver muito fina, não force: um encaixe parcial ainda mantém você vivo.
+
+### Perguntas frequentes
+
+**Como jogar Torre de Blocos?**
+Solte o bloco que desliza no alto para empilhá-lo sobre a torre. O que passar da borda é cortado. Quanto melhor o encaixe, mais largo fica o próximo bloco.
+
+**Dá para jogar Torre de Blocos no celular?**
+Dá. Basta tocar na tela para soltar o bloco. No computador, use Espaço, clique ou as teclas Enter, S e seta para baixo.
+
+**O que é o acerto perfeito?**
+É quando o bloco cai quase exatamente sobre o de baixo. Ele não perde largura e rende pontos extras. Acertos perfeitos em sequência valem ainda mais.
+
+## Acerta a Toupeira
+
+- Endereço: https://karmagames.com.br/jogar/toupeira/
+- Categoria: Arcade
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Acerta a Toupeira é um jogo de reflexo em que bichinhos saem de nove buracos e você precisa acertá-los com o martelo antes que sumam. Cada partida dura 30 segundos, e a velocidade aumenta ao longo do tempo.
+A toupeira comum vale 10 pontos. A toupeira dourada vale 30, mas some mais rápido. Ao acertar três seguidas sem errar, cada acerto rende 5 pontos extras. Mas cuidado com a bomba: se você martelar uma, perde 20 pontos e zera a sequência.
+Dá para jogar com mouse, com toque no celular ou pelo teclado, usando as teclas que formam uma grade de 3 por 3. É um jogo rápido, bom para ver quem tem o melhor reflexo.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar a partida de 30 segundos.
+2. Clique ou toque nas toupeiras assim que elas saírem do buraco. O martelo cai onde você clicar.
+3. No teclado, use as teclas de 1 a 9, que ficam na mesma disposição do teclado numérico (7 8 9 em cima, 1 2 3 embaixo). As letras Q W E, A S D e Z X C também funcionam.
+4. Acertar toupeira comum dá 10 pontos e a dourada dá 30. Três acertos seguidos dão bônus de 5 pontos por acerto.
+5. Não acerte a bomba: ela tira 20 pontos. Você pode pausar com P e ligar ou desligar o som com M.
+
+### Controles
+
+Clique ou toque nas toupeiras · teclas 1 a 9 · P pausa · M som
+
+### Dicas
+
+- Foque em manter a sequência. Errar o clique ou deixar uma toupeira fugir zera o bônus.
+- A toupeira dourada vale três vezes mais. Priorize ela, mesmo que seja rápida.
+- Só acerte quando o bicho já estiver bem para fora do buraco. Clique cedo demais e conta como erro.
+- Deixar a bomba em paz custa zero. Ela some sozinha, então ignore.
+- No fim da partida o jogo fica mais rápido e aparecem várias toupeiras juntas. Mantenha o olhar no conjunto.
+
+### Perguntas frequentes
+
+**Quanto tempo dura Acerta a Toupeira?**
+Cada partida tem 30 segundos. Ao final aparece sua pontuação, e o recorde fica salvo no aparelho.
+
+**Dá para jogar no celular?**
+Dá. Basta tocar nas toupeiras. No computador, você pode usar o mouse ou as teclas de 1 a 9.
+
+**O que acontece se eu acertar a bomba?**
+Você perde 20 pontos e a sua sequência de acertos zera. A pontuação nunca fica abaixo de zero.
+
+## Corre Galinha
+
+- Endereço: https://karmagames.com.br/jogar/galinha/
+- Categoria: Arcade
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Corre Galinha é um jogo de corrida sem fim. Uma galinha foge pela fazenda e você só controla o pulo. Cercas e baldes aparecem no caminho, e encostar em qualquer um deles termina a partida.
+A pontuação é a distância em metros. Quanto mais longe você chega, mais rápida a galinha fica e menor é o espaço entre os obstáculos. A cada 100 metros aparece um aviso na tela. O jogo guarda seu recorde no próprio navegador, então dá para tentar superar a si mesmo.
+O pulo tem uma regra simples: quanto mais tempo você segura o botão, mais alto a galinha vai. É ótimo para partidas rápidas no intervalo, no computador ou no celular, e não precisa de cadastro nem de instalação.
+
+### Como jogar
+
+1. Aperte Espaço, seta para cima, W ou Enter para a galinha pular. No celular, toque na tela. No computador, o clique do mouse também funciona.
+2. Segure o botão para fazer um pulo mais alto e solte para um pulo curto.
+3. Pule as cercas e os baldes. Alguns baldes vêm em dupla, então o pulo precisa cobrir os dois.
+4. Sua pontuação é a distância percorrida. Ao bater em um obstáculo, a partida acaba e você pode jogar de novo na hora.
+5. Aperte P para pausar e M para ligar ou desligar o som.
+
+### Controles
+
+Espaço, seta para cima, clique ou toque para pular (segure para ir mais alto) · P pausa · M som
+
+### Dicas
+
+- Pule só quando o obstáculo estiver perto. Pular cedo demais faz a galinha cair em cima dele.
+- Para as cercas e os baldes duplos, segure o botão e pule mais alto. Para um balde sozinho, um toque rápido basta.
+- Com a velocidade subindo, olhe um pouco mais à frente do que o obstáculo mais próximo.
+- Depois de pousar, espere um instante antes de pular de novo. Pulos apressados em sequência atrapalham o tempo.
+- Se perder o ritmo, pause com P, respire e continue.
+
+### Perguntas frequentes
+
+**Dá para jogar Corre Galinha no celular?**
+Dá. Basta tocar na tela para pular e segurar o toque para pular mais alto. Funciona direto no navegador do celular, sem baixar nada.
+
+**Como funciona a pontuação do Corre Galinha?**
+Você ganha pontos pela distância corrida, em metros. Não há vidas extras: bateu em uma cerca ou balde, a partida termina. O melhor resultado fica salvo no seu navegador.
+
+**Precisa baixar ou criar conta para jogar?**
+Não. O Corre Galinha roda direto no navegador, é grátis e não pede cadastro.
+
+## Voo Livre
+
+- Endereço: https://karmagames.com.br/jogar/voo-livre/
+- Categoria: Arcade
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Voo Livre é um jogo de reflexo em que você bate as asas para manter o voo e atravessa vãos entre colunas. Cada passagem vale um ponto. Encostar numa coluna ou no chão encerra a partida.
+Ele é fácil de entender e difícil de dominar. A gravidade puxa o tempo todo, então você precisa dar pequenos impulsos no ritmo certo. Conforme a pontuação sobe, o jogo acelera um pouco e o vão entre as colunas vai ficando mais estreito, até um limite.
+O recorde fica salvo no seu navegador. É uma boa pedida para partidas curtas, para quem gosta de desafios de precisão e quer jogar sem instalar nada, no computador ou no celular.
+
+### Como jogar
+
+1. Aperte Espaço, seta para cima, W ou Enter para bater as asas. No celular, toque na tela. No computador, clicar também funciona.
+2. Cada toque dá um impulso para cima. Sem toque, o personagem cai.
+3. Passe pelo vão entre as colunas. Cada coluna vencida soma um ponto.
+4. Se encostar em uma coluna ou no chão, a partida acaba. Toque ou aperte uma tecla para jogar de novo.
+5. Aperte P ou Esc para pausar.
+
+### Controles
+
+Espaço, clique ou toque para voar
+
+### Dicas
+
+- Prefira toques curtos e regulares em vez de muitos toques seguidos. Impulsos demais jogam você no teto.
+- Mire no meio do vão. Isso dá folga para errar um pouco por cima ou por baixo.
+- Olhe para a próxima coluna, não para o personagem. Assim você já se prepara para subir ou descer.
+- Quando o vão estiver mais alto ou mais baixo que o anterior, comece a corrigir cedo, ainda antes de chegar à coluna.
+- Não se apresse. O jogo acelera aos poucos, e o ritmo calmo do começo ajuda a pegar o jeito.
+
+### Perguntas frequentes
+
+**Dá para jogar Voo Livre no celular?**
+Dá. Cada toque na tela faz o personagem bater as asas. Funciona direto no navegador do celular.
+
+**Como ganhar pontos no Voo Livre?**
+Você ganha um ponto a cada coluna que passa sem encostar. O jogo mostra sua pontuação e o recorde salvo no navegador.
+
+**Voo Livre é grátis e precisa baixar?**
+É grátis e não precisa baixar nem se cadastrar. Abra a página e jogue.
+
+## Quebra-Blocos
+
+- Endereço: https://karmagames.com.br/jogar/quebra-blocos/
+- Categoria: Arcade
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Quebra-Blocos é o clássico em que você move uma raquete na parte de baixo da tela para rebater a bola e derrubar os blocos. Limpou todos os blocos, passou de fase. Deixou a bola cair, perdeu uma vida.
+Você começa com três vidas. Os blocos comuns valem 10 pontos, e os blocos coral aguentam duas batidas e valem 25. Ao avançar de fase, a bola fica mais rápida, a raquete encolhe um pouco e o desenho dos blocos muda. Terminar uma fase dá um bônus.
+O recorde de pontos fica salvo no navegador. Dá para jogar com o mouse, o teclado ou o dedo no celular. É grátis e não pede instalação.
+
+### Como jogar
+
+1. No computador, mova o mouse para levar a raquete, ou use as setas ou A e D.
+2. Aperte Espaço, seta para cima ou Enter para lançar a bola. Com o mouse ou o dedo, o clique ou toque também lança.
+3. No celular, arraste o dedo para mover a raquete. Ela acompanha o movimento do dedo, sem ficar escondida embaixo dele.
+4. Rebata a bola e quebre todos os blocos. Blocos coral precisam de duas batidas.
+5. Você tem três vidas. Sem vidas, a partida termina e mostra a fase que você alcançou.
+
+### Controles
+
+Mouse, setas ou arraste o dedo
+
+### Dicas
+
+- O ponto da raquete em que a bola bate muda o ângulo. Rebata com as pontas para mandar a bola mais de lado.
+- Abra um caminho pela lateral. Quando a bola passa para cima dos blocos, ela quebra vários sozinha.
+- Acompanhe a bola com os olhos, não a raquete. Chegue ao ponto de queda antes dela.
+- Nas fases mais altas, a raquete é menor e a bola é mais rápida. Não deixe a raquete parada no meio.
+- Dê prioridade aos blocos coral para que nenhum fique para o fim com a bola rápida.
+
+### Perguntas frequentes
+
+**Dá para jogar Quebra-Blocos no celular?**
+Dá. Arraste o dedo na tela para mover a raquete. O toque também lança a bola.
+
+**Quantas vidas tem o Quebra-Blocos?**
+Você começa com três vidas. Cada vez que a bola cai, você perde uma. Quando acabam, o jogo termina.
+
+**O Quebra-Blocos tem fases?**
+Tem. Cada vez que você limpa todos os blocos, começa uma fase nova com outro desenho e uma bola mais rápida.
+
+
+# Jogos de Quebra-cabeça
+
+## Sudoku
+
+- Endereço: https://karmagames.com.br/jogar/sudoku/
+- Categoria: Quebra-cabeça
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Sudoku é o quebra-cabeça de números em uma grade 9x9. O objetivo é preencher todas as casas de modo que cada linha, cada coluna e cada quadrado 3x3 tenha os números de 1 a 9, sem repetir.
+Aqui você escolhe entre Fácil, Médio e Difícil, e o jogo cria um puzzle novo a cada partida. Tem anotações para marcar candidatos, botão de Desfazer e Dica, contador de erros e a opção de mostrar os erros na hora. O tempo é cronometrado e o seu recorde fica salvo no navegador, separado por nível.
+É grátis, roda no navegador e funciona com teclado ou toque. Serve para quem quer treinar a lógica, de iniciante a experiente.
+
+### Como jogar
+
+1. Escolha o nível: Fácil, Médio ou Difícil. Quanto mais difícil, menos números já vêm preenchidos.
+2. Toque numa casa vazia e depois no número que você quer colocar. No teclado, use as setas para mover e as teclas 1 a 9 para preencher.
+3. Ative Anotar (ou aperte N) para marcar números possíveis em uma casa sem preenchê-la.
+4. Use Desfazer para voltar uma jogada, Apagar para limpar uma casa e Dica para o jogo revelar um número.
+5. Ative Mostrar erros se quiser ver na hora os números errados. Vence quem completar a grade.
+
+### Controles
+
+Toque na casa e no número · setas e teclas 1 a 9 · N anota
+
+### Dicas
+
+- Comece pelos números que mais aparecem na grade. Os que já têm 8 no tabuleiro são fáceis de completar.
+- Procure linhas, colunas ou quadrados que só falta uma casa.
+- Use as anotações quando uma casa tiver poucas opções. Elas ajudam a achar números que só cabem em um lugar.
+- Se travar, olhe a contagem embaixo de cada número: ela mostra quantos ainda faltam.
+- Dicas contam no resultado final. Tente usar o mínimo para um tempo melhor.
+
+### Perguntas frequentes
+
+**Quais são as regras do Sudoku?**
+Preencha a grade 9x9 com números de 1 a 9 sem repetir em nenhuma linha, coluna ou quadrado 3x3. Os números iniciais não podem ser trocados.
+
+**Dá para jogar Sudoku no celular?**
+Dá. Você toca na casa e depois no número. É grátis e abre direto no navegador.
+
+**O Sudoku tem dicas e anotações?**
+Tem as duas. A Dica preenche uma casa certa para você, e o modo Anotar serve para marcar candidatos sem comprometer a casa.
+
+## 2048
+
+- Endereço: https://karmagames.com.br/jogar/2048/
+- Categoria: Quebra-cabeça
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+2048 é um quebra-cabeça de números em um tabuleiro de 4 por 4. Você desliza todas as peças para uma direção. Quando duas peças com o mesmo número se encontram, elas se juntam em uma só com o valor somado. O objetivo é formar a peça 2048.
+A cada jogada surge uma peça nova, quase sempre um 2 e às vezes um 4. A partida acaba quando o tabuleiro enche e não sobra nenhum movimento. Ao chegar ao 2048 você pode continuar jogando para fazer ainda mais pontos.
+Esta versão guarda seu recorde e também a partida em andamento, então você pode fechar a página e voltar depois. Tem um botão de desfazer para a última jogada. É grátis e funciona no computador e no celular.
+
+### Como jogar
+
+1. No computador, use as setas ou W, A, S, D para deslizar todas as peças para cima, direita, baixo ou esquerda.
+2. No celular, deslize o dedo sobre o tabuleiro na direção desejada.
+3. Quando duas peças com o mesmo número se encostam, elas se juntam e a pontuação aumenta pelo valor da nova peça.
+4. Se errar, aperte Z ou o botão Desfazer para voltar uma jogada. Só a última jogada pode ser desfeita.
+5. Chegue à peça 2048 para vencer, ou continue jogando para aumentar a pontuação. Use Novo jogo para recomeçar.
+
+### Controles
+
+Setas ou WASD · deslize no celular
+
+### Dicas
+
+- Escolha um canto para guardar a peça maior e evite mover na direção oposta sempre que puder.
+- Mantenha as peças grandes em fila, da maior para a menor, ao longo de uma borda.
+- Use poucas direções. Alternar entre duas ou três direções mantém o tabuleiro mais organizado.
+- Antes de cada jogada, olhe se há duas peças iguais que possam se juntar de uma vez.
+- Use o Desfazer com cuidado: ele só volta uma jogada, então pense antes de mover quando o tabuleiro estiver cheio.
+
+### Perguntas frequentes
+
+**Qual é o objetivo do 2048?**
+Juntar peças com o mesmo número até formar a peça 2048. O jogo avisa quando você chega lá e deixa você continuar, se quiser.
+
+**Dá para jogar 2048 no celular?**
+Dá. É só deslizar o dedo sobre o tabuleiro na direção em que quer mover as peças.
+
+**Posso desfazer uma jogada no 2048?**
+Pode. Aperte Z ou o botão Desfazer para voltar a última jogada. Não é possível voltar mais de uma.
+
+## Campo Minado
+
+- Endereço: https://karmagames.com.br/jogar/campo-minado/
+- Categoria: Quebra-cabeça
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Campo Minado é um jogo de lógica. O tabuleiro esconde minas, e seu trabalho é abrir todas as casas seguras sem pisar em nenhuma. Cada número revelado diz quantas minas existem nas casas ao redor dele.
+Aqui há três níveis: Fácil (9 por 9 com 10 minas), Médio (16 por 16 com 40 minas) e Difícil (16 por 30 com 99 minas). O cronômetro começa na primeira casa aberta, e ela nunca é uma mina. Seu melhor tempo fica salvo no navegador, separado por nível.
+Dá para jogar com o mouse ou com toques no celular, e há um botão Bandeira para marcar as minas sem depender do botão direito. É grátis e roda direto no navegador.
+
+### Como jogar
+
+1. Clique ou toque numa casa para abri-la. A primeira casa que você abrir nunca tem mina.
+2. Os números indicam quantas minas existem nas oito casas vizinhas. Use isso para deduzir onde estão as minas.
+3. Para marcar uma mina, clique com o botão direito. No celular, faça um toque longo ou ative o botão Bandeira.
+4. Clique num número já aberto que tenha a quantidade certa de bandeiras ao redor para abrir de uma vez as demais casas vizinhas.
+5. Abra todas as casas sem mina para vencer. Escolha o nível em Fácil, Médio ou Difícil e use Reiniciar para começar de novo.
+
+### Controles
+
+Clique para abrir · botão direito ou toque longo marca
+
+### Dicas
+
+- Comece por números 1 perto de bordas e cantos. Ali há menos casas vizinhas, e a dedução é mais fácil.
+- Se um número já tem todas as minas marcadas ao redor, as outras casas vizinhas são seguras.
+- Se um número tem tantas casas fechadas ao redor quanto minas, todas elas são minas. Marque com bandeira.
+- Compare números vizinhos. Muitas vezes a diferença entre eles mostra onde está uma mina.
+- Use bandeiras para não esquecer o que já descobriu. Elas também ajudam a usar o atalho de abrir as casas ao redor.
+
+### Perguntas frequentes
+
+**Quais são as regras do Campo Minado?**
+Abra todas as casas que não têm mina. Cada número mostra quantas minas existem nas casas vizinhas. Se abrir uma mina, você perde.
+
+**Como marcar uma mina no celular?**
+Faça um toque longo na casa ou ative o botão Bandeira e toque nas casas que quer marcar. Desligue o botão para voltar a abrir casas.
+
+**O Campo Minado tem níveis de dificuldade?**
+Tem três: Fácil, com 10 minas, Médio, com 40, e Difícil, com 99. O melhor tempo de cada nível fica salvo no seu navegador.
+
+## Jogo da Memória
+
+- Endereço: https://karmagames.com.br/jogar/memoria/
+- Categoria: Quebra-cabeça
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+No Jogo da Memória, as cartas começam viradas para baixo. Você vira duas por vez e tenta achar os pares iguais. Se forem iguais, ficam abertas. Se não, viram de novo, e você precisa lembrar onde cada uma estava.
+As cartas mostram formas coloridas, como estrela, coração, losango e engrenagem. Há três níveis: Fácil, com 12 cartas, Médio, com 16, e Difícil, com 30. O jogo conta suas jogadas e o tempo, e guarda no navegador o melhor tempo e o menor número de jogadas de cada nível.
+É um jogo tranquilo, bom para treinar a atenção e passar o tempo sozinho. Funciona no computador e no celular, é grátis e não precisa de instalação.
+
+### Como jogar
+
+1. Clique ou toque numa carta para virá-la, depois numa segunda carta.
+2. Se as duas forem iguais, o par fica aberto. Se forem diferentes, elas viram de novo depois de um instante.
+3. Escolha o nível no alto: Fácil, Médio ou Difícil. Quanto mais difícil, mais cartas.
+4. O tempo começa quando você vira a primeira carta. Cada par tentado conta como uma jogada.
+5. Ache todos os pares para vencer. Use Reiniciar para embaralhar de novo.
+
+### Controles
+
+Clique ou toque nas cartas
+
+### Dicas
+
+- Vire primeiro cartas em lugares diferentes para descobrir o máximo possível de formas cedo.
+- Guarde a posição das cartas por região: canto, borda, centro. Fica mais fácil lembrar.
+- Repare na forma e na cor. Cada par tem a mesma forma e a mesma cor.
+- Quando uma carta errada já foi vista, tente achar a gêmea dela em vez de virar cartas novas ao acaso.
+- Para bater o recorde de jogadas, tenha calma. Para o de tempo, vire as cartas sem pausas longas.
+
+### Perguntas frequentes
+
+**Como jogar o Jogo da Memória?**
+Vire duas cartas por vez. Se forem iguais, ficam abertas. Se não, viram de volta. O jogo termina quando você acha todos os pares.
+
+**O Jogo da Memória tem níveis?**
+Tem três: Fácil, com 12 cartas, Médio, com 16, e Difícil, com 30. Cada nível guarda seus próprios recordes de tempo e de jogadas.
+
+**Dá para jogar no celular, sem baixar nada?**
+Dá. O jogo roda no navegador, e basta tocar nas cartas. É grátis e não precisa de cadastro.
+
+
+# Jogos de Tabuleiro
+
+## Xadrez
+
+- Endereço: https://karmagames.com.br/jogar/xadrez/
+- Categoria: Tabuleiro
+- Modos: um jogador e online (multiplayer pela internet)
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Xadrez é o clássico jogo de estratégia para duas pessoas. O objetivo é dar xeque-mate: atacar o rei do adversário de um jeito que ele não tenha como escapar.
+Aqui você joga contra o computador ou contra um amigo no mesmo aparelho, no modo 2 jogadores. Contra o computador, escolha entre quatro níveis: Easy, Medium, Hard e Impossible. O jogo segue as regras oficiais, com roque, en passant, promoção do peão e empates por afogamento, repetição e 50 lances. Ele guarda o placar no navegador.
+No modo Online, você joga Xadrez pela internet, cada um no seu aparelho: use Jogo rápido para enfrentar quem estiver esperando, entre numa das salas abertas ou crie uma sala e mande o código ou o link de convite para um amigo. Se a conexão cair ou a página recarregar, a partida continua de onde parou.
+É grátis, roda direto no navegador e funciona com mouse ou toque. Serve para quem está aprendendo e para quem quer treinar contra um adversário mais forte.
+
+### Como jogar
+
+1. Escolha o modo: Contra o computador ou 2 jogadores. Contra o computador, escolha o nível. Você joga com as brancas e começa.
+2. Para jogar com alguém à distância, escolha Online. Jogo rápido coloca você na primeira sala com vaga; para jogar com um amigo, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.
+3. Clique na peça para ver os lances possíveis e depois clique na casa de destino. Também dá para arrastar a peça.
+4. No celular, toque na peça e depois no destino.
+5. Quando um peão chegar ao final do tabuleiro, escolha a peça para a promoção.
+6. Dê xeque-mate no rei adversário para vencer. Use Nova partida para recomeçar quando quiser.
+
+### Controles
+
+Clique na peça e depois na casa · ou arraste
+
+### Dicas
+
+- Controle o centro do tabuleiro com peões e cavalos no começo.
+- Desenvolva as peças leves antes de mexer a dama, e faça o roque cedo para proteger o rei.
+- Antes de cada lance, olhe o que o adversário ameaça. Muita peça se perde por descuido.
+- Troque peças quando estiver na frente em material, porque fica mais fácil converter a vantagem.
+- Comece no Easy, vá subindo de nível e deixe o Impossible para quando já estiver confortável.
+
+### Perguntas frequentes
+
+**Dá para jogar Xadrez contra o computador?**
+Dá. Você escolhe entre Easy, Medium, Hard e Impossible. O computador joga com as pretas.
+
+**Dá para jogar Xadrez online com um amigo?**
+Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada.
+
+**Dá para jogar Xadrez com um amigo no mesmo aparelho?**
+Dá. No modo 2 jogadores vocês revezam o mesmo celular ou computador. Para jogar cada um no seu aparelho, use o modo Online.
+
+**O Xadrez tem roque, en passant e promoção?**
+Tem. O jogo segue as regras oficiais, incluindo roque, en passant e promoção do peão, além de empate por afogamento, repetição e regra dos 50 lances.
+
+## Dama
+
+- Endereço: https://karmagames.com.br/jogar/dama/
+- Categoria: Tabuleiro
+- Modos: um jogador e online (multiplayer pela internet)
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Dama é o jogo de tabuleiro em que cada jogador tenta capturar todas as peças do adversário ou deixá-lo sem jogadas. Aqui as regras são as brasileiras, no tabuleiro 8x8.
+A captura é obrigatória, vale a lei da maioria (você deve capturar o maior número possível de peças) e a dama é voadora, ou seja, anda quantas casas quiser na diagonal. Você pode jogar contra o computador, em quatro níveis (Easy, Medium, Hard e Impossible), ou no modo de 2 jogadores, no mesmo aparelho. O placar fica salvo no navegador.
+No modo Online, você joga Dama pela internet, cada um no seu aparelho: use Jogo rápido para enfrentar quem estiver esperando, entre numa das salas abertas ou crie uma sala e mande o código ou o link de convite para um amigo. Se a conexão cair ou a página recarregar, a partida continua de onde parou.
+É grátis, roda no navegador e funciona com mouse ou toque. Serve para quem quer aprender a Dama ou treinar contra um adversário mais forte.
+
+### Como jogar
+
+1. Escolha Contra o computador (e o nível) ou 2 jogadores. Você joga com as brancas.
+2. Para jogar com alguém à distância, escolha Online. Jogo rápido coloca você na primeira sala com vaga; para jogar com um amigo, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.
+3. Clique na peça e depois na casa de destino. As jogadas possíveis aparecem destacadas.
+4. Se houver captura disponível, você é obrigado a capturar, e deve escolher o caminho que captura mais peças.
+5. Ao chegar na última fileira, a pedra vira dama e passa a andar várias casas na diagonal.
+6. Vence quem capturar todas as peças do adversário ou deixá-lo sem movimentos. O empate acontece após 20 lances seguidos só com damas, sem capturas.
+
+### Controles
+
+Clique na peça e depois na casa de destino
+
+### Dicas
+
+- Mantenha as peças juntas. Peças isoladas são mais fáceis de capturar.
+- Antes de avançar, confira se o adversário pode capturar e o que ele ganha depois.
+- Use a captura obrigatória a seu favor: ofereça uma peça para forçar o adversário a abrir sua defesa.
+- Guarde algumas peças na fileira de trás por mais tempo para dificultar a coroação do adversário.
+- Tenha uma dama o quanto antes: ela é a peça mais forte do tabuleiro.
+
+### Perguntas frequentes
+
+**Quais são as regras da Dama brasileira?**
+O tabuleiro é 8x8, a captura é obrigatória, vale a lei da maioria e a dama é voadora. Você deve sempre escolher o caminho que captura mais peças.
+
+**Dá para jogar Dama online com um amigo?**
+Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada.
+
+**Dá para jogar Dama contra o computador?**
+Dá. Escolha entre Easy, Medium, Hard e Impossible. Também dá para jogar com um amigo no modo 2 jogadores, no mesmo aparelho.
+
+**Dá para jogar Dama no celular?**
+Dá. Toque na peça e depois na casa de destino. É grátis e abre no navegador.
+
+## Ligue 4
+
+- Endereço: https://karmagames.com.br/jogar/ligue-4/
+- Categoria: Tabuleiro
+- Modos: um jogador e online (multiplayer pela internet)
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Ligue 4 é um jogo de tabuleiro para duas pessoas. Cada jogador solta fichas de uma cor nas colunas, e a ficha cai até a posição mais baixa livre. Quem alinhar quatro fichas primeiro, na horizontal, na vertical ou na diagonal, vence.
+Aqui você joga contra o computador, com os níveis Fácil e Difícil, ou no modo de 2 jogadores, no mesmo aparelho. O placar de vitórias, empates e derrotas fica salvo no navegador, separado por modo e dificuldade, e quem começa alterna a cada partida.
+No modo Online, você joga Ligue 4 pela internet, cada um no seu aparelho: use Jogo rápido para enfrentar quem estiver esperando, entre numa das salas abertas ou crie uma sala e mande o código ou o link de convite para um amigo. Se a conexão cair ou a página recarregar, a partida continua de onde parou.
+É grátis, roda no navegador e funciona no teclado, com mouse ou no toque. Serve para partidas rápidas com amigos e para treinar estratégia.
+
+### Como jogar
+
+1. Escolha Contra o computador (Fácil ou Difícil) ou 2 jogadores.
+2. Para jogar com alguém à distância, escolha Online. Jogo rápido coloca você na primeira sala com vaga; para jogar com um amigo, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.
+3. No computador, clique na coluna onde quer soltar a ficha. Você também pode usar as setas e Enter, ou as teclas de 1 a 7.
+4. No celular, toque na coluna escolhida.
+5. Alinhe quatro fichas da sua cor em linha reta, em qualquer direção, antes do adversário.
+6. Se o tabuleiro encher sem ninguém alinhar quatro, o jogo termina empatado.
+
+### Controles
+
+Clique na coluna · setas e Enter · teclas 1 a 7
+
+### Dicas
+
+- Ocupe a coluna do meio. Ela participa de mais combinações possíveis.
+- Olhe sempre as diagonais, porque são a forma mais comum de ser surpreendido.
+- Bloqueie quando o adversário tiver três fichas alinhadas com espaço aberto.
+- Tente criar duas ameaças ao mesmo tempo. O adversário só consegue bloquear uma.
+- Cuidado com a ficha que você solta: ela pode liberar a casa de cima para o adversário vencer.
+
+### Perguntas frequentes
+
+**Como ganhar no Ligue 4?**
+Alinhe quatro fichas da sua cor, na horizontal, na vertical ou na diagonal, antes do adversário. Criar duas ameaças ao mesmo tempo é a melhor forma de vencer.
+
+**Dá para jogar Ligue 4 online com um amigo?**
+Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada.
+
+**Dá para jogar Ligue 4 contra o computador?**
+Dá. O computador tem dois níveis, Fácil e Difícil. Também dá para jogar com um amigo no modo 2 jogadores, no mesmo aparelho.
+
+**Dá para jogar Ligue 4 no celular?**
+Dá. É só tocar na coluna onde quer soltar a ficha. É grátis e funciona direto no navegador.
+
+## Reversi
+
+- Endereço: https://karmagames.com.br/jogar/reversi/
+- Categoria: Tabuleiro
+- Modos: um jogador e online (multiplayer pela internet)
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Reversi é um jogo de tabuleiro clássico para dois jogadores. O tabuleiro tem 8 por 8 casas e as peças são pretas de um lado e brancas do outro. Quando você cerca uma fila de peças do adversário, todas elas viram para a sua cor.
+Aqui você joga com as pretas e começa. Dá para escolher entre jogar contra o computador ou em 2 jogadores, no mesmo aparelho. Contra o computador há dois níveis: Fácil, que erra de vez em quando, e Difícil, que calcula vários lances à frente e não perdoa descuido.
+No modo Online, você joga Reversi pela internet, cada um no seu aparelho: use Jogo rápido para enfrentar quem estiver esperando, entre numa das salas abertas ou crie uma sala e mande o código ou o link de convite para um amigo. Se a conexão cair ou a página recarregar, a partida continua de onde parou.
+O jogo marca as casas onde você pode jogar, passa a vez sozinho quando alguém não tem jogada e guarda um placar de vitórias, derrotas e empates para cada modo. Serve para quem quer aprender as regras com calma e para quem já curte uma partida de estratégia rápida.
+
+### Como jogar
+
+1. Escolha o modo no topo: Contra o computador ou 2 jogadores. Contra o computador, escolha também Fácil ou Difícil.
+2. Para jogar com alguém à distância, escolha Online. Jogo rápido coloca você na primeira sala com vaga; para jogar com um amigo, crie a sala e mande o código ou o link do convite. Quem recebe o link entra direto na partida.
+3. As pretas começam. Clique ou toque numa casa marcada para colocar sua peça. Só valem as casas marcadas.
+4. Uma jogada é válida quando cerca uma ou mais peças do adversário entre a nova peça e outra sua, em linha reta ou na diagonal. Essas peças viram para a sua cor.
+5. Se um jogador não tiver nenhuma jogada, a vez passa automaticamente para o outro.
+6. A partida termina quando ninguém mais pode jogar. Quem tiver mais peças no tabuleiro vence.
+7. Pelo teclado, use as setas para mover pelas casas e Enter ou Espaço para jogar.
+
+### Controles
+
+Clique ou toque numa casa marcada
+
+### Dicas
+
+- Ganhe os cantos. Peças nos cantos nunca podem ser viradas e dão apoio para o resto da partida.
+- Evite as casas ao lado dos cantos enquanto o canto estiver vazio. Elas costumam entregar o canto ao adversário.
+- No começo, virar poucas peças costuma ser melhor do que virar muitas. Ter mais peças cedo deixa você com menos opções.
+- Pense em mobilidade: tente deixar o adversário com poucas jogadas disponíveis.
+- Comece no Fácil para pegar o jeito e passe para o Difícil quando estiver ganhando seguido.
+
+### Perguntas frequentes
+
+**Quais são as regras do Reversi?**
+Cada jogador coloca uma peça por vez, sempre cercando peças do adversário para virá-las. Se não houver jogada, passa a vez. Quando ninguém puder jogar, vence quem tiver mais peças.
+
+**Dá para jogar Reversi online com um amigo?**
+Dá. Escolha Online, crie uma sala e mande o código ou o link para o seu amigo. Cada um joga do próprio celular ou computador, sem cadastro e sem baixar nada.
+
+**Dá para jogar Reversi contra o computador?**
+Dá. Há dois níveis, Fácil e Difícil. Também existe o modo 2 jogadores, para jogar com um amigo no mesmo aparelho.
+
+**Precisa baixar ou criar conta para jogar?**
+Não. O Reversi roda direto no navegador, no computador ou no celular, e o placar fica salvo no próprio aparelho.
+
+
+# Jogos Casuais
+
+## Biscoito Gigante
+
+- Endereço: https://karmagames.com.br/jogar/biscoito/
+- Categoria: Casual
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Biscoito Gigante é um jogo de clique em que você começa com um biscoito enorme e termina com uma padaria que funciona sozinha. Cada clique rende biscoitos. Com eles você compra ajudantes, que passam a produzir por conta própria a cada segundo.
+São seis melhorias: colherzinha, vovó, forno, fábrica, foguete e portal mágico. Cada uma produz mais que a anterior, mas o preço sobe um pouco a cada compra. Quanto mais você produz por segundo, mais cada clique rende também.
+O jogo salva o progresso no próprio navegador. Quando você volta, a turma continua assando por até duas horas de ausência e entrega os biscoitos que juntou. Ótimo para quem gosta de jogar um pouquinho, sair e voltar depois.
+
+### Como jogar
+
+1. Clique ou toque no biscoito gigante para ganhar biscoitos. No teclado, também vale apertar Espaço.
+2. Use os biscoitos para comprar melhorias na loja: colherzinha, vovó, forno, fábrica, foguete e portal mágico.
+3. No teclado, as teclas de 1 a 6 compram as melhorias na ordem da loja. No celular, toque no cartão da melhoria.
+4. Cada melhoria comprada produz biscoitos sozinha, a cada segundo. O contador mostra quantos biscoitos por segundo você faz.
+5. Quer recomeçar? Use o botão de reiniciar no canto da tela. Cuidado: ele apaga tudo.
+
+### Controles
+
+Clique ou Espaço no biscoito · 1 a 6 compram melhorias
+
+### Dicas
+
+- No começo, compre colherzinhas e vovós. São baratas e já aceleram bastante.
+- Os preços sobem uns 15% a cada unidade comprada, então varie as melhorias em vez de comprar só uma.
+- Quanto mais biscoitos por segundo, mais cada clique vale. Clicar continua útil durante todo o jogo.
+- Deixe a aba aberta ou volte depois: o jogo credita o que foi produzido enquanto você estava fora, até duas horas.
+- Antes de comprar uma melhoria cara, confira se não compensa comprar mais algumas das baratas.
+
+### Perguntas frequentes
+
+**Meu progresso no Biscoito Gigante fica salvo?**
+Fica, no próprio navegador do aparelho. Se você limpar os dados do navegador ou usar outro aparelho, o progresso não vai junto.
+
+**Dá para jogar Biscoito Gigante no celular?**
+Dá. É só tocar no biscoito e tocar nas melhorias da loja. No computador também funcionam o Espaço e as teclas de 1 a 6.
+
+**O jogo tem fim?**
+Não tem uma fase final. A ideia é produzir cada vez mais biscoitos e comprar todas as melhorias. O total de biscoitos que você já fez vira o seu recorde.
+
+## Pescaria
+
+- Endereço: https://karmagames.com.br/jogar/pescaria/
+- Categoria: Casual
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Em Pescaria, você controla um barquinho com um gatinho pescador. Você tem 60 segundos para fisgar o maior número de peixes e juntar pontos. O anzol desce enquanto você segura o botão e sobe sozinho quando você solta.
+Nem tudo que nada por aí é peixe bom. Os peixes pequenos, médios e grandes valem 10, 20 e 35 pontos. O peixe dourado é rápido e vale 60. A bota velha tira 5 pontos, e a água-viva dá um choque, tira 10 pontos e impede o anzol de descer por um instante.
+É um jogo de timing e escolha de alvo, ótimo para partidas rápidas. Funciona com teclado, mouse ou toque no celular, e o seu recorde fica salvo no aparelho.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar. O relógio de 60 segundos começa a correr.
+2. Mova o barco com as setas esquerda e direita (ou A e D). Com mouse ou no celular, o barco segue o ponteiro ou o dedo.
+3. Segure Espaço, a seta para baixo, S ou Enter para descer o anzol. No mouse, segure o botão. No celular, segure o dedo na tela.
+4. Solte para o anzol subir. Ao fisgar algo, ele sobe sozinho e o peixe vira pontos quando chega à superfície.
+5. Evite botas e águas-vivas. Ao final dos 60 segundos, sua pontuação e o número de peixes aparecem na tela.
+
+### Controles
+
+Segure Espaço, o mouse ou o dedo para descer o anzol; setas movem o barco
+
+### Dicas
+
+- Peixes grandes ficam mais fundo e demoram mais para subir, mas valem 35 pontos. Costuma compensar.
+- O peixe dourado é veloz. Posicione o anzol na frente dele em vez de ir atrás.
+- Cuidado com as águas-vivas: o choque tira pontos e o anzol sobe sozinho, sem poder descer por um instante. Isso custa segundos preciosos.
+- A bota velha anda devagar e fica perto do fundo. Dá para desviar com calma.
+- Com o anzol em baixo, ainda dá para mover o barco. Use isso para ajustar a mira, lembrando que a velocidade cai quando algo está fisgado.
+
+### Perguntas frequentes
+
+**Quanto tempo dura cada partida de Pescaria?**
+60 segundos. Quando o tempo acaba, aparecem sua pontuação, o total de peixes e o recorde.
+
+**Dá para jogar Pescaria no celular?**
+Dá. Segure o dedo na tela para descer o anzol e arraste para mover o barco. No computador, use Espaço e as setas.
+
+**Quanto vale cada peixe?**
+O peixe pequeno vale 10, o médio 20, o grande 35 e o dourado 60. Bota velha tira 5 pontos e água-viva tira 10.
+
+## Estoura Balão
+
+- Endereço: https://karmagames.com.br/jogar/balao/
+- Categoria: Casual
+- Modos: no próprio aparelho
+- Grátis, sem download e sem cadastro. Funciona no computador e no celular.
+- Atualizado em: 2026-10-17
+
+Estoura Balão é um jogo casual em que balões coloridos sobem pela tela e você precisa estourá-los antes que escapem pelo topo. Cada balão comum vale 1 ponto. Os dourados valem 5, mas sobem mais rápido.
+Você começa com 5 vidas. Cada balão que foge perde uma vida, e quando elas acabam a partida termina. Estourar vários balões em sequência rápida rende ponto extra. Quanto mais o tempo passa, mais balões aparecem e mais rápido eles sobem.
+Dá para jogar com mouse, com toque ou só com o teclado, movendo uma mira. É fácil de aprender e bom para relaxar, com recorde guardado no aparelho para você tentar superar.
+
+### Como jogar
+
+1. Aperte Espaço ou toque na tela para começar.
+2. Clique ou toque nos balões para estourar. Cada balão comum vale 1 ponto e o dourado vale 5.
+3. Se preferir o teclado, mova a mira com as setas ou W, A, S, D e aperte Espaço ou Enter para estourar.
+4. Se um balão chegar ao topo, você perde uma das 5 vidas. Sem vidas, a partida acaba.
+5. Estourar balões em sequência rápida dá 1 ponto a mais a partir do terceiro. Use P para pausar e M para o som.
+
+### Controles
+
+Clique ou toque nos balões · setas e Espaço para mirar · P pausa · M som
+
+### Dicas
+
+- Comece pelos balões mais perto do topo. Eles estão prestes a escapar.
+- Dê prioridade ao balão dourado: vale 5 pontos, mas sobe mais rápido que os outros.
+- Errar o clique quebra a sequência de bônus. Mire com calma em vez de clicar sem parar.
+- Estoure em ritmo constante: o bônus de sequência vale a partir do terceiro balão seguido, em intervalos curtos.
+- No teclado, tente deixar a mira no meio da tela para chegar rápido aos dois lados.
+
+### Perguntas frequentes
+
+**Quantas vidas tem Estoura Balão?**
+São 5 vidas. Você perde uma cada vez que um balão escapa pelo topo da tela.
+
+**Dá para jogar Estoura Balão no celular?**
+Dá. É só tocar nos balões. No computador, você pode usar o mouse ou mover a mira com as setas e estourar com Espaço.
+
+**Quanto vale cada balão?**
+Balões comuns valem 1 ponto e os dourados valem 5. Estourar vários em sequência rápida rende 1 ponto extra por balão, a partir do terceiro.
