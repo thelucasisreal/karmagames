@@ -5,7 +5,12 @@
 //
 // Gera: index.html, jogar/<slug>/, categoria/<slug>/, sobre/, contato/, privacidade/,
 //       termos/, 404.html, jogar.html (redireciona endereços antigos), sitemap.xml,
-//       robots.txt, llms.txt, site.webmanifest e ads.txt (se tiver o código do AdSense).
+//       robots.txt, llms.txt, llms-full.txt, site.webmanifest, ads.txt (se tiver o código do AdSense)
+//       e a chave do IndexNow (se tiver em site.json).
+// Datas: scripts/datas.json guarda, por página, um resumo (hash) do conteúdo e o dia em que ele mudou
+//       pela última vez. É essa data que vai no <lastmod> do sitemap e no "Atualizado em" das páginas,
+//       então ela só muda quando o texto da página muda de verdade. O arquivo é gerado: não edite à mão.
+// No GitHub, .github/workflows/seo.yml roda este script a cada push na main e grava o resultado.
 // Lê:   jogos.js (catálogo), scripts/conteudo.json (texto de cada jogo),
 //       scripts/paginas.mjs (páginas institucionais) e scripts/site.json (configuração).
 // Sem dependências: só Node.
@@ -13,6 +18,7 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import crypto from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { PAGINAS, CATEGORIAS } from "./paginas.mjs";
 
@@ -43,6 +49,42 @@ const hashVersao = crypto.createHash("sha1").update(ler("assets/site.css")).upda
 for (const j of JOGOS) if (!j.url && existe(`jogos/${j.slug}/index.html`)) hashVersao.update(ler(`jogos/${j.slug}/index.html`));
 const VERSAO = hashVersao.digest("hex").slice(0, 8);
 
+// ---------- datas de atualização de cada página ----------
+const HOJE = new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" }); // AAAA-MM-DD no horário de Brasília
+const DATAS_ARQ = "scripts/datas.json";
+const DATAS = existe(DATAS_ARQ) ? JSON.parse(ler(DATAS_ARQ)) : {};
+const datasUsadas = new Set();
+const MOD = "__DATA_MODIFICADO__";
+const MOD_BR = "__DATA_MODIFICADO_BR__";
+const dataBR = (d) => new Date(d + "T12:00:00").toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+// Na primeira vez que uma página aparece, usa a data do último commit dela (se houver git), senão hoje.
+function dataDoGit(arq) {
+  try {
+    return execFileSync("git", ["log", "-1", "--format=%cs", "--", arq], { cwd: RAIZ, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || null;
+  } catch { return null; }
+}
+// Hash de uma pasta inteira (o jogo dentro de jogos/<slug>/ conta como conteúdo da página dele).
+function hashPasta(dir, h = crypto.createHash("sha1")) {
+  const cheio = path.join(RAIZ, dir);
+  if (!fs.existsSync(cheio)) return h;
+  for (const nome of fs.readdirSync(cheio).sort()) {
+    const rel = path.join(dir, nome);
+    if (fs.statSync(path.join(RAIZ, rel)).isDirectory()) hashPasta(rel, h); else h.update(rel).update(fs.readFileSync(path.join(RAIZ, rel)));
+  }
+  return h;
+}
+// Devolve a data da última mudança real da página. Ignora a versão ?v=, as listas de "mais jogos"
+// e a própria data, para a página não "mudar" só porque outro jogo entrou no catálogo.
+function dataDe(rota, conteudo, extra = "") {
+  const normal = conteudo.replace(/\?v=[0-9a-f]{8}/g, "").replace(/<ul class="links-jogos">.*?<\/ul>/gs, "").split(MOD_BR).join("").split(MOD).join("");
+  const hash = crypto.createHash("sha1").update(normal).update(extra).digest("hex").slice(0, 16);
+  datasUsadas.add(rota);
+  const atual = DATAS[rota];
+  if (!atual) DATAS[rota] = { hash, data: dataDoGit(`${rota}index.html`) || HOJE };
+  else if (atual.hash !== hash) DATAS[rota] = { hash, data: HOJE };
+  return DATAS[rota].data;
+}
+
 // ---------- utilidades ----------
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const slugify = (s) => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -56,6 +98,9 @@ const rotaJogo = (j) => `jogar/${j.slug}/`;
 const rotaCategoria = (c) => `categoria/${slugify(c)}/`;
 const categorias = [...new Set(JOGOS.map((j) => j.categoria).filter(Boolean))];
 const daCategoria = (c) => JOGOS.filter((j) => j.categoria === c);
+// Jogo com modo online = usa a lib do multiplayer (assets/karma-net.js).
+const temOnline = (j) => !j.url && existe(`jogos/${j.slug}/index.html`) && ler(`jogos/${j.slug}/index.html`).includes("karma-net.js");
+const ONLINE = JOGOS.filter(temOnline);
 
 // "Ação" -> "Jogos de Ação", "Clássicos" -> "Jogos Clássicos"...
 const NOME_CATEGORIA = { "Clássicos": "Jogos Clássicos", "Casual": "Jogos Casuais", "Arcade": "Jogos Arcade" };
@@ -82,7 +127,13 @@ const faqLd = (faq) => faq && faq.length ? {
 } : null;
 
 // ---------- molde da página ----------
-function pagina({ rota, titulo, descricao, corpo, dados = {}, og = OG_PADRAO, tipo = "website", grafo = [], indexar = true, canonica = true }) {
+function pagina(opcoes) {
+  const html = molde(opcoes);
+  if (opcoes.indexar === false) return html;
+  const data = dataDe(opcoes.rota, html, opcoes.extraHash || "");
+  return html.split(MOD_BR).join(dataBR(data)).split(MOD).join(data);
+}
+function molde({ rota, titulo, descricao, corpo, dados = {}, og = OG_PADRAO, tipo = "website", grafo = [], indexar = true, canonica = true }) {
   const profunda = rota.includes("/") || !indexar; // páginas em subpasta usam <base> para os caminhos relativos
   const atributos = Object.entries(dados).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("");
   const grafoLd = grafo.filter(Boolean);
@@ -209,6 +260,7 @@ function paginaJogo(j) {
       ${faq.length ? `<h2>Perguntas frequentes</h2>\n      <div class="faq">\n          ${faqHtml(faq)}\n      </div>` : ""}
       <h2>Mais jogos${cat ? ` de ${esc(cat)}` : ""}</h2>
       ${lista("ul class=\"links-jogos\"", parecidos.map((o) => `<a href="${rotaJogo(o)}">${esc(o.titulo)}</a>`))}
+      <p class="atualizado">Atualizado em <time datetime="${MOD}">${MOD_BR}</time></p>
     </article>
   </main>`;
 
@@ -219,13 +271,15 @@ function paginaJogo(j) {
     gamePlatform: ["Navegador", "Computador", "Celular"], browserRequirements: "Requer HTML5 e JavaScript",
     isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "BRL", availability: "https://schema.org/InStock" },
     author: { "@id": ORG["@id"] }, publisher: { "@id": ORG["@id"] },
-    ...(j.adicionado ? { datePublished: j.adicionado } : {}),
+    ...(j.adicionado ? { datePublished: j.adicionado } : {}), dateModified: MOD,
+    ...(temOnline(j) ? { playMode: ["SinglePlayer", "MultiPlayer"], gameServer: { "@type": "GameServer", name: `${NOME} Online`, serverStatus: "https://schema.org/Online" } } : {}),
     ...(j.controles ? { gameTip: j.controles } : {}),
   };
   const html = pagina({
     rota, titulo: `${j.titulo}: jogue grátis online | ${NOME}`, descricao, corpo, og: ogDe(j),
     dados: { pagina: "jogar", slug: j.slug, ...(cat ? { categoria: cat } : {}) },
     grafo: [ORG, SITE, pagJogo, migalhas(trilha), faqLd(faq)],
+    extraHash: j.url ? j.url : hashPasta(`jogos/${j.slug}`).digest("hex"),
   });
   gravar(`${rota}index.html`, html);
 }
@@ -266,6 +320,7 @@ const FAQ_SITE = [
   { p: "Precisa baixar ou instalar alguma coisa?", r: "Não. Os jogos abrem direto no navegador, em HTML5. É só clicar em Jogar." },
   { p: "Precisa criar conta?", r: "Não. Não tem cadastro. Os recordes e o progresso ficam salvos no seu próprio aparelho." },
   { p: "Dá para jogar no celular?", r: "Sim. Os jogos funcionam no celular e no tablet, com controles de toque, e também no computador com teclado e mouse." },
+  ...(ONLINE.length ? [{ p: "Dá para jogar online com amigos?", r: `Dá. ${ONLINE.map((j) => j.titulo).join(", ").replace(/, ([^,]*)$/, " e $1")} têm modo Online: use Jogo rápido para enfrentar quem estiver esperando ou crie uma sala e mande o link para um amigo. Cada um joga no seu aparelho, sem cadastro.` }] : []),
   { p: "Quais jogos tem na Karma Games?", r: `São ${JOGOS.length} jogos, como ${JOGOS.slice(0, 8).map((j) => j.titulo).join(", ")} e outros, divididos em ${categorias.map((c) => c.toLowerCase()).join(", ")}.` },
 ];
 function paginaInicial() {
@@ -282,6 +337,7 @@ function paginaInicial() {
         <p>A Karma Games tem ${plural(JOGOS.length)} grátis para jogar no computador, no tablet ou no celular. Não precisa baixar nada nem criar conta: escolha um jogo, clique em Jogar e pronto. Todos estão em português e os recordes ficam salvos no seu aparelho.</p>
         <h2>Categorias</h2>
         ${lista("ul class=\"lista-jogos\"", categorias.map((c) => `<a href="${rotaCategoria(c)}">${esc(nomeCategoria(c))}</a> (${daCategoria(c).length}): ${esc(daCategoria(c).map((j) => j.titulo).join(", "))}`))}
+        ${ONLINE.length ? `<h2>Jogos online para jogar com amigos</h2>\n        <p>Estes têm modo Online: cada pessoa joga no próprio celular ou computador, pela internet, sem cadastro.</p>\n        ${lista("ul class=\"lista-jogos\"", ONLINE.map((j) => `<a href="${rotaJogo(j)}">${esc(j.titulo)}</a>`))}` : ""}
         ${autorais.length ? `<h2>Feitos aqui na Karma</h2>\n        ${lista("ul class=\"lista-jogos\"", autorais.map((j) => `<a href="${rotaJogo(j)}">${esc(j.titulo)}</a>: ${esc(j.descricao)}`))}` : ""}
         <h2>Perguntas frequentes</h2>
         <div class="faq">
@@ -365,18 +421,31 @@ function redirecionamento() {
 
 // ---------- arquivos para buscadores e IAs ----------
 function sitemap() {
-  const url = (rota, extra = "") => `  <url><loc>${abs(rota)}</loc><lastmod>${CFG.atualizado}</lastmod>${extra}</url>`;
+  const url = (rota, extra = "") => `  <url><loc>${abs(rota)}</loc><lastmod>${DATAS[rota]?.data || HOJE}</lastmod>${extra}</url>`;
   const img = (j) => existe(capaDe(j)) ? `<image:image><image:loc>${abs(capaDe(j))}</image:loc></image:image>` : "";
   gravar("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${[url(""), ...categorias.map((c) => url(rotaCategoria(c))), ...JOGOS.map((j) => url(rotaJogo(j), img(j))), ...PAGINAS.map((p) => url(`${p.slug}/`))].join("\n")}
 </urlset>
 `);
-  gravar("robots.txt", `User-agent: *
+  // Buscadores e IAs de busca são bem-vindos. Os nomes ficam explícitos no mesmo grupo do "*",
+  // então todos seguem as mesmas regras.
+  const robos = ["*", "Googlebot", "Bingbot", "DuckDuckBot", "Applebot", "YandexBot",
+    "OAI-SearchBot", "ChatGPT-User", "GPTBot", "ClaudeBot", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User",
+    "Google-Extended", "Applebot-Extended", "meta-externalagent", "CCBot"];
+  gravar("robots.txt", `# ${NOME}: jogos grátis no navegador. Buscadores e IAs são bem-vindos.
+# Resumo do site para IAs: ${DOMINIO}/llms.txt  ·  texto completo: ${DOMINIO}/llms-full.txt
+
+${robos.map((r) => `User-agent: ${r}`).join("\n")}
 Allow: /
 # Os jogos "crus" ficam dentro das páginas jogar/<slug>/; quem deve aparecer na busca é a página.
 Disallow: /jogos/
 Disallow: /scripts/
+Disallow: /realtime/
+
+# O robô do AdSense lê tudo, para escolher anúncios que combinem com a página.
+User-agent: Mediapartners-Google
+Allow: /
 
 Sitemap: ${DOMINIO}/sitemap.xml
 `);
@@ -388,7 +457,9 @@ function llms() {
 
 > Site brasileiro de jogos grátis para jogar direto no navegador, em português, sem download e sem cadastro. ${JOGOS.length} jogos feitos pela própria Karma Games, que funcionam no computador e no celular.
 
-Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma página com regras, controles, dicas e perguntas frequentes. Os recordes ficam salvos no aparelho de quem joga.
+Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma página com regras, controles, dicas e perguntas frequentes. Os recordes ficam salvos no aparelho de quem joga.${ONLINE.length ? ` ${ONLINE.map((j) => j.titulo).join(", ").replace(/, ([^,]*)$/, " e $1")} também têm modo Online, para jogar com outra pessoa pela internet (Jogo rápido ou sala com código), sem cadastro.` : ""}
+
+O texto completo de todas as páginas (regras, como jogar, dicas e perguntas frequentes de cada jogo) está em [llms-full.txt](${DOMINIO}/llms-full.txt).
 
 ${categorias.map((c) => `## ${nomeCategoria(c)}\n\n${daCategoria(c).map(linha).join("\n")}`).join("\n\n")}
 
@@ -396,6 +467,38 @@ ${categorias.map((c) => `## ${nomeCategoria(c)}\n\n${daCategoria(c).map(linha).j
 
 ${PAGINAS.map((p) => `- [${p.titulo}](${abs(`${p.slug}/`)}): ${p.descricao}`).join("\n")}
 `);
+}
+
+// Versão longa para IAs: todo o texto de cada jogo, em Markdown.
+function llmsCompleto() {
+  const secao = (j) => {
+    const c = CONTEUDO[j.slug] || {};
+    const partes = [`## ${j.titulo}`, "",
+      `- Endereço: ${abs(rotaJogo(j))}`,
+      `- Categoria: ${j.categoria || "-"}`,
+      `- Modos: ${temOnline(j) ? "um jogador e online (multiplayer pela internet)" : "no próprio aparelho"}`,
+      `- Grátis, sem download e sem cadastro. Funciona no computador e no celular.`,
+      `- Atualizado em: ${DATAS[rotaJogo(j)]?.data || HOJE}`, ""];
+    partes.push(...(c.sobre?.length ? c.sobre : [j.descricao]), "");
+    if (c.comoJogar?.length) partes.push("### Como jogar", "", ...c.comoJogar.map((x, i) => `${i + 1}. ${x}`), "");
+    if (j.controles) partes.push("### Controles", "", j.controles, "");
+    if (c.dicas?.length) partes.push("### Dicas", "", ...c.dicas.map((x) => `- ${x}`), "");
+    if (c.faq?.length) partes.push("### Perguntas frequentes", "", ...c.faq.flatMap((f) => [`**${f.p}**`, f.r, ""]));
+    return partes.join("\n");
+  };
+  gravar("llms-full.txt", `# ${NOME}: texto completo
+
+> Site brasileiro de jogos grátis no navegador (${DOMINIO}/), em português, sem download e sem cadastro. ${JOGOS.length} jogos.
+
+${FAQ_SITE.map((f) => `**${f.p}**\n${f.r}\n`).join("\n")}
+${categorias.map((c) => `# ${nomeCategoria(c)}\n\n${daCategoria(c).map(secao).join("\n")}`).join("\n\n")}`);
+}
+
+// IndexNow: avisa Bing, Yandex e outros (o Bing alimenta a busca do ChatGPT e do Copilot) quando uma
+// página muda. O arquivo <chave>.txt na raiz prova que o site é nosso; quem envia é scripts/indexnow.mjs.
+function chaveIndexNow() {
+  if (!CFG.indexnow) return;
+  gravar(`${CFG.indexnow}.txt`, `${CFG.indexnow}\n`);
 }
 
 function manifesto() {
@@ -421,6 +524,8 @@ pagina404();
 redirecionamento();
 sitemap();
 llms();
+llmsCompleto();
+chaveIndexNow();
 manifesto();
 adsTxt();
 
@@ -431,6 +536,10 @@ for (const [pasta, validos] of [["jogar", JOGOS.map((j) => j.slug)], ["categoria
     if (!validos.includes(d)) fs.rmSync(path.join(RAIZ, pasta, d), { recursive: true, force: true });
   }
 }
+
+// Datas: tira as páginas que saíram e grava em ordem, para o diff ficar limpo.
+for (const r of Object.keys(DATAS)) if (!datasUsadas.has(r)) delete DATAS[r];
+gravar(DATAS_ARQ, JSON.stringify(Object.fromEntries(Object.keys(DATAS).sort().map((r) => [r, DATAS[r]])), null, 2) + "\n");
 
 console.log(`ok: ${JOGOS.length} jogos, ${categorias.length} categorias, ${PAGINAS.length} páginas (versão ${VERSAO})`);
 for (const a of avisos) console.log("aviso:", a);

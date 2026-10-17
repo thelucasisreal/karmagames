@@ -35,15 +35,22 @@ Depois abra http://localhost:8080
 5. Gere as páginas: `node scripts/seo.mjs` (e `node scripts/imagens.mjs` para a imagem de prévia do jogo, depois `node scripts/seo.mjs` de novo).
 6. `git add . && git commit -m "Novo jogo: Meu Jogo" && git push`. Em um ou dois minutos está no ar.
 
+Se esquecer o passo 5, tudo bem: a cada push na `main` o GitHub roda o `seo.mjs` sozinho
+(`.github/workflows/seo.yml`), grava as páginas, o sitemap e os `llms*.txt` que faltarem e avisa o Bing
+(IndexNow). O jogo novo entra no sitemap com a data do dia.
+
 ## Multiplayer online
 
-Xadrez, dama, ligue 4, reversi e jogo da velha têm o modo **Online**: um cria a sala, passa o código ou o
-link de convite, e o outro joga do próprio aparelho. A lib comum é `assets/karma-net.js` e o servidor de
+Xadrez, dama, ligue 4, reversi, jogo da velha e CrossStrike têm o modo **Online**: Jogo rápido, lista de
+salas abertas ou sala com código e link de convite, cada um no próprio aparelho. A lib comum é `assets/karma-net.js` e o servidor de
 salas fica em [`realtime/`](realtime/README.md), que explica como plugar outro jogo.
 
 ## Páginas geradas (SEO)
 
-`index.html`, `jogar/<slug>/`, `categoria/<slug>/`, `sobre/`, `contato/`, `privacidade/`, `termos/`, `404.html`, `jogar.html`, `sitemap.xml`, `robots.txt`, `llms.txt`, `site.webmanifest` e `ads.txt` são **gerados** por `node scripts/seo.mjs`. Não edite esses arquivos à mão: mude `jogos.js`, `scripts/conteudo.json`, `scripts/paginas.mjs` ou `scripts/site.json` e rode o script de novo.
+`index.html`, `jogar/<slug>/`, `categoria/<slug>/`, `sobre/`, `contato/`, `privacidade/`, `termos/`, `404.html`, `jogar.html`, `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`, `site.webmanifest`, `ads.txt`, a chave do IndexNow (`<chave>.txt`) e `scripts/datas.json` são **gerados** por `node scripts/seo.mjs`. Não edite esses arquivos à mão: mude `jogos.js`, `scripts/conteudo.json`, `scripts/paginas.mjs` ou `scripts/site.json` e rode o script de novo.
+
+- **Datas reais:** `scripts/datas.json` guarda um resumo do conteúdo de cada página. Quando o texto da página ou os arquivos do jogo mudam, a data vira a do dia; senão fica a antiga. Essa data vai no `<lastmod>` do sitemap, no `dateModified` do schema e no "Atualizado em" da página. O Google só confia no `lastmod` quando ele é honesto, por isso a data não muda à toa.
+- **Busca por IA (GEO):** `llms.txt` é o índice do site para IAs; `llms-full.txt` tem o texto inteiro de todos os jogos. O `robots.txt` libera os robôs de busca das IAs (ChatGPT, Claude, Perplexity, Gemini...). Jogos com modo online ganham `playMode: MultiPlayer` no schema e entram na seção "Jogos online para jogar com amigos" da página inicial.
 
 `scripts/site.json`:
 
@@ -52,7 +59,8 @@ salas fica em [`realtime/`](realtime/README.md), que explica como plugar outro j
 | `email` | contato público (páginas Contato e Privacidade) |
 | `adsenseCliente` | código do AdSense (`ca-pub-...`): liga o script de anúncios e cria o `ads.txt` |
 | `googleVerificacao` | código da meta tag do Search Console (não precisa se verificar pelo DNS) |
-| `atualizado` | data da última atualização (sitemap e políticas) |
+| `atualizado` | data da última revisão das políticas (Privacidade e Termos) |
+| `indexnow` | chave do IndexNow (gera o `<chave>.txt` que prova ao Bing que o site é nosso) |
 
 Jogo hospedado em outro lugar? Use o campo `url: "https://..."` em vez de criar a pasta (o site precisa permitir ser aberto em iframe).
 

@@ -1,0 +1,66 @@
+# Mantém o SEO do site em dia sozinho: a cada push na main, regera as páginas, o sitemap.xml,
+# o robots.txt e os llms*.txt com `node scripts/seo.mjs`. Se alguma coisa mudou (ex.: jogo novo
+# em jogos.js sem ter rodado o script), grava um commit e pede um novo build do GitHub Pages.
+# Depois avisa o Bing e os outros buscadores do IndexNow das páginas novas ou atualizadas.
+name: SEO
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: seo
+  cancel-in-progress: false
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sitemap antes deste push
+        run: git show "${{ github.event.before }}:sitemap.xml" > "$RUNNER_TEMP/sitemap-antes.xml" 2>/dev/null || cp sitemap.xml "$RUNNER_TEMP/sitemap-antes.xml"
+
+      - name: Regerar páginas, sitemap, robots e llms
+        run: node scripts/seo.mjs
+
+      - name: Gravar o que mudou
+        id: gravar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nada mudou."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "SEO: páginas, sitemap e llms regerados"
+          git push
+          echo "gravou=1" >> "$GITHUB_OUTPUT"
+          # Push feito pelo GITHUB_TOKEN não dispara outro build do Pages sozinho.
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "não deu para pedir o build (o próximo push publica)"
+
+      - name: Esperar o site publicar
+        run: |
+          for i in $(seq 1 30); do
+            s=$(curl -fsS -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/pages/builds/latest" | node -pe 'JSON.parse(require("fs").readFileSync(0)).status' || true)
+            [ "$s" = "built" ] && break
+            sleep 10
+          done
+
+      - name: Avisar buscadores (IndexNow)
+        continue-on-error: true
+        run: node scripts/indexnow.mjs "$RUNNER_TEMP/sitemap-antes.xml" --enviar

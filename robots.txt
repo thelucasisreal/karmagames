@@ -1,7 +1,32 @@
+# Karma Games: jogos grátis no navegador. Buscadores e IAs são bem-vindos.
+# Resumo do site para IAs: https://karmagames.com.br/llms.txt  ·  texto completo: https://karmagames.com.br/llms-full.txt
+
 User-agent: *
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Applebot
+User-agent: YandexBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: meta-externalagent
+User-agent: CCBot
 Allow: /
 # Os jogos "crus" ficam dentro das páginas jogar/<slug>/; quem deve aparecer na busca é a página.
 Disallow: /jogos/
 Disallow: /scripts/
+Disallow: /realtime/
+
+# O robô do AdSense lê tudo, para escolher anúncios que combinem com a página.
+User-agent: Mediapartners-Google
+Allow: /
 
 Sitemap: https://karmagames.com.br/sitemap.xml

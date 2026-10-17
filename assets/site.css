@@ -394,6 +394,7 @@ body.imersivo .jogo-titulo h1 { font-size: 15px; }
 .texto ul, .texto ol { margin: 0 0 12px; padding-left: 22px; color: #34404f; max-width: 72ch; }
 .texto li { margin: 4px 0; }
 .texto li::marker { color: var(--muted); }
+.texto .atualizado { margin: 24px 0 0; font-size: 13px; color: var(--muted); }
 .texto a { color: var(--ink); text-decoration-color: #9bb5c8; text-underline-offset: 3px; }
 .texto a:hover { text-decoration-color: var(--ink); }
 .texto .controles { margin: 0 0 12px; }
