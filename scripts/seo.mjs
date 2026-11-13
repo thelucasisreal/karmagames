@@ -133,7 +133,7 @@ function pagina(opcoes) {
   const data = dataDe(opcoes.rota, html, opcoes.extraHash || "");
   return html.split(MOD_BR).join(dataBR(data)).split(MOD).join(data);
 }
-function molde({ rota, titulo, descricao, corpo, dados = {}, og = OG_PADRAO, tipo = "website", grafo = [], indexar = true, canonica = true }) {
+function molde({ rota, titulo, descricao, corpo, dados = {}, og = OG_PADRAO, tipo = "website", grafo = [], indexar = true, canonica = true, anuncios = indexar }) {
   const profunda = rota.includes("/") || !indexar; // páginas em subpasta usam <base> para os caminhos relativos
   const atributos = Object.entries(dados).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("");
   const grafoLd = grafo.filter(Boolean);
@@ -158,7 +158,7 @@ ${existe("assets/icone-180.png") ? `  <link rel="apple-touch-icon" href="assets/
   <meta name="twitter:card" content="summary_large_image">
 ${CFG.googleVerificacao ? `  <meta name="google-site-verification" content="${esc(CFG.googleVerificacao)}">\n` : ""}  <link rel="preload" href="assets/fonts/unbounded-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css?v=${VERSAO}">
-${CFG.adsenseCliente ? `  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${esc(CFG.adsenseCliente)}" crossorigin="anonymous"></script>\n` : ""}${grafoLd.length ? `  ${ld({ "@context": "https://schema.org", "@graph": grafoLd })}\n` : ""}</head>
+${CFG.adsenseCliente && anuncios ? `  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${esc(CFG.adsenseCliente)}" crossorigin="anonymous"></script>\n` : ""}${grafoLd.length ? `  ${ld({ "@context": "https://schema.org", "@graph": grafoLd })}\n` : ""}</head>
 <body${atributos}>
   <div class="pagina">
     <aside class="lateral" id="lateral" aria-label="Categorias">${lateralEstatica(dados.categoria)}</aside>
@@ -381,6 +381,8 @@ function paginaTexto(p) {
     </main>`;
   gravar(`${rota}index.html`, pagina({
     rota, titulo: `${p.titulo} | ${NOME}`, descricao: p.descricao, corpo, dados: { pagina: "texto" },
+    // Política do AdSense: sem anúncio em tela sem conteúdo próprio (contato, políticas, 404).
+    anuncios: p.slug === "sobre",
     grafo: [ORG, SITE, { "@type": p.slug === "sobre" ? "AboutPage" : p.slug === "contato" ? "ContactPage" : "WebPage", "@id": abs(rota), name: p.titulo, url: abs(rota), inLanguage: "pt-BR", isPartOf: { "@id": SITE["@id"] } }, migalhas([["Início", ""], [p.titulo, rota]])],
   }));
 }
@@ -438,8 +440,8 @@ ${[url(""), ...categorias.map((c) => url(rotaCategoria(c))), ...JOGOS.map((j) =>
 
 ${robos.map((r) => `User-agent: ${r}`).join("\n")}
 Allow: /
-# Os jogos "crus" ficam dentro das páginas jogar/<slug>/; quem deve aparecer na busca é a página.
-Disallow: /jogos/
+# Os jogos "crus" (jogos/<slug>/) têm "noindex, indexifembedded": o Google renderiza o jogo
+# dentro de jogar/<slug>/ e conta como conteúdo dela, sem listar o jogo cru na busca.
 Disallow: /scripts/
 Disallow: /realtime/
 

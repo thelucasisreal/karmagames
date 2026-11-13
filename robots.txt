@@ -20,8 +20,8 @@ User-agent: Applebot-Extended
 User-agent: meta-externalagent
 User-agent: CCBot
 Allow: /
-# Os jogos "crus" ficam dentro das páginas jogar/<slug>/; quem deve aparecer na busca é a página.
-Disallow: /jogos/
+# Os jogos "crus" (jogos/<slug>/) têm "noindex, indexifembedded": o Google renderiza o jogo
+# dentro de jogar/<slug>/ e conta como conteúdo dela, sem listar o jogo cru na busca.
 Disallow: /scripts/
 Disallow: /realtime/
 
