@@ -28,7 +28,7 @@ São 28 jogos, como Não Confia, CrossStrike 3D, Behind The Grid, Paciência, Bl
 - Categoria: Ação
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Não Confia é um jogo de plataforma troll. Você anda, pula e tenta chegar até a porta, mas nada é o que parece. O chão desaba, a porta muda de lugar, os controles invertem e até uma florzinha inocente pode te matar.
 São 100 fases divididas em 10 mundos, da Grama Inocente até O Fim (Mentira). Cada fase tem uma pegadinha nova, e o cenário muda um pouco a cada morte. O jogo conta quantas vezes você morreu e salva seu progresso no navegador, então dá para continuar de onde parou.
@@ -71,7 +71,7 @@ Não. O jogo é grátis e abre direto na página, sem download e sem cadastro.
 - Categoria: Ação
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 CrossStrike 3D é um jogo de tiro em primeira ou terceira pessoa, com bonecos de bloco, que roda direto no navegador. Você compra armas a cada rodada, usa habilidades e pode ver uma cena de finalização quando derruba um inimigo já quase morto.
 Tem cinco modos: Equipe 5x5 (ou 4x4) contra bots, duelo 1 contra 1, Battle Royale com 16, 24 ou 32 jogadores, Online com amigos e um Treino de mira de 60 segundos. Os bots têm três níveis de dificuldade: Fácil, Médio e Difícil.
@@ -114,7 +114,7 @@ Não. O jogo roda direto no navegador, é grátis e não pede instalação.
 - Categoria: Ação
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Em Desvia dos Meteoros, você pilota uma navezinha no fundo da tela enquanto pedras caem do espaço. A nave só anda para os lados, então tudo é questão de achar o vão certo entre os meteoros.
 Você começa com 3 vidas. Cada batida tira uma, mas a nave fica piscando e protegida por um instante. Estrelas valem 10 pontos, e você também ganha 1 ponto por segundo vivo. De vez em quando aparece um coração que devolve uma vida, se você tiver perdido alguma.
@@ -160,7 +160,7 @@ Pegue estrelas (10 pontos cada) e sobreviva o máximo possível, já que cada se
 - Categoria: Simulação
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Behind The Grid é um simulador de carreira de influencer. Você cria sua conta, escolhe um nicho e tenta crescer no feed sem perder a paz, a reputação nem o dinheiro. O jogo mostra o que vai para o post e, do outro lado do card, o que acontece de verdade nos bastidores.
 A carreira anda por meses. Em cada mês você tem energia para gravar e postar, fechar publis e contratos pela caixa de e-mail, comprar melhorias de setup, moradia e estilo, ou descansar na vida pessoal. Eventos surpresa trazem escolhas difíceis, e o que você decide muda o seu final.
@@ -206,7 +206,7 @@ A aposentadoria é liberada a partir do mês 25. Cada mês tem um número limita
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Paciência é o clássico jogo de cartas para uma pessoa só. O objetivo é levar todas as cartas para as quatro pilhas das fundações, separadas por naipe, do Ás ao Rei. Para isso, você organiza as cartas em sete colunas e usa o monte para buscar novas.
 Aqui você escolhe entre Virar 1 carta, mais fácil, ou Virar 3 cartas, mais difícil. O jogo mostra pontos, movimentos e tempo, tem botão de Dica e de Desfazer e guarda no navegador quantas vitórias você fez e o seu melhor tempo.
@@ -249,7 +249,7 @@ Dá. É só tocar numa carta para o jogo mandá-la a um lugar válido. É gráti
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Forca é o jogo clássico de adivinhar uma palavra letra por letra. A cada letra errada, uma parte do bonequinho aparece. Se ele ficar completo antes de você acertar a palavra, você perde.
 Aqui as palavras são em português e vêm de categorias como Animais, Frutas, Comidas, Países, Profissões, Esportes, Cores e Cidades do Brasil. Você escolhe entre Fácil, Médio e Difícil, que mudam o tamanho das palavras e quantos erros você pode cometer. O jogo guarda vitórias, derrotas e sequência no navegador.
@@ -292,7 +292,7 @@ Dá. Você toca nas letras na tela. É grátis e funciona direto no navegador.
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Pedra, Papel e Tesoura é aquele jogo de mão que todo mundo conhece, agora contra o computador. Você escolhe uma jogada, o computador escolhe outra e as duas mãos aparecem ao mesmo tempo. A pedra quebra a tesoura, a tesoura corta o papel e o papel embrulha a pedra.
 Cada partida é uma melhor de 5: quem fizer 3 pontos primeiro leva. Se as duas jogadas forem iguais, é empate e a rodada se repete. O jogo conta quantas partidas você ganha em sequência e guarda o seu recorde de vitórias seguidas.
@@ -334,7 +334,7 @@ Não. Esta versão é só contra o computador. Para jogar online com alguém, o 
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Genius é o jogo de memória das quatro cores: verde, vermelho, amarelo e azul. Cada cor tem um som. O jogo acende uma sequência e você precisa repeti-la na mesma ordem.
 A cada acerto, a sequência ganha uma cor nova no final e fica mais rápida. Não há limite de tempo para responder, mas basta errar uma cor para a partida acabar. Sua pontuação é o tamanho da maior sequência que você repetiu certo, e o recorde fica salvo no aparelho.
@@ -377,7 +377,7 @@ Não. O Genius roda direto no navegador e o seu recorde fica guardado no própri
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Cobrinha é o clássico em que você guia uma cobra por um tabuleiro, come a comida que aparece e vai ficando maior. A cobra anda sozinha, e você só escolhe a direção. Bater nas paredes ou no próprio corpo encerra a partida.
 Cada comida vale um ponto e deixa a cobra mais rápida, até um limite. No começo é tranquilo, mas quando o corpo já ocupa boa parte do campo, planejar o caminho é o que separa uma partida boa de uma ótima.
@@ -420,7 +420,7 @@ Guie a cobra até a comida para crescer e ganhar pontos. Se ela bater em uma par
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Pong é um dos jogos de videogame mais antigos. Aqui você enfrenta o computador numa partida de tênis simplificado: cada um tem uma raquete, e você tenta mandar a bola além da raquete do adversário. Quem chegar a 7 pontos primeiro vence.
 A bola acelera a cada rebatida, então os pontos ficam mais rápidos e mais tensos. O computador também se adapta: ele se move um pouco mais rápido conforme o placar avança. O ângulo da bola depende do ponto da raquete em que ela bate.
@@ -463,7 +463,7 @@ Dá. Arraste o dedo na tela para mover a raquete. Funciona direto no navegador, 
 - Categoria: Clássicos
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 O Jogo da Velha é o clássico de X e O em um tabuleiro de 3 por 3. Dois lados se alternam marcando uma casa, e vence quem fizer uma linha de três na horizontal, na vertical ou na diagonal. Se o tabuleiro encher sem vencedor, dá velha.
 Aqui você escolhe entre dois modos. Contra o computador, você joga de X e pode escolher entre Fácil e Difícil. No modo 2 jogadores, vocês revezam o mesmo aparelho. O primeiro a jogar alterna a cada rodada, e o placar de vitórias, derrotas e empates fica salvo no navegador, separado por modo.
@@ -514,7 +514,7 @@ Cada jogador marca uma casa por vez, X ou O. Vence quem completar três símbolo
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Blocos Caindo é um jogo de encaixar peças que descem pela tela. Você gira e move cada peça para formar linhas completas, que somem e dão pontos. Se a pilha chegar ao topo, o jogo termina.
 Aqui o jogo fica mais rápido conforme você avança: a cada 10 linhas limpas sobe um nível. Você pode guardar uma peça para usar depois, ver as próximas e fazer combos limpando linhas em jogadas seguidas. O recorde fica salvo no navegador.
@@ -557,7 +557,7 @@ Limpar linhas dá pontos, e limpar mais linhas de uma vez dá mais. Descer a pe�
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Torre de Blocos é um jogo de reflexo e precisão. Um bloco desliza de um lado para o outro no alto da tela, e você escolhe a hora de soltá-lo sobre a torre. O que ficar para fora da borda é cortado e cai.
 Como o bloco só perde o que sobra, a torre vai ficando mais estreita a cada erro. Se você acertar em cheio, o bloco mantém o tamanho e ainda rende pontos extras. Com três acertos perfeitos seguidos, ele até cresce um pouco. Se errar o bloco todo, a torre cai e a partida acaba.
@@ -600,7 +600,7 @@ Dá. Basta tocar na tela para soltar o bloco. No computador, use Espaço, clique
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Acerta a Toupeira é um jogo de reflexo em que bichinhos saem de nove buracos e você precisa acertá-los com o martelo antes que sumam. Cada partida dura 30 segundos, e a velocidade aumenta ao longo do tempo.
 A toupeira comum vale 10 pontos. A toupeira dourada vale 30, mas some mais rápido. Ao acertar três seguidas sem errar, cada acerto rende 5 pontos extras. Mas cuidado com a bomba: se você martelar uma, perde 20 pontos e zera a sequência.
@@ -643,7 +643,7 @@ Você perde 20 pontos e a sua sequência de acertos zera. A pontuação nunca fi
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Corre Galinha é um jogo de corrida sem fim. Uma galinha foge pela fazenda e você só controla o pulo. Cercas e baldes aparecem no caminho, e encostar em qualquer um deles termina a partida.
 A pontuação é a distância em metros. Quanto mais longe você chega, mais rápida a galinha fica e menor é o espaço entre os obstáculos. A cada 100 metros aparece um aviso na tela. O jogo guarda seu recorde no próprio navegador, então dá para tentar superar a si mesmo.
@@ -686,7 +686,7 @@ Não. O Corre Galinha roda direto no navegador, é grátis e não pede cadastro.
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Voo Livre é um jogo de reflexo em que você bate as asas para manter o voo e atravessa vãos entre colunas. Cada passagem vale um ponto. Encostar numa coluna ou no chão encerra a partida.
 Ele é fácil de entender e difícil de dominar. A gravidade puxa o tempo todo, então você precisa dar pequenos impulsos no ritmo certo. Conforme a pontuação sobe, o jogo acelera um pouco e o vão entre as colunas vai ficando mais estreito, até um limite.
@@ -729,7 +729,7 @@ Você ganha um ponto a cada coluna que passa sem encostar. O jogo mostra sua pon
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Quebra-Blocos é o clássico em que você move uma raquete na parte de baixo da tela para rebater a bola e derrubar os blocos. Limpou todos os blocos, passou de fase. Deixou a bola cair, perdeu uma vida.
 Você começa com três vidas. Os blocos comuns valem 10 pontos, e os blocos coral aguentam duas batidas e valem 25. Ao avançar de fase, a bola fica mais rápida, a raquete encolhe um pouco e o desenho dos blocos muda. Terminar uma fase dá um bônus.
@@ -775,7 +775,7 @@ Tem. Cada vez que você limpa todos os blocos, começa uma fase nova com outro d
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Sudoku é o quebra-cabeça de números em uma grade 9x9. O objetivo é preencher todas as casas de modo que cada linha, cada coluna e cada quadrado 3x3 tenha os números de 1 a 9, sem repetir.
 Aqui você escolhe entre Fácil, Médio e Difícil, e o jogo cria um puzzle novo a cada partida. Tem anotações para marcar candidatos, botão de Desfazer e Dica, contador de erros e a opção de mostrar os erros na hora. O tempo é cronometrado e o seu recorde fica salvo no navegador, separado por nível.
@@ -818,7 +818,7 @@ Tem as duas. A Dica preenche uma casa certa para você, e o modo Anotar serve pa
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 2048 é um quebra-cabeça de números em um tabuleiro de 4 por 4. Você desliza todas as peças para uma direção. Quando duas peças com o mesmo número se encontram, elas se juntam em uma só com o valor somado. O objetivo é formar a peça 2048.
 A cada jogada surge uma peça nova, quase sempre um 2 e às vezes um 4. A partida acaba quando o tabuleiro enche e não sobra nenhum movimento. Ao chegar ao 2048 você pode continuar jogando para fazer ainda mais pontos.
@@ -861,7 +861,7 @@ Pode. Aperte Z ou o botão Desfazer para voltar a última jogada. Não é possí
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Campo Minado é um jogo de lógica. O tabuleiro esconde minas, e seu trabalho é abrir todas as casas seguras sem pisar em nenhuma. Cada número revelado diz quantas minas existem nas casas ao redor dele.
 Aqui há três níveis: Fácil (9 por 9 com 10 minas), Médio (16 por 16 com 40 minas) e Difícil (16 por 30 com 99 minas). O cronômetro começa na primeira casa aberta, e ela nunca é uma mina. Seu melhor tempo fica salvo no navegador, separado por nível.
@@ -904,7 +904,7 @@ Tem três: Fácil, com 10 minas, Médio, com 40, e Difícil, com 99. O melhor te
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 No Jogo da Memória, as cartas começam viradas para baixo. Você vira duas por vez e tenta achar os pares iguais. Se forem iguais, ficam abertas. Se não, viram de novo, e você precisa lembrar onde cada uma estava.
 As cartas mostram formas coloridas, como estrela, coração, losango e engrenagem. Há três níveis: Fácil, com 12 cartas, Médio, com 16, e Difícil, com 30. O jogo conta suas jogadas e o tempo, e guarda no navegador o melhor tempo e o menor número de jogadas de cada nível.
@@ -950,7 +950,7 @@ Dá. O jogo roda no navegador, e basta tocar nas cartas. É grátis e não preci
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Xadrez é o clássico jogo de estratégia para duas pessoas. O objetivo é dar xeque-mate: atacar o rei do adversário de um jeito que ele não tenha como escapar.
 Aqui você joga contra o computador ou contra um amigo no mesmo aparelho, no modo 2 jogadores. Contra o computador, escolha entre quatro níveis: Easy, Medium, Hard e Impossible. O jogo segue as regras oficiais, com roque, en passant, promoção do peão e empates por afogamento, repetição e 50 lances. Ele guarda o placar no navegador.
@@ -998,7 +998,7 @@ Tem. O jogo segue as regras oficiais, incluindo roque, en passant e promoção d
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Dama é o jogo de tabuleiro em que cada jogador tenta capturar todas as peças do adversário ou deixá-lo sem jogadas. Aqui as regras são as brasileiras, no tabuleiro 8x8.
 A captura é obrigatória, vale a lei da maioria (você deve capturar o maior número possível de peças) e a dama é voadora, ou seja, anda quantas casas quiser na diagonal. Você pode jogar contra o computador, em quatro níveis (Easy, Medium, Hard e Impossible), ou no modo de 2 jogadores, no mesmo aparelho. O placar fica salvo no navegador.
@@ -1046,7 +1046,7 @@ Dá. Toque na peça e depois na casa de destino. É grátis e abre no navegador.
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Ligue 4 é um jogo de tabuleiro para duas pessoas. Cada jogador solta fichas de uma cor nas colunas, e a ficha cai até a posição mais baixa livre. Quem alinhar quatro fichas primeiro, na horizontal, na vertical ou na diagonal, vence.
 Aqui você joga contra o computador, com os níveis Fácil e Difícil, ou no modo de 2 jogadores, no mesmo aparelho. O placar de vitórias, empates e derrotas fica salvo no navegador, separado por modo e dificuldade, e quem começa alterna a cada partida.
@@ -1094,7 +1094,7 @@ Dá. É só tocar na coluna onde quer soltar a ficha. É grátis e funciona dire
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Reversi é um jogo de tabuleiro clássico para dois jogadores. O tabuleiro tem 8 por 8 casas e as peças são pretas de um lado e brancas do outro. Quando você cerca uma fila de peças do adversário, todas elas viram para a sua cor.
 Aqui você joga com as pretas e começa. Dá para escolher entre jogar contra o computador ou em 2 jogadores, no mesmo aparelho. Contra o computador há dois níveis: Fácil, que erra de vez em quando, e Difícil, que calcula vários lances à frente e não perdoa descuido.
@@ -1146,7 +1146,7 @@ Não. O Reversi roda direto no navegador, no computador ou no celular, e o placa
 - Categoria: Casual
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Biscoito Gigante é um jogo de clique em que você começa com um biscoito enorme e termina com uma padaria que funciona sozinha. Cada clique rende biscoitos. Com eles você compra ajudantes, que passam a produzir por conta própria a cada segundo.
 São seis melhorias: colherzinha, vovó, forno, fábrica, foguete e portal mágico. Cada uma produz mais que a anterior, mas o preço sobe um pouco a cada compra. Quanto mais você produz por segundo, mais cada clique rende também.
@@ -1189,7 +1189,7 @@ Não tem uma fase final. A ideia é produzir cada vez mais biscoitos e comprar t
 - Categoria: Casual
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Em Pescaria, você controla um barquinho com um gatinho pescador. Você tem 60 segundos para fisgar o maior número de peixes e juntar pontos. O anzol desce enquanto você segura o botão e sobe sozinho quando você solta.
 Nem tudo que nada por aí é peixe bom. Os peixes pequenos, médios e grandes valem 10, 20 e 35 pontos. O peixe dourado é rápido e vale 60. A bota velha tira 5 pontos, e a água-viva dá um choque, tira 10 pontos e impede o anzol de descer por um instante.
@@ -1232,7 +1232,7 @@ O peixe pequeno vale 10, o médio 20, o grande 35 e o dourado 60. Bota velha tir
 - Categoria: Casual
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-10-17
+- Atualizado em: 2026-11-13
 
 Estoura Balão é um jogo casual em que balões coloridos sobem pela tela e você precisa estourá-los antes que escapem pelo topo. Cada balão comum vale 1 ponto. Os dourados valem 5, mas sobem mais rápido.
 Você começa com 5 vidas. Cada balão que foge perde uma vida, e quando elas acabam a partida termina. Estourar vários balões em sequência rápida rende ponto extra. Quanto mais o tempo passa, mais balões aparecem e mais rápido eles sobem.
