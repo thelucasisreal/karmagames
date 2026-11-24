@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://karmagames.com.br/</loc><lastmod>2026-11-24</lastmod></url>
+  <url><loc>https://karmagames.com.br/categoria/quebra-cabeca/</loc><lastmod>2026-11-24</lastmod></url>
   <url><loc>https://karmagames.com.br/categoria/acao/</loc><lastmod>2026-11-24</lastmod></url>
   <url><loc>https://karmagames.com.br/categoria/simulacao/</loc><lastmod>2026-11-24</lastmod></url>
   <url><loc>https://karmagames.com.br/categoria/classicos/</loc><lastmod>2026-11-24</lastmod></url>
   <url><loc>https://karmagames.com.br/categoria/arcade/</loc><lastmod>2026-11-24</lastmod></url>
-  <url><loc>https://karmagames.com.br/categoria/quebra-cabeca/</loc><lastmod>2026-11-24</lastmod></url>
   <url><loc>https://karmagames.com.br/categoria/tabuleiro/</loc><lastmod>2026-11-24</lastmod></url>
   <url><loc>https://karmagames.com.br/categoria/casual/</loc><lastmod>2026-11-24</lastmod></url>
+  <url><loc>https://karmagames.com.br/jogar/ajuda-de-animal/</loc><lastmod>2026-11-24</lastmod><image:image><image:loc>https://karmagames.com.br/assets/capas/ajuda-de-animal.webp</image:loc></image:image></url>
   <url><loc>https://karmagames.com.br/jogar/nao-confia/</loc><lastmod>2026-11-24</lastmod><image:image><image:loc>https://karmagames.com.br/assets/capas/nao-confia.webp</image:loc></image:image></url>
   <url><loc>https://karmagames.com.br/jogar/crossstrike/</loc><lastmod>2026-11-24</lastmod><image:image><image:loc>https://karmagames.com.br/assets/capas/crossstrike.svg</image:loc></image:image></url>
   <url><loc>https://karmagames.com.br/jogar/behind-the-grid/</loc><lastmod>2026-11-24</lastmod><image:image><image:loc>https://karmagames.com.br/assets/capas/behind-the-grid.svg</image:loc></image:image></url>

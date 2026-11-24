@@ -1,10 +1,18 @@
 # Karma Games
 
-> Site brasileiro de jogos grátis para jogar direto no navegador, em português, sem download e sem cadastro. 28 jogos feitos pela própria Karma Games, que funcionam no computador e no celular.
+> Site brasileiro de jogos grátis para jogar direto no navegador, em português, sem download e sem cadastro. 29 jogos feitos pela própria Karma Games, que funcionam no computador e no celular.
 
 Todos os jogos são grátis (o site se mantém com anúncios). Cada jogo tem uma página com regras, controles, dicas e perguntas frequentes. Os recordes ficam salvos no aparelho de quem joga. CrossStrike 3D, Xadrez, Dama, Ligue 4, Reversi e Jogo da Velha também têm modo Online, para jogar com outra pessoa pela internet (Jogo rápido ou sala com código), sem cadastro.
 
 O texto completo de todas as páginas (regras, como jogar, dicas e perguntas frequentes de cada jogo) está em [llms-full.txt](https://karmagames.com.br/llms-full.txt).
+
+## Jogos de Quebra-cabeça
+
+- [Ajuda de Animal](https://karmagames.com.br/jogar/ajuda-de-animal/): Jogue Ajuda de Animal grátis no navegador: puzzle de plataforma cooperativo para 2 jogadores com um lobo que fareja e uma águia que voa. 10 fases e chefão.
+- [Sudoku](https://karmagames.com.br/jogar/sudoku/): Jogue Sudoku grátis no navegador: puzzles novos com 3 níveis, anotações, dicas e recorde de tempo. Sem download, no PC e no celular.
+- [2048](https://karmagames.com.br/jogar/2048/): Jogue 2048 grátis no navegador, sem download: junte números iguais até chegar ao 2048. Use setas, WASD ou deslize no celular. Tem botão de desfazer.
+- [Campo Minado](https://karmagames.com.br/jogar/campo-minado/): Jogue Campo Minado online grátis, sem download: três níveis, bandeiras, cronômetro e recorde de tempo. Funciona com mouse e no celular.
+- [Jogo da Memória](https://karmagames.com.br/jogar/memoria/): Jogue Jogo da Memória grátis no navegador: vire as cartas, ache os pares e bata seu recorde de tempo e jogadas. Três níveis, sem download.
 
 ## Jogos de Ação
 
@@ -34,13 +42,6 @@ O texto completo de todas as páginas (regras, como jogar, dicas e perguntas fre
 - [Corre Galinha](https://karmagames.com.br/jogar/galinha/): Jogue Corre Galinha grátis no navegador, sem download: pule cercas e baldes na fazenda e bata seu recorde de distância no PC ou no celular.
 - [Voo Livre](https://karmagames.com.br/jogar/voo-livre/): Jogue Voo Livre grátis no navegador: bata as asas, passe entre as colunas sem encostar e tente bater seu recorde. Sem download, no PC e no celular.
 - [Quebra-Blocos](https://karmagames.com.br/jogar/quebra-blocos/): Jogue Quebra-Blocos grátis no navegador: rebata a bola, derrube todos os blocos e avance de fase. Sem download, com mouse, teclado ou toque.
-
-## Jogos de Quebra-cabeça
-
-- [Sudoku](https://karmagames.com.br/jogar/sudoku/): Jogue Sudoku grátis no navegador: puzzles novos com 3 níveis, anotações, dicas e recorde de tempo. Sem download, no PC e no celular.
-- [2048](https://karmagames.com.br/jogar/2048/): Jogue 2048 grátis no navegador, sem download: junte números iguais até chegar ao 2048. Use setas, WASD ou deslize no celular. Tem botão de desfazer.
-- [Campo Minado](https://karmagames.com.br/jogar/campo-minado/): Jogue Campo Minado online grátis, sem download: três níveis, bandeiras, cronômetro e recorde de tempo. Funciona com mouse e no celular.
-- [Jogo da Memória](https://karmagames.com.br/jogar/memoria/): Jogue Jogo da Memória grátis no navegador: vire as cartas, ache os pares e bata seu recorde de tempo e jogadas. Três níveis, sem download.
 
 ## Jogos de Tabuleiro
 

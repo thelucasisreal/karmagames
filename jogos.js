@@ -21,6 +21,18 @@
 */
 window.KARMA_JOGOS = [
   {
+    slug: "ajuda-de-animal",
+    capa: "assets/capas/ajuda-de-animal.webp",
+    titulo: "Ajuda de Animal",
+    descricao: "Puzzle de plataforma para 2 jogadores: o Lobo fareja caminhos escondidos e a Águia voa. 9 fases de trabalho em equipe e um Sapo Gigante como chefão!",
+    categoria: "Quebra-cabeça",
+    controles: "Lobo: A D anda · W pula · S fareja · F ação · Águia: ← → · ↑ voa · ↓ mergulha · Enter ação · R reinicia · Esc pausa · M som",
+    autor: "Karma Games",
+    autoral: true,
+    destaque: true,
+    adicionado: "2026-11-14",
+  },
+  {
     slug: "nao-confia",
     capa: "assets/capas/nao-confia.webp",
     titulo: "Não Confia",

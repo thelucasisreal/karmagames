@@ -1,4 +1,44 @@
 {
+  "ajuda-de-animal": {
+    "metaDescricao": "Jogue Ajuda de Animal grátis no navegador: puzzle de plataforma cooperativo para 2 jogadores com um lobo que fareja e uma águia que voa. 10 fases e chefão.",
+    "sobre": [
+      "Ajuda de Animal é um jogo de plataforma e quebra-cabeça para dois jogadores no mesmo teclado. Um joga com o Lobo, que anda, pula, empurra caixas e tem o faro: segurando o botão de farejar, ele revela pontes, espinhos e tesouros escondidos ao redor dele. O outro joga com a Águia, que voa por todo lado, puxa alavancas com o bico e leva chaves até portas no alto.",
+      "Nenhum dos dois passa de fase sozinho. A águia é leve demais para apertar os botões de peso e não enxerga o que está escondido; o lobo não alcança as alavancas nem as portas altas. São 9 fases de puzzle, com botões, portões, caixas, chaves enterradas, cogumelos que lançam bem alto e labirintos de espinhos invisíveis, até a fase 10: a luta contra o Sapo Gigante.",
+      "O jogo é grátis, roda direto no navegador, salva as fases liberadas e tem botões na tela para jogar a dois num tablet ou celular."
+    ],
+    "comoJogar": [
+      "Lobo (jogador 1): A e D andam, W pula, segure S para farejar e F é a ação (cavar tesouro, dar ou largar a chave, morder).",
+      "Águia (jogador 2): setas para os lados, segure a seta para cima para voar, seta para baixo mergulha e Enter é a ação (dar ou largar a chave).",
+      "Os dois precisam chegar juntos na bandeira para passar de fase. Alavancas só a águia puxa; botões de peso só o lobo ou uma caixa apertam.",
+      "Para passar uma chave, encoste no amigo e aperte a ação. Quem segura a chave abre a porta trancada só de encostar nela.",
+      "No chefão, o lobo fareja o ponto fraco do sapo, a águia mergulha nele para deixá-lo tonto e o lobo morde. R reinicia a fase, Esc pausa, H mostra a dica e M liga ou desliga o som."
+    ],
+    "dicas": [
+      "Combinem antes de agir: quase toda fase tem um momento em que um precisa esperar parado enquanto o outro resolve a parte dele.",
+      "O faro tem alcance. Se a águia vai atravessar espinhos escondidos, o lobo precisa farejar perto dela, e as plataformas escondidas só ficam firmes enquanto o faro está ativo.",
+      "Quando farejar, siga as patinhas amarelas: elas apontam para tesouros enterrados e chaves por perto.",
+      "Caixas grudam sozinhas no botão quando chegam nele, então não tenha medo de empurrar.",
+      "Contra o Sapo Gigante, fiquem longe quando ele abaixar para pular e pulem a onda de impacto quando ele cair no chão."
+    ],
+    "faq": [
+      {
+        "p": "Dá para jogar Ajuda de Animal sozinho?",
+        "r": "O jogo foi feito para dois jogadores, cada um com um animal. Dá para controlar os dois no mesmo teclado, mas é bem mais divertido em dupla."
+      },
+      {
+        "p": "Dá para jogar no celular ou tablet?",
+        "r": "Dá. Em telas de toque aparecem dois controles: o da esquerda é do Lobo e o da direita é da Águia, para jogar a dois no mesmo aparelho."
+      },
+      {
+        "p": "Quantas fases tem?",
+        "r": "São 10 fases: 9 de quebra-cabeça e a última é a luta contra o Sapo Gigante. As fases liberadas ficam salvas no navegador."
+      },
+      {
+        "p": "Precisa baixar ou criar conta para jogar?",
+        "r": "Não. O jogo é grátis e abre direto na página, sem download e sem cadastro."
+      }
+    ]
+  },
   "2048": {
     "metaDescricao": "Jogue 2048 grátis no navegador, sem download: junte números iguais até chegar ao 2048. Use setas, WASD ou deslize no celular. Tem botão de desfazer.",
     "sobre": [
