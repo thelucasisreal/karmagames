@@ -28,7 +28,7 @@ São 29 jogos, como Ajuda de Animal, Não Confia, CrossStrike 3D, Behind The Gri
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Ajuda de Animal é um jogo de plataforma e quebra-cabeça para dois jogadores no mesmo teclado. Um joga com o Lobo, que anda, pula, empurra caixas e tem o faro: segurando o botão de farejar, ele revela pontes, espinhos e tesouros escondidos ao redor dele. O outro joga com a Águia, que voa por todo lado, puxa alavancas com o bico e leva chaves até portas no alto.
 Nenhum dos dois passa de fase sozinho. A águia é leve demais para apertar os botões de peso e não enxerga o que está escondido; o lobo não alcança as alavancas nem as portas altas. São 9 fases de puzzle, com botões, portões, caixas, chaves enterradas, cogumelos que lançam bem alto e labirintos de espinhos invisíveis, até a fase 10: a luta contra o Sapo Gigante.
@@ -74,7 +74,7 @@ Não. O jogo é grátis e abre direto na página, sem download e sem cadastro.
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Sudoku é o quebra-cabeça de números em uma grade 9x9. O objetivo é preencher todas as casas de modo que cada linha, cada coluna e cada quadrado 3x3 tenha os números de 1 a 9, sem repetir.
 Aqui você escolhe entre Fácil, Médio e Difícil, e o jogo cria um puzzle novo a cada partida. Tem anotações para marcar candidatos, botão de Desfazer e Dica, contador de erros e a opção de mostrar os erros na hora. O tempo é cronometrado e o seu recorde fica salvo no navegador, separado por nível.
@@ -117,7 +117,7 @@ Tem as duas. A Dica preenche uma casa certa para você, e o modo Anotar serve pa
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 2048 é um quebra-cabeça de números em um tabuleiro de 4 por 4. Você desliza todas as peças para uma direção. Quando duas peças com o mesmo número se encontram, elas se juntam em uma só com o valor somado. O objetivo é formar a peça 2048.
 A cada jogada surge uma peça nova, quase sempre um 2 e às vezes um 4. A partida acaba quando o tabuleiro enche e não sobra nenhum movimento. Ao chegar ao 2048 você pode continuar jogando para fazer ainda mais pontos.
@@ -160,7 +160,7 @@ Pode. Aperte Z ou o botão Desfazer para voltar a última jogada. Não é possí
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Campo Minado é um jogo de lógica. O tabuleiro esconde minas, e seu trabalho é abrir todas as casas seguras sem pisar em nenhuma. Cada número revelado diz quantas minas existem nas casas ao redor dele.
 Aqui há três níveis: Fácil (9 por 9 com 10 minas), Médio (16 por 16 com 40 minas) e Difícil (16 por 30 com 99 minas). O cronômetro começa na primeira casa aberta, e ela nunca é uma mina. Seu melhor tempo fica salvo no navegador, separado por nível.
@@ -203,7 +203,7 @@ Tem três: Fácil, com 10 minas, Médio, com 40, e Difícil, com 99. O melhor te
 - Categoria: Quebra-cabeça
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 No Jogo da Memória, as cartas começam viradas para baixo. Você vira duas por vez e tenta achar os pares iguais. Se forem iguais, ficam abertas. Se não, viram de novo, e você precisa lembrar onde cada uma estava.
 As cartas mostram formas coloridas, como estrela, coração, losango e engrenagem. Há três níveis: Fácil, com 12 cartas, Médio, com 16, e Difícil, com 30. O jogo conta suas jogadas e o tempo, e guarda no navegador o melhor tempo e o menor número de jogadas de cada nível.
@@ -249,7 +249,7 @@ Dá. O jogo roda no navegador, e basta tocar nas cartas. É grátis e não preci
 - Categoria: Ação
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Não Confia é um jogo de plataforma troll. Você anda, pula e tenta chegar até a porta, mas nada é o que parece. O chão desaba, a porta muda de lugar, os controles invertem e até uma florzinha inocente pode te matar.
 São 100 fases divididas em 10 mundos, da Grama Inocente até O Fim (Mentira). Cada fase tem uma pegadinha nova, e o cenário muda um pouco a cada morte. O jogo conta quantas vezes você morreu e salva seu progresso no navegador, então dá para continuar de onde parou.
@@ -292,7 +292,7 @@ Não. O jogo é grátis e abre direto na página, sem download e sem cadastro.
 - Categoria: Ação
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 CrossStrike 3D é um jogo de tiro em primeira ou terceira pessoa, com bonecos de bloco, que roda direto no navegador. Você compra armas a cada rodada, usa habilidades e pode ver uma cena de finalização quando derruba um inimigo já quase morto.
 Tem cinco modos: Equipe 5x5 (ou 4x4) contra bots, duelo 1 contra 1, Battle Royale com 16, 24 ou 32 jogadores, Online com amigos e um Treino de mira de 60 segundos. Os bots têm três níveis de dificuldade: Fácil, Médio e Difícil.
@@ -335,7 +335,7 @@ Não. O jogo roda direto no navegador, é grátis e não pede instalação.
 - Categoria: Ação
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Em Desvia dos Meteoros, você pilota uma navezinha no fundo da tela enquanto pedras caem do espaço. A nave só anda para os lados, então tudo é questão de achar o vão certo entre os meteoros.
 Você começa com 3 vidas. Cada batida tira uma, mas a nave fica piscando e protegida por um instante. Estrelas valem 10 pontos, e você também ganha 1 ponto por segundo vivo. De vez em quando aparece um coração que devolve uma vida, se você tiver perdido alguma.
@@ -381,7 +381,7 @@ Pegue estrelas (10 pontos cada) e sobreviva o máximo possível, já que cada se
 - Categoria: Simulação
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Behind The Grid é um simulador de carreira de influencer. Você cria sua conta, escolhe um nicho e tenta crescer no feed sem perder a paz, a reputação nem o dinheiro. O jogo mostra o que vai para o post e, do outro lado do card, o que acontece de verdade nos bastidores.
 A carreira anda por meses. Em cada mês você tem energia para gravar e postar, fechar publis e contratos pela caixa de e-mail, comprar melhorias de setup, moradia e estilo, ou descansar na vida pessoal. Eventos surpresa trazem escolhas difíceis, e o que você decide muda o seu final.
@@ -427,7 +427,7 @@ A aposentadoria é liberada a partir do mês 25. Cada mês tem um número limita
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Paciência é o clássico jogo de cartas para uma pessoa só. O objetivo é levar todas as cartas para as quatro pilhas das fundações, separadas por naipe, do Ás ao Rei. Para isso, você organiza as cartas em sete colunas e usa o monte para buscar novas.
 Aqui você escolhe entre Virar 1 carta, mais fácil, ou Virar 3 cartas, mais difícil. O jogo mostra pontos, movimentos e tempo, tem botão de Dica e de Desfazer e guarda no navegador quantas vitórias você fez e o seu melhor tempo.
@@ -470,7 +470,7 @@ Dá. É só tocar numa carta para o jogo mandá-la a um lugar válido. É gráti
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Forca é o jogo clássico de adivinhar uma palavra letra por letra. A cada letra errada, uma parte do bonequinho aparece. Se ele ficar completo antes de você acertar a palavra, você perde.
 Aqui as palavras são em português e vêm de categorias como Animais, Frutas, Comidas, Países, Profissões, Esportes, Cores e Cidades do Brasil. Você escolhe entre Fácil, Médio e Difícil, que mudam o tamanho das palavras e quantos erros você pode cometer. O jogo guarda vitórias, derrotas e sequência no navegador.
@@ -513,7 +513,7 @@ Dá. Você toca nas letras na tela. É grátis e funciona direto no navegador.
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Pedra, Papel e Tesoura é aquele jogo de mão que todo mundo conhece, agora contra o computador. Você escolhe uma jogada, o computador escolhe outra e as duas mãos aparecem ao mesmo tempo. A pedra quebra a tesoura, a tesoura corta o papel e o papel embrulha a pedra.
 Cada partida é uma melhor de 5: quem fizer 3 pontos primeiro leva. Se as duas jogadas forem iguais, é empate e a rodada se repete. O jogo conta quantas partidas você ganha em sequência e guarda o seu recorde de vitórias seguidas.
@@ -555,7 +555,7 @@ Não. Esta versão é só contra o computador. Para jogar online com alguém, o 
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Genius é o jogo de memória das quatro cores: verde, vermelho, amarelo e azul. Cada cor tem um som. O jogo acende uma sequência e você precisa repeti-la na mesma ordem.
 A cada acerto, a sequência ganha uma cor nova no final e fica mais rápida. Não há limite de tempo para responder, mas basta errar uma cor para a partida acabar. Sua pontuação é o tamanho da maior sequência que você repetiu certo, e o recorde fica salvo no aparelho.
@@ -598,7 +598,7 @@ Não. O Genius roda direto no navegador e o seu recorde fica guardado no própri
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Cobrinha é o clássico em que você guia uma cobra por um tabuleiro, come a comida que aparece e vai ficando maior. A cobra anda sozinha, e você só escolhe a direção. Bater nas paredes ou no próprio corpo encerra a partida.
 Cada comida vale um ponto e deixa a cobra mais rápida, até um limite. No começo é tranquilo, mas quando o corpo já ocupa boa parte do campo, planejar o caminho é o que separa uma partida boa de uma ótima.
@@ -641,7 +641,7 @@ Guie a cobra até a comida para crescer e ganhar pontos. Se ela bater em uma par
 - Categoria: Clássicos
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Pong é um dos jogos de videogame mais antigos. Aqui você enfrenta o computador numa partida de tênis simplificado: cada um tem uma raquete, e você tenta mandar a bola além da raquete do adversário. Quem chegar a 7 pontos primeiro vence.
 A bola acelera a cada rebatida, então os pontos ficam mais rápidos e mais tensos. O computador também se adapta: ele se move um pouco mais rápido conforme o placar avança. O ângulo da bola depende do ponto da raquete em que ela bate.
@@ -684,7 +684,7 @@ Dá. Arraste o dedo na tela para mover a raquete. Funciona direto no navegador, 
 - Categoria: Clássicos
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 O Jogo da Velha é o clássico de X e O em um tabuleiro de 3 por 3. Dois lados se alternam marcando uma casa, e vence quem fizer uma linha de três na horizontal, na vertical ou na diagonal. Se o tabuleiro encher sem vencedor, dá velha.
 Aqui você escolhe entre dois modos. Contra o computador, você joga de X e pode escolher entre Fácil e Difícil. No modo 2 jogadores, vocês revezam o mesmo aparelho. O primeiro a jogar alterna a cada rodada, e o placar de vitórias, derrotas e empates fica salvo no navegador, separado por modo.
@@ -735,7 +735,7 @@ Cada jogador marca uma casa por vez, X ou O. Vence quem completar três símbolo
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Blocos Caindo é um jogo de encaixar peças que descem pela tela. Você gira e move cada peça para formar linhas completas, que somem e dão pontos. Se a pilha chegar ao topo, o jogo termina.
 Aqui o jogo fica mais rápido conforme você avança: a cada 10 linhas limpas sobe um nível. Você pode guardar uma peça para usar depois, ver as próximas e fazer combos limpando linhas em jogadas seguidas. O recorde fica salvo no navegador.
@@ -778,7 +778,7 @@ Limpar linhas dá pontos, e limpar mais linhas de uma vez dá mais. Descer a pe�
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Torre de Blocos é um jogo de reflexo e precisão. Um bloco desliza de um lado para o outro no alto da tela, e você escolhe a hora de soltá-lo sobre a torre. O que ficar para fora da borda é cortado e cai.
 Como o bloco só perde o que sobra, a torre vai ficando mais estreita a cada erro. Se você acertar em cheio, o bloco mantém o tamanho e ainda rende pontos extras. Com três acertos perfeitos seguidos, ele até cresce um pouco. Se errar o bloco todo, a torre cai e a partida acaba.
@@ -821,7 +821,7 @@ Dá. Basta tocar na tela para soltar o bloco. No computador, use Espaço, clique
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Acerta a Toupeira é um jogo de reflexo em que bichinhos saem de nove buracos e você precisa acertá-los com o martelo antes que sumam. Cada partida dura 30 segundos, e a velocidade aumenta ao longo do tempo.
 A toupeira comum vale 10 pontos. A toupeira dourada vale 30, mas some mais rápido. Ao acertar três seguidas sem errar, cada acerto rende 5 pontos extras. Mas cuidado com a bomba: se você martelar uma, perde 20 pontos e zera a sequência.
@@ -864,7 +864,7 @@ Você perde 20 pontos e a sua sequência de acertos zera. A pontuação nunca fi
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Corre Galinha é um jogo de corrida sem fim. Uma galinha foge pela fazenda e você só controla o pulo. Cercas e baldes aparecem no caminho, e encostar em qualquer um deles termina a partida.
 A pontuação é a distância em metros. Quanto mais longe você chega, mais rápida a galinha fica e menor é o espaço entre os obstáculos. A cada 100 metros aparece um aviso na tela. O jogo guarda seu recorde no próprio navegador, então dá para tentar superar a si mesmo.
@@ -907,7 +907,7 @@ Não. O Corre Galinha roda direto no navegador, é grátis e não pede cadastro.
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Voo Livre é um jogo de reflexo em que você bate as asas para manter o voo e atravessa vãos entre colunas. Cada passagem vale um ponto. Encostar numa coluna ou no chão encerra a partida.
 Ele é fácil de entender e difícil de dominar. A gravidade puxa o tempo todo, então você precisa dar pequenos impulsos no ritmo certo. Conforme a pontuação sobe, o jogo acelera um pouco e o vão entre as colunas vai ficando mais estreito, até um limite.
@@ -950,7 +950,7 @@ Você ganha um ponto a cada coluna que passa sem encostar. O jogo mostra sua pon
 - Categoria: Arcade
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Quebra-Blocos é o clássico em que você move uma raquete na parte de baixo da tela para rebater a bola e derrubar os blocos. Limpou todos os blocos, passou de fase. Deixou a bola cair, perdeu uma vida.
 Você começa com três vidas. Os blocos comuns valem 10 pontos, e os blocos coral aguentam duas batidas e valem 25. Ao avançar de fase, a bola fica mais rápida, a raquete encolhe um pouco e o desenho dos blocos muda. Terminar uma fase dá um bônus.
@@ -996,7 +996,7 @@ Tem. Cada vez que você limpa todos os blocos, começa uma fase nova com outro d
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Xadrez é o clássico jogo de estratégia para duas pessoas. O objetivo é dar xeque-mate: atacar o rei do adversário de um jeito que ele não tenha como escapar.
 Aqui você joga contra o computador ou contra um amigo no mesmo aparelho, no modo 2 jogadores. Contra o computador, escolha entre quatro níveis: Easy, Medium, Hard e Impossible. O jogo segue as regras oficiais, com roque, en passant, promoção do peão e empates por afogamento, repetição e 50 lances. Ele guarda o placar no navegador.
@@ -1044,7 +1044,7 @@ Tem. O jogo segue as regras oficiais, incluindo roque, en passant e promoção d
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Dama é o jogo de tabuleiro em que cada jogador tenta capturar todas as peças do adversário ou deixá-lo sem jogadas. Aqui as regras são as brasileiras, no tabuleiro 8x8.
 A captura é obrigatória, vale a lei da maioria (você deve capturar o maior número possível de peças) e a dama é voadora, ou seja, anda quantas casas quiser na diagonal. Você pode jogar contra o computador, em quatro níveis (Easy, Medium, Hard e Impossible), ou no modo de 2 jogadores, no mesmo aparelho. O placar fica salvo no navegador.
@@ -1092,7 +1092,7 @@ Dá. Toque na peça e depois na casa de destino. É grátis e abre no navegador.
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Ligue 4 é um jogo de tabuleiro para duas pessoas. Cada jogador solta fichas de uma cor nas colunas, e a ficha cai até a posição mais baixa livre. Quem alinhar quatro fichas primeiro, na horizontal, na vertical ou na diagonal, vence.
 Aqui você joga contra o computador, com os níveis Fácil e Difícil, ou no modo de 2 jogadores, no mesmo aparelho. O placar de vitórias, empates e derrotas fica salvo no navegador, separado por modo e dificuldade, e quem começa alterna a cada partida.
@@ -1140,7 +1140,7 @@ Dá. É só tocar na coluna onde quer soltar a ficha. É grátis e funciona dire
 - Categoria: Tabuleiro
 - Modos: um jogador e online (multiplayer pela internet)
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Reversi é um jogo de tabuleiro clássico para dois jogadores. O tabuleiro tem 8 por 8 casas e as peças são pretas de um lado e brancas do outro. Quando você cerca uma fila de peças do adversário, todas elas viram para a sua cor.
 Aqui você joga com as pretas e começa. Dá para escolher entre jogar contra o computador ou em 2 jogadores, no mesmo aparelho. Contra o computador há dois níveis: Fácil, que erra de vez em quando, e Difícil, que calcula vários lances à frente e não perdoa descuido.
@@ -1192,7 +1192,7 @@ Não. O Reversi roda direto no navegador, no computador ou no celular, e o placa
 - Categoria: Casual
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Biscoito Gigante é um jogo de clique em que você começa com um biscoito enorme e termina com uma padaria que funciona sozinha. Cada clique rende biscoitos. Com eles você compra ajudantes, que passam a produzir por conta própria a cada segundo.
 São seis melhorias: colherzinha, vovó, forno, fábrica, foguete e portal mágico. Cada uma produz mais que a anterior, mas o preço sobe um pouco a cada compra. Quanto mais você produz por segundo, mais cada clique rende também.
@@ -1235,7 +1235,7 @@ Não tem uma fase final. A ideia é produzir cada vez mais biscoitos e comprar t
 - Categoria: Casual
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Em Pescaria, você controla um barquinho com um gatinho pescador. Você tem 60 segundos para fisgar o maior número de peixes e juntar pontos. O anzol desce enquanto você segura o botão e sobe sozinho quando você solta.
 Nem tudo que nada por aí é peixe bom. Os peixes pequenos, médios e grandes valem 10, 20 e 35 pontos. O peixe dourado é rápido e vale 60. A bota velha tira 5 pontos, e a água-viva dá um choque, tira 10 pontos e impede o anzol de descer por um instante.
@@ -1278,7 +1278,7 @@ O peixe pequeno vale 10, o médio 20, o grande 35 e o dourado 60. Bota velha tir
 - Categoria: Casual
 - Modos: no próprio aparelho
 - Grátis, sem download e sem cadastro. Funciona no computador e no celular.
-- Atualizado em: 2026-11-14
+- Atualizado em: 2026-11-24
 
 Estoura Balão é um jogo casual em que balões coloridos sobem pela tela e você precisa estourá-los antes que escapem pelo topo. Cada balão comum vale 1 ponto. Os dourados valem 5, mas sobem mais rápido.
 Você começa com 5 vidas. Cada balão que foge perde uma vida, e quando elas acabam a partida termina. Estourar vários balões em sequência rápida rende ponto extra. Quanto mais o tempo passa, mais balões aparecem e mais rápido eles sobem.
@@ -1314,3 +1314,324 @@ Dá. É só tocar nos balões. No computador, você pode usar o mouse ou mover a
 
 **Quanto vale cada balão?**
 Balões comuns valem 1 ponto e os dourados valem 5. Estourar vários em sequência rápida rende 1 ponto extra por balão, a partir do terceiro.
+
+
+# Guias de regras e estratégia
+
+## Regras do xadrez: guia completo para iniciantes
+
+- Endereço: https://karmagames.com.br/guias/regras-do-xadrez/
+- Publicado em: 2026-11-24
+
+O xadrez parece complicado na primeira vez, mas as regras cabem em poucas páginas. Este guia explica o tabuleiro, o movimento de cada peça, os lances especiais e as formas de terminar uma partida. No fim, tem os princípios que fazem um iniciante parar de perder peças de graça.
+
+### O tabuleiro e a posição inicial
+
+O tabuleiro tem 64 casas, 8 por 8, alternando claras e escuras. Ele sempre é colocado com uma casa clara no canto inferior direito de cada jogador. As colunas são identificadas por letras (de **a** a **h**) e as fileiras por números (de **1** a **8**), então cada casa tem um nome, como e4 ou g1.
+
+Cada jogador começa com 16 peças: oito peões, duas torres, dois cavalos, dois bispos, uma dama e um rei. Na primeira fileira ficam, da esquerda para a direita, torre, cavalo, bispo, dama, rei, bispo, cavalo e torre. Na segunda ficam os oito peões. A dama começa na casa da cor dela: a dama branca em casa clara (d1) e a dama preta em casa escura (d8). As brancas sempre fazem o primeiro lance.
+
+### Como cada peça se move
+
+- **Rei:** anda uma casa em qualquer direção. Nunca pode ir para uma casa atacada por uma peça adversária.
+- **Dama:** anda quantas casas quiser em linha reta ou na diagonal, sem pular peças. É a peça mais forte.
+- **Torre:** anda quantas casas quiser na horizontal ou na vertical.
+- **Bispo:** anda quantas casas quiser na diagonal. Por isso cada bispo passa a partida inteira em casas de uma cor só.
+- **Cavalo:** anda em L: duas casas em uma direção e uma para o lado. É a única peça que pula por cima das outras.
+- **Peão:** anda uma casa para a frente, ou duas no primeiro lance dele. Captura de um jeito diferente: uma casa na diagonal, para a frente. Peão nunca anda para trás.
+
+Capturar é ocupar a casa de uma peça adversária, que sai do tabuleiro. Com exceção do peão, toda peça captura do mesmo jeito que se move.
+
+### Xeque, xeque-mate e afogamento
+
+Quando uma peça ataca o rei adversário, o rei está em **xeque**. Quem está em xeque é obrigado a sair dele no lance seguinte, de uma de três formas: movendo o rei para uma casa segura, capturando a peça que dá o xeque ou colocando uma peça no meio do caminho. Não é permitido fazer um lance que deixe o próprio rei em xeque.
+
+Se o rei está em xeque e não existe nenhum lance que resolva isso, é **xeque-mate** e a partida acaba. O rei nunca é capturado de fato: o mate é o fim.
+
+O caso oposto é o **afogamento**: o jogador da vez não está em xeque, mas não tem nenhum lance legal. Aí a partida termina empatada. O afogamento é a armadilha clássica de quem está ganhando com muita vantagem e encurrala o rei adversário sem dar xeque.
+
+### Os três lances especiais
+
+**Roque.** É o único lance em que duas peças se movem ao mesmo tempo. O rei anda duas casas em direção a uma das torres, e essa torre pula para o outro lado do rei. Serve para proteger o rei e colocar a torre em jogo. Só vale se o rei e aquela torre ainda não se moveram, se não houver peças entre eles, se o rei não estiver em xeque e se ele não passar nem parar em casa atacada.
+
+**En passant.** Se um peão avança duas casas no primeiro lance e para ao lado de um peão adversário, esse peão adversário pode capturá-lo como se ele tivesse andado só uma casa. A captura tem que ser feita imediatamente, no lance seguinte, ou o direito se perde.
+
+**Promoção.** O peão que chega à última fileira vira outra peça, à escolha do jogador: dama, torre, bispo ou cavalo. Quase sempre se escolhe a dama. Dá para ter duas ou mais damas no tabuleiro.
+
+### Como uma partida pode empatar
+
+- Afogamento, explicado acima.
+- Repetição: a mesma posição aparece três vezes, com o mesmo jogador da vez.
+- Regra dos 50 lances: cinquenta lances de cada lado sem nenhuma captura e sem nenhum movimento de peão.
+- Material insuficiente: quando não sobra peça capaz de dar mate, como rei contra rei, ou rei e bispo contra rei.
+- Acordo entre os jogadores.
+
+### Quanto vale cada peça
+
+Para decidir se uma troca é boa, os jogadores usam uma tabela aproximada: peão vale 1, cavalo e bispo valem 3, torre vale 5 e dama vale 9. Trocar um bispo por uma torre é ganhar dois pontos; entregar a dama por um cavalo é perder seis. A tabela não é lei, mas evita a maior parte das trocas ruins.
+
+### Princípios para as primeiras partidas
+
+1. **Disputa o centro.** As casas e4, d4, e5 e d5 dão mais espaço às peças. Abrir com um peão de rei ou de dama é o começo mais natural.
+2. **Desenvolva as peças.** Tire cavalos e bispos da primeira fileira cedo. Mover o mesmo peão ou a mesma peça várias vezes na abertura atrasa todo o resto.
+3. **Faça o roque.** O rei no centro é alvo fácil. O roque costuma vir nos primeiros dez lances.
+4. **Não saia com a dama cedo.** Ela vira alvo, e você perde tempo fugindo enquanto o adversário desenvolve as peças dele.
+5. **Antes de cada lance, pergunte:** o que o último lance do adversário ameaça? Qual das minhas peças está sem defesa? A maioria das partidas de iniciante é decidida por uma peça que ficou solta.
+
+### Os primeiros mates que vale aprender
+
+Saber dar mate com pouco material evita jogar fora uma partida ganha. O mais simples é rei e dama contra rei: use a dama para ir fechando o rei adversário em uma faixa cada vez menor, sempre a um lance de cavalo de distância para não afogar, e traga o seu rei para ajudar. O mesmo vale com rei e torre, só que demora um pouco mais. Treine os dois até sair sem pensar.
+
+### Treine no Xadrez da Karma Games
+
+O [Xadrez da Karma Games](https://karmagames.com.br/jogar/xadrez/) segue todas essas regras, incluindo roque, en passant, promoção e os empates por afogamento, repetição e 50 lances. Ao clicar numa peça ele mostra os lances possíveis, o que ajuda muito quem está aprendendo. Comece no nível Easy, suba para Medium quando ganhar com frequência e jogue no modo Online com um amigo para praticar contra uma pessoa.
+
+## Regras da dama brasileira: captura obrigatória, lei da maioria e dama voadora
+
+- Endereço: https://karmagames.com.br/guias/regras-da-dama-brasileira/
+- Publicado em: 2026-11-24
+
+Todo mundo já jogou dama, mas quase cada família joga com uma regra diferente. Essa confusão aparece na hora de jogar com outra pessoa ou contra o computador: "pode comer para trás?", "sou obrigado a comer?", "a dama anda quanto?". Este guia explica a regra brasileira, a mesma usada nos torneios do país e no jogo da Karma Games.
+
+### Tabuleiro e posição inicial
+
+A dama brasileira usa o tabuleiro de 8 por 8 casas, o mesmo do xadrez. Ele é colocado com uma casa escura no canto inferior esquerdo de cada jogador, e as peças só ocupam as casas escuras. Cada lado começa com 12 pedras, distribuídas nas três primeiras fileiras. As duas fileiras do meio ficam vazias. As brancas começam.
+
+### Como a pedra se move
+
+A pedra comum anda uma casa na diagonal, sempre para a frente, para uma casa vazia. Ela não anda para trás. Para trás, só capturando, como explicado a seguir.
+
+### Como se captura
+
+Captura-se pulando por cima de uma peça adversária que esteja na casa diagonal vizinha, desde que a casa logo depois dela esteja vazia. A peça pulada sai do tabuleiro. Na regra brasileira, **a pedra comum pode capturar para a frente e para trás**.
+
+Se, depois de capturar, a pedra puder pular outra peça, ela continua no mesmo lance. Essa sequência é a captura múltipla, e as peças capturadas só saem do tabuleiro quando o lance termina. Durante a sequência não dá para pular a mesma peça duas vezes.
+
+### Captura obrigatória
+
+Se existe uma captura possível, você é obrigado a fazê-la. Não dá para escolher um lance tranquilo quando há uma peça para comer. Antigamente existia o "sopro", em que o adversário tirava a pedra de quem esqueceu de capturar. Na regra oficial isso não existe: o lance sem captura simplesmente não é permitido.
+
+A obrigação é a base de quase toda tática da dama. Como você sabe que o adversário vai ter que capturar, pode oferecer uma pedra de propósito e preparar uma captura múltipla de volta. Essa jogada se chama entrega, e é a principal arma de quem joga bem.
+
+### Lei da maioria
+
+Quando há mais de um jeito de capturar, você deve escolher o caminho que captura o **maior número de peças**. Não importa se as peças são pedras ou damas, nem qual peça sua faz a captura: conta só a quantidade. Se dois caminhos capturam o mesmo número, você escolhe qualquer um.
+
+### Promoção e dama voadora
+
+A pedra que chega à última fileira do lado adversário vira **dama**. Para marcar, coloca-se outra pedra em cima dela. Se a pedra chegar à última fileira no meio de uma captura múltipla e ainda puder continuar capturando, ela segue como pedra e não é promovida naquele lance.
+
+A dama é **voadora**: anda quantas casas quiser na diagonal, para a frente ou para trás, desde que o caminho esteja livre. Na captura, ela pode pular uma peça que esteja a qualquer distância na mesma diagonal, com casas vazias entre elas, e parar em qualquer casa vazia depois da peça capturada. Por isso uma dama sozinha consegue segurar várias pedras adversárias.
+
+### Fim da partida e empate
+
+Vence quem capturar todas as peças do adversário ou deixá-lo sem nenhum lance possível. O empate acontece por acordo, quando a mesma posição se repete, ou quando os dois lados passam 20 lances seguidos movendo só damas, sem nenhuma captura.
+
+### Estratégia básica
+
+1. **Controle o centro.** Pedras no meio do tabuleiro têm duas opções de avanço e atrapalham o adversário. Pedras na borda são mais seguras, mas têm só uma diagonal.
+2. **Avance em grupo.** Pedra sozinha na frente é alvo fácil. Pedras lado a lado e em diagonal se protegem, porque não deixam casa livre atrás para o adversário pousar depois de capturar.
+3. **Guarde a última fileira.** Enquanto você tiver pedras na sua fileira de trás, o adversário não consegue fazer dama. Não tire essas pedras sem motivo.
+4. **Conte antes de entregar.** Antes de oferecer uma pedra, conte quantas peças você recupera na volta. Graças à lei da maioria, dá para prever exatamente qual caminho o adversário vai ser obrigado a seguir.
+5. **Dama vale muito.** No final da partida, uma dama vale mais que várias pedras. Vale a pena trocar duas pedras para fazer uma dama.
+
+### Jogue com as regras certas
+
+A [Dama da Karma Games](https://karmagames.com.br/jogar/dama/) segue exatamente essas regras: captura obrigatória, lei da maioria, dama voadora e empate após 20 lances só com damas. O jogo destaca as jogadas permitidas, então você não precisa decorar tudo de uma vez. Dá para jogar contra o computador em quatro níveis, com um amigo no mesmo aparelho ou no modo Online.
+
+## Como resolver sudoku: técnicas do fácil ao difícil
+
+- Endereço: https://karmagames.com.br/guias/como-resolver-sudoku/
+- Publicado em: 2026-11-24
+
+Um sudoku bem feito tem uma única solução e pode ser resolvido só com lógica, sem tentativa e erro. A diferença entre um puzzle fácil e um difícil está em quais técnicas ele exige. Este guia apresenta essas técnicas na ordem em que você vai precisar delas.
+
+### A regra
+
+A grade tem 9 linhas, 9 colunas e 9 quadrados de 3 por 3. Cada linha, cada coluna e cada quadrado precisa ter os números de 1 a 9, uma vez cada. Os números que já vêm preenchidos não mudam. Não tem conta: os números poderiam ser letras ou cores, e o jogo seria o mesmo.
+
+### Técnica 1: varredura
+
+Escolha um número, por exemplo o 5, e olhe onde ele já aparece. Cada 5 elimina a linha, a coluna e o quadrado dele. Agora procure um quadrado que ainda não tem 5. Se, dentro dele, só sobrar uma casa livre que não está em linha nem coluna com outro 5, o 5 vai ali.
+
+Faça isso com os nove números, começando pelos que mais aparecem na grade: eles eliminam mais casas. Puzzles fáceis costumam sair inteiros só com a varredura.
+
+### Técnica 2: candidato único
+
+Agora inverta o olhar: em vez de escolher um número, escolha uma casa. Veja quais números já estão na linha, na coluna e no quadrado dela. Se oito números diferentes já aparecem nesses lugares, só sobra um possível para aquela casa. Essa técnica funciona melhor em casas que ficam no cruzamento de uma linha e uma coluna já quase cheias.
+
+### Técnica 3: número escondido
+
+Às vezes uma casa ainda tem vários candidatos, mas um deles só cabe nela dentro da linha, da coluna ou do quadrado. Por exemplo: numa linha faltam o 2, o 4 e o 7, e o 7 não pode entrar em nenhuma das outras casas livres porque já está nas colunas delas. Então o 7 vai na casa que sobrou, mesmo que ela também aceitasse o 2 ou o 4.
+
+### Técnica 4: anotações
+
+No nível médio, chega uma hora em que nenhuma casa sai de cara. É aí que entram as anotações: em cada casa vazia, marque com números pequenos todos os candidatos possíveis. Parece trabalhoso, mas transforma o problema em algo que dá para enxergar.
+
+Sempre que preencher uma casa, apague aquele número das anotações da mesma linha, coluna e quadrado. Muitas vezes isso faz aparecer uma casa com um candidato só.
+
+### Técnica 5: pares e trios
+
+Se duas casas da mesma linha têm exatamente os mesmos dois candidatos, por exemplo 3 e 8, esses dois números com certeza vão ocupar essas duas casas. Então dá para apagar o 3 e o 8 de todas as outras casas daquela linha. O mesmo vale para colunas e quadrados, e para três casas com os mesmos três candidatos.
+
+### Técnica 6: linha dentro do quadrado
+
+Se, dentro de um quadrado, um número só pode ir em casas que estão todas na mesma linha, então esse número vai ficar naquela linha dentro do quadrado. Portanto ele não pode aparecer nessa linha em nenhum outro quadrado. Apague-o das anotações das outras casas dessa linha. A mesma lógica vale para colunas.
+
+### Erros comuns
+
+- **Chutar.** Um chute errado só aparece muitas jogadas depois, quando já é difícil voltar. Se travou, revise as anotações antes de arriscar.
+- **Esquecer de atualizar as anotações.** Uma anotação velha leva a conclusões erradas.
+- **Olhar só para um tipo de região.** Quem procura só nas linhas perde o que está nas colunas e nos quadrados. Alterne os três.
+
+### Pratique no Sudoku da Karma Games
+
+O [Sudoku da Karma Games](https://karmagames.com.br/jogar/sudoku/) cria um puzzle novo a cada partida, em três níveis. Tem modo Anotar (tecla N) para marcar candidatos, Desfazer, Dica e a opção de mostrar erros na hora, que é ótima para aprender. Comece no Fácil usando só varredura e candidato único. Quando conseguir sem a Dica, passe para o Médio e comece a usar as anotações.
+
+## Como jogar campo minado: números, padrões e estratégia
+
+- Endereço: https://karmagames.com.br/guias/como-jogar-campo-minado/
+- Publicado em: 2026-11-24
+
+O campo minado tem fama de jogo de sorte, mas quase todo tabuleiro se resolve com dedução. Os números dizem tudo o que você precisa saber; o truque é aprender a lê-los em grupo. Este guia mostra como.
+
+### O que os números significam
+
+Cada casa aberta mostra quantas minas existem nas oito casas em volta dela: as duas do lado, as três de cima e as três de baixo, contando as diagonais. Uma casa sem número não tem nenhuma mina em volta, e por isso o jogo abre automaticamente toda a área vizinha. Você vence quando abre todas as casas que não têm mina.
+
+### Os níveis
+
+Os três níveis clássicos são o Fácil, com 9 por 9 casas e 10 minas, o Médio, com 16 por 16 e 40 minas, e o Difícil, com 16 por 30 e 99 minas. No Difícil, cerca de uma casa em cada cinco tem mina, e a leitura dos padrões passa a ser indispensável.
+
+### Regra 1: o número já está satisfeito
+
+Se um 1 já tem uma bandeira encostada nele, todas as outras casas fechadas em volta dele são seguras. Vale para qualquer número: um 3 com três bandeiras em volta libera o resto. Em vez de abrir uma por uma, clique no próprio número para abrir todas as vizinhas de uma vez. Só faça isso quando tiver certeza das bandeiras.
+
+### Regra 2: o número só tem as casas que precisa
+
+O contrário também vale. Se um 2 tem exatamente duas casas fechadas em volta, as duas são minas. Um 1 com uma casa fechada só, idem. Comece sempre procurando essas situações nas bordas da área aberta.
+
+### Padrão 1-1
+
+Numa borda reta, quando dois números 1 aparecem lado a lado e o primeiro está no canto da parede, a mina do primeiro 1 está numa das duas casas que ele compartilha com o segundo. Logo, a terceira casa encostada no segundo 1 é segura. Este padrão aparece o tempo todo.
+
+### Padrão 1-2-1
+
+Numa borda reta, a sequência 1-2-1 tem uma resposta fixa: as minas estão nas casas em frente aos dois números 1, e a casa em frente ao 2 é segura. Aprenda a reconhecer de longe. Uma variação é o 1-2-2-1, em que as minas ficam em frente aos dois números 2.
+
+### Subtraia um número do outro
+
+Quando dois números vizinhos compartilham casas fechadas, compare. Se um 2 enxerga as mesmas casas de um 1 vizinho e mais uma, essa casa a mais é uma mina: o 1 já garante uma mina nas casas em comum, e o 2 precisa de mais uma. Essa subtração resolve a maioria das situações que parecem empate.
+
+### Quando chutar
+
+Às vezes não tem jeito: o tabuleiro trava e duas casas são igualmente prováveis. Nessa hora:
+
+- Antes de chutar, resolva todo o resto do tabuleiro. Outra área pode dar a informação que faltava.
+- Prefira casas que, se forem seguras, revelem mais informação, como uma casa encostada em vários números.
+- Cantos e bordas longe dos números costumam ter chance menor de mina do que casas presas entre números altos.
+
+### Como ficar mais rápido
+
+1. Marque com bandeira só as minas que você vai usar para abrir casas com o clique no número. Marcar todas gasta tempo.
+2. Resolva uma frente por vez, em vez de pular de um canto ao outro do tabuleiro.
+3. Treine os padrões no Fácil até reconhecê-los sem contar. Depois a velocidade no Médio vem sozinha.
+
+### Jogue agora
+
+No [Campo Minado da Karma Games](https://karmagames.com.br/jogar/campo-minado/) a primeira casa aberta nunca é mina e o melhor tempo de cada nível fica salvo no navegador. No celular, use o toque longo ou o botão Bandeira para marcar minas. Comece no Fácil aplicando as regras 1 e 2 e só passe de nível quando ganhar sem chutar.
+
+## Regras da paciência: como jogar e estratégias para ganhar mais
+
+- Endereço: https://karmagames.com.br/guias/regras-da-paciencia/
+- Publicado em: 2026-11-24
+
+A paciência mais conhecida no Brasil é a Klondike, a mesma que vinha nos computadores antigos. É jogada sozinha com um baralho comum de 52 cartas, sem coringas. Nem toda partida tem solução, mas boas decisões fazem uma grande diferença no número de vitórias.
+
+### A mesa
+
+- **Sete colunas:** a primeira tem uma carta, a segunda duas, e assim até a sétima, com sete. Só a última carta de cada coluna começa virada para cima.
+- **Monte:** as 24 cartas que sobram ficam viradas para baixo, para serem compradas.
+- **Descarte:** onde as cartas compradas do monte aparecem viradas para cima.
+- **Quatro fundações:** as pilhas de destino, uma para cada naipe, começando vazias.
+
+### O objetivo
+
+Levar as 52 cartas para as fundações. Cada fundação começa com o Ás e sobe em ordem, no mesmo naipe: Ás, 2, 3 e assim até o Rei.
+
+### Como mover as cartas
+
+- Nas colunas, as cartas formam sequências decrescentes de cores alternadas: um 9 vermelho vai sobre um 10 preto, um 8 preto vai sobre esse 9 vermelho.
+- Você pode mover uma carta sozinha ou uma sequência inteira já organizada de uma coluna para outra.
+- Quando uma carta virada para baixo fica exposta no fim de uma coluna, ela é virada para cima.
+- Só um Rei, ou uma sequência que começa com um Rei, pode ocupar uma coluna vazia.
+- A carta de cima do descarte pode ir para uma coluna ou para uma fundação.
+- Quando o monte acaba, o descarte é virado e vira o monte de novo.
+
+### Virar 1 ou virar 3
+
+No modo Virar 1, cada clique no monte mostra uma carta, e você vê todas elas a cada volta. No modo Virar 3, saem três cartas de cada vez e só a de cima pode ser usada. As de baixo ficam presas até a de cima sair, e a ordem do monte muda conforme você joga. O Virar 3 é bem mais difícil e exige planejar com antecedência.
+
+### Estratégias que funcionam
+
+1. **Priorize as cartas viradas para baixo.** O que trava a paciência são as cartas escondidas nas colunas. Na dúvida entre dois lances, escolha o que vira uma carta nova, de preferência na coluna com mais cartas escondidas.
+2. **Use o monte por último.** Antes de comprar, veja todos os movimentos possíveis entre as colunas.
+3. **Não esvazie uma coluna sem ter um Rei para ela.** Coluna vazia só aceita Rei. Se não houver Rei disponível, ela não serve para nada por enquanto.
+4. **Escolha o Rei com cuidado.** Se dois Reis podem ir para a coluna vazia, prefira aquele cuja cor combina com as Damas e Valetes que você já tem à vista.
+5. **Não mande tudo para as fundações cedo demais.** Áses e 2 podem ir sempre. Cartas mais altas às vezes são necessárias nas colunas para receber outras. Um 5 vermelho na fundação pode fazer falta para segurar um 4 preto.
+6. **Equilibre as fundações.** Evite subir um naipe muito acima dos outros. Cartas baixas de outros naipes vão precisar das cartas que você mandou embora.
+
+### Quantas partidas dá para ganhar?
+
+Nem toda distribuição de cartas tem solução. No Virar 1, jogadores experientes ganham a maioria das partidas; no Virar 3, a taxa cai bastante. Por isso, não desanime com uma sequência de derrotas: compare suas vitórias ao longo de muitas partidas.
+
+### Jogue agora
+
+A [Paciência da Karma Games](https://karmagames.com.br/jogar/paciencia/) tem os modos Virar 1 e Virar 3, botões de Dica e Desfazer e guarda no navegador quantas vitórias você fez e o seu melhor tempo. Use o Desfazer para testar as estratégias deste guia: volte um lance e compare o que acontece com cada escolha.
+
+## Estratégia do 2048: como chegar ao 2048 (e passar dele)
+
+- Endereço: https://karmagames.com.br/guias/estrategia-2048/
+- Publicado em: 2026-11-24
+
+O 2048 parece um jogo de reflexo, mas jogar rápido e aleatório raramente passa da peça 512. Quem chega ao 2048 com frequência segue uma estratégia simples e consistente. Este guia explica qual é e por que ela funciona.
+
+### Como o jogo funciona
+
+O tabuleiro tem 4 por 4 casas. A cada movimento, todas as peças deslizam para o mesmo lado. Duas peças de mesmo valor que se encontram viram uma só, com a soma. Depois de cada movimento aparece uma peça nova numa casa vazia, quase sempre um 2 e às vezes um 4. O jogo acaba quando o tabuleiro enche e nenhum movimento junta peças.
+
+Para formar a peça 2048, você precisa juntar duas de 1024, que vieram de quatro de 512, e assim por diante. Na prática, são centenas de junções. Cada uma depende de as peças certas estarem lado a lado na hora certa.
+
+### A estratégia do canto
+
+Escolha um canto, por exemplo o inferior esquerdo, e decida que a maior peça vai morar ali durante a partida inteira. Todo o resto do jogo gira em torno de proteger esse canto.
+
+1. **Use duas direções na maior parte do tempo.** Com o canto inferior esquerdo, os movimentos principais são para baixo e para a esquerda. Eles empurram as peças em direção ao canto.
+2. **A terceira direção é a reserva.** Quando baixo e esquerda não mexem nada, use a direita. Ela costuma ser menos perigosa que a quarta.
+3. **Evite a direção oposta ao canto.** No exemplo, é o movimento para cima. Ele tira a maior peça do canto e abre espaço para um 2 entrar no lugar dela. Use só se não houver nenhuma outra opção.
+
+### Monte uma fila em ordem
+
+Não basta a maior peça estar no canto. As seguintes devem ficar ao lado dela, em ordem decrescente, ao longo da borda: por exemplo 256, 128, 64, 32 na fileira de baixo. Assim, quando um novo 32 se forma ao lado do 32, ele se junta, vira 64, encontra o outro 64, e a fila inteira se junta em cascata.
+
+Quando a fileira de baixo enche, continue a ordem na fileira de cima, em zigue-zague: a sequência sobe pela coluna da ponta e volta no sentido contrário. É o formato de cobra, usado por quem chega aos 4096 e 8192.
+
+### Mantenha a borda cheia
+
+Se a fileira do canto tiver um buraco, um movimento lateral pode puxar uma peça pequena para lá e quebrar a ordem. Por isso, prefira movimentos que mantenham a fileira do canto completa. Com ela cheia, o movimento para a esquerda ou para a direita não tira a maior peça do lugar.
+
+### Quando o tabuleiro trava
+
+- Não entre em pânico. Olhe o tabuleiro inteiro e procure duas peças iguais vizinhas antes de mover.
+- Prefira o movimento que junta peças pequenas longe do canto. Elas abrem espaço sem bagunçar a fila principal.
+- Se você teve que tirar a maior peça do canto, devolva-a no próximo movimento, antes que uma peça nova ocupe o lugar.
+
+### Erros comuns
+
+- **Correr.** O jogo não tem tempo. Pense em cada movimento quando o tabuleiro estiver cheio.
+- **Juntar peças grandes longe do canto.** Uma 128 perdida no meio do tabuleiro ocupa espaço e não tem como chegar à fila.
+- **Usar as quatro direções igualmente.** É o jeito mais rápido de perder o controle do tabuleiro.
+
+### Jogue agora
+
+O [2048 da Karma Games](https://karmagames.com.br/jogar/2048/) guarda seu recorde e a partida em andamento, então dá para parar e voltar depois. O botão Desfazer (ou a tecla Z) volta a última jogada, ótimo para entender o efeito de cada direção enquanto você aprende a estratégia do canto.

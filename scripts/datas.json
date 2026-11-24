@@ -1,166 +1,194 @@
 {
   "": {
-    "hash": "7f6aa9a74a088e4b",
-    "data": "2026-11-14"
+    "hash": "75bdb214de67f823",
+    "data": "2026-11-24"
   },
   "categoria/acao/": {
-    "hash": "275eb8cb63e89599",
-    "data": "2026-11-14"
+    "hash": "e630d16552eb523e",
+    "data": "2026-11-24"
   },
   "categoria/arcade/": {
-    "hash": "9d06b7540505ae7f",
-    "data": "2026-11-14"
+    "hash": "027df73d2be329e6",
+    "data": "2026-11-24"
   },
   "categoria/casual/": {
-    "hash": "aadab325232934d7",
-    "data": "2026-11-14"
+    "hash": "2f2f9cb6a992a0f9",
+    "data": "2026-11-24"
   },
   "categoria/classicos/": {
-    "hash": "0c20f06625bbae8f",
-    "data": "2026-11-14"
+    "hash": "b19c3dc949926100",
+    "data": "2026-11-24"
   },
   "categoria/quebra-cabeca/": {
-    "hash": "030f2b084662c8ba",
-    "data": "2026-11-14"
+    "hash": "fe5a20e8cb947e19",
+    "data": "2026-11-24"
   },
   "categoria/simulacao/": {
-    "hash": "dd637e0b54bdfd65",
-    "data": "2026-11-14"
+    "hash": "117bbce6bd9774df",
+    "data": "2026-11-24"
   },
   "categoria/tabuleiro/": {
-    "hash": "9cc72e3677b5c6e5",
-    "data": "2026-11-14"
+    "hash": "7e5f48ed07f43ee0",
+    "data": "2026-11-24"
   },
   "contato/": {
-    "hash": "228f1f3d9ba9b6cf",
-    "data": "2026-11-14"
+    "hash": "a0da67a725a0d5b2",
+    "data": "2026-11-24"
+  },
+  "guias/": {
+    "hash": "3ad2c1d71bb10063",
+    "data": "2026-11-24"
+  },
+  "guias/como-jogar-campo-minado/": {
+    "hash": "8bfdb54c28c90a0c",
+    "data": "2026-11-24"
+  },
+  "guias/como-resolver-sudoku/": {
+    "hash": "225630591678e570",
+    "data": "2026-11-24"
+  },
+  "guias/estrategia-2048/": {
+    "hash": "e79fbae603233ba9",
+    "data": "2026-11-24"
+  },
+  "guias/regras-da-dama-brasileira/": {
+    "hash": "29e4973b4b13a157",
+    "data": "2026-11-24"
+  },
+  "guias/regras-da-paciencia/": {
+    "hash": "2a984025a265a15a",
+    "data": "2026-11-24"
+  },
+  "guias/regras-do-xadrez/": {
+    "hash": "2e81c6d598bac0a5",
+    "data": "2026-11-24"
   },
   "jogar/2048/": {
-    "hash": "e0d25bd433cb0335",
-    "data": "2026-11-14"
+    "hash": "fa6ba397cf7a30ef",
+    "data": "2026-11-24"
   },
   "jogar/ajuda-de-animal/": {
-    "hash": "7bb2192dc63a883d",
-    "data": "2026-11-14"
+    "hash": "612202c4ca69328b",
+    "data": "2026-11-24"
   },
   "jogar/balao/": {
-    "hash": "cd388010db777f37",
-    "data": "2026-11-14"
+    "hash": "7ae4a5659a6c22f0",
+    "data": "2026-11-24"
   },
   "jogar/behind-the-grid/": {
-    "hash": "2d2c315b57af911e",
-    "data": "2026-11-14"
+    "hash": "5c3756930ed54dcf",
+    "data": "2026-11-24"
   },
   "jogar/biscoito/": {
-    "hash": "9d8514459f507fe8",
-    "data": "2026-11-14"
+    "hash": "e681ed97fbdd207a",
+    "data": "2026-11-24"
   },
   "jogar/blocos/": {
-    "hash": "c7da5d7200fdb8d4",
-    "data": "2026-11-14"
+    "hash": "f75b41d5ff2bdc3d",
+    "data": "2026-11-24"
   },
   "jogar/campo-minado/": {
-    "hash": "1b3beb169e6bb155",
-    "data": "2026-11-14"
+    "hash": "19b24a197b32fe17",
+    "data": "2026-11-24"
   },
   "jogar/cobrinha/": {
-    "hash": "a9e3ee1d5dc30ee7",
-    "data": "2026-11-14"
+    "hash": "bd4a4a2712110eab",
+    "data": "2026-11-24"
   },
   "jogar/crossstrike/": {
-    "hash": "0f6a004c1cda1472",
-    "data": "2026-11-14"
+    "hash": "14cee6f0e4575ed5",
+    "data": "2026-11-24"
   },
   "jogar/dama/": {
-    "hash": "35275df423136c96",
-    "data": "2026-11-14"
+    "hash": "631739bfa6391bc7",
+    "data": "2026-11-24"
   },
   "jogar/forca/": {
-    "hash": "a570a36bcfc7af79",
-    "data": "2026-11-14"
+    "hash": "6bfc9c6750f3305b",
+    "data": "2026-11-24"
   },
   "jogar/galinha/": {
-    "hash": "c1a36831924cdacf",
-    "data": "2026-11-14"
+    "hash": "f3ac5df82868e657",
+    "data": "2026-11-24"
   },
   "jogar/genius/": {
-    "hash": "204544f72b650579",
-    "data": "2026-11-14"
+    "hash": "4cdc31eeeb399dc7",
+    "data": "2026-11-24"
   },
   "jogar/jogo-da-velha/": {
-    "hash": "48e9e838f9bc219e",
-    "data": "2026-11-14"
+    "hash": "6239e2585c3febf7",
+    "data": "2026-11-24"
   },
   "jogar/ligue-4/": {
-    "hash": "abc95c26edff2a3c",
-    "data": "2026-11-14"
+    "hash": "8b3db6eab129f0fd",
+    "data": "2026-11-24"
   },
   "jogar/memoria/": {
-    "hash": "ddcb0489849a4f26",
-    "data": "2026-11-14"
+    "hash": "644b478e99eab7a1",
+    "data": "2026-11-24"
   },
   "jogar/meteoros/": {
-    "hash": "ebff6a20a62a825f",
-    "data": "2026-11-14"
+    "hash": "656e05394db4cf96",
+    "data": "2026-11-24"
   },
   "jogar/nao-confia/": {
-    "hash": "a70d58fb06dc563f",
-    "data": "2026-11-14"
+    "hash": "c893ccc33f91fda6",
+    "data": "2026-11-24"
   },
   "jogar/paciencia/": {
-    "hash": "92c6a296ddd226a3",
-    "data": "2026-11-14"
+    "hash": "502b2ae8d64aeb6f",
+    "data": "2026-11-24"
   },
   "jogar/pedra-papel-tesoura/": {
-    "hash": "414cc0a13d318801",
-    "data": "2026-11-14"
+    "hash": "086694e6342b607b",
+    "data": "2026-11-24"
   },
   "jogar/pescaria/": {
-    "hash": "f173011e327e3cb7",
-    "data": "2026-11-14"
+    "hash": "a7afce6306778efd",
+    "data": "2026-11-24"
   },
   "jogar/pong/": {
-    "hash": "4f92a522985be06c",
-    "data": "2026-11-14"
+    "hash": "5cae6e787e61e061",
+    "data": "2026-11-24"
   },
   "jogar/quebra-blocos/": {
-    "hash": "5412a8d4eb44e28f",
-    "data": "2026-11-14"
+    "hash": "071b8166c423c57f",
+    "data": "2026-11-24"
   },
   "jogar/reversi/": {
-    "hash": "ab037536557d832a",
-    "data": "2026-11-14"
+    "hash": "c557317335358aa6",
+    "data": "2026-11-24"
   },
   "jogar/sudoku/": {
-    "hash": "54b3fd7a44d4349d",
-    "data": "2026-11-14"
+    "hash": "4ec0b26ab4598553",
+    "data": "2026-11-24"
   },
   "jogar/torre/": {
-    "hash": "98e05a2686f32a76",
-    "data": "2026-11-14"
+    "hash": "2702a87cb34a7ed8",
+    "data": "2026-11-24"
   },
   "jogar/toupeira/": {
-    "hash": "e4c1906f4e43b5b4",
-    "data": "2026-11-14"
+    "hash": "de64308021e25b68",
+    "data": "2026-11-24"
   },
   "jogar/voo-livre/": {
-    "hash": "2ef1482a07327be7",
-    "data": "2026-11-14"
+    "hash": "0f6030b01c240abc",
+    "data": "2026-11-24"
   },
   "jogar/xadrez/": {
-    "hash": "b4b7aeb88a908035",
-    "data": "2026-11-14"
+    "hash": "bd679626a60d1244",
+    "data": "2026-11-24"
   },
   "privacidade/": {
-    "hash": "0aa400c65b6c2e4b",
-    "data": "2026-11-14"
+    "hash": "0e2f55b14b710d4c",
+    "data": "2026-11-24"
   },
   "sobre/": {
-    "hash": "a695f91cacd871bb",
-    "data": "2026-11-14"
+    "hash": "ff7d49e1ca280862",
+    "data": "2026-11-24"
   },
   "termos/": {
-    "hash": "425ab33f1939bee2",
-    "data": "2026-11-14"
+    "hash": "7c5dd1b29295ef1d",
+    "data": "2026-11-24"
   }
 }
