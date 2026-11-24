@@ -55,6 +55,15 @@ O texto completo de todas as páginas (regras, como jogar, dicas e perguntas fre
 - [Pescaria](https://karmagames.com.br/jogar/pescaria/): Jogue Pescaria grátis no navegador, sem download. Ajude o gatinho a pescar o máximo em 60 segundos e fuja de botas velhas e águas-vivas.
 - [Estoura Balão](https://karmagames.com.br/jogar/balao/): Jogue Estoura Balão grátis no navegador, sem download. Estoure os balões antes que fujam, pegue os dourados que valem 5 e cuide das suas 5 vidas.
 
+## Guias de regras e estratégia
+
+- [Regras do xadrez: guia completo para iniciantes](https://karmagames.com.br/guias/regras-do-xadrez/): Como as peças do xadrez se movem, o que é xeque e xeque-mate, roque, en passant, promoção, empates e os primeiros princípios de estratégia.
+- [Regras da dama brasileira: captura obrigatória, lei da maioria e dama voadora](https://karmagames.com.br/guias/regras-da-dama-brasileira/): As regras oficiais da dama no Brasil explicadas com calma: tabuleiro, movimento das pedras, captura obrigatória, lei da maioria, dama voadora e empate.
+- [Como resolver sudoku: técnicas do fácil ao difícil](https://karmagames.com.br/guias/como-resolver-sudoku/): Passo a passo para resolver sudoku sem chutar: varredura, candidato único, número escondido, pares e como usar as anotações.
+- [Como jogar campo minado: números, padrões e estratégia](https://karmagames.com.br/guias/como-jogar-campo-minado/): Entenda o que os números do campo minado significam, aprenda os padrões 1-1 e 1-2-1 e descubra como abrir o tabuleiro sem depender da sorte.
+- [Regras da paciência: como jogar e estratégias para ganhar mais](https://karmagames.com.br/guias/regras-da-paciencia/): As regras da paciência (Klondike), a diferença entre virar 1 e virar 3 cartas e as estratégias que aumentam suas vitórias.
+- [Estratégia do 2048: como chegar ao 2048 (e passar dele)](https://karmagames.com.br/guias/estrategia-2048/): A estratégia do canto no 2048 explicada passo a passo: onde guardar a maior peça, quais direções usar e como sair de um tabuleiro travado.
+
 ## Sobre o site
 
 - [Sobre a Karma Games](https://karmagames.com.br/sobre/): Quem faz a Karma Games, como os jogos são feitos e por que todos são grátis, sem download e sem cadastro.

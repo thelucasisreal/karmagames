@@ -138,7 +138,7 @@
       <button class="lateral-sorte" type="button" id="btn-aleatorio">${icone("dice")} Jogo aleatório</button>
       <p class="lateral-rodape">Todos grátis, direto no navegador. Sem download, sem cadastro.</p>
       <nav class="lateral-links" aria-label="Institucional">
-        <a href="sobre/">Sobre</a><a href="contato/">Contato</a><a href="privacidade/">Privacidade</a><a href="termos/">Termos</a>
+        <a href="guias/">Guias</a><a href="sobre/">Sobre</a><a href="contato/">Contato</a><a href="privacidade/">Privacidade</a><a href="termos/">Termos</a>
       </nav>`;
     ligarLogo();
   }

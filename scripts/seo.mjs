@@ -3,7 +3,7 @@
 //
 // Uso:  node scripts/seo.mjs
 //
-// Gera: index.html, jogar/<slug>/, categoria/<slug>/, sobre/, contato/, privacidade/,
+// Gera: index.html, jogar/<slug>/, categoria/<slug>/, guias/, guias/<slug>/, sobre/, contato/, privacidade/,
 //       termos/, 404.html, jogar.html (redireciona endereços antigos), sitemap.xml,
 //       robots.txt, llms.txt, llms-full.txt, site.webmanifest, ads.txt (se tiver o código do AdSense)
 //       e a chave do IndexNow (se tiver em site.json).
@@ -12,7 +12,8 @@
 //       então ela só muda quando o texto da página muda de verdade. O arquivo é gerado: não edite à mão.
 // No GitHub, .github/workflows/seo.yml roda este script a cada push na main e grava o resultado.
 // Lê:   jogos.js (catálogo), scripts/conteudo.json (texto de cada jogo),
-//       scripts/paginas.mjs (páginas institucionais) e scripts/site.json (configuração).
+//       scripts/paginas.mjs (páginas institucionais), scripts/guias.mjs (guias de regras e estratégia)
+//       e scripts/site.json (configuração).
 // Sem dependências: só Node.
 import fs from "node:fs";
 import path from "node:path";
@@ -21,6 +22,7 @@ import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { PAGINAS, CATEGORIAS } from "./paginas.mjs";
+import { GUIAS } from "./guias.mjs";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ler = (arq) => fs.readFileSync(path.join(RAIZ, arq), "utf8");
@@ -101,6 +103,9 @@ const daCategoria = (c) => JOGOS.filter((j) => j.categoria === c);
 // Jogo com modo online = usa a lib do multiplayer (assets/karma-net.js).
 const temOnline = (j) => !j.url && existe(`jogos/${j.slug}/index.html`) && ler(`jogos/${j.slug}/index.html`).includes("karma-net.js");
 const ONLINE = JOGOS.filter(temOnline);
+const rotaGuia = (g) => `guias/${g.slug}/`;
+const guiaDe = (j) => GUIAS.find((g) => g.jogo === j.slug);
+for (const g of GUIAS) if (!JOGOS.some((j) => j.slug === g.jogo)) avisos.push(`guia sem jogo no catálogo: ${g.slug} (jogo "${g.jogo}")`);
 
 // "Ação" -> "Jogos de Ação", "Clássicos" -> "Jogos Clássicos"...
 const NOME_CATEGORIA = { "Clássicos": "Jogos Clássicos", "Casual": "Jogos Casuais", "Arcade": "Jogos Arcade" };
@@ -182,6 +187,7 @@ ${corpo}
   <footer class="rodape">
     <a class="marca" href="./"><img class="marca-simbolo" src="assets/marca.svg" alt="" width="22" height="22"><span>karma<b>games</b></span></a>
     <nav class="rodape-links" aria-label="Institucional">
+      <a href="guias/">Guias</a>
       ${PAGINAS.map((p) => `<a href="${p.slug}/">${esc(p.menu)}</a>`).join("\n      ")}
     </nav>
     <span>© ${ANO} ${esc(NOME)}. Todos os jogos são grátis. Sem download, sem cadastro.</span>
@@ -210,7 +216,7 @@ function tile(j, prioridade = false) {
   return `<a class="tile t2" href="${rotaJogo(j)}" aria-label="${esc(j.titulo)}" title="${esc(j.titulo)}"><img class="capa" src="${esc(capaDe(j))}" alt="${esc(j.titulo)}" width="800" height="500" ${prioridade ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"><span class="tile-nome">${esc(j.titulo)}</span></a>`;
 }
 
-const lista = (tag, itens) => `<${tag}>${itens.map((i) => `<li>${i}</li>`).join("")}</${tag}>`;
+const lista = (tag, itens) => `<${tag}>${itens.map((i) => `<li>${i}</li>`).join("")}</${tag.split(" ")[0]}>`;
 function faqHtml(faq) {
   return faq.map((f) => `<details><summary>${esc(f.p)}</summary><p>${esc(f.r)}</p></details>`).join("\n          ");
 }
@@ -257,6 +263,7 @@ function paginaJogo(j) {
       ${c?.comoJogar?.length ? `<h2>Como jogar</h2>\n      ${lista("ol", c.comoJogar.map(esc))}` : ""}
       ${j.controles ? `<h2>Controles</h2>\n      <p class="controles">${icone("game-controller")}<span>${esc(j.controles)}</span></p>` : ""}
       ${c?.dicas?.length ? `<h2>Dicas</h2>\n      ${lista("ul", c.dicas.map(esc))}` : ""}
+      ${guiaDe(j) ? `<h2>Guia completo</h2>\n      <p><a href="${rotaGuia(guiaDe(j))}">${esc(guiaDe(j).titulo)}</a>: ${esc(guiaDe(j).descricao)}</p>` : ""}
       ${faq.length ? `<h2>Perguntas frequentes</h2>\n      <div class="faq">\n          ${faqHtml(faq)}\n      </div>` : ""}
       <h2>Mais jogos${cat ? ` de ${esc(cat)}` : ""}</h2>
       ${lista("ul class=\"links-jogos\"", parecidos.map((o) => `<a href="${rotaJogo(o)}">${esc(o.titulo)}</a>`))}
@@ -339,6 +346,7 @@ function paginaInicial() {
         ${lista("ul class=\"lista-jogos\"", categorias.map((c) => `<a href="${rotaCategoria(c)}">${esc(nomeCategoria(c))}</a> (${daCategoria(c).length}): ${esc(daCategoria(c).map((j) => j.titulo).join(", "))}`))}
         ${ONLINE.length ? `<h2>Jogos online para jogar com amigos</h2>\n        <p>Estes têm modo Online: cada pessoa joga no próprio celular ou computador, pela internet, sem cadastro.</p>\n        ${lista("ul class=\"lista-jogos\"", ONLINE.map((j) => `<a href="${rotaJogo(j)}">${esc(j.titulo)}</a>`))}` : ""}
         ${autorais.length ? `<h2>Feitos aqui na Karma</h2>\n        ${lista("ul class=\"lista-jogos\"", autorais.map((j) => `<a href="${rotaJogo(j)}">${esc(j.titulo)}</a>: ${esc(j.descricao)}`))}` : ""}
+        ${GUIAS.length ? `<h2>Guias de regras e estratégia</h2>\n        ${lista("ul class=\"lista-jogos\"", GUIAS.map((g) => `<a href="${rotaGuia(g)}">${esc(g.titulo)}</a>`))}\n        <p><a href="guias/">Ver todos os guias</a></p>` : ""}
         <h2>Perguntas frequentes</h2>
         <div class="faq">
           ${faqHtml(FAQ_SITE)}
@@ -367,7 +375,7 @@ function trocar(texto) {
 }
 function bloco([tag, valor]) {
   if (valor === "{contato}") return lista("ul", CONTATO);
-  if (tag === "ul") return lista("ul", valor.map(trocar));
+  if (tag === "ul" || tag === "ol") return lista(tag, valor.map(trocar));
   return `<${tag}>${trocar(valor)}</${tag}>`;
 }
 function paginaTexto(p) {
@@ -384,6 +392,54 @@ function paginaTexto(p) {
     // Política do AdSense: sem anúncio em tela sem conteúdo próprio (contato, políticas, 404).
     anuncios: p.slug === "sobre",
     grafo: [ORG, SITE, { "@type": p.slug === "sobre" ? "AboutPage" : p.slug === "contato" ? "ContactPage" : "WebPage", "@id": abs(rota), name: p.titulo, url: abs(rota), inLanguage: "pt-BR", isPartOf: { "@id": SITE["@id"] } }, migalhas([["Início", ""], [p.titulo, rota]])],
+  }));
+}
+
+// ---------- guias ----------
+function paginaGuia(g) {
+  const rota = rotaGuia(g);
+  const j = JOGOS.find((o) => o.slug === g.jogo);
+  const trilha = [["Início", ""], ["Guias", "guias/"], [g.titulo, rota]];
+  const outros = GUIAS.filter((o) => o.slug !== g.slug);
+  const corpo = `    <main>
+      <article class="texto texto-pagina">
+        ${migalhasHtml(trilha)}
+        <h1>${esc(g.titulo)}</h1>
+        ${g.blocos.map(bloco).join("\n        ")}
+        ${j ? `<p><a class="btn-texto" href="${rotaJogo(j)}">Jogar ${esc(j.titulo)} grátis</a></p>` : ""}
+        ${outros.length ? `<h2>Outros guias</h2>\n        ${lista("ul", outros.map((o) => `<a href="${rotaGuia(o)}">${esc(o.titulo)}</a>`))}` : ""}
+        <p class="atualizado">Publicado em <time datetime="${g.publicado}">${dataBR(g.publicado)}</time> · atualizado em <time datetime="${MOD}">${MOD_BR}</time> · por ${esc(NOME)}</p>
+      </article>
+    </main>`;
+  gravar(`${rota}index.html`, pagina({
+    rota, titulo: `${g.titulo} | ${NOME}`, descricao: g.descricao, corpo, tipo: "article", og: j ? ogDe(j) : OG_PADRAO,
+    dados: { pagina: "texto" },
+    grafo: [ORG, SITE, {
+      "@type": "Article", "@id": `${abs(rota)}#guia`, headline: g.titulo, description: g.descricao, url: abs(rota), inLanguage: "pt-BR",
+      image: abs(j ? ogDe(j) : OG_PADRAO), datePublished: g.publicado, dateModified: MOD,
+      author: { "@id": ORG["@id"] }, publisher: { "@id": ORG["@id"] }, isPartOf: { "@id": SITE["@id"] },
+      ...(j ? { about: { "@id": `${abs(rotaJogo(j))}#jogo` } } : {}),
+    }, migalhas(trilha)],
+  }));
+}
+function paginaGuias() {
+  const rota = "guias/";
+  const trilha = [["Início", ""], ["Guias", rota]];
+  const corpo = `    <main>
+      <article class="texto texto-pagina">
+        ${migalhasHtml(trilha)}
+        <h1>Guias de regras e estratégia</h1>
+        <p>Regras completas e estratégias explicadas com calma, para aprender um jogo do zero ou parar de perder sempre no mesmo ponto. Cada guia termina com o jogo, para você testar na hora o que acabou de ler.</p>
+        ${lista("ul class=\"lista-jogos\"", GUIAS.map((g) => `<a href="${rotaGuia(g)}">${esc(g.titulo)}</a>: ${esc(g.descricao)}`))}
+      </article>
+    </main>`;
+  gravar(`${rota}index.html`, pagina({
+    rota, titulo: `Guias de regras e estratégia | ${NOME}`, descricao: "Regras completas e estratégias de xadrez, dama, sudoku, campo minado, paciência e 2048, explicadas para iniciantes.", corpo,
+    dados: { pagina: "texto" },
+    grafo: [ORG, SITE, {
+      "@type": "CollectionPage", "@id": abs(rota), name: "Guias", url: abs(rota), inLanguage: "pt-BR", isPartOf: { "@id": SITE["@id"] },
+      mainEntity: { "@type": "ItemList", numberOfItems: GUIAS.length, itemListElement: GUIAS.map((g, i) => ({ "@type": "ListItem", position: i + 1, url: abs(rotaGuia(g)), name: g.titulo })) },
+    }, migalhas(trilha)],
   }));
 }
 
@@ -427,7 +483,7 @@ function sitemap() {
   const img = (j) => existe(capaDe(j)) ? `<image:image><image:loc>${abs(capaDe(j))}</image:loc></image:image>` : "";
   gravar("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${[url(""), ...categorias.map((c) => url(rotaCategoria(c))), ...JOGOS.map((j) => url(rotaJogo(j), img(j))), ...PAGINAS.map((p) => url(`${p.slug}/`))].join("\n")}
+${[url(""), ...categorias.map((c) => url(rotaCategoria(c))), ...JOGOS.map((j) => url(rotaJogo(j), img(j))), ...(GUIAS.length ? [url("guias/"), ...GUIAS.map((g) => url(rotaGuia(g)))] : []), ...PAGINAS.map((p) => url(`${p.slug}/`))].join("\n")}
 </urlset>
 `);
   // Buscadores e IAs de busca são bem-vindos. Os nomes ficam explícitos no mesmo grupo do "*",
@@ -465,10 +521,23 @@ O texto completo de todas as páginas (regras, como jogar, dicas e perguntas fre
 
 ${categorias.map((c) => `## ${nomeCategoria(c)}\n\n${daCategoria(c).map(linha).join("\n")}`).join("\n\n")}
 
-## Sobre o site
+${GUIAS.length ? `## Guias de regras e estratégia\n\n${GUIAS.map((g) => `- [${g.titulo}](${abs(rotaGuia(g))}): ${g.descricao}`).join("\n")}\n\n` : ""}## Sobre o site
 
 ${PAGINAS.map((p) => `- [${p.titulo}](${abs(`${p.slug}/`)}): ${p.descricao}`).join("\n")}
 `);
+}
+
+// Guia em Markdown para o llms-full.txt (os blocos têm HTML simples: links e negrito).
+const semTags = (h) => trocar(h).replace(/<b>(.*?)<\/b>/g, "**$1**").replace(/<a href="([^"]+)">(.*?)<\/a>/g, (_, u, t) => `[${t}](${abs(u)})`).replace(/<[^>]+>/g, "");
+function guiaMd(g) {
+  const partes = [`## ${g.titulo}`, "", `- Endereço: ${abs(rotaGuia(g))}`, `- Publicado em: ${g.publicado}`, ""];
+  for (const [tag, valor] of g.blocos) {
+    if (tag === "h2") partes.push(`### ${valor}`, "");
+    else if (tag === "ul") partes.push(...valor.map((x) => `- ${semTags(x)}`), "");
+    else if (tag === "ol") partes.push(...valor.map((x, i) => `${i + 1}. ${semTags(x)}`), "");
+    else partes.push(semTags(valor), "");
+  }
+  return partes.join("\n");
 }
 
 // Versão longa para IAs: todo o texto de cada jogo, em Markdown.
@@ -493,7 +562,7 @@ function llmsCompleto() {
 > Site brasileiro de jogos grátis no navegador (${DOMINIO}/), em português, sem download e sem cadastro. ${JOGOS.length} jogos.
 
 ${FAQ_SITE.map((f) => `**${f.p}**\n${f.r}\n`).join("\n")}
-${categorias.map((c) => `# ${nomeCategoria(c)}\n\n${daCategoria(c).map(secao).join("\n")}`).join("\n\n")}`);
+${categorias.map((c) => `# ${nomeCategoria(c)}\n\n${daCategoria(c).map(secao).join("\n")}`).join("\n\n")}${GUIAS.length ? `\n\n# Guias de regras e estratégia\n\n${GUIAS.map(guiaMd).join("\n")}` : ""}`);
 }
 
 // IndexNow: avisa Bing, Yandex e outros (o Bing alimenta a busca do ChatGPT e do Copilot) quando uma
@@ -521,6 +590,8 @@ function adsTxt() {
 paginaInicial();
 for (const c of categorias) paginaCategoria(c);
 for (const j of JOGOS) paginaJogo(j);
+if (GUIAS.length) paginaGuias();
+for (const g of GUIAS) paginaGuia(g);
 for (const p of PAGINAS) paginaTexto(p);
 pagina404();
 redirecionamento();
@@ -532,10 +603,10 @@ manifesto();
 adsTxt();
 
 // Apaga páginas de jogos e categorias que saíram do catálogo.
-for (const [pasta, validos] of [["jogar", JOGOS.map((j) => j.slug)], ["categoria", categorias.map(slugify)]]) {
+for (const [pasta, validos] of [["jogar", JOGOS.map((j) => j.slug)], ["categoria", categorias.map(slugify)], ["guias", GUIAS.map((g) => g.slug)]]) {
   if (!existe(pasta)) continue;
   for (const d of fs.readdirSync(path.join(RAIZ, pasta))) {
-    if (!validos.includes(d)) fs.rmSync(path.join(RAIZ, pasta, d), { recursive: true, force: true });
+    if (!validos.includes(d) && fs.statSync(path.join(RAIZ, pasta, d)).isDirectory()) fs.rmSync(path.join(RAIZ, pasta, d), { recursive: true, force: true });
   }
 }
 

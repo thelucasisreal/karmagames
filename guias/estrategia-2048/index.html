@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Estratégia do 2048: como chegar ao 2048 (e passar dele) | Karma Games</title>
+  <meta name="description" content="A estratégia do canto no 2048 explicada passo a passo: onde guardar a maior peça, quais direções usar e como sair de um tabuleiro travado.">
+  <base href="/">
+  <link rel="canonical" href="https://karmagames.com.br/guias/estrategia-2048/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#62d9cf">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icone-180.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta property="og:site_name" content="Karma Games">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Estratégia do 2048: como chegar ao 2048 (e passar dele) | Karma Games">
+  <meta property="og:description" content="A estratégia do canto no 2048 explicada passo a passo: onde guardar a maior peça, quais direções usar e como sair de um tabuleiro travado.">
+  <meta property="og:url" content="https://karmagames.com.br/guias/estrategia-2048/">
+  <meta property="og:image" content="https://karmagames.com.br/assets/og/2048.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/fonts/unbounded-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css?v=1ae29bd3">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6801681894821975" crossorigin="anonymous"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://karmagames.com.br/#org","name":"Karma Games","url":"https://karmagames.com.br/","logo":{"@type":"ImageObject","url":"https://karmagames.com.br/assets/icone-512.png"},"email":"contact@steply.com.br"},{"@type":"WebSite","@id":"https://karmagames.com.br/#site","name":"Karma Games","url":"https://karmagames.com.br/","inLanguage":"pt-BR","publisher":{"@id":"https://karmagames.com.br/#org"}},{"@type":"Article","@id":"https://karmagames.com.br/guias/estrategia-2048/#guia","headline":"Estratégia do 2048: como chegar ao 2048 (e passar dele)","description":"A estratégia do canto no 2048 explicada passo a passo: onde guardar a maior peça, quais direções usar e como sair de um tabuleiro travado.","url":"https://karmagames.com.br/guias/estrategia-2048/","inLanguage":"pt-BR","image":"https://karmagames.com.br/assets/og/2048.jpg","datePublished":"2026-11-24","dateModified":"2026-11-24","author":{"@id":"https://karmagames.com.br/#org"},"publisher":{"@id":"https://karmagames.com.br/#org"},"isPartOf":{"@id":"https://karmagames.com.br/#site"},"about":{"@id":"https://karmagames.com.br/jogar/2048/#jogo"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://karmagames.com.br/"},{"@type":"ListItem","position":2,"name":"Guias","item":"https://karmagames.com.br/guias/"},{"@type":"ListItem","position":3,"name":"Estratégia do 2048: como chegar ao 2048 (e passar dele)","item":"https://karmagames.com.br/guias/estrategia-2048/"}]}]}</script>
+</head>
+<body data-pagina="texto">
+  <div class="pagina">
+    <aside class="lateral" id="lateral" aria-label="Categorias">
+      <a class="marca" href="./" aria-label="Karma Games, página inicial"><img class="marca-simbolo" src="assets/marca.svg" alt="" width="38" height="38"><span>karma<b>games</b></span></a>
+      <h2>Todos os jogos</h2>
+      <nav class="filtros" aria-label="Categorias">
+        <a class="filtro" href="./"><span>Todos</span><span class="num">28</span></a>
+        <a class="filtro" href="categoria/acao/"><span>Ação</span><span class="num">3</span></a>
+        <a class="filtro" href="categoria/simulacao/"><span>Simulação</span><span class="num">1</span></a>
+        <a class="filtro" href="categoria/classicos/"><span>Clássicos</span><span class="num">7</span></a>
+        <a class="filtro" href="categoria/arcade/"><span>Arcade</span><span class="num">6</span></a>
+        <a class="filtro" href="categoria/quebra-cabeca/"><span>Quebra-cabeça</span><span class="num">4</span></a>
+        <a class="filtro" href="categoria/tabuleiro/"><span>Tabuleiro</span><span class="num">4</span></a>
+        <a class="filtro" href="categoria/casual/"><span>Casual</span><span class="num">3</span></a>
+      </nav>
+    </aside>
+    <main>
+      <article class="texto texto-pagina">
+        <nav class="migalhas" aria-label="Você está em"><ol><li><a href="./">Início</a></li><li><a href="guias/">Guias</a></li><li aria-current="page">Estratégia do 2048: como chegar ao 2048 (e passar dele)</li></ol></nav>
+        <h1>Estratégia do 2048: como chegar ao 2048 (e passar dele)</h1>
+        <p>O 2048 parece um jogo de reflexo, mas jogar rápido e aleatório raramente passa da peça 512. Quem chega ao 2048 com frequência segue uma estratégia simples e consistente. Este guia explica qual é e por que ela funciona.</p>
+        <h2>Como o jogo funciona</h2>
+        <p>O tabuleiro tem 4 por 4 casas. A cada movimento, todas as peças deslizam para o mesmo lado. Duas peças de mesmo valor que se encontram viram uma só, com a soma. Depois de cada movimento aparece uma peça nova numa casa vazia, quase sempre um 2 e às vezes um 4. O jogo acaba quando o tabuleiro enche e nenhum movimento junta peças.</p>
+        <p>Para formar a peça 2048, você precisa juntar duas de 1024, que vieram de quatro de 512, e assim por diante. Na prática, são centenas de junções. Cada uma depende de as peças certas estarem lado a lado na hora certa.</p>
+        <h2>A estratégia do canto</h2>
+        <p>Escolha um canto, por exemplo o inferior esquerdo, e decida que a maior peça vai morar ali durante a partida inteira. Todo o resto do jogo gira em torno de proteger esse canto.</p>
+        <ol><li><b>Use duas direções na maior parte do tempo.</b> Com o canto inferior esquerdo, os movimentos principais são para baixo e para a esquerda. Eles empurram as peças em direção ao canto.</li><li><b>A terceira direção é a reserva.</b> Quando baixo e esquerda não mexem nada, use a direita. Ela costuma ser menos perigosa que a quarta.</li><li><b>Evite a direção oposta ao canto.</b> No exemplo, é o movimento para cima. Ele tira a maior peça do canto e abre espaço para um 2 entrar no lugar dela. Use só se não houver nenhuma outra opção.</li></ol>
+        <h2>Monte uma fila em ordem</h2>
+        <p>Não basta a maior peça estar no canto. As seguintes devem ficar ao lado dela, em ordem decrescente, ao longo da borda: por exemplo 256, 128, 64, 32 na fileira de baixo. Assim, quando um novo 32 se forma ao lado do 32, ele se junta, vira 64, encontra o outro 64, e a fila inteira se junta em cascata.</p>
+        <p>Quando a fileira de baixo enche, continue a ordem na fileira de cima, em zigue-zague: a sequência sobe pela coluna da ponta e volta no sentido contrário. É o formato de cobra, usado por quem chega aos 4096 e 8192.</p>
+        <h2>Mantenha a borda cheia</h2>
+        <p>Se a fileira do canto tiver um buraco, um movimento lateral pode puxar uma peça pequena para lá e quebrar a ordem. Por isso, prefira movimentos que mantenham a fileira do canto completa. Com ela cheia, o movimento para a esquerda ou para a direita não tira a maior peça do lugar.</p>
+        <h2>Quando o tabuleiro trava</h2>
+        <ul><li>Não entre em pânico. Olhe o tabuleiro inteiro e procure duas peças iguais vizinhas antes de mover.</li><li>Prefira o movimento que junta peças pequenas longe do canto. Elas abrem espaço sem bagunçar a fila principal.</li><li>Se você teve que tirar a maior peça do canto, devolva-a no próximo movimento, antes que uma peça nova ocupe o lugar.</li></ul>
+        <h2>Erros comuns</h2>
+        <ul><li><b>Correr.</b> O jogo não tem tempo. Pense em cada movimento quando o tabuleiro estiver cheio.</li><li><b>Juntar peças grandes longe do canto.</b> Uma 128 perdida no meio do tabuleiro ocupa espaço e não tem como chegar à fila.</li><li><b>Usar as quatro direções igualmente.</b> É o jeito mais rápido de perder o controle do tabuleiro.</li></ul>
+        <h2>Jogue agora</h2>
+        <p>O <a href="jogar/2048/">2048 da Karma Games</a> guarda seu recorde e a partida em andamento, então dá para parar e voltar depois. O botão Desfazer (ou a tecla Z) volta a última jogada, ótimo para entender o efeito de cada direção enquanto você aprende a estratégia do canto.</p>
+        <p><a class="btn-texto" href="jogar/2048/">Jogar 2048 grátis</a></p>
+        <h2>Outros guias</h2>
+        <ul><li><a href="guias/regras-do-xadrez/">Regras do xadrez: guia completo para iniciantes</a></li><li><a href="guias/regras-da-dama-brasileira/">Regras da dama brasileira: captura obrigatória, lei da maioria e dama voadora</a></li><li><a href="guias/como-resolver-sudoku/">Como resolver sudoku: técnicas do fácil ao difícil</a></li><li><a href="guias/como-jogar-campo-minado/">Como jogar campo minado: números, padrões e estratégia</a></li><li><a href="guias/regras-da-paciencia/">Regras da paciência: como jogar e estratégias para ganhar mais</a></li></ul>
+        <p class="atualizado">Publicado em <time datetime="2026-11-24">24 de novembro de 2026</time> · atualizado em <time datetime="2026-11-24">24 de novembro de 2026</time> · por Karma Games</p>
+      </article>
+    </main>
+  </div>
+
+  <div class="busca-painel" id="busca-painel" hidden>
+    <div class="busca-topo">
+      <label class="busca">
+        <span class="sr-only">Buscar jogo</span>
+        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-magnifying-glass"/></svg>
+        <input id="busca" type="search" placeholder="O que você quer jogar?" autocomplete="off" enterkeyhint="search">
+      </label>
+      <button class="btn-redondo" id="busca-fechar" type="button" aria-label="Fechar busca">
+        <svg class="icon" aria-hidden="true"><use href="assets/icones.svg#i-x"/></svg>
+      </button>
+    </div>
+    <div class="mural" id="busca-resultados"></div>
+  </div>
+
+  <footer class="rodape">
+    <a class="marca" href="./"><img class="marca-simbolo" src="assets/marca.svg" alt="" width="22" height="22"><span>karma<b>games</b></span></a>
+    <nav class="rodape-links" aria-label="Institucional">
+      <a href="guias/">Guias</a>
+      <a href="sobre/">Sobre</a>
+      <a href="contato/">Contato</a>
+      <a href="privacidade/">Privacidade</a>
+      <a href="termos/">Termos</a>
+    </nav>
+    <span>© 2026 Karma Games. Todos os jogos são grátis. Sem download, sem cadastro.</span>
+  </footer>
+
+  <script src="jogos.js?v=1ae29bd3"></script>
+  <script src="assets/site.js?v=1ae29bd3"></script>
+</body>
+</html>
